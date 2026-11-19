@@ -1,0 +1,1020 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light" data-brand="calc">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MindStudio · 性能采集实验台</title>
+<style>
+/* 计算 theme: D:/Projects/InsightChat/主题表.md; shared token definitions from app/chat.css. */
+:root{
+ color-scheme:light;font-family:Inter,"Segoe UI","Microsoft YaHei",sans-serif;font-size:13px;
+ --brand-blue:#0077FF;--brand-blue-disabled:#B8D9FF;--brand-green:#2DB47C;--brand-accent:#0077FF;--brand-purple:#6D47F5;
+ --foreground:#000000;--foreground-secondary:#4E5865;--foreground-placeholder:#8D98AA;--foreground-disabled:#8D98AA;
+ --surface-1:#FFFFFF;--surface-2:#F2F2F2;--divider-weak:#EBEFF6;--divider-strong:#DFE5EF;--border-line:#B3BFD3;
+ --warning:#FFAA3B;--danger:#FF4B7B;--brand-tint:8%;--brand-tint-border:20%;--brand-tint-strong:12%;
+ --button-radius:8px;--button-secondary-bg:transparent;--button-secondary-bg-press:rgb(0 0 0 / .05);--button-secondary-border:var(--divider-strong);--button-secondary-fg:var(--foreground);--button-secondary-shadow:none;
+ --brand-soft:color-mix(in srgb,var(--brand-blue) var(--brand-tint),var(--surface-1));
+ --brand-border:color-mix(in srgb,var(--brand-blue) var(--brand-tint-border),transparent);
+ --ide-gradient-bg:radial-gradient(ellipse at 0% 0%,rgb(155 96 170 / .07),transparent 28%),radial-gradient(ellipse at 100% 0%,rgb(24 99 220 / .08),transparent 30%),radial-gradient(ellipse at 48% 6%,rgb(20 184 166 / .04),transparent 34%),radial-gradient(ellipse at 18% 86%,rgb(24 99 220 / .08),transparent 34%),linear-gradient(180deg,rgb(246 247 251 / .92),rgb(246 247 251 / .92) 42%,rgb(236 239 246 / .92));
+ --ide-frame-bg:var(--ide-gradient-bg);--ide-frame-backdrop-filter:blur(8px);
+ --blue:var(--brand-blue);--blue-soft:var(--brand-soft);--ink:var(--foreground);--sub:var(--foreground-secondary);--line:var(--divider-weak);
+}
+/* Keep page scrolling from changing the viewport width between tabs. */
+html{scrollbar-width:none}html::-webkit-scrollbar{display:none;width:0;height:0}
+*{box-sizing:border-box}body{margin:0;background:#ECEFF6;color:var(--foreground)}button,input,select{font:inherit}button{cursor:pointer;color:inherit}button,input,select{outline:none}button:disabled{cursor:not-allowed;opacity:.45}button,input,select,a{-webkit-tap-highlight-color:transparent}a{color:var(--brand-blue)}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid color-mix(in srgb,var(--brand-blue) 36%,transparent);outline-offset:3px}
+[hidden]{display:none!important}
+.workspace{padding:26px 40px;min-height:100vh;color:var(--foreground-secondary)}.workbrand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:650}.workbrand svg{width:26px;height:26px}.worknav{display:flex;gap:32px;border-bottom:1px solid var(--divider-strong);padding:32px 0 16px}.workspace>h2{font-size:22px;font-weight:500;margin:36px 0 12px}.workgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:30px}.ghost{height:130px;border:1px solid var(--divider-strong);border-radius:12px;background:var(--surface-1);padding:22px}.ghost span{display:block;height:9px;background:var(--divider-weak);width:70%;border-radius:3px;margin:16px 0}
+.lab-panel{width:100%;max-width:1680px;margin:12px auto 0;flex:1;display:flex;flex-direction:column;min-height:0}
+.lab-panel:focus,.lab-panel:focus-visible{outline:none}.heading{display:flex;align-items:center}h1{font-size:21px;letter-spacing:-.5px;margin:0;font-weight:650}.head-actions{display:flex;align-items:center}.icon-button{width:30px;height:30px;border:0;background:transparent;font-size:24px;line-height:1;color:var(--foreground-secondary);border-radius:6px}.icon-button:hover{background:var(--button-secondary-bg-press)}
+.body-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,2fr) minmax(0,1fr);min-height:0;flex:1;padding:0;gap:0}
+.controls,.command-panel,.preview{min-width:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--divider-strong) transparent}
+.controls{padding:12px 17px 22px 9px;background:transparent}.command-panel{background:var(--surface-1);padding:19px 20px 22px;border-radius:12px 0 0 12px;display:flex;flex-direction:column;gap:18px}.preview{padding:19px 16px 22px;background:var(--surface-1);border-left:1px solid var(--divider-weak);border-radius:0 12px 12px 0;display:flex;flex-direction:column;gap:22px}
+@supports selector(::-webkit-scrollbar){.controls,.command-panel,.preview{scrollbar-width:auto;scrollbar-color:auto}::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--divider-strong);border-radius:6px}::-webkit-scrollbar-button{display:none;width:0;height:0}}
+
+.section{margin:0 0 26px}.section:last-child{margin-bottom:0}.section-title{display:flex;align-items:center;flex-wrap:wrap;gap:7px;margin-bottom:13px}h2{font-size:13px;font-weight:650;margin:0}.num{font-size:10px;color:var(--foreground-placeholder);font-weight:500;letter-spacing:1px}.section-caption{margin-left:auto;font-size:9px;color:var(--sub)}
+.preset-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.preset-choice{position:relative;min-width:0}.preset{width:100%;height:100%;border:1px solid var(--divider-strong);background:var(--surface-1);border-radius:8px;text-align:left;padding:12px 9px;position:relative}.preset strong{display:block;font-size:11px;font-weight:600;margin-bottom:5px}.preset small{color:var(--sub);font-size:9px;line-height:1.6}.preset[aria-pressed=true]{border-color:var(--brand-blue);background:var(--brand-soft)}.preset[aria-pressed=true] strong{color:var(--brand-blue)}.preset-choice>.help{position:absolute;right:7px;top:7px;bottom:auto}.preset-note{display:flex;align-items:flex-start;gap:6px;font-size:10px;color:var(--sub);margin:10px 0 0;line-height:1.85}.tiny-dot{width:5px;height:5px;background:var(--brand-blue);border-radius:50%;display:inline-block;flex:none;margin-top:7px}
+.field{display:block;margin-bottom:14px}.field>[data-label-for],.field-label{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--sub);margin-bottom:7px}.text-input{width:100%;height:36px;border:1px solid var(--border-line);border-radius:7px;padding:0 10px;color:var(--ink);background:var(--surface-1);font-family:Consolas,"SFMono-Regular",monospace;font-size:11px}.text-input:hover{border-color:var(--brand-blue)}.text-input:focus{border-color:transparent;background:linear-gradient(var(--surface-1),var(--surface-1)) padding-box,linear-gradient(90deg,var(--brand-blue),var(--brand-purple)) border-box;box-shadow:0 0 0 3px rgb(0 119 255 / .08)}.text-input[aria-invalid=true]{border-color:var(--danger)}.subtle{font-size:10px;color:var(--sub);line-height:1.8}
+.window-card{padding:15px 13px 12px;border:1px solid var(--divider-strong);background:var(--surface-1);border-radius:8px}
+.window-readings{display:flex;align-items:center;justify-content:space-between;gap:8px}.window-label{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--sub)}.window-end-reading{text-align:right}.window-end-reading .window-label{justify-content:flex-end}.window-duration{font-size:10px;color:var(--brand-blue);background:var(--brand-soft);border-radius:5px;padding:5px 8px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.window-slider{position:relative;height:34px;margin:17px 9px 0;touch-action:none;cursor:pointer;user-select:none}.window-track{position:absolute;left:0;right:0;top:14px;height:6px;border-radius:3px;background:var(--divider-weak)}.window-selection{position:absolute;top:0;bottom:0;left:8.333%;width:8.333%;background:var(--brand-blue);border-radius:3px}.window-thumb{position:absolute;top:6px;left:8.333%;width:16px;height:22px;transform:translateX(-50%);border:2px solid var(--brand-blue);border-radius:5px;background:var(--surface-1);padding:0;cursor:ew-resize;touch-action:none;z-index:1}.window-thumb:after{content:'';display:block;width:2px;height:8px;border-radius:1px;margin:auto;background:var(--brand-blue)}.window-thumb:hover,.window-thumb:focus-visible{background:var(--brand-soft);z-index:3}.window-slider[data-dragging=start] #window-start,.window-slider[data-dragging=end] #window-end{z-index:4;background:var(--brand-soft)}.window-axis{display:flex;justify-content:space-between;margin:1px 5px 0;color:var(--foreground-placeholder);font-size:9px}.window-summary{font-size:10px;color:var(--sub);line-height:1.8;margin:11px 0 0}
+.range-row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px}.label-help{display:inline-flex;align-items:center;gap:5px}.range-row label{font-size:11px}.range-value{font-variant-numeric:tabular-nums;font-size:11px;color:var(--brand-blue);font-weight:600;white-space:nowrap}.range-value small{font-weight:400;color:var(--sub);margin-left:3px}.range{width:100%;height:20px;appearance:none;-webkit-appearance:none;background:transparent;padding:0;cursor:pointer;display:block;margin:6px 0}.range::-webkit-slider-runnable-track{height:4px;border:0;border-radius:4px;background:linear-gradient(to right,var(--brand-blue) calc(var(--fill,0%) + var(--fill-offset,6.5px)),var(--divider-weak) calc(var(--fill,0%) + var(--fill-offset,6.5px)))}.range::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;box-sizing:border-box;width:13px;height:13px;margin-top:-4.5px;background:var(--surface-1);border:3px solid var(--brand-blue);border-radius:50%}.range::-moz-range-track{height:4px;border:0;border-radius:4px;background:linear-gradient(to right,var(--brand-blue) calc(var(--fill,0%) + var(--fill-offset,6.5px)),var(--divider-weak) calc(var(--fill,0%) + var(--fill-offset,6.5px)))}.range::-moz-range-thumb{box-sizing:border-box;width:13px;height:13px;background:var(--surface-1);border:3px solid var(--brand-blue);border-radius:50%}.range::-moz-range-progress{background:transparent}.range:disabled{opacity:.35;cursor:not-allowed}.ticks{display:flex;justify-content:space-between;color:var(--foreground-placeholder);font-size:9px}
+.data-box{border:1px solid var(--divider-strong);border-radius:8px;background:var(--surface-1);overflow:hidden}.control-row{padding:13px 12px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:center;justify-content:space-between}.control-row:last-child{border-bottom:0}.control-copy{flex:1;min-width:0}.control-name{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11px;font-weight:550}.control-desc{font-size:10px;color:var(--sub);line-height:1.75;margin-top:4px}.cost{font-size:8px;border-radius:4px;padding:2px 4px;font-weight:400;white-space:nowrap;color:var(--sub);background:var(--divider-weak)}.cost.high{color:#805008;background:color-mix(in srgb,var(--warning) 16%,var(--surface-1))}.toggle{width:31px;height:18px;border-radius:12px;position:relative;border:0;background:var(--border-line);padding:0;flex:none}.toggle:after{content:'';position:absolute;width:12px;height:12px;top:3px;left:3px;background:var(--surface-1);border-radius:50%;transition:transform .15s}.toggle[aria-checked=true]{background:var(--brand-blue)}.toggle[aria-checked=true]:after{transform:translateX(13px)}.row-end{display:flex;align-items:center;gap:9px}.task-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px 10px}.task-row .control-copy{display:contents}.task-row .control-name{grid-column:1;grid-row:1}.task-row .row-end{grid-column:2;grid-row:1;justify-content:flex-end}.task-row .control-desc{grid-column:1/-1;grid-row:2;margin-top:0}.pills{display:inline-flex;background:var(--divider-weak);padding:3px;border-radius:7px;gap:2px}.pill{border:0;border-radius:5px;background:transparent;color:var(--sub);padding:5px 10px;font-size:10px;white-space:nowrap}.pill[aria-pressed=true]{background:var(--surface-1);color:var(--brand-blue)}.pill:disabled{opacity:.4}.nested{padding:12px;background:color-mix(in srgb,var(--brand-blue) 2%,var(--surface-1));border-bottom:1px solid var(--line)}.nested .hint{font-size:10px;line-height:1.8;color:var(--sub);margin:8px 0 0}.metric-select{width:100%;padding:8px;border:1px solid var(--border-line);border-radius:6px;background:var(--surface-1);color:var(--sub);font-size:10px}.dependency{font-size:10px;line-height:1.8;color:var(--sub);background:var(--brand-soft);border-radius:6px;padding:10px 12px;margin-top:10px}
+.advanced summary{font-size:12px;cursor:pointer;color:var(--sub);list-style:none;display:flex;align-items:center;gap:8px}.advanced summary:before{content:'›';font-size:19px}.advanced[open] summary:before{transform:rotate(90deg)}.advanced .data-box{margin-top:12px}.docs{margin-top:19px;font-size:10px;line-height:1.9;color:var(--sub)}.docs summary{cursor:pointer}.docs a{display:inline-block;margin-right:10px}.docs p{margin:7px 0}
+.estimate-label>.help{margin-left:6px}.estimate-label{font-size:12px;font-weight:600;line-height:1.7}.estimate-head{margin-top:8px;display:flex;flex-direction:column;align-items:flex-start;gap:10px}.big-number{font-size:48px;font-weight:600;line-height:1.12;letter-spacing:-2px;font-variant-numeric:tabular-nums;color:var(--brand-blue);white-space:nowrap}.big-number .unit{font-size:25px;letter-spacing:-1px;margin-left:2px}.risk{font-size:9px;color:var(--brand-green);background:color-mix(in srgb,var(--brand-green) 10%,var(--surface-1));padding:4px 7px;border-radius:5px;white-space:nowrap}.risk[data-risk=medium]{color:#805008;background:color-mix(in srgb,var(--warning) 16%,var(--surface-1))}.risk[data-risk=high]{color:#ba3157;background:color-mix(in srgb,var(--danger) 10%,var(--surface-1))}.comparison{height:27px;display:flex;gap:2px;align-items:center}.comparison span{height:5px;border-radius:2px}.comparison .baseline{background:var(--divider-strong)}.comparison .extra{background:var(--brand-blue);min-width:2px}.stats{display:grid;grid-template-columns:1fr;border:1px solid var(--divider-strong);background:var(--surface-1);border-radius:8px;padding:13px;gap:14px}.stat+.stat{border-top:1px solid var(--line);padding-top:13px}.stat span{display:block;color:var(--sub);font-size:10px;margin-bottom:7px}.stat strong{font-size:20px;letter-spacing:-.3px;font-weight:600}.stat strong small{font-size:10px;color:var(--sub);font-weight:400;margin-left:3px}.stat p{margin:5px 0 0;font-size:9px;color:var(--sub);line-height:1.8}
+.breakdown-title{font-size:11px;color:var(--sub);margin-bottom:13px;display:flex;flex-direction:column;gap:5px}.breakdown-list{display:grid;gap:12px}.breakdown-row{display:grid;grid-template-columns:1fr auto;gap:6px;align-items:center;font-size:10px;color:var(--sub)}.track{height:4px;background:var(--divider-weak);border-radius:3px;overflow:hidden;grid-column:1/-1;grid-row:2}.track i{display:block;background:color-mix(in srgb,var(--brand-blue) 60%,var(--surface-1));height:100%;border-radius:3px}.breakdown-row b{text-align:right;font-size:10px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums;grid-column:2;grid-row:1}
+.terminal{background:var(--surface-1);border:1px solid var(--divider-strong);border-radius:8px;overflow:hidden;min-height:260px}.terminal-head{min-height:42px;padding:10px 13px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid var(--divider-weak);background:color-mix(in srgb,var(--brand-blue) 3%,var(--surface-1))}.terminal-title{font-size:10px;color:var(--sub);display:flex;align-items:center;gap:7px}.copy-btn,.button{border:1px solid var(--button-secondary-border);border-radius:var(--button-radius);background:var(--button-secondary-bg);color:var(--button-secondary-fg);padding:6px 9px;font-size:10px;box-shadow:var(--button-secondary-shadow);white-space:nowrap}.copy-btn{display:flex;align-items:center;gap:5px}.copy-btn:hover,.copy-btn:focus-visible,.button:hover,.button:focus-visible{border-color:var(--brand-blue);color:var(--brand-blue)}.copy-btn:active,.button:active{background:var(--button-secondary-bg-press)}.copy-btn svg{width:11px;height:11px}.copy-btn[data-copied=true]{border-color:var(--brand-green);color:var(--brand-green)}.validation{font-size:11px;line-height:1.7;padding:9px 11px;border-radius:6px;background:color-mix(in srgb,var(--danger) 8%,var(--surface-1));color:#ba3157;margin-bottom:10px}.manual-copy{width:100%;min-height:140px;border:1px solid var(--border-line);border-radius:6px;padding:10px;background:var(--surface-1);color:var(--ink);font-family:Consolas,monospace;font-size:11px;resize:vertical}.manual-wrap{padding:0 13px 13px}.manual-wrap label{display:block;color:var(--sub);font-size:10px;margin-bottom:8px}
+.help{width:15px;height:15px;display:inline-grid;place-items:center;border:1px solid var(--border-line);border-radius:50%;padding:0;background:transparent;color:var(--sub);font-size:10px;font-weight:500;line-height:1;flex:none;vertical-align:middle}.help:hover,.help:focus-visible,.help[aria-expanded=true]{border-color:var(--brand-blue);color:var(--brand-blue);background:var(--brand-soft)}.help-tooltip{max-height:calc(100dvh - 24px);overflow-y:auto;position:fixed;z-index:30;width:300px;max-width:calc(100vw - 24px);padding:14px 16px;background:var(--surface-1);border:1px solid var(--divider-strong);border-radius:10px;box-shadow:0 8px 28px #152b4d1f;color:var(--sub);font-size:11px;line-height:1.85;overflow-wrap:anywhere}.help-tooltip strong{display:block;font-size:12px;color:var(--ink);font-weight:600;margin-bottom:6px}.help-tooltip p{margin:0}.help-tooltip .help-source{border-top:1px solid var(--divider-weak);padding-top:9px;margin-top:9px;font-size:10px}.help-tooltip a{display:inline-block}.help-source-label{color:var(--foreground-placeholder);display:block}.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);padding:12px 20px;background:var(--surface-1);color:var(--foreground);border:1px solid var(--divider-strong);border-radius:9px;box-shadow:0 6px 24px #0001;z-index:40;font-size:12px;max-width:calc(100% - 32px);text-align:center}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:1050px) and (min-width:761px){.body-grid{padding:0}.controls{padding-left:6px;padding-right:12px}.command-panel{padding:16px 13px}.preview{padding:16px 12px}.section-caption{flex-basis:100%;margin-left:17px}.big-number{font-size:48px}.big-number .unit{font-size:20px}.preset-grid{grid-template-columns:1fr}.preset{padding:10px 28px 10px 10px}.preset strong{display:inline;margin-right:6px}.preset-choice>.help{top:12px;bottom:auto}.stats{padding:10px}}
+@media(max-width:760px){.heading{gap:10px}.head-actions{gap:5px}h1{font-size:19px}.body-grid{display:flex;flex-direction:column;overflow:visible;padding:0;gap:10px}.controls,.command-panel,.preview{overflow:visible;flex:none;padding:18px 14px}.command-panel,.preview{border-radius:12px;border:0}.preview{display:grid;grid-template-columns:1fr 1fr;gap:20px}.preview>.estimate{grid-column:1/-1}.preview .estimate-label{display:flex;justify-content:space-between}.preview .estimate-head{flex-direction:row;align-items:center}.stat+.stat{border-top:0;border-left:1px solid var(--line);padding-top:0;padding-left:15px}.workspace{padding:24px}.workgrid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+.estimate-head{--risk-color:var(--brand-green)}
+.estimate-head[data-risk=medium]{--risk-color:#805008}
+.estimate-head[data-risk=high]{--risk-color:#ba3157}
+.estimate-head .big-number,.estimate-head .risk{color:var(--risk-color)}
+.preset-icon{display:block;width:26px;height:26px;margin-bottom:10px;color:var(--foreground-secondary)}.preset-icon svg{width:100%;height:100%;display:block}.preset[aria-pressed=true] .preset-icon{color:var(--brand-blue)}
+@media(max-width:1050px) and (min-width:761px){.preset-icon{display:inline-block;width:22px;height:22px;vertical-align:middle;margin:0 8px 0 0}}
+.command-editor{display:block;width:100%;min-height:430px;resize:vertical;border:0;border-radius:0;padding:18px 16px;background:var(--surface-1);color:var(--ink);font-family:Consolas,"SFMono-Regular",monospace;font-size:12px;line-height:2;tab-size:2;overflow-wrap:anywhere;white-space:pre-wrap;outline-offset:-3px}
+.command-editor[aria-invalid=true]{background:color-mix(in srgb,var(--warning) 4%,var(--surface-1))}
+.command-feedback{font-size:10px;line-height:1.85;color:var(--sub);margin:10px 0 0}.command-feedback[data-error=true]{color:#805008}
+.editor-recovery{margin-top:9px}.preview[data-command-pending=true] .estimate-label:after{content:'命令待同步';display:block;font-size:9px;font-weight:400;color:#805008;margin-top:7px}
+.body-grid{gap:8px;padding-top:0}
+.controls{padding:19px 16px 22px;background:var(--surface-1);border:1px solid var(--divider-strong);border-radius:12px}
+.command-panel{padding:0;background:transparent;border-radius:12px;overflow:hidden;gap:0}
+.command-panel>.terminal{display:flex;flex-direction:column;flex:1;height:100%;min-height:0;border-radius:12px}
+.terminal-head{min-height:55px;padding:14px 16px;flex:none;background:var(--surface-1)}
+.terminal-title{font-size:16px;font-weight:650;color:var(--foreground)}
+.command-editor{flex:1;min-height:0;resize:none}
+.terminal>.validation{margin:12px 14px 0;flex:none}.terminal>.command-feedback{margin:0;padding:10px 14px;border-top:1px solid var(--divider-weak);flex:none}.terminal>.editor-recovery{align-self:flex-start;flex:none;margin:0 14px 12px}.terminal>.manual-wrap{flex:none}
+.preview{border:1px solid var(--divider-strong);border-radius:12px}
+.stats{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;padding:12px 10px}
+.stat{min-width:0}.stat+.stat{border-top:0;border-left:1px solid var(--line);padding-top:0;padding-left:10px}.stat strong{font-size:18px}
+.reset-controls{margin-top:16px}
+@media(max-width:1050px) and (min-width:761px){.stat strong{font-size:16px}.stat strong small{display:block;margin:3px 0 0}.stats{gap:7px;padding:10px 8px}.stat+.stat{padding-left:7px}}
+@media(max-width:760px){.command-panel{height:520px;min-height:360px}}
+
+@media(max-width:760px){.preview{display:flex;flex-direction:column}}
+.controls .text-input,.controls .metric-select{border-color:var(--brand-blue)}
+.controls .text-input:focus,.controls .text-input:focus-visible,.controls .metric-select:focus,.controls .metric-select:focus-visible{border-color:var(--brand-blue);background:var(--surface-1);box-shadow:none;outline:none}
+.controls .text-input[aria-invalid=true]{border-color:var(--danger)}
+
+.command-surface{position:relative;flex:1;min-height:0;overflow:hidden;background:var(--surface-1)}
+.command-surface[data-invalid=true]{background:color-mix(in srgb,var(--warning) 4%,var(--surface-1))}
+.command-surface .command-editor,.command-highlight{position:absolute;inset:0;display:block;width:100%;height:100%;min-height:0;margin:0;border:0;border-radius:0;padding:18px 16px;font:400 12px/2 Consolas,"SFMono-Regular",monospace;letter-spacing:0;tab-size:2;white-space:pre-wrap;overflow-wrap:anywhere;word-break:normal;text-align:left}
+.command-highlight{overflow:hidden;pointer-events:none;user-select:none;color:var(--foreground);background:transparent}
+.command-highlight:after{content:' '}
+.command-surface .command-editor{z-index:1;resize:none;background:transparent;color:transparent;-webkit-text-fill-color:transparent;caret-color:var(--foreground);overflow:auto;outline:none}
+.command-surface .command-editor[aria-invalid=true]{background:transparent}
+.command-editor::selection{background:color-mix(in srgb,var(--brand-blue) 18%,transparent)}
+.syntax-command{color:var(--brand-blue)}.syntax-flag{color:var(--brand-purple)}.syntax-string{color:color-mix(in srgb,var(--brand-green) 68%,#000)}.syntax-number{color:#945216}.syntax-value{color:#006D93}.syntax-comment,.syntax-escape,.syntax-operator{color:var(--foreground-secondary)}
+@media(forced-colors:active){.command-highlight{display:none}.command-surface .command-editor{color:CanvasText;-webkit-text-fill-color:CanvasText;caret-color:CanvasText}}
+.lab-page{--page-gutter:28px;padding:0 var(--page-gutter) 40px;background:#F6F7FB;color:var(--foreground)}
+.lab-page:has(>#lab-panel:not([hidden])){display:flex;flex-direction:column;height:100dvh;min-height:100dvh;padding-bottom:8px}
+.evidence-toolbar-band{flex:none;margin:0 calc(-1 * var(--page-gutter));padding:0 var(--page-gutter);position:sticky;top:0;z-index:2;border-bottom:1px solid var(--divider-strong);background:color-mix(in srgb,#F6F7FB 95%,transparent);backdrop-filter:blur(8px)}
+.evidence-toolbar{font-family:"Cascadia Mono","SFMono-Regular","SF Mono",Menlo,Consolas,Monaco,"PingFang SC","Microsoft YaHei",monospace;max-width:1680px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:18px;height:56px;min-height:56px}
+.toolbar-main{display:flex;align-items:center;gap:24px;min-width:0}.evidence-brand{font-size:16px;font-weight:700;min-width:0}.evidence-brand small{font-size:12px;font-weight:400;color:var(--foreground-secondary);margin-left:12px}.toolbar-actions{display:flex;flex:none;align-items:center;gap:12px}
+.numeric-control{display:flex;align-items:center;gap:10px}.numeric-control .range{flex:1;min-width:40px;margin:0}.step-input{width:100px!important;flex:none}.boolean-field{display:flex;align-items:center;justify-content:space-between;gap:12px}.boolean-field>[data-label-for]{margin:0}.numeric-note{font-size:10px;color:var(--sub);line-height:1.6;margin-top:5px}.window-number{width:76px!important;margin-top:5px}.window-reading-input{display:flex;gap:6px;align-items:center;font-size:10px;color:var(--sub)}
+.dependent-slider{margin-top:-5px}.numeric-unit{font-size:10px;color:var(--sub);flex:none}.dependent-slider .numeric-control{gap:8px}
+.collection-groups{display:grid;gap:18px;margin-top:14px}.collection-group h3{font-size:12px;font-weight:600;margin:0 0 8px;color:var(--ink)}.collection-group .group-description{font-size:10px;line-height:1.7;color:var(--sub);margin:0 0 8px}.group-panel .field{margin:0}.group-panel .control-row{border:0}.group-panel .control-copy>[data-label-for]{margin:0}.group-panel .control-name{color:var(--ink)}.collection-item+.collection-item{border-top:1px solid var(--line)}.group-panel .dependent-slider{padding:0 12px 13px;background:var(--surface-1)}.group-panel .nested{border-bottom:0}.group-panel .config-row{display:block}.group-panel .config-row>[data-label-for]{color:var(--ink);font-weight:550}.group-panel .config-row .control-desc{margin:0 0 9px}.group-panel .config-row .numeric-note{margin-bottom:0}.calibration-panel .field{padding:10px;border-bottom:1px solid var(--line);margin:0}.calibration-panel .field:last-child{border-bottom:0}.calibration-panel .numeric-control{gap:7px}.calibration-panel .step-input{width:82px!important}.calibration-subtitle{font-size:10px;color:var(--sub);font-weight:600;margin:10px 0 6px}.numeric-control .range{width:0;flex:1 1 0%;min-width:40px}
+.download-estimate{margin-top:14px;padding:13px 12px;border:1px solid var(--divider-strong);border-radius:8px}.download-heading{display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:11px;font-weight:600}.download-heading small{font-size:9px;font-weight:400;color:var(--sub)}.download-value{display:block;font-size:23px;line-height:1.4;color:var(--brand-blue);font-weight:600;margin-top:7px;overflow-wrap:anywhere}.download-description,.download-advice{font-size:10px;line-height:1.9;color:var(--sub);margin:7px 0 0}.download-advice[data-level=large],.download-advice[data-level=huge]{color:#805008}.download-options{margin-top:12px;font-size:10px;color:var(--sub)}.download-options>summary{cursor:pointer;color:var(--brand-blue);line-height:1.8}.download-options .field{margin-top:12px;margin-bottom:0}.download-options label{font-size:10px}.download-options .text-input{width:100%}.download-options .subtle{font-size:9px;margin:8px 0 0}
+.workflow-section>.collection-group{margin-bottom:0}.workflow-section #output{margin-bottom:0}.workflow-section .field.control-row{margin:0;border-bottom:1px solid var(--line)}.workflow-section .control-desc{margin-top:7px}.workflow-section #workflow-status{margin:9px 0}.workflow-section #workflow-open-service{display:inline-block;text-decoration:none}.workflow-existing-preview{border:1px solid var(--divider-strong);border-radius:8px;padding:14px;font-size:11px;line-height:1.9}.workflow-existing-preview h3{font-size:13px;margin:0 0 8px}
+.choice-pills{display:grid;grid-template-columns:repeat(var(--choice-count),minmax(0,1fr));width:100%;gap:3px}.choice-pills .pill{min-width:0;min-height:32px;padding:6px 7px;white-space:normal;line-height:1.5;text-align:center}.choice-pills .pill[aria-checked=true]{background:var(--surface-1);color:var(--brand-blue);box-shadow:0 1px 3px #152b4d14}.choice-pills[aria-disabled=true]{opacity:.45}.choice-pills .pill:disabled{opacity:1}
+.estimate-head[data-risk=low]{--risk-color:#17804D}.estimate-head[data-risk=medium]{--risk-color:#A85400}.estimate-head[data-risk=high]{--risk-color:#C93636}.risk[data-risk=low]{background:#E8F5ED}.risk[data-risk=medium]{background:#FFF1DF}.risk[data-risk=high]{background:#FDEBEC}
+.controls{padding-top:0}.controls-header{position:sticky;top:0;z-index:9;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:55px;padding:14px 16px;margin:0 -16px 18px;border-bottom:1px solid var(--divider-weak);border-radius:11px 11px 0 0;background:var(--surface-1)}.controls-title{font-size:16px;font-weight:650;color:var(--foreground)}.toolbar-actions #reset{flex:none}
+.controls-header{gap:8px}.controls-title{flex:none}.toolbar-actions #reset{display:inline-flex;align-items:center;gap:5px}.toolbar-actions #reset svg{width:11px;height:11px;flex:none}.parameter-search{position:relative;flex:1;min-width:100px;max-width:220px;margin-left:auto}.parameter-search input{display:block;width:100%;height:29px;border:1px solid var(--border-line);border-radius:6px;background:var(--surface-1);padding:0 7px 0 27px;font-size:11px}.parameter-search-icon{position:absolute;left:8px;top:8px;width:13px;height:13px;color:var(--sub);pointer-events:none}.parameter-search-results{position:absolute;right:0;top:35px;width:min(370px,calc(100vw - 48px));max-height:300px;overflow:auto;padding:5px;background:var(--surface-1);border:1px solid var(--divider-strong);border-radius:8px;box-shadow:0 8px 25px #152b4d22;z-index:10}.parameter-search-result{display:block;width:100%;padding:8px;border:0;border-radius:5px;background:transparent;text-align:left;font-size:11px}.parameter-search-result:hover,.parameter-search-result:focus-visible{background:var(--brand-soft);color:var(--brand-blue)}.parameter-search-result small{display:block;font-size:9px;color:var(--sub);line-height:1.7;margin-top:3px}.parameter-search-empty{font-size:10px;color:var(--sub);padding:10px}.parameter-search-status{font-size:10px;color:var(--sub);margin:5px 8px}.parameter-search-message{font-size:10px;color:var(--brand-blue);margin:0 0 12px;line-height:1.8;padding:9px 10px;border-radius:6px;background:var(--brand-soft)}[data-search-highlight=true]{outline:2px solid var(--brand-blue);outline-offset:3px;box-shadow:0 0 0 4px rgb(0 119 255 / .07)}.rank-setting{margin-top:14px}.rank-setting .field{margin:0;padding:12px}.rank-setting .control-desc{margin:7px 0 0}.volume-breakdown{margin-top:15px;padding-top:12px;border-top:1px solid var(--divider-weak)}.volume-breakdown h3{font-size:11px;margin:0 0 5px;font-weight:600}.volume-breakdown-note{font-size:9px;color:var(--sub);line-height:1.8;margin:0 0 10px}.volume-breakdown-list{display:grid;gap:10px}.volume-contribution{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px 6px;align-items:center;font-size:10px}.volume-contribution-name{min-width:0;overflow-wrap:anywhere;color:var(--sub)}.volume-contribution-value{text-align:right;font-size:10px;font-weight:500;line-height:1.5}.volume-contribution-value small{display:inline;margin-left:5px;font-size:9px;color:var(--sub);font-weight:400}.volume-contribution .track{height:5px}.volume-contribution .track i{background:var(--brand-blue)}
+.artifact-preview{flex:none;min-width:0;border-top:1px solid var(--divider-strong);padding-top:16px}.artifact-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}.artifact-heading h3{font-size:11px;font-weight:600;margin:0}.artifact-path-label{font-size:9px;color:var(--sub);margin:0 0 5px}.artifact-path{display:block;font:10px/1.8 Consolas,monospace;overflow-wrap:anywhere;white-space:pre-wrap;color:var(--ink)}.artifact-tree{margin:10px 0;padding:10px 8px;background:var(--divider-weak);border-radius:6px;font:9px/1.9 Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--ink)}.artifact-note{font-size:9px;line-height:1.9;color:var(--sub);margin:8px 0 0}
+
+/* Compact collection preview. */
+.preview{padding-top:0}
+.preview-header{position:sticky;top:0;z-index:9;flex:none;display:flex;align-items:center;min-height:55px;padding:14px 16px;margin:0 -16px;border-bottom:1px solid var(--divider-weak);border-radius:11px 11px 0 0;background:var(--surface-1)}
+.estimate-head{flex-direction:row;align-items:center;gap:12px}
+#overhead{font-size:60px}
+.estimate-head .risk{white-space:normal;line-height:1.5}
+.stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:12px 8px;margin-top:16px}
+.stat+.stat{padding-left:8px}
+.stats .stat strong{font-size:16px;line-height:1.5;letter-spacing:-.3px;overflow-wrap:anywhere}
+.stats .stat>span{font-size:10px;line-height:1.7;min-height:34px;margin-bottom:4px}
+.stats .download-estimate{margin:0;border:0;border-left:1px solid var(--line);border-radius:0;padding:0 0 0 8px}
+.stats .download-heading{display:flex;align-items:flex-start;justify-content:flex-start;gap:4px;font-weight:400}
+.stats #download-help-slot{display:inline-flex;margin:1px 0 0}
+.stats .download-value{margin:0;color:var(--ink);font-weight:600}
+.volume-contribution-value{white-space:nowrap;line-height:1.3}
+.volume-breakdown-list{gap:8px}
+@media(max-width:1050px) and (min-width:761px){.preview-header{margin-left:-12px;margin-right:-12px;padding-left:12px;padding-right:12px}}
+@media(max-width:760px){.lab-panel>.body-grid{overflow-y:auto}.preview{padding-top:0}.preview-header{margin-left:-14px;margin-right:-14px;padding-left:14px;padding-right:14px}}
+/* Keep the capture label on one line and show scroll thumbs only during scrolling. */
+[data-label-for="capture-scope"]{flex:none;white-space:nowrap}
+#capture-scope-label{white-space:nowrap}
+.transient-scrollbar{scrollbar-color:transparent transparent}
+.transient-scrollbar.is-scrolling{scrollbar-color:var(--divider-strong) transparent}
+@supports selector(::-webkit-scrollbar){
+ .transient-scrollbar,.transient-scrollbar.is-scrolling{scrollbar-width:auto;scrollbar-color:auto}
+ .transient-scrollbar::-webkit-scrollbar-thumb{background:transparent}
+ .transient-scrollbar.is-scrolling::-webkit-scrollbar-thumb{background:var(--divider-strong)}
+}
+.page-context{font-size:12px;color:var(--foreground-secondary);white-space:nowrap}
+@media(max-width:760px){.toolbar-main{gap:12px}.evidence-brand{font-size:14px}}
+
+@media(max-width:760px){.lab-page{--page-gutter:16px}.evidence-toolbar{gap:10px}.lab-panel .command-panel{min-height:500px}}
+
+</style>
+</head>
+<body>
+<main class="workspace lab-page" id="workspace">
+ <div class="evidence-toolbar-band"><div class="evidence-toolbar"><div class="toolbar-main"><span class="evidence-brand"><strong>MindStudio Profiler Next</strong></span><span class="page-context">实验台</span></div><div class="toolbar-actions"></div></div></div>
+<section class="lab-panel" id="lab-panel" role="region" aria-label="性能采集实验台">
+ <div class="body-grid">
+  <div class="controls" aria-label="采集控制器">
+   <header class="controls-header" id="controls-header"><div class="controls-title">采集配置</div></header>
+   <section class="section">
+    <div class="section-title"><span class="num">01</span><h2>这次想看什么？</h2><span class="section-caption" id="preset-status">建议从轻量采集开始</span></div>
+    <div class="preset-grid" role="group" aria-label="采集方案">
+     <button class="preset" data-preset="quick" aria-pressed="true"><span class="preset-icon" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="m18.5 18.5 6 6M6.5 13h3l2-5 2.5 8 2-5H18"/></svg></span><strong>快速摸底</strong><small>定位慢在哪一段</small></button>
+     <button class="preset" data-preset="timeline" aria-pressed="false"><span class="preset-icon" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="7" height="6" rx="1.5"/><rect x="18" y="18" width="7" height="6" rx="1.5"/><path d="M10 7h8a3 3 0 0 1 3 3v4m-3-3 3 3 3-3M18 21h-8a3 3 0 0 1-3-3v-4m3 3-3-3-3 3"/></svg></span><strong>下发与通信</strong><small>找到等待与重叠</small></button>
+     <button class="preset" data-preset="deep" aria-pressed="false"><span class="preset-icon" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="15" height="15" rx="3"/><path d="M9 2v3m6-3v3M9 20v3m-7-8h3m-3-6h3m15 0h3M9 9h6v6H9Z"/><circle cx="20" cy="20" r="4.5"/><path d="m23.3 23.3 3 3"/></svg></span><strong>算子深挖</strong><small>看计算、搬运和内存</small></button>
+    </div>
+    <p class="preset-note"><i class="tiny-dot"></i><span id="preset-note">保留基础耗时和业务打点，用更少的数据找到方向。</span></p>
+   </section>
+   <section class="section">
+    <div class="section-title"><span class="num">02</span><h2>采集哪个任务？</h2><span class="section-caption">Linux · CANN 9.1 参数示意</span></div>
+    <div class="data-box" id="capture-scope-panel"><div class="field control-row config-row"><div data-label-for="capture-scope"><label for="capture-scope">采集方式</label></div><select id="capture-scope" class="metric-select"><option value="application" selected>应用采集</option><option value="system">独立系统采集</option></select></div><div id="system-scope-fields"></div></div><p class="subtle">独立系统采集不启动应用，按设备 ID 和系统采集时长采样。</p>
+    <div class="field"><div data-label-for="application"><label for="application">应用启动命令</label></div><input id="application" class="text-input" value="python3 train.py --batch-size 8" autocomplete="off" spellcheck="false" aria-describedby="app-hint"></div>
+    <p class="subtle" id="app-hint" style="margin:-5px 0 14px">采集 CANN / NPU 执行信息；框架层调用栈需使用框架 Profiler。</p>
+    <div class="field" style="margin-bottom:0"><div data-label-for="output"><label for="output">采集执行端保存目录</label></div><input id="output" class="text-input" value="./profiler_output" autocomplete="off" spellcheck="false"></div>
+   </section>
+   <section class="section">
+    <div class="section-title"><span class="num">03</span><h2>只采集需要的时间</h2><span class="section-caption">避开启动，聚焦稳定阶段</span></div>
+    <div class="window-card">
+     <div class="window-readings">
+      <div><div class="window-label" id="window-start-label">开始时间</div><div class="window-reading-input"><input id="window-start-number" class="text-input window-number" type="number" min="0" max="119" step="1" value="10" aria-label="开始时间，秒">s</div></div>
+      <span class="window-duration" id="window-duration">采集 10 s</span>
+      <div class="window-end-reading"><div class="window-label" id="window-end-label">结束时间</div><div class="window-reading-input"><input id="window-end-number" class="text-input window-number" type="number" min="1" max="120" step="1" value="20" aria-label="结束时间，秒">s</div></div>
+     </div>
+     <div class="window-slider" id="window-slider" role="group" aria-label="采集时间范围，拖动两个滑块选择开始与结束时间">
+      <div class="window-track" aria-hidden="true"><div class="window-selection" id="window-selection"></div></div>
+      <button class="window-thumb" id="window-start" type="button" role="slider" aria-label="采集开始时间" aria-valuemin="0" aria-valuemax="19" aria-valuenow="10" aria-valuetext="第 10 秒开始采集" aria-orientation="horizontal"></button>
+      <button class="window-thumb" id="window-end" type="button" role="slider" aria-label="采集结束时间" aria-valuemin="11" aria-valuemax="120" aria-valuenow="20" aria-valuetext="第 20 秒结束采集" aria-orientation="horizontal"></button>
+     </div>
+     <div class="window-axis" aria-hidden="true"><span>0 s</span><span>30 s</span><span>60 s</span><span>90 s</span><span>120 s</span></div>
+     <p class="window-summary" id="window-summary">等待 10 秒后开始，持续采集 10 秒。</p>
+    </div>
+   </section>
+   <section class="section">
+    <div class="section-title"><span class="num">04</span><h2>采集哪些数据？</h2><span class="section-caption">开关变化，命令与校准状态同步更新</span></div>
+    <div class="data-box">
+     <div class="control-row task-row"><div class="control-copy"><div class="control-name">算子执行时间线 <span class="cost">基础</span></div><div class="control-desc" id="task-desc">L0 保留算子下发与执行耗时，减少采集负担。</div></div><div class="row-end"><div class="pills" role="group" aria-label="算子采集精度"><button class="pill" data-level="l0" aria-pressed="true">L0 轻量</button><button class="pill" data-level="l1" aria-pressed="false">L1 详细</button><button class="pill" data-level="l2" aria-pressed="false">L2 属性</button></div><button class="toggle" role="switch" id="task" aria-checked="true" aria-label="算子执行时间线"></button></div></div>
+     <div class="control-row"><div class="control-copy"><div class="control-name">AscendCL 接口 <span class="cost">轻量</span></div><div class="control-desc">关联应用调用、内存拷贝与 CANN 接口耗时。</div></div><button class="toggle" role="switch" id="ascendcl" aria-checked="true" aria-label="AscendCL 接口"></button></div>
+     <div class="control-row"><div class="control-copy"><div class="control-name">Runtime 接口 <span class="cost">轻量</span></div><div class="control-desc">进一步查看任务下发、同步和运行时调用。</div></div><button class="toggle" role="switch" id="runtime" aria-checked="false" aria-label="Runtime 接口"></button></div>
+     <div class="control-row"><div class="control-copy"><div class="control-name">业务自定义打点 <span class="cost">轻量</span></div><div class="control-desc">显示代码中已有的 msTX 标记，如 forward、backward。</div></div><button class="toggle" role="switch" id="mstx" aria-checked="true" aria-label="业务自定义打点"></button></div>
+     <div class="nested" id="mstx-detail"><p class="hint" style="margin:0">需要应用已调用 mstx / msproftx API；开启采集不会自动插入打点。Ascend PyTorch 场景请通过框架 Profiler 采集 MSTX。</p></div>
+     <div class="control-row"><div class="control-copy"><div class="control-name">AI Core 硬件指标 <span class="cost high">PMU 采集</span></div><div class="control-desc">判断算子主要受计算单元还是数据搬运限制。</div></div><button class="toggle" role="switch" id="core" aria-checked="false" aria-label="AI Core 硬件指标"></button></div>
+     <div class="nested" id="core-detail" hidden><div class="field-label" data-label-for="metric"><label for="metric">本次采集的指标组</label></div><select class="metric-select" id="metric"><option value="PipeUtilization">流水线利用率 · PipeUtilization</option><option value="ArithmeticUtilization">计算利用率 · ArithmeticUtilization</option><option value="Memory">内存带宽 · Memory</option><option value="L2Cache">L2 缓存命中 · L2Cache</option><option value="MemoryL0">MemoryL0</option><option value="MemoryUB">MemoryUB</option><option value="ResourceConflictRatio">ResourceConflictRatio</option><option value="PipelineExecuteUtilization">PipelineExecuteUtilization（仅部分产品）</option><option value="MemoryAccess">MemoryAccess（仅部分产品）</option></select><p class="hint">指标须核对芯片支持。开启硬件指标时，本方案联动至少 L1；sample-based 的频率在更多采集项中设置。</p></div>
+     <div class="control-row"><div class="control-copy"><div class="control-name">算子内存 <span class="cost">生命周期</span></div><div class="control-desc">采集 CANN 算子内存占用，辅助查看内存生命周期。</div></div><button class="toggle" role="switch" id="memory" aria-checked="false" aria-label="算子内存"></button></div>
+     <div class="control-row"><div class="control-copy"><div class="control-name">Host CPU 与内存 <span class="cost">按频率变化</span></div><div class="control-desc">补充主机资源使用率，观察 CPU 或内存压力。</div></div><button class="toggle" role="switch" id="host" aria-checked="false" aria-label="Host CPU 与内存"></button></div>
+     <div class="nested" id="host-detail" hidden><div class="range-row"><label for="host-freq">主机采样频率</label><output class="range-value" id="host-freq-value" for="host-freq">10<small>Hz</small></output></div><div class="numeric-control"><input class="range" id="host-freq" type="range" min="1" max="50" step="1" value="10"><input id="host-freq-number" class="text-input step-input" type="number" min="1" max="50" step="1" value="10" aria-label="主机采样频率 Hz"></div><div class="ticks"><span>低开销 · 1 Hz</span><span>高密度 · 50 Hz</span></div></div>
+    </div>
+    <div class="dependency" id="dependency" role="status" hidden></div>
+   </section>
+   <details class="advanced" open><summary>更多采集项</summary><div class="data-box">
+    <div class="control-row"><div class="control-copy"><div class="control-name">AI CPU 算子明细</div><div class="control-desc">补充 AI CPU 算子执行及拷贝耗时。</div></div><button class="toggle" role="switch" id="aicpu" aria-checked="false" aria-label="AI CPU 算子明细"></button></div>
+   </div><div class="nested" id="extra-fields"><div class="field boolean-field"><div data-label-for="extra-model-execution"><label for="extra-model-execution">GE 模型执行（兼容开关）</label></div><button id="extra-model-execution" class="toggle" type="button" role="switch" aria-checked="false" aria-label="GE 模型执行（兼容开关）"></button></div><div class="field boolean-field"><div data-label-for="extra-hccl"><label for="extra-hccl">HCCL 通信（兼容开关）</label></div><button id="extra-hccl" class="toggle" type="button" role="switch" aria-checked="false" aria-label="HCCL 通信（兼容开关）"></button></div><div class="field"><div data-label-for="extra-sys-period"><label for="extra-sys-period">系统采集时长（秒）</label></div><div class="numeric-control"><input id="slider-extra-sys-period" type="range" class="range" min="1" max="2592000" step="1" value="10" aria-label="系统采集时长（秒）"><input id="extra-sys-period" class="text-input step-input" type="number" min="1" max="2592000" step="1" value="10"></div></div><div class="field"><div data-label-for="extra-sys-devices"><label for="extra-sys-devices">系统采集设备 ID</label></div><input id="extra-sys-devices" class="text-input" value="all" autocomplete="off"></div><div class="field"><div data-label-for="extra-aic-mode"><label for="extra-aic-mode">AI Core 采集模式</label></div><select id="extra-aic-mode" class="metric-select"><option value="task-based" selected>task-based</option><option value="sample-based">sample-based</option></select></div>
+<div class="field"><div data-label-for="extra-aic-freq"><label for="extra-aic-freq">AI Core 采样频率（Hz）</label></div><div class="numeric-control"><input id="slider-extra-aic-freq" type="range" class="range" min="1" max="100" step="1" value="100" aria-label="aic-freq 滑动调节"><input id="extra-aic-freq" class="text-input step-input" type="number" min="1" max="100" step="1" value="100" autocomplete="off"></div></div>
+<div class="field"><div data-label-for="extra-host-sys-usage"><label for="extra-host-sys-usage">Host 系统与进程资源范围</label></div><select id="extra-host-sys-usage" class="metric-select"><option value="cpu,mem" selected>cpu,mem</option><option value="cpu">cpu</option><option value="mem">mem</option></select></div>
+<div class="field"><div data-label-for="extra-host-sys"><label for="extra-host-sys">Host 进程与 I/O 项</label></div><input id="extra-host-sys" class="text-input" type="text"  value="" autocomplete="off"></div>
+<div class="field"><div data-label-for="extra-ge-api"><label for="extra-ge-api">GE 动态 Shape 调度</label></div><select id="extra-ge-api" class="metric-select"><option value="off" selected>off</option><option value="l0">l0</option><option value="l1">l1</option></select></div>
+<div class="field boolean-field"><div data-label-for="extra-l2"><label for="extra-l2">L2 / TLB 独立采集</label></div><button id="extra-l2" type="button" class="toggle" role="switch" aria-label="L2 / TLB 独立采集" aria-checked="false" value="off"></button></div>
+<div class="field boolean-field"><div data-label-for="extra-sys-hardware-mem"><label for="extra-sys-hardware-mem">Device 内存与带宽</label></div><button id="extra-sys-hardware-mem" type="button" class="toggle" role="switch" aria-label="Device 内存与带宽" aria-checked="false" value="off"></button></div>
+<div class="field"><div data-label-for="extra-sys-hardware-mem-freq"><label for="extra-sys-hardware-mem-freq">Device 内存采样频率（Hz）</label></div><div class="numeric-control"><input id="slider-extra-sys-hardware-mem-freq" type="range" class="range" min="1" max="100" step="1" value="50" aria-label="sys-hardware-mem-freq 滑动调节"><input id="extra-sys-hardware-mem-freq" class="text-input step-input" type="number" min="1" max="100" step="1" value="50" autocomplete="off"></div></div>
+<div class="field"><div data-label-for="extra-llc-profiling"><label for="extra-llc-profiling">LLC 事件</label></div><select id="extra-llc-profiling" class="metric-select"><option value="read" selected>read</option><option value="write">write</option></select></div>
+<div class="field boolean-field"><div data-label-for="extra-sys-cpu-profiling"><label for="extra-sys-cpu-profiling">Device CPU 明细</label></div><button id="extra-sys-cpu-profiling" type="button" class="toggle" role="switch" aria-label="Device CPU 明细" aria-checked="false" value="off"></button></div>
+<div class="field"><div data-label-for="extra-sys-cpu-freq"><label for="extra-sys-cpu-freq">Device CPU 采样频率（Hz）</label></div><div class="numeric-control"><input id="slider-extra-sys-cpu-freq" type="range" class="range" min="1" max="50" step="1" value="50" aria-label="sys-cpu-freq 滑动调节"><input id="extra-sys-cpu-freq" class="text-input step-input" type="number" min="1" max="50" step="1" value="50" autocomplete="off"></div></div>
+<div class="field boolean-field"><div data-label-for="extra-sys-profiling"><label for="extra-sys-profiling">Device 系统 CPU / 内存</label></div><button id="extra-sys-profiling" type="button" class="toggle" role="switch" aria-label="Device 系统 CPU / 内存" aria-checked="false" value="off"></button></div>
+<div class="field"><div data-label-for="extra-sys-sampling-freq"><label for="extra-sys-sampling-freq">Device 系统采样频率（Hz）</label></div><div class="numeric-control"><input id="slider-extra-sys-sampling-freq" type="range" class="range" min="1" max="10" step="1" value="10" aria-label="sys-sampling-freq 滑动调节"><input id="extra-sys-sampling-freq" class="text-input step-input" type="number" min="1" max="10" step="1" value="10" autocomplete="off"></div></div>
+<div class="field boolean-field"><div data-label-for="extra-sys-pid-profiling"><label for="extra-sys-pid-profiling">Device 进程 CPU / 内存</label></div><button id="extra-sys-pid-profiling" type="button" class="toggle" role="switch" aria-label="Device 进程 CPU / 内存" aria-checked="false" value="off"></button></div>
+<div class="field"><div data-label-for="extra-sys-pid-sampling-freq"><label for="extra-sys-pid-sampling-freq">Device 进程采样频率（Hz）</label></div><div class="numeric-control"><input id="slider-extra-sys-pid-sampling-freq" type="range" class="range" min="1" max="10" step="1" value="10" aria-label="sys-pid-sampling-freq 滑动调节"><input id="extra-sys-pid-sampling-freq" class="text-input step-input" type="number" min="1" max="10" step="1" value="10" autocomplete="off"></div></div>
+<div class="field boolean-field"><div data-label-for="extra-sys-io-profiling"><label for="extra-sys-io-profiling">Device 网络 I/O</label></div><button id="extra-sys-io-profiling" type="button" class="toggle" role="switch" aria-label="Device 网络 I/O" aria-checked="false" value="off"></button></div>
+<div class="field"><div data-label-for="extra-sys-io-sampling-freq"><label for="extra-sys-io-sampling-freq">Device I/O 采样频率（Hz）</label></div><div class="numeric-control"><input id="slider-extra-sys-io-sampling-freq" type="range" class="range" min="1" max="100" step="1" value="100" aria-label="sys-io-sampling-freq 滑动调节"><input id="extra-sys-io-sampling-freq" class="text-input step-input" type="number" min="1" max="100" step="1" value="100" autocomplete="off"></div></div>
+<div class="field boolean-field"><div data-label-for="extra-sys-interconnection-profiling"><label for="extra-sys-interconnection-profiling">Device 芯片互联</label></div><button id="extra-sys-interconnection-profiling" type="button" class="toggle" role="switch" aria-label="Device 芯片互联" aria-checked="false" value="off"></button></div>
+<div class="field"><div data-label-for="extra-sys-interconnection-freq"><label for="extra-sys-interconnection-freq">Device 互联采样频率（Hz）</label></div><div class="numeric-control"><input id="slider-extra-sys-interconnection-freq" type="range" class="range" min="1" max="50" step="1" value="50" aria-label="sys-interconnection-freq 滑动调节"><input id="extra-sys-interconnection-freq" class="text-input step-input" type="number" min="1" max="50" step="1" value="50" autocomplete="off"></div></div>
+<div class="field boolean-field"><div data-label-for="extra-dvpp-profiling"><label for="extra-dvpp-profiling">DVPP 采集</label></div><button id="extra-dvpp-profiling" type="button" class="toggle" role="switch" aria-label="DVPP 采集" aria-checked="false" value="off"></button></div>
+<div class="field"><div data-label-for="extra-dvpp-freq"><label for="extra-dvpp-freq">DVPP 采样频率（Hz）</label></div><div class="numeric-control"><input id="slider-extra-dvpp-freq" type="range" class="range" min="1" max="100" step="1" value="50" aria-label="dvpp-freq 滑动调节"><input id="extra-dvpp-freq" class="text-input step-input" type="number" min="1" max="100" step="1" value="50" autocomplete="off"></div></div>
+<div class="field"><div data-label-for="extra-mstx-domain-include"><label for="extra-mstx-domain-include">仅采集这些 MSTX 域</label></div><input id="extra-mstx-domain-include" class="text-input" type="text"  value="" autocomplete="off"></div>
+<div class="field"><div data-label-for="extra-mstx-domain-exclude"><label for="extra-mstx-domain-exclude">排除这些 MSTX 域</label></div><input id="extra-mstx-domain-exclude" class="text-input" type="text"  value="" autocomplete="off"></div>
+<div class="field"><div data-label-for="extra-type"><label for="extra-type">自动解析结果格式</label></div><select id="extra-type" class="metric-select"><option value="text" selected>text</option><option value="db">db</option></select></div>
+<div class="field"><div data-label-for="extra-storage-limit"><label for="extra-storage-limit">原始数据存储上限（MB，空为不限制）</label></div><div class="numeric-control"><input id="slider-extra-storage-limit" type="range" class="range" min="0" max="1000" step="1" value="200" aria-label="storage-limit 滑动调节"><input id="extra-storage-limit" class="text-input step-input" type="number" min="200" max="4294967295" step="1" value="" autocomplete="off"></div><p class="numeric-note">滑条按对数缩放；输入框精确设置 MB，留空表示不限制。</p></div>
+<div class="field"><div data-label-for="extra-environment"><label for="extra-environment">应用环境变量（KEY=value;KEY=value）</label></div><input id="extra-environment" class="text-input" type="text"  value="" autocomplete="off"></div></div></details>
+   <section class="section workflow-section" id="postprocess-section" aria-labelledby="postprocess-title">
+    <div class="section-title"><span class="num">05</span><h2 id="postprocess-title">采集后如何处理？</h2></div>
+    <div class="collection-group"><h3>解析与产物</h3><div class="data-box group-panel">
+     <div class="field control-row config-row"><div data-label-for="workflow-mode"><label for="workflow-mode">处理流程</label></div><select id="workflow-mode" class="metric-select"><option value="capture">新采集并自动解析</option><option value="existing">已有数据补解析</option></select></div>
+     <div class="control-row"><div class="control-copy"><div class="control-name" id="parse-behavior">采集结束后自动解析</div><div class="control-desc" id="parse-behavior-note">当前 msprof 应用启动模式的默认行为，无需手工再启动解析；不是一个可关闭的采集开关。</div></div><span class="cost" id="parse-behavior-badge">自动</span></div>
+     <div id="workflow-format-slot"></div><div id="workflow-output-slot"></div>
+     <div class="field control-row config-row" id="workflow-prof-row" hidden><div data-label-for="workflow-prof-dir"><label for="workflow-prof-dir">已有数据目录（执行端）</label></div><input id="workflow-prof-dir" class="text-input" value="" placeholder="/data/profiling/PROF_XXX" autocomplete="off" spellcheck="false"><p class="control-desc">填写 PROF_XXX 或其父目录。export 会先解析未解析数据，再导出结果。</p></div>
+    </div></div>
+    <div class="collection-group" style="margin-top:16px"><h3>数据保留与查看</h3><div class="data-box group-panel">
+     <div class="field control-row config-row"><div data-label-for="workflow-view"><label for="workflow-view">查看方式</label></div><select id="workflow-view" class="metric-select"><option value="local">下载后用本地 Insight 查看</option><option value="remote">远端浏览器查看（数据留在服务器）</option></select></div>
+     <div class="field control-row config-row" id="workflow-service-row" hidden><div data-label-for="workflow-service"><label for="workflow-service">已有 Insight 服务地址</label></div><input id="workflow-service" class="text-input" value="" placeholder="https://insight.example.com/" autocomplete="off" spellcheck="false"><p class="control-desc">支持已部署的 JupyterLab / Insight Web 入口，可填平台代理地址。服务需能访问执行端数据目录；地址不会拼入 msprof 命令。</p></div>
+     <div id="workflow-download-slot"></div>
+    </div></div>
+    <div class="dependency" id="workflow-route" role="status"></div><p class="subtle" id="workflow-status" role="status"></p>
+    <a id="workflow-open-service" class="button" target="_blank" rel="noopener noreferrer" hidden>打开已有 Insight 服务</a>
+    <p class="subtle">当前 demo 只生成命令与查看方案，不执行采集、解析或下载，也不部署、连接检测远端服务。远端查看仍读取文件，不代表边采边流式分析。</p>
+   </section>
+   <details class="docs"><summary>参数依据与概念边界</summary><p>采集工具：MindStudio Profiler（msprof）。本例使用 CANN 9.1 的应用启动采集参数；命令需在已安装 CANN 的 Linux 环境中执行，并以本机 msprof --help 与实际芯片支持为准。CLI 采集不包含 PyTorch / MindSpore 框架调用栈。</p><p>通信数据随 L1/L2 的集合通信算子采集，不另行拼接已计划废弃的 --hccl。硬件指标支持 task-based / sample-based，主机频率仅在主机采集开启时生效。关闭的基础开关会显式写为 off，避免工具默认开启。</p><p>未录入同环境配对测量时，显示低可信度的模型膨胀预估；数据量给出低可信度的概念预估，并优先使用目录实测。录入后优先显示当前命令的实测结果，配置或环境变化即回退模型预估。没有执行训练或性能采集。</p><a href="https://www.hiascend.com/doc_center/source/en/CANNCommunityEdition/910/devaids/Profiling/atlasprofiling_16_0011.html" target="_blank" rel="noopener">任务采集参数 ↗</a><a href="https://www.hiascend.com/doc_center/source/en/CANNCommunityEdition/910/devaids/Profiling/atlasprofiling_16_0015.html" target="_blank" rel="noopener">msproftx 打点 ↗</a><a href="https://www.hiascend.com/doc_center/source/en/CANNCommunityEdition/910/devaids/Profiling/atlasprofiling_16_0014.html" target="_blank" rel="noopener">Host 采集参数 ↗</a><a href="https://www.hiascend.com/doc_center/source/en/CANNCommunityEdition/910/devaids/Profiling/atlasprofiling_16_0017.html" target="_blank" rel="noopener">延迟与时长 ↗</a></details>
+<details class="docs"><summary>核对结果与未接入的采集模式 · 2026-11-18</summary>
+<p>本面板生成应用启动 + 延迟采集命令。msprof 仓库主要实现解析与导出，底层采集器在 cann/runtime/src/dfx/msprof；解析器存在不等于所有芯片都能采集。核对基线：msprof 2238b62b101d，CANN 9.1 官方 CLI 文档。</p>
+<p>新增：L2、其余标准 PMU 组、task/sample 模式与采样频率、GE、独立 L2、Device 系统与 I/O、Host 进程项、MSTX 域过滤、输出格式、存储上限和环境变量。Host 系统资源与 Host 进程 I/O 是两组不同参数。</p>
+<p>尚未接入：无应用的系统采集（sys-devices/sys-period）、动态 launch/attach（dynamic/pid，与 delay/duration 互斥）、instr-profiling 及周期（与任务/API/AI Core 等互斥）、950 专用 task-block、自定义 PMU 寄存器、Host 指定 PID、950 的内存高频扩展和试用 L3/PyPTO。以上不是“不支持”，需要独立模式及芯片适配；当前粘贴未映射参数会保留原文并阻止复制。</p>
+<p>model-execution/hccl 已提供兼容开关，官方标注将弃用，建议优先使用 task-time。with_stack、record_shapes、profile_memory、框架采集日程等属于框架 Profiler，不应直接拼入本 CLI。没有自动识别芯片、验证依赖、远程启动或数据完整性检查。</p>
+<p>注意：应用模式下 sys-devices/sys-period 不生效；部分 EP 整网推理系统采集项无数据；A3/950 共享 OS 设备有组合约束。硬件与 OS 限制请逐项查看 @ 来源，最终以目标环境 msprof --help 为准。task-memory 不能代表框架显存快照。</p>
+<p>耗时模型保留构造权重用于配置比较；数据量模型使用明确披露的示意速率，不是吞吐基准。性能变化受算子密度、芯片、卡数、软件版本、负载和交互影响，不能相加归因。缩短窗口减少总数据和受扰动时段，不能保证采集期间的膨胀率下降。数据量须分开记录原始采集数据与解析导出产物。</p>
+<p>仓库证据：<a href="https://gitcode.com/Ascend/msprof/blob/2238b62b101ddcff3e796e83da6f58f936f7ca4d/docs/zh/user_guide/profile_data_file_references_db.md">DB 字段与采集开关</a>、<a href="https://gitcode.com/Ascend/msprof/blob/2238b62b101ddcff3e796e83da6f58f936f7ca4d/analysis/framework/config_data_parsers.py">解析器注册</a>、<a href="https://gitcode.com/Ascend/msprof/blob/2238b62b101ddcff3e796e83da6f58f936f7ca4d/scripts/msprof_data_collection.sh">Host 外部工具调用</a>。官方证据见各 @；未执行 NPU 采集。</p></details>
+   <button class="button reset-controls" id="reset">恢复推荐配置</button>
+  </div>
+  <section class="command-panel" aria-label="执行命令">
+   <div class="terminal">
+    <div class="terminal-head"><div class="terminal-title">执行命令</div><button class="copy-btn" id="copy"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="5" y="5" width="8" height="9" rx="1.5"/><path d="M10 3V2H2v9h1"/></svg><span id="copy-label">复制</span></button></div>
+    <div class="validation" id="validation" role="alert" hidden></div>
+    <div class="command-surface" id="command-surface">
+     <pre id="command-highlight" class="command-highlight" aria-hidden="true"></pre>
+     <textarea id="command" class="command-editor" aria-label="可编辑的 Bash 采集命令" aria-describedby="command-feedback" spellcheck="false" autocomplete="off" autocapitalize="off" wrap="soft"></textarea>
+    </div>
+    <p id="command-feedback" class="command-feedback" role="status" hidden></p>
+    <button id="restore-command" class="button editor-recovery" hidden>按当前表单重新生成命令</button>
+    <div class="manual-wrap" id="manual-wrap" hidden><label for="manual-copy">自动复制不可用，请选中后按 Ctrl / ⌘ + C</label><textarea id="manual-copy" class="manual-copy" readonly spellcheck="false"></textarea></div>
+   </div>
+  </section>
+  <aside class="preview" aria-label="采集预览">
+   <header class="preview-header"><div class="controls-title">采集预览</div></header>
+   <section class="estimate">
+    <div class="estimate-label"><span id="overhead-title">性能膨胀预估</span></div>
+    <div class="estimate-head"><div class="big-number"><span id="overhead">≈4</span><span class="unit" id="overhead-unit">%</span></div><span class="risk" id="risk" data-risk="low">预估 · 未校准</span></div>
+    <div class="comparison" aria-hidden="true"><span class="baseline" id="base-bar" style="flex:100"></span><span class="extra" id="extra-bar" style="flex:4.1"></span></div>
+    <div class="stats"><div class="stat"><span id="data-size-label">原始数据量 · 预估</span><strong id="data-size">≈133 MB</strong><p id="data-window">1 Rank · 10 秒窗口</p></div>    <div class="stat download-estimate">
+     <span class="download-heading">预计下载量 <span id="download-help-slot"></span></span>
+     <strong id="download-size" class="download-value">≈346 MB</strong>
+     <div class="download-details" hidden><p id="download-kind">未校准模型</p><p id="volume-relation" class="download-description"></p><p id="download-description" class="download-description"></p><p id="download-advice" class="download-advice"></p>
+     </div>
+     <details class="download-options"><summary>调整估算范围与下载内容</summary>
+      <div class="field"><div data-label-for="volume-ranks"><label for="volume-ranks">预计采集的 Rank 数</label></div><input id="volume-ranks" class="text-input" type="number" min="1" max="65536" step="1" value="1"></div>
+      <div class="field"><div data-label-for="download-content"><label for="download-content">计划下载什么</label></div><select id="download-content" class="metric-select"><option value="all">完整目录：原始 + 导出</option><option value="raw">仅原始数据</option><option value="export">仅导出结果</option></select></div>
+      <p class="subtle">只影响体量估算，不修改命令。默认 1 Rank；多 Rank 按相同事件密度估算。未扣压缩、文件老化或共享数据。</p>
+     </details>
+    </div><div class="stat"><span>采集覆盖</span><strong id="enabled-count">3<small>项数据</small></strong><p id="capture-range">第 10–20 秒</p></div></div>
+    <section class="volume-breakdown" aria-labelledby="volume-breakdown-title"><h3 id="volume-breakdown-title">原始体量构成 · 模型占比</h3><p class="volume-breakdown-note" id="volume-breakdown-note">按预计体量从大到小排列，不含解析导出产物；尚未校准。</p><div id="volume-breakdown-list" class="volume-breakdown-list"></div></section>
+
+   </section>
+   <section class="artifact-preview" id="artifact-preview" aria-labelledby="artifact-title"><div class="artifact-heading"><h3 id="artifact-title">格式与目录预览</h3><span id="artifact-help-slot"></span></div><p class="artifact-path-label" id="artifact-path-label">执行端目录（预期）</p><code class="artifact-path" id="artifact-path"></code><pre class="artifact-tree" id="artifact-tree" aria-label="预期产物目录树"></pre><p class="artifact-note" id="artifact-path-note"></p><p class="artifact-note" id="artifact-delivery-note"></p></section>
+   <details class="docs"><summary>预估模型依据与假设</summary><p>页面设计模型 v1，非官方性能承诺、非芯片基准。颜色阈值为页面设计：展示值 ≤5% 为绿，>5% 且 ≤10% 为橙，>10% 为红；没有已核实的统一行业阈值。未建模开销存在时至少提示橙色，不能把部分预估标为绿色总开销。基于原概念稿的构造权重做配置比较，尚无训练样本或误差验证。百分比按相同工作量相对未采集耗时理解。</p><p>权重（百分点）：基础 0.9；L0 1.8、L1 4.2；AscendCL 1.0、Runtime 1.6、MSTX 0.4、算子内存 3.8、AI CPU 1.2；Host CPU+mem 为 0.6 + 0.03 × Hz；task-based PMU 为 Pipe 7.5、Arithmetic 6.8、Memory 8.6、L2Cache 6.1。上述系数均为人为设定，不能作为实际开销证据。</p><p>假设事件密度与工作负载相对固定、开销近似相加，不模拟交互效应。延迟与时长不直接改变采集期间百分比。L2 的属性增量、sample-based、新 PMU 组、Device 系统、进程 I/O 和域过滤等未建模，开启时只显示已建模部分，并提示额外开销未知。实测优先，不把单次校准外推到不同配置。数据量另用示意速率模型，口径与假设可在下方展开核对。</p></details>
+   <details class="docs" id="external-measurements"><summary>高级：录入外部对照数据</summary><p>当前 demo 没有内置实测数据，也未自动运行对照实验；以下仅接收用户自行测得的外部数据。</p><p>固定芯片/卡数、CANN/驱动/框架、模型/输入与并行策略，预热后对相同工作量交替测量至少 3 对。使用相同口径（稳定步耗时或端到端总耗时），记录同步点。实测数据只用于当前配置；新配置回退未校准模型。</p>
+<div class="field"><div data-label-for="cal-environment"><label for="cal-environment">测量环境与负载标识</label></div><input id="cal-environment" class="text-input" autocomplete="off"></div><div class="field"><div data-label-for="cal-baseline"><label for="cal-baseline">未采集耗时（ms，多次用逗号分隔）</label></div><input id="cal-baseline" class="text-input" autocomplete="off"></div><div class="field"><div data-label-for="cal-profiled"><label for="cal-profiled">开启采集耗时（ms，按顺序配对）</label></div><input id="cal-profiled" class="text-input" autocomplete="off"></div><div class="field"><div data-label-for="cal-raw"><label for="cal-raw">原始采集目录实际大小（MB，可空）</label></div><div class="numeric-control"><input id="slider-cal-raw" class="range" type="range" min="0" max="10240" step="0.1" value="0" aria-label="原始目录大小滑动调节"><input id="cal-raw" class="text-input step-input" type="number" min="0" step="0.1" autocomplete="off"></div></div><div class="field"><div data-label-for="cal-export"><label for="cal-export">解析导出产物大小（MB，可空）</label></div><div class="numeric-control"><input id="slider-cal-export" class="range" type="range" min="0" max="10240" step="0.1" value="0" aria-label="导出产物大小滑动调节"><input id="cal-export" class="text-input step-input" type="number" min="0" step="0.1" autocomplete="off"></div></div>
+<p class="subtle">目录大小请填本次全部 Rank 的总量，不是单 Rank 大小；应用后不会再次乘 Rank 数。</p><button id="apply-calibration" class="button">应用外部对照数据</button><p class="subtle" id="cal-status" role="status">未录入实测，显示未校准模型预估。</p></details>
+   <details class="docs" data-volume-model><summary>数据量关系与模型边界</summary><p>原始数据量是性能采集文件，不是训练数据集大小或模型张量占用。预计下载量按当前所选的原始、导出结果或两者合计计算；完整目录包含两类数据，不能把原始量与下载量看成同一个值。</p><p>批次/Step 数、微批次、采集窗口与切片数、B（batch）、S（序列长度）、H（隐藏维度）及 TP/PP/DP 并行切分会通过算子调用、记录密度、元数据与每 Rank 工作量影响实际体量；不应直接按 B×S×H 换算 profiling 文件大小。固定秒数下，更大的 B/S/H 也可能使完成的 Step 更少，并非文件一定更大。当前模型只使用采集项、秒数、频率和 Rank，没有识别上述工作负载因素，也没有把 H、张量大小或存储切分直接当作采集字节数。</p><p>这是页面构造的体量模型，不是官方吞吐或采集承诺。默认 1 Rank，假设各 Rank 配置与事件密度相同。原始 MB = Rank 数 ×（8 MB 固定量 + 采集秒数 × 示意速率）。Rank 数只影响估算，不会自动部署多卡任务。</p><p>示意速率（MB/s/Rank）：L0 8、L1 18、L2 25；AscendCL 3、Runtime 7、MSTX 1.5、算子内存 11、AI CPU 5；task-based PMU 26，sample-based PMU 为 0.12 × Hz；Host CPU+mem 为 0.3 + 0.035 × Hz，单项取 60%；Device 系统项按各自频率乘 0.012–0.03；Host 进程项每项 1，osrt 取 8；GE l0/l1 为 0.7/1.4，独立 L2 为 0.5。不同指标组暂共用 PMU 速率。</p><p>导出大小按原始量乘 text 1.6、db 0.5；预计下载量按所选的原始、导出或两者合计。以上系数均未校准，事件密度、字段、芯片和版本会改变结果，不能作为空间保证。未估压缩率，不因设置 storage-limit 就把整包限额；GB/TB 按 1000 换算显示。</p><p>同配置、同环境、同 Rank 数的目录实测优先。测量已包含所有 Rank，不会再乘 Rank 数；只测了其中一项时，另一项仍用模型，并标为混合估算。配置或 Rank 范围变化后回退模型，不外推旧实测。</p></details>
+   <section aria-label="采集开销构成"><div class="breakdown-title"><span>采集开销的判断依据</span></div><div class="breakdown-list" id="breakdown"></div></section>
+  </aside>
+ </div>
+</section>
+</main>
+<div id="help-tooltip" class="help-tooltip" role="tooltip" hidden></div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<script>
+'use strict';
+
+'use strict';
+// Illustrative UX model only. There is no profiling backend or command execution.
+const $=id=>document.getElementById(id);
+const switches=['task','ascendcl','runtime','mstx','core','memory','host','aicpu'];
+const defaults={scope:'application',preset:'quick',level:'l0',task:true,ascendcl:true,runtime:false,mstx:true,core:false,memory:false,host:false,aicpu:false,metric:'PipeUtilization',hostFreq:10,delay:10,duration:10};
+const extraSpecs=[["aic-mode","AI Core 采集模式","task","task-based,sample-based","task-based","core"],["aic-freq","AI Core 采样频率（Hz）","task","1:100","100","sample"],["host-sys-usage","Host 系统与进程资源范围","host","cpu,mem|cpu|mem","cpu,mem","host"],["host-sys","Host 进程与 I/O 项","host","hostlist","",""],["ge-api","GE 动态 Shape 调度","task","off,l0,l1","off",""],["l2","L2 / TLB 独立采集","task","off,on","off",""],["sys-hardware-mem","Device 内存与带宽","system","off,on","off",""],["sys-hardware-mem-freq","Device 内存采样频率（Hz）","system","1:100","50","sys-hardware-mem"],["llc-profiling","LLC 事件","system","read,write","read","sys-hardware-mem"],["sys-cpu-profiling","Device CPU 明细","system","off,on","off",""],["sys-cpu-freq","Device CPU 采样频率（Hz）","system","1:50","50","sys-cpu-profiling"],["sys-profiling","Device 系统 CPU / 内存","system","off,on","off",""],["sys-sampling-freq","Device 系统采样频率（Hz）","system","1:10","10","sys-profiling"],["sys-pid-profiling","Device 进程 CPU / 内存","system","off,on","off",""],["sys-pid-sampling-freq","Device 进程采样频率（Hz）","system","1:10","10","sys-pid-profiling"],["sys-io-profiling","Device 网络 I/O","system","off,on","off",""],["sys-io-sampling-freq","Device I/O 采样频率（Hz）","system","1:100","100","sys-io-profiling"],["sys-interconnection-profiling","Device 芯片互联","system","off,on","off",""],["sys-interconnection-freq","Device 互联采样频率（Hz）","system","1:50","50","sys-interconnection-profiling"],["dvpp-profiling","DVPP 采集","system","off,on","off",""],["dvpp-freq","DVPP 采样频率（Hz）","system","1:100","50","dvpp-profiling"],["mstx-domain-include","仅采集这些 MSTX 域","mstx","domains","","mstx"],["mstx-domain-exclude","排除这些 MSTX 域","mstx","domains","","mstx"],["type","自动解析结果格式","general","text,db","text",""],["storage-limit","原始数据存储上限（MB，空为不限制）","general","storage","",""],["environment","应用环境变量（KEY=value;KEY=value）","general","environment","",""],["model-execution","GE 模型执行（兼容开关）","task","off,on","off",""],["hccl","HCCL 通信（兼容开关）","task","off,on","off",""],["sys-period","系统采集时长（秒）","system","1:2592000","10","system"],["sys-devices","系统采集设备 ID","system","devices","all","system"]];
+defaults.extra=Object.fromEntries(extraSpecs.map(([key,,, ,value])=>[key,value]));
+const systemKeys=new Set(["aic-mode","aic-freq","llc-profiling","sys-hardware-mem","sys-hardware-mem-freq","sys-cpu-profiling","sys-cpu-freq","sys-profiling","sys-sampling-freq","sys-pid-profiling","sys-pid-sampling-freq","sys-io-profiling","sys-io-sampling-freq","sys-interconnection-profiling","sys-interconnection-freq","dvpp-profiling","dvpp-freq","sys-period","sys-devices","type","storage-limit"]);
+const extraActive=(key,s)=>{if(s.scope==='system'&&!systemKeys.has(key))return false;const dep=extraSpecs.find(x=>x[0]===key)?.[5];if(dep==='system')return s.scope==='system';return !dep||dep==='sample'?(dep!=='sample'||s.core&&s.extra['aic-mode']==='sample-based'):switches.includes(dep)?s[dep]:s.extra[dep]==='on'};
+function extraErrors(s){const errors=[];for(const [key,title,,kind] of extraSpecs){if(!extraActive(key,s))continue;const v=s.extra[key];if(/^\d+:\d+$/.test(kind)||kind==='storage'){const [min,max]=kind==='storage'?[200,4294967295]:kind.split(':').map(Number);if(v===''&&kind==='storage')continue;if(!/^\d+$/.test(v)||Number(v)<min||Number(v)>max)errors.push(title+' 范围为 '+min+'–'+max)}else if((kind.includes(',')||kind.includes('|'))&&!kind.split(kind.includes('|')?'|':',').includes(v))errors.push(title+' 值不支持');else if(kind==='devices'&&v!=='all'&&(!/^\d+(?:,\d+)*$/.test(v)||new Set(v.split(',').map(Number)).size!==v.split(',').length))errors.push('系统采集设备请填写 all 或不重复的非负整数 ID，用逗号分隔');if(v&&kind==='hostlist'&&(!v.split(',').every(x=>['cpu','mem','disk','network','osrt'].includes(x))||new Set(v.split(',')).size!==v.split(',').length))errors.push('Host 进程项使用 cpu,mem,disk,network,osrt 的组合');else if(v&&kind==='domains'&&!/^[^,\s]+(?:,[^,\s]+)*$/.test(v))errors.push('MSTX 域请用逗号分隔，不能有空项或空白');else if(v&&kind==='environment'&&!/^[A-Za-z_][A-Za-z0-9_]*=[^;\r\n]*(?:;[A-Za-z_][A-Za-z0-9_]*=[^;\r\n]*)*$/.test(v))errors.push('环境变量使用 KEY=value;KEY=value');if(/[\x00-\x1f\x7f]/.test(v))errors.push(title+' 需要单行文本')}
+if(s.mstx&&s.extra['mstx-domain-include']&&s.extra['mstx-domain-exclude'])errors.push('MSTX include 与 exclude 互斥');return errors}
+const WINDOW_MAX=120;
+const workflow={mode:'capture',view:'local'};
+let selectedPreset=defaults.preset;
+let state={...defaults},currentCommand='',editorIssue='',toastTimer,copyTimer;
+const presetDefinitions={
+ quick:{...defaults,note:'保留基础耗时和业务打点，用更少的数据找到方向。'},
+ timeline:{...defaults,preset:'timeline',level:'l1',runtime:true,host:true,note:'补充算子信息与 Runtime 调用；多卡任务可查看集合通信与等待。'},
+ deep:{...defaults,preset:'deep',level:'l1',runtime:true,core:true,memory:true,aicpu:true,duration:5,note:'开启硬件指标与算子内存，缩短窗口，集中分析可疑算子。'}
+};
+const metricLabels={MemoryL0:'L0 带宽',MemoryUB:'UB 带宽',ResourceConflictRatio:'资源冲突',PipelineExecuteUtilization:'流水执行',MemoryAccess:'内存访问',PipeUtilization:'流水线利用率',ArithmeticUtilization:'计算利用率',Memory:'内存带宽',L2Cache:'L2 缓存命中'};
+function notify(message){clearTimeout(toastTimer);$('toast').textContent=message;$('toast').hidden=false;toastTimer=setTimeout(()=>$('toast').hidden=true,3000)}
+function shellQuote(value){return "'"+value.replace(/'/g,"'\"'\"'")+"'"}
+// Highlight raw text without changing the editable value, caret or selection.
+function highlightBash(text){
+ const fragment=document.createDocumentFragment();
+ const add=(value,type)=>{if(!type){fragment.append(document.createTextNode(value));return}const token=document.createElement('span');token.className='syntax-'+type;token.textContent=value;fragment.append(token)};
+ let i=0;
+ while(i<text.length){
+  const start=i,c=text[i];
+  if(/\s/.test(c)){while(i<text.length&&/\s/.test(text[i]))i++;add(text.slice(start,i));continue}
+  if(c==='#'&&(i===0||/\s/.test(text[i-1]))){while(i<text.length&&text[i]!=='\n')i++;add(text.slice(start,i),'comment');continue}
+  if(c==="'"||c==='"'){
+   i++;while(i<text.length){if(c==='"'&&text[i]==='\\'&&i+1<text.length){i+=2;continue}if(text[i++]===c)break}
+   add(text.slice(start,i),'string');continue;
+  }
+  if(c==='\\'){i=Math.min(i+2,text.length);add(text.slice(start,i),'escape');continue}
+  if('=;|&<>()'.includes(c)){add(c,'operator');i++;continue}
+  const match=/^[^\s"'\\=;|&<>()]+/.exec(text.slice(i));
+  if(!match){add(c);i++;continue}
+  const word=match[0];i+=word.length;
+  const type=word==='msprof'?'command':/^--[a-zA-Z][\w-]*$/.test(word)?'flag':/^-?\d+(?:\.\d+)?$/.test(word)?'number':/^(on|off|l0|l1|task-based|cpu,mem|mem,cpu)$/.test(word)||Object.hasOwn(metricLabels,word)?'value':'';
+  add(word,type);
+ }
+ return fragment;
+}
+function syncCommandScroll(){
+ const editor=$('command'),highlight=$('command-highlight');
+ // Match the textarea's actual text width, excluding its vertical scrollbar.
+ if(editor.clientWidth>0)highlight.style.width=editor.clientWidth+'px';
+ highlight.scrollTop=editor.scrollTop;highlight.scrollLeft=editor.scrollLeft;
+}
+function renderCommandHighlight(){
+ $('command-highlight').replaceChildren(highlightBash($('command').value));
+ $('command-surface').dataset.invalid=$('command').getAttribute('aria-invalid')||'false';
+ syncCommandScroll();
+}
+$('command').addEventListener('scroll',syncCommandScroll);
+window.addEventListener('resize',syncCommandScroll);
+if(typeof ResizeObserver==='function')new ResizeObserver(syncCommandScroll).observe($('command'));
+let calibration=null;
+function calibrationKey(){return generateCommand(state,$('application').value.trim(),$('output').value.trim())+'\n'+$('cal-environment').value.trim()+'\nranks='+$('volume-ranks').value}
+// Size model v1 is a constructed UX estimate, not measured throughput or an official limit.
+const volumeModel={baseMB:8,l0MBps:8,l1MBps:18,l2MBps:25,ascendclMBps:3,runtimeMBps:7,mstxMBps:1.5,memoryMBps:11,aicpuMBps:5,taskPmuMBps:26,samplePmuMBperHz:.12,textExpansion:1.6,dbExpansion:.5};
+function formatVolume(mb,approximate=false){
+ const value=mb>=1000000?(mb/1000000).toFixed(2)+' TB':mb>=1000?(mb/1000).toFixed(2)+' GB':mb.toFixed(approximate?0:1)+' MB';
+ return (approximate?'≈':'')+value;
+}
+function estimateVolume(s,measured=null){
+ const ranks=Number($('volume-ranks').value);
+ if(!Number.isInteger(ranks)||ranks<1||ranks>65536)return null;
+ const w=volumeModel,rates=[],add=(name,rate)=>rates.push({name,rate});
+ if(s.task)add('算子时间线 '+s.level.toUpperCase(),s.level==='l0'?w.l0MBps:s.level==='l2'?w.l2MBps:w.l1MBps);
+ for(const [key,name] of [['ascendcl','AscendCL 接口'],['runtime','Runtime 接口'],['mstx','业务打点'],['memory','算子内存'],['aicpu','AI CPU 明细']])if(s[key])add(name,w[key+'MBps']);
+ if(s.core)add('AI Core 硬件指标',s.extra['aic-mode']==='sample-based'?w.samplePmuMBperHz*Number(s.extra['aic-freq']):w.taskPmuMBps);
+ if(s.host)add('Host CPU / 内存',(.3+.035*s.hostFreq)*(s.extra['host-sys-usage']==='cpu,mem'?1:.6));
+ for(const [parent,freq,weight] of [['sys-hardware-mem','sys-hardware-mem-freq',.02],['sys-cpu-profiling','sys-cpu-freq',.03],['sys-profiling','sys-sampling-freq',.012],['sys-pid-profiling','sys-pid-sampling-freq',.02],['sys-io-profiling','sys-io-sampling-freq',.025],['sys-interconnection-profiling','sys-interconnection-freq',.025],['dvpp-profiling','dvpp-freq',.03]])if(s.extra[parent]==='on')add(extraSpecs.find(x=>x[0]===parent)[1],Number(s.extra[freq])*weight);
+ if(s.extra['ge-api']!=='off')add('GE 动态 Shape',s.extra['ge-api']==='l1'?1.4:.7);
+ if(s.extra.l2==='on')add('独立 L2 / TLB',.5);
+ if(s.extra['host-sys'])for(const item of s.extra['host-sys'].split(','))add('Host 进程 '+item,item==='osrt'?8:1);
+ const contributions=[{name:'采集基础',mb:ranks*w.baseMB},...rates.map(x=>({name:x.name,mb:ranks*s.duration*x.rate}))].filter(x=>x.mb>0).sort((a,b)=>b.mb-a.mb);
+ const modeledRaw=contributions.reduce((sum,x)=>sum+x.mb,0),rate=rates.reduce((sum,x)=>sum+x.rate,0),rawMeasured=Boolean(measured&&measured.raw!==null),exportMeasured=Boolean(measured&&measured.exported!==null);
+ const raw=rawMeasured?measured.raw:modeledRaw,exported=exportMeasured?measured.exported:raw*(s.extra.type==='db'?w.dbExpansion:w.textExpansion);
+ const choice=$('download-content').value,download=choice==='raw'?raw:choice==='export'?exported:raw+exported;
+ const downloadMeasured=choice==='raw'?rawMeasured:choice==='export'?exportMeasured:rawMeasured&&exportMeasured;
+ return {ranks,rate,raw,exported,download,rawMeasured,exportMeasured,downloadMeasured,choice,contributions,modeledRaw};
+}
+function renderVolumeContributions(v){
+ const list=$('volume-breakdown-list');
+ if(!v){list.textContent='请先填写有效的采集 Rank 数。';return}
+ $('volume-breakdown-note').textContent=(v.rawMeasured?'已录入目录总量，但没有分项实测；下列仍为模型占比。':'按预计原始体量降序排列；尚未校准。')+'不含解析导出产物。';
+ list.replaceChildren(...v.contributions.map(item=>{const share=item.mb/v.modeledRaw*100,row=document.createElement('div');row.className='volume-contribution';row.dataset.mb=item.mb;row.dataset.share=share;
+ const name=document.createElement('span');name.className='volume-contribution-name';name.textContent=item.name;
+ const value=document.createElement('b');value.className='volume-contribution-value';value.textContent=share.toFixed(1)+'%';const size=document.createElement('small');size.textContent=formatVolume(item.mb,true);value.append(size);
+ const track=document.createElement('div');track.className='track';track.setAttribute('aria-hidden','true');const fill=document.createElement('i');fill.style.width=share+'%';track.append(fill);row.append(name,value,track);return row}));
+}
+function renderVolume(s,measured){
+ const v=estimateVolume(s,measured);if($('slider-volume-ranks'))$('slider-volume-ranks').value=$('volume-ranks').value;renderVolumeContributions(v);$('volume-ranks').setAttribute('aria-invalid',String(!v));
+ if(!v){$('data-size').dataset.source='pending';$('download-size').dataset.source='pending';$('data-size').textContent='—';$('data-size-label').textContent='原始数据量 · 待配置';$('data-window').textContent='请填写 1–65536 的整数 Rank 数';$('download-size').textContent='—';$('download-kind').textContent='估算范围待补全';$('download-description').textContent='';$('volume-relation').textContent='Rank 范围未补全，暂不计算体量关系。';$('download-advice').textContent='补全 Rank 数后恢复估算，不影响命令编辑。';return}
+ $('data-size').dataset.source=v.rawMeasured?'measured':'model';$('download-size').dataset.source=v.downloadMeasured?'measured':v.rawMeasured||v.exportMeasured?'mixed':'model';
+ $('data-size-label').textContent='原始数据量 · '+(v.rawMeasured?'用户录入':'预估');$('data-size').textContent=formatVolume(v.raw,!v.rawMeasured);
+ $('data-window').textContent=v.ranks+' Rank · '+s.duration+' 秒；导出 '+formatVolume(v.exported,!v.exportMeasured);
+ $('download-size').textContent=formatVolume(v.download,!v.downloadMeasured);
+ $('volume-relation').textContent='原始 '+formatVolume(v.raw,!v.rawMeasured)+'；导出 '+formatVolume(v.exported,!v.exportMeasured)+'。'+({all:'完整目录 = 原始 + 导出。',raw:'本次下载量 = 原始数据量。',export:'本次下载量 = 导出结果量。'}[v.choice]);
+ $('download-kind').textContent=v.downloadMeasured?'手动录入合计':v.rawMeasured||v.exportMeasured?'手动录入 + 模型估算':'未校准模型';
+ $('download-description').textContent=({'all':'完整目录：原始 + 导出','raw':'仅原始数据','export':'仅导出结果'}[v.choice])+' · 未压缩；'+(v.downloadMeasured?'按本次全部 Rank 目录总量计算。':'低可信度概念预估，供下载前比较配置。');
+ const level=v.download>=10000?'huge':v.download>=1000?'large':'normal';$('download-advice').dataset.level=level;
+ $('download-advice').textContent=(level==='huge'?'预计下载体量很大，优先考虑远端查看、摘要或缩短窗口。':level==='large'?'预计超过 1 GB，可先只下载导出结果或缩短窗口。':'可调整 Rank、窗口和下载内容，比较下载体量。')+(s.extra['storage-limit']?' 已设原始文件老化阈值；此估算不将其当作总下载上限。':'');
+}
+$('volume-ranks').addEventListener('input',()=>update());$('download-content').addEventListener('change',()=>update());
+// Planning coefficients, not benchmarks. Unknown contributions remain explicit.
+const estimateWeights={base:.9,l0:1.8,l1:4.2,ascendcl:1,runtime:1.6,mstx:.4,memory:3.8,aicpu:1.2,hostBase:.6,hostHz:.03,metrics:{PipeUtilization:7.5,ArithmeticUtilization:6.8,Memory:8.6,L2Cache:6.1}};
+// Product design thresholds, not an industry-wide profiling standard.
+function overheadBand(value,unknown=false){const band=value<=5?'low':value<=10?'medium':'high';return unknown&&band==='low'?'medium':band}
+function estimate(s){
+ const w=estimateWeights,items=[{name:'采集基础',cost:w.base}],unknown=[];
+ const add=(name,cost)=>items.push({name,cost});
+ if(s.task){add('算子时间线 '+s.level.toUpperCase(),s.level==='l0'?w.l0:w.l1);if(s.level==='l2')unknown.push('L2 属性增量')}
+ for(const [key,name] of [['ascendcl','AscendCL'],['runtime','Runtime'],['mstx','业务打点'],['memory','算子内存'],['aicpu','AI CPU 明细']])if(s[key])add(name,w[key]);
+ if(s.core){if(s.extra['aic-mode']==='task-based'&&Object.hasOwn(w.metrics,s.metric))add('AI Core '+s.metric,w.metrics[s.metric]);else unknown.push('AI Core '+s.extra['aic-mode']+' / '+s.metric)}
+ if(s.host){if(s.extra['host-sys-usage']==='cpu,mem')add('Host CPU 与内存',w.hostBase+s.hostFreq*w.hostHz);else unknown.push('Host '+s.extra['host-sys-usage'])}
+ for(const [key,title,,, ,dep] of extraSpecs){if(!extraActive(key,s))continue;const value=s.extra[key];if((dep===''&&['model-execution','hccl','ge-api','l2','sys-hardware-mem','sys-cpu-profiling','sys-profiling','sys-pid-profiling','sys-io-profiling','sys-interconnection-profiling','dvpp-profiling'].includes(key)&&value!=='off')||key==='host-sys'&&value||key.startsWith('mstx-domain-')&&value)unknown.push(title)}
+ const count=switches.filter(k=>s[k]).length+extraSpecs.filter(([k,,,kind])=>extraActive(k,s)&&s.extra[k]&&(kind==='off,on'?s.extra[k]==='on':['ge-api','host-sys'].includes(k)?s.extra[k]!=='off':false)).length;
+ return {items,unknown,total:items.reduce((sum,x)=>sum+x.cost,0),count};
+}
+function applyCalibration(){try{const values=id=>$(id).value.split(/[,，\s]+/).filter(Boolean).map(x=>{if(!/^(?:\d+(?:\.\d*)?|\.\d+)$/.test(x)||!Number.isFinite(Number(x))||Number(x)<=0)throw Error('耗时必须为有限正数');return Number(x)});
+const base=values('cal-baseline'),prof=values('cal-profiled');if(base.length<3||base.length!==prof.length)throw Error('请录入至少 3 对相同工作量的对照耗时');if(!$('cal-environment').value.trim())throw Error('请填写环境与负载标识');if(validate().errors.length||editorIssue)throw Error('先完成有效采集配置');if(!estimateVolume(state))throw Error('请先填写有效的估算 Rank 数');
+const size=id=>{const raw=$(id).value.trim();if(!raw)return null;if(!/^(?:\d+(?:\.\d*)?|\.\d+)$/.test(raw)||!Number.isFinite(Number(raw)))throw Error('目录大小必须为非负 MB 数');return Number(raw)};
+const ratios=prof.map((v,i)=>(v/base[i]-1)*100).sort((a,b)=>a-b),n=ratios.length,mid=Math.floor(n/2);calibration={key:calibrationKey(),median:n%2?ratios[mid]:(ratios[mid-1]+ratios[mid])/2,min:ratios[0],max:ratios[n-1],n,raw:size('cal-raw'),exported:size('cal-export')};update();}catch(e){$('cal-status').textContent=e.message}}
+$('apply-calibration').addEventListener('click',applyCalibration);
+for(const id of ['cal-environment','cal-baseline','cal-profiled','cal-raw','cal-export'])$(id).addEventListener('input',()=>{calibration=null;update()});
+function generateCommand(s,application,output){
+ if(s.scope==='system'){const args=[['output',shellQuote(output)],['ai-core',s.core?'on':'off']];if(s.core)args.push(['aic-metrics',s.metric]);for(const [key] of extraSpecs)if(extraActive(key,s)&&s.extra[key]!=='')args.push([key,shellQuote(s.extra[key]+(key==='storage-limit'?'MB':''))]);return ['msprof',...args.map(([key,value])=>'  --'+key+'='+value)].join(' '+String.fromCharCode(92,10))}
+ const args=[['output',shellQuote(output)],['application',shellQuote(application)]];
+ if(s.delay>0)args.push(['delay',s.delay]);
+ args.push(['duration',s.duration],['task-time',s.task?s.level:'off'],['ascendcl',s.ascendcl?'on':'off'],['runtime-api',s.runtime?'on':'off'],['ai-core',s.core?'on':'off']);
+ if(s.core)args.push(['aic-metrics',s.metric]);
+ args.push(['task-memory',s.memory?'on':'off'],['aicpu',s.aicpu?'on':'off'],['msproftx',s.mstx?'on':'off']);
+ if(s.host)args.push(['host-sys-usage-freq',s.hostFreq]);
+ for(const [key] of extraSpecs)if(extraActive(key,s)&&s.extra[key]!==''&&(!['model-execution','hccl'].includes(key)||s.extra[key]==='on'))args.push([key,shellQuote(s.extra[key]+(key==='storage-limit'?'MB':''))]);
+ return 'msprof \\\n'+args.map(([key,value],i)=>'  --'+key+'='+value+(i<args.length-1?' \\':'')).join('\n');
+}
+// Parse shell words as text only. Never evaluate pasted shell code or resolve expansions.
+function shellWords(text){
+ const words=[];let word='',started=false,quote='',lineEnded=false;
+ const flush=()=>{if(started){words.push(word);word='';started=false}};
+ for(let i=0;i<text.length;i++){
+  const c=text[i];
+  if(quote==="'"){if(c==="'")quote='';else word+=c;continue}
+  if(c==='\\'&&quote!=="'"){
+   if(lineEnded)throw Error('多行命令请在行末使用反斜杠续行。');
+   if(i+1===text.length)throw Error('命令末尾的反斜杠还需要续写。');
+   const next=text[++i];if(next==='\n')continue;if(next==='\r'&&text[i+1]==='\n'){i++;continue}
+   if(quote==='"'&&!['$','`','"','\\'].includes(next))word+='\\';
+   word+=next;started=true;continue;
+  }
+  if(quote==='"'){
+   if(c==='"')quote='';else if(c==='$'||c==='`')throw Error('暂不解析外层变量或命令替换。请使用明确的参数值。');else word+=c;
+   continue;
+  }
+  if(/\s/.test(c)){flush();if(c==='\n'&&words.length)lineEnded=true;continue}
+  if(c==='#'&&!started){while(i<text.length&&text[i]!=='\n')i++;if(words.length)lineEnded=true;continue}
+  if(lineEnded)throw Error('多行命令请在行末使用反斜杠续行。');
+  if(c==="'"||c==='"'){quote=c;started=true;continue}
+  if(';&|<>()$`'.includes(c))throw Error('这里只支持一条 msprof 命令；外层管道、重定向和变量替换暂不能映射到表单。');
+  word+=c;started=true;
+ }
+ if(quote)throw Error('引号尚未闭合，完成输入后会自动同步。');
+ flush();return words;
+}
+function parseCommand(text){
+ const words=shellWords(text);if(words.shift()!=='msprof')throw Error('请以 msprof 开头，输入一条采集命令。');
+ const supported=new Set(['output','application','delay','duration','task-time','ascendcl','runtime-api','ai-core','aic-mode','aic-metrics','task-memory','aicpu','msproftx','host-sys-usage','host-sys-usage-freq']);
+ extraSpecs.forEach(([key])=>supported.add(key));
+ const args=new Map();
+ for(let i=0;i<words.length;i++){
+  const match=/^--([a-z][a-z0-9-]*)(?:=([\s\S]*))?$/.exec(words[i]);
+  if(!match)throw Error('请使用 --参数=值 或 --参数 值；启动命令请放在 --application 中。');
+  const key=match[1];if(!supported.has(key))throw Error(`暂不支持 --${key} 的表单映射，原文已保留。`);
+  if(args.has(key))throw Error(`--${key} 重复出现，请只保留一个值。`);
+  let value=match[2];if(value===undefined){value=words[++i];if(value===undefined||value.startsWith('--'))throw Error(`请补全 --${key} 的值。`)}
+  if(!value.length)throw Error(`--${key} 的值不能为空。`);args.set(key,value);
+ }
+ if(args.has('sys-period')||args.has('sys-devices'))return parseSystemCommand(args);
+ for(const key of ['application','output','duration'])if(!args.has(key))throw Error(`本面板需要 --${key}，补全后即可同步。`);
+ const integer=(key,fallback,min,max)=>{const raw=args.get(key);if(raw===undefined)return fallback;if(!/^\d+$/.test(raw)||Number(raw)<min||Number(raw)>max)throw Error(`--${key} 需要 ${min}–${max} 的整数。`);return Number(raw)};
+ const toggle=(key,fallback)=>{const raw=args.get(key);if(raw===undefined)return fallback;if(!['on','off'].includes(raw))throw Error(`--${key} 只能为 on 或 off。`);return raw==='on'};
+ const level=args.get('task-time')||'l1';if(!['off','on','l0','l1','l2'].includes(level))throw Error('本面板的 --task-time 支持 off、on、l0、l1、l2。');
+ const next={...defaults,preset:'custom',task:level!=='off',level:level==='on'||level==='off'?'l1':level,
+  delay:integer('delay',0,0,WINDOW_MAX-1),duration:integer('duration',null,1,WINDOW_MAX),
+  ascendcl:toggle('ascendcl',true),runtime:toggle('runtime-api',false),memory:toggle('task-memory',false),aicpu:toggle('aicpu',false),mstx:toggle('msproftx',false),host:args.has('host-sys-usage'),hostFreq:integer('host-sys-usage-freq',50,1,50)};
+ if(next.delay+next.duration>WINDOW_MAX)throw Error(`当前时间轴为 0–${WINDOW_MAX} 秒，请使 delay + duration 不超过 ${WINDOW_MAX}。`);
+ next.core=toggle('ai-core',next.task&&['l1','l2'].includes(next.level));next.metric=args.get('aic-metrics')||'PipeUtilization';
+ if(!Object.hasOwn(metricLabels,next.metric))throw Error('当前面板尚不支持该 AI Core 指标组，原文已保留。');
+ if(next.core&&(!next.task||!['l1','l2'].includes(next.level)))throw Error('本面板将 AI Core 指标与 L1 组合，请设置 --task-time=l1 或关闭 --ai-core。');
+ next.extra={...defaults.extra};for(const [key] of extraSpecs)if(args.has(key))next.extra[key]=key==='storage-limit'?args.get(key).replace(/MB$/,''):args.get(key);
+ if(next.host)next.extra['host-sys-usage']=args.get('host-sys-usage').split(',').sort().join(',');
+ const extraIssues=extraErrors(next);if(extraIssues.length)throw Error(extraIssues.join('；'));
+ for(const [key] of extraSpecs)if(args.has(key)&&!extraActive(key,next))throw Error('--'+key+' 的前置开关尚未开启');
+ if(!next.core&&(args.has('aic-metrics')||args.has('aic-mode')))throw Error('硬件指标参数需要 --ai-core=on。');
+ if(next.host)next.extra['host-sys-usage']=args.get('host-sys-usage').split(',').sort().join(',');
+ if(!next.host&&args.has('host-sys-usage-freq'))throw Error('主机采样频率需要同时设置 --host-sys-usage=cpu,mem。');
+ if(!switches.some(key=>next[key])&&!extraSpecs.some(([key,,,kind])=>(kind==='off,on'&&next.extra[key]==='on')||key==='ge-api'&&next.extra[key]!=='off'||key==='host-sys'&&next.extra[key]))throw Error('请至少开启一项采集数据。');
+ const application=args.get('application'),output=args.get('output');
+ if([application,output].some(value=>!value.trim()||/[\r\n\x00-\x1f\x7f]/.test(value)))throw Error('应用启动命令和输出目录不能为空，且需为单行文本。');
+ if(/["'\\%><|&$;\x60]/.test(output))throw Error('输出路径包含 CANN 不允许的字符');
+ return {next,application,output};
+}
+function parseSystemCommand(args){
+ const allowed=new Set(['output','ai-core','aic-metrics',...systemKeys]);for(const key of args.keys())if(!allowed.has(key))throw Error('独立系统采集不接收 --'+key+'；请切换应用采集或移除应用参数。');
+ for(const key of ['output','sys-period','sys-devices'])if(!args.has(key))throw Error('独立系统采集需要 --'+key);
+ const output=args.get('output');if(!output.trim()||/[\x00-\x1f\x7f"'\\%><|&$;\x60]/.test(output))throw Error('输出路径无效');
+ const core=args.get('ai-core')||'off';if(!['on','off'].includes(core))throw Error('--ai-core 只能为 on 或 off');
+ const next={...defaults,scope:'system',preset:'custom',core:core==='on',extra:{...defaults.extra,'aic-mode':'sample-based'}};
+ for(const [key] of extraSpecs)if(args.has(key))next.extra[key]=key==='storage-limit'?args.get(key).replace(/MB$/,''):args.get(key);
+ next.metric=args.get('aic-metrics')||'PipeUtilization';if(!Object.hasOwn(metricLabels,next.metric))throw Error('不支持该指标组');
+ const errors=extraErrors(next);for(const [key]of extraSpecs)if(args.has(key)&&!extraActive(key,next))errors.push('--'+key+' 的前置项未开启');if(!next.core&&args.has('aic-metrics'))errors.push('指标组需要开启 AI Core');
+ if(!next.core&&!extraSpecs.some(([key,,,kind])=>systemKeys.has(key)&&kind==='off,on'&&next.extra[key]==='on'))errors.push('请至少开启一项系统采集数据');if(errors.length)throw Error(errors.join('；'));
+ return {next,application:$('application').value,output};
+}
+function syncFromCommand(){
+ try{
+  const words=shellWords($('command').value);
+  if(words.some(word=>/^--export(?:=|$)/.test(word))){const parsed=parseOfflineCommand(words);workflow.mode='existing';$('workflow-prof-dir').value=parsed.output;state.extra={...state.extra,type:parsed.type};editorIssue='';$('dependency').hidden=true;update({preserveCommand:true});return}
+  const parsed=parseCommand($('command').value);workflow.mode='capture';
+  state=parsed.next;$('application').value=parsed.application;$('output').value=parsed.output;editorIssue='';$('dependency').hidden=true;
+ }catch(error){editorIssue=error.message}
+ update({preserveCommand:true});
+}
+$('command').addEventListener('input',event=>{if(event.isComposing){editorIssue='输入中，完成后会自动同步。';update({preserveCommand:true})}else syncFromCommand()});
+$('command').addEventListener('compositionend',syncFromCommand);
+$('restore-command').addEventListener('click',()=>{editorIssue='';update();$('command').focus();notify('已按当前表单重新生成命令')});
+function generateOfflineCommand(path,type){return 'msprof --export=on --output='+shellQuote(path)+' --type='+type}
+function parseOfflineCommand(words){
+ if(words[0]!=='msprof')throw Error('解析命令需以 msprof 开头。');const args=new Map();
+ for(let i=1;i<words.length;i++){const match=/^--([a-z][a-z-]*)(?:=([\s\S]*))?$/.exec(words[i]);if(!match||!['export','output','type'].includes(match[1]))throw Error('离线解析只映射 --export、--output 和 --type。');const key=match[1];if(args.has(key))throw Error('解析参数重复：--'+key);let value=match[2];if(value===undefined)value=words[++i];if(!value||value.startsWith('--'))throw Error('请补全解析参数：--'+key);args.set(key,value)}
+ if(args.get('export')!=='on')throw Error('请设置 --export=on。');const output=args.get('output')||'',type=args.get('type')||'text';
+ if(!output.trim()||/[\x00-\x1f\x7f"'\\%><|&$;\x60]/.test(output))throw Error('请填写有效的执行端数据目录。');if(!['text','db'].includes(type))throw Error('解析产物格式仅支持 text 或 db。');return {output,type};
+}
+function serviceAddress(){
+ const raw=$('workflow-service').value.trim();if(!raw)return {error:'请填写已有 Insight 服务地址，填写地址不会创建或验证服务。'};
+ try{const url=new URL(raw);if(!['http:','https:'].includes(url.protocol)||url.username||url.password)throw Error();return {url:url.href}}catch{return {error:'服务地址需为有效的 HTTP(S) 地址，不能包含用户名或密码。'}}
+}
+function renderArtifactPreview(){
+ const existing=workflow.mode==='existing',db=state.extra.type==='db',raw=existing?$('workflow-prof-dir').value.trim():$('output').value.trim(),base=raw.replace(/\/+$/,'');
+ const selectedProf=existing&&/^PROF_[^/]+$/.test(base.split('/').pop()),multiple=existing&&!selectedProf;
+ $('artifact-path-label').textContent=existing?'执行端输入 / 产物目录':'执行端目录（预期）';
+ $('artifact-path').textContent=!raw?'待填写执行端数据目录':existing?(selectedProf?base:base+'/PROF_*'):base+'/PROF_<运行时生成>';
+ const tree=[existing?(multiple?'PROF_*（每个数据目录）/':'PROF_*（所选目录）/'):'PROF_<运行时生成>/', '├─ host/data/','├─ device_{id}/data/',(db?'└─ ':'├─ ')+'msprof_<时间戳>.db'];
+ if(!db)tree.push('└─ mindstudio_profiler_output/','   ├─ msprof_*.json','   └─ *_*.csv');
+ $('artifact-tree').textContent=tree.join('\n');
+ $('artifact-path-note').textContent=(existing?(multiple?'按父目录下各 PROF_* 分别解析导出；不新建采集目录。':'在所选 PROF_* 内解析导出，不新建采集目录。'):'PROF 名称、时间戳和设备 ID 在运行后确定；多采集进程可能生成多个 PROF_*。')+'目录树仅示意常见结构，实际文件取决于已采集内容；不是产物验收结果。';
+ $('artifact-delivery-note').textContent=workflow.view==='remote'?'这些文件位于执行端；远端 Insight 服务须能访问。浏览器查看不会将整个目录改存到本地。':({'all':'计划交付原始数据与导出结果。',raw:'计划仅交付原始数据；仍需解析导出后供可视化使用。',export:'计划仅交付导出结果。'}[$('download-content').value])+'上方目录树展示执行端产物结构，不代表已下载。';
+}
+function renderWorkflow(){
+ const existing=workflow.mode==='existing',remote=workflow.view==='remote';
+ $('workflow-mode').value=workflow.mode;$('workflow-view').value=workflow.view;
+ document.querySelectorAll('[data-capture-only]').forEach(el=>el.hidden=existing);
+ $('workflow-output-slot').hidden=existing;$('workflow-prof-row').hidden=!existing;$('workflow-service-row').hidden=!remote;$('workflow-download-slot').hidden=remote;
+ $('parse-behavior').textContent=existing?'补解析并导出':'采集结束后自动解析';$('parse-behavior-badge').textContent=existing?'离线':'自动';
+ $('parse-behavior-note').textContent=existing?'export 会先解析未解析数据，再导出；解析失败恢复等场景才需要单独 parse。':'当前 msprof 应用启动模式通常自动解析，无需手工再启动解析；RC 等需转至具备解析环境的执行端。';
+ document.querySelector('.terminal-title').textContent=existing?'解析导出命令':'执行命令';
+ const rawOnly=$('download-content').value==='raw';
+ const route=(existing?'已有数据 → 解析并导出':'采集 → 自动解析并导出')+' → '+(remote?'服务器 Insight → 浏览器查看':rawOnly?'下载原始数据 → 在具备解析环境的执行端解析导出 → 本地 Insight 导入':'下载所选产物 → 本地 Insight 导入');
+ $('workflow-route').textContent=route;
+ let note=remote?'数据保留执行端；远端服务需有目录访问权限。不同机器可能仍需共享挂载或服务器间传输。':rawOnly?'仅原始数据需要再次解析导出，不能直接等同可导入的可视化产物；demo 不自动下载。':'下载选择仅生成交付方案与体量估算；demo 不自动下载。';
+ const link=$('workflow-open-service');link.hidden=true;link.removeAttribute('href');
+ if(remote){const address=serviceAddress();$('workflow-service').setAttribute('aria-invalid',String(Boolean(address.error)));if(address.error)note+=' '+address.error;else{link.href=address.url;link.hidden=false;note+=' 可打开已填服务入口，连接状态未检测。'}}
+ else $('workflow-service').setAttribute('aria-invalid','false');
+ $('workflow-status').textContent=note;
+ document.querySelectorAll('[data-workflow-capture-preview]').forEach(el=>el.hidden=existing);$('workflow-existing-preview').hidden=!existing;
+ if(!existing&&remote){$('volume-relation').textContent='原始与导出数值表示服务器文件体量；此路线不按整包合计作为本地下载量。';$('download-size').textContent='无需整包下载';$('download-kind').textContent='远端查看方案';$('download-description').textContent='完整数据留在服务器；浏览器仍会传输查询结果和页面数据。';$('download-advice').textContent='不代表零网络流量，也不是采集流式中转。';}
+}
+function validate(){
+ const app=$('application').value.trim(),output=$('output').value.trim(),errors=[];
+ if(workflow.mode==='existing'){
+  const path=$('workflow-prof-dir').value.trim(),invalid=!path||/[\x00-\x1f\x7f"'\\%><|&$;\x60]/.test(path);
+  $('workflow-prof-dir').setAttribute('aria-invalid',String(invalid));if(invalid)errors.push('请填写有效的执行端 PROF_XXX 数据目录，不能包含 CANN 禁止的字符。');
+  if(!['text','db'].includes(state.extra.type))errors.push('解析产物格式仅支持 text 或 db。');return {app,output,errors};
+ }
+ for(const [id,label,value] of [['application','应用启动命令',app],['output','输出目录',output]]){
+  if(id==='application'&&state.scope==='system'){$(id).setAttribute('aria-invalid','false');continue}
+  const invalid=!value||/[\r\n\x00-\x1f\x7f]/.test(value);
+  $(id).setAttribute('aria-invalid',String(invalid));
+  if(invalid)errors.push(label+'不能为空，且需为单行文本。');
+ }
+ errors.push(...extraErrors(state));
+ const badOutput=/["'\\%><|&$;\x60]/.test(output);if(badOutput){errors.push('输出路径包含 CANN 不允许的字符');$('output').setAttribute('aria-invalid','true')}
+ if((state.scope==='system'?(Number(state.core)+extraSpecs.filter(([key,,,kind])=>systemKeys.has(key)&&kind==='off,on'&&state.extra[key]==='on').length):estimate(state).count)===0)errors.push('请至少开启一项采集数据。');
+ return {app,output,errors};
+}
+function syncRangeVisual(slider){
+ const min=Number(slider.getAttribute('min')||0),max=Number(slider.getAttribute('max')||100),raw=Number(slider.value);
+ const fraction=max>min?Math.max(0,Math.min(1,((Number.isFinite(raw)?raw:min)-min)/(max-min))):0;
+ slider.style.setProperty('--fill',(fraction*100)+'%');
+ // Native thumb center travels between half a thumb and width minus half a thumb.
+ slider.style.setProperty('--fill-offset',((.5-fraction)*13)+'px');
+}
+function syncAllRanges(){document.querySelectorAll('input[type=range]').forEach(syncRangeVisual)}
+document.addEventListener('input',syncAllRanges);document.addEventListener('change',syncAllRanges);
+function update(options={}){
+ for(const [key,,,kind] of extraSpecs){const el=$('extra-'+key),active=extraActive(key,state);el.value=state.extra[key];el.disabled=!active;el.closest('.field').hidden=!active;if(kind==='off,on')el.setAttribute('aria-checked',String(state.extra[key]==='on'));const slider=$('slider-extra-'+key);if(slider){slider.disabled=!active;slider.value=key==='storage-limit'?Math.round(Math.log(Math.max(200,Number(state.extra[key])||200)/200)/Math.log(4294967295/200)*1000):state.extra[key]}}
+ $('host-freq-number').value=state.hostFreq;$('host-freq-number').disabled=!state.host;$('host-freq-number').setAttribute('aria-invalid','false');
+ for(const [id,value,min,max] of [['window-start-number',state.delay,0,state.delay+state.duration-1],['window-end-number',state.delay+state.duration,state.delay+1,120]]){const el=$(id);el.value=value;el.min=min;el.max=max}
+ switches.forEach(id=>$(id).setAttribute('aria-checked',String(state[id])));
+ document.querySelectorAll('[data-level]').forEach(b=>{b.setAttribute('aria-pressed',String(b.dataset.level===state.level));b.disabled=!state.task});
+ if(Object.hasOwn(presetDefinitions,state.preset))selectedPreset=state.preset;
+ document.querySelectorAll('[data-preset]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.preset===selectedPreset)));
+ $('preset-status').textContent=state.preset==='custom'?'已调整 · 保留所选采集意图':'建议配置 · 可继续调整';
+ $('preset-note').textContent=state.preset==='custom'?'当前采集意图：'+document.querySelector('[data-preset='+selectedPreset+'] strong').textContent+'；具体参数已调整，可点击卡片重新应用预设。':presetDefinitions[state.preset].note;
+ $('task-desc').textContent=!state.task?'已关闭算子执行时间线。':state.level==='l0'?'L0 保留算子下发与执行耗时，减少采集负担。':'L1/L2 保留算子信息与集合通信数据；L2 进一步包含属性。L0 的通信细分字段不可用，不应补零。';
+ for(const key of ['mstx','core','host'])$(key+'-detail').hidden=!state[key];
+ for(const [id,value,unit] of [['host-freq',state.hostFreq,'Hz']]){
+  $(id).value=String(value);$(id+'-value').replaceChildren(document.createTextNode(value),Object.assign(document.createElement('small'),{textContent:unit}));
+
+ }
+ $('metric').value=state.metric;$('host-freq').disabled=!state.host;
+ const end=state.delay+state.duration;
+ for(const [id,value,min,max,verb] of [['window-start',state.delay,0,end-1,'开始'],['window-end',end,state.delay+1,WINDOW_MAX,'结束']]){
+  $(id).setAttribute('aria-valuemin',String(min));$(id).setAttribute('aria-valuemax',String(max));$(id).setAttribute('aria-valuenow',String(value));$(id).setAttribute('aria-valuetext',`第 ${value} 秒${verb}采集，持续 ${state.duration} 秒`);
+  $(id).style.left=(value/WINDOW_MAX*100)+'%';
+ }
+ $('window-selection').style.left=(state.delay/WINDOW_MAX*100)+'%';$('window-selection').style.width=(state.duration/WINDOW_MAX*100)+'%';
+ $('window-duration').textContent=`采集 ${state.duration} s`;
+ $('window-summary').textContent=(state.delay?`等待 ${state.delay} 秒后开始`:'立即开始')+`，持续采集 ${state.duration} 秒。`;
+ const e=estimate(state),valid=validate(),measured=calibration&&calibration.key===calibrationKey()?calibration:null;
+ $('overhead').textContent=measured?measured.median.toFixed(1):'≈'+Math.round(e.total);$('overhead-unit').hidden=false;
+ const displayedOverhead=measured?Number(measured.median.toFixed(1)):Math.round(e.total),unknown=!measured&&e.unknown.length>0;
+ const risk=overheadBand(displayedOverhead,unknown);$('risk').dataset.risk=risk;$('risk').closest('.estimate-head').dataset.risk=risk;
+ $('risk').textContent=unknown?(risk==='high'?'高扰动 · 部分预估':'开销未定 · 部分预估'):{low:'低扰动',medium:'需关注',high:'高扰动'}[risk];
+ $('overhead-title').textContent=measured?'性能膨胀 · 外部对照':'性能膨胀预估';
+ $('extra-bar').parentElement.hidden=true;
+ renderVolume(state,measured);
+ $('enabled-count').textContent=e.count+' 项数据';$('capture-range').textContent='第 '+state.delay+'–'+(state.delay+state.duration)+' 秒';
+ $('cal-status').textContent=measured?'已应用用户录入的 '+measured.n+' 对外部数据；仅当前命令与环境有效。':calibration?'配置已变化，原测量不再适用，已回退模型预估；请重新测量并应用。':'当前显示未校准模型预估；录入同环境测量后优先显示实测。';
+ $('breakdown').textContent=measured?'未做单项消融实验，不能把实测变化分摊到单项。':'模型加权项（百分点，非实测归因）：'+e.items.map(x=>x.name+' '+x.cost.toFixed(1)).join('；')+'。'+(e.unknown.length?'未建模项没有按零计算；上述数字不是完整总开销。':'');
+ const invalid=valid.errors.length>0;$('validation').hidden=!invalid;$('validation').textContent=valid.errors.join(' ');
+ const pending=Boolean(editorIssue);$('copy').disabled=invalid||pending;
+ const generated=invalid?'':workflow.mode==='existing'?generateOfflineCommand($('workflow-prof-dir').value.trim(),state.extra.type):generateCommand(state,valid.app,valid.output);
+ if(!options.preserveCommand&&!pending)$('command').value=generated;
+ currentCommand=invalid||pending?'':(options.preserveCommand?$('command').value:generated);
+ $('command').setAttribute('aria-invalid',String(pending));
+ $('command-feedback').hidden=!pending;$('command-feedback').dataset.error=String(pending);$('command-feedback').textContent=pending?editorIssue+' 表单与统计仍对应当前有效配置，未应用这段命令。':'';
+ $('restore-command').hidden=!pending;document.querySelector('.preview').dataset.commandPending=String(pending);
+ $('manual-copy').value=currentCommand;$('manual-wrap').hidden=true;
+ renderWorkflow();renderCaptureScope();renderArtifactPreview();syncAllRanges();syncChoicePills();renderCommandHighlight();
+ clearTimeout(copyTimer);$('copy-label').textContent='复制';$('copy').dataset.copied='false';
+}
+function markCustom(){state.preset='custom'}
+function showDependency(message){$('dependency').hidden=false;$('dependency').textContent=message}
+function choosePreset(name){
+ const {note,...preset}=presetDefinitions[name];
+ // Presets replace the data combination only; keep the user's task, window and estimate baseline.
+ const general=Object.fromEntries(['type','storage-limit','environment'].map(k=>[k,state.extra[k]]));
+ const kept={delay:state.delay,duration:state.duration,scope:state.scope};state={...preset,...kept,extra:{...defaults.extra,...general}};
+ if(name==='deep')state.duration=Math.min(state.duration,5);
+ $('dependency').hidden=true;update();
+}
+switches.forEach(id=>$(id).addEventListener('click',()=>{
+ state[id]=!state[id];markCustom();$('dependency').hidden=true;
+ if(id==='core'&&state.scope!=='system'&&state.core&&(!state.task||!['l1','l2'].includes(state.level))){state.task=true;state.level='l1';showDependency('已同步开启 L1 时间线：本方案将硬件指标与详细算子信息一起采集。')}
+ if(id==='task'&&!state.task&&state.core){state.core=false;showDependency('已同步关闭 AI Core 硬件指标，避免保留与当前方案不一致的采集项。')}
+ update();
+}));
+document.querySelectorAll('[data-level]').forEach(b=>b.addEventListener('click',()=>{
+ state.level=b.dataset.level;markCustom();$('dependency').hidden=true;
+ if(state.level==='l0'&&state.core){state.core=false;showDependency('切换到 L0 轻量方案，已同步关闭 AI Core 硬件指标。')}
+ update();
+}));
+document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click',()=>choosePreset(b.dataset.preset)));
+$('host-freq').addEventListener('input',()=>{state.hostFreq=Number($('host-freq').value);update()});
+$('host-freq-number').addEventListener('input',()=>{const raw=$('host-freq-number').value,value=Number(raw),valid=raw!==''&&Number.isInteger(value)&&value>=1&&value<=50;$('host-freq-number').setAttribute('aria-invalid',String(!valid));if(valid){state.hostFreq=value;update()}else{$('copy').disabled=true;$('validation').hidden=false;$('validation').textContent='主机采样频率需要 1–50 的整数。'}});
+$('host-freq-number').addEventListener('change',()=>{if($('host-freq-number').getAttribute('aria-invalid')!=='true')update()});
+for(const boundary of ['start','end'])$('window-'+boundary+'-number').addEventListener('change',()=>{const value=Number($('window-'+boundary+'-number').value);if(Number.isInteger(value))setWindowBoundary(boundary,value);else update()});
+function setWindowBoundary(boundary,value){
+ const seconds=Math.round(value);if(!Number.isFinite(seconds))return;
+ if(boundary==='start'){
+  const end=state.delay+state.duration;state.delay=Math.max(0,Math.min(end-1,seconds));state.duration=end-state.delay;
+ }else state.duration=Math.max(state.delay+1,Math.min(WINDOW_MAX,seconds))-state.delay;
+ update();
+}
+const windowSlider=$('window-slider');let draggingBoundary=null,dragPointerId=null,dragOffset=0;
+function pointerSeconds(event){const rect=windowSlider.getBoundingClientRect();return (event.clientX-rect.left)/rect.width*WINDOW_MAX}
+windowSlider.addEventListener('pointerdown',event=>{
+ if(event.button!==0||event.isPrimary===false||draggingBoundary)return;
+ const thumb=event.target.closest('.window-thumb'),seconds=pointerSeconds(event),end=state.delay+state.duration;
+ const startDistance=Math.abs(seconds-state.delay),endDistance=Math.abs(seconds-end);
+ draggingBoundary=startDistance===endDistance&&thumb?(thumb.id==='window-start'?'start':'end'):(startDistance<endDistance?'start':'end');
+ dragPointerId=event.pointerId;dragOffset=thumb?((draggingBoundary==='start'?state.delay:end)-seconds):0;
+ event.preventDefault();$('window-'+draggingBoundary).focus({preventScroll:true});
+ windowSlider.setPointerCapture?.(event.pointerId);windowSlider.dataset.dragging=draggingBoundary;
+ setWindowBoundary(draggingBoundary,seconds+dragOffset);
+});
+windowSlider.addEventListener('pointermove',event=>{if(draggingBoundary&&event.pointerId===dragPointerId)setWindowBoundary(draggingBoundary,pointerSeconds(event)+dragOffset)});
+function endWindowDrag(event){if(event.pointerId!==dragPointerId)return;draggingBoundary=null;dragPointerId=null;dragOffset=0;delete windowSlider.dataset.dragging}
+windowSlider.addEventListener('pointerup',endWindowDrag);windowSlider.addEventListener('pointercancel',endWindowDrag);windowSlider.addEventListener('lostpointercapture',endWindowDrag);
+for(const boundary of ['start','end'])$('window-'+boundary).addEventListener('keydown',event=>{
+ const thumb=$('window-'+boundary),current=Number(thumb.getAttribute('aria-valuenow'));
+ const actions={ArrowLeft:current-1,ArrowDown:current-1,ArrowRight:current+1,ArrowUp:current+1,PageDown:current-10,PageUp:current+10,Home:Number(thumb.getAttribute('aria-valuemin')),End:Number(thumb.getAttribute('aria-valuemax'))};
+ if(Object.hasOwn(actions,event.key)){event.preventDefault();setWindowBoundary(boundary,actions[event.key])}
+});
+for(const [key,,,kind] of extraSpecs){const el=$('extra-'+key),set=value=>{state.extra={...state.extra,[key]:String(value)};markCustom();update()};el.addEventListener('change',()=>set(el.value));if(el.type==='number')el.addEventListener('input',()=>set(el.value));if(kind==='off,on')el.addEventListener('click',()=>set(state.extra[key]==='on'?'off':'on'));const slider=$('slider-extra-'+key);if(slider)slider.addEventListener('input',()=>set(key==='storage-limit'?Math.round(200*Math.pow(4294967295/200,Number(slider.value)/1000)):slider.value))}
+for(const id of ['cal-raw','cal-export']){const slider=$('slider-'+id),field=$(id);slider.addEventListener('input',()=>{field.value=slider.value;calibration=null;update()});field.addEventListener('input',()=>{const value=Number(field.value);if(Number.isFinite(value)&&value>=0){slider.setAttribute('max',String(Math.max(10240,Number(slider.getAttribute('max')),value)));slider.value=String(value)}})}
+$('metric').addEventListener('change',()=>{state.metric=$('metric').value;markCustom();update()});
+for(const id of ['application','output'])$(id).addEventListener('input',update);
+$('reset').addEventListener('click',()=>{
+ state={...defaults,extra:{...defaults.extra}};selectedPreset=defaults.preset;workflow.mode='capture';workflow.view='local';calibration=null;editorIssue='';
+ for(const [el,initial] of originalFormState){el.value=initial.value;for(const name of ['min','max','step'])if(initial[name]===null)el.removeAttribute(name);else el.setAttribute(name,initial[name]);el.removeAttribute('aria-invalid')}
+ for(const [details,open] of originalDetailsState)details.open=open;
+ hideHelp();clearParameterSearch();$('dependency').hidden=true;update();document.querySelector('.controls').scrollTop=0;document.querySelector('.preview').scrollTop=0;$('command').scrollTop=0;syncCommandScroll();if(window.innerWidth<=760)document.querySelector('.body-grid').scrollTop=0;notify('已复原全部配置');
+});
+async function copyCommand(){
+ if(!currentCommand)return;
+ const snapshot=currentCommand;
+ try{
+  if(!navigator.clipboard||!navigator.clipboard.writeText)throw Error('Clipboard unavailable');
+  await navigator.clipboard.writeText(snapshot);
+  if(snapshot===currentCommand){$('copy-label').textContent='已复制';$('copy').dataset.copied='true';clearTimeout(copyTimer);copyTimer=setTimeout(()=>{$('copy-label').textContent='复制';$('copy').dataset.copied='false'},2200)}
+  notify((workflow.mode==='existing'?'解析导出':'采集')+'命令已复制，请在目标 Linux 环境执行');
+ }catch{
+  $('manual-wrap').hidden=false;$('manual-copy').value=snapshot;$('manual-copy').focus();$('manual-copy').select();notify('自动复制不可用，已选中命令，可手动复制');
+ }
+}
+$('copy').addEventListener('click',copyCommand);
+document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!helpTooltip.hidden){event.preventDefault();hideHelp()}});
+
+// Tooltip content separates documented parameters from this prototype's design choices.
+const sources={
+ general:{name:'CANN 9.1 · 通用命令',url:'https://www.hiascend.com/doc_center/source/en/CANNCommunityEdition/910/devaids/Profiling/atlasprofiling_16_0010.html'},
+ system:{name:'CANN 9.1 · Device 系统采集（含芯片限制）',url:'https://www.hiascend.com/doc_center/source/en/CANNCommunityEdition/910/devaids/Profiling/atlasprofiling_16_0012.html'},
+ task:{name:'CANN 9.1 · 任务运行性能采集',url:'https://www.hiascend.com/doc_center/source/en/CANNCommunityEdition/910/devaids/Profiling/atlasprofiling_16_0011.html'},
+ mstx:{name:'CANN 9.1 · msproftx 数据采集',url:'https://www.hiascend.com/doc_center/source/en/CANNCommunityEdition/910/devaids/Profiling/atlasprofiling_16_0015.html'},
+ host:{name:'CANN 9.1 · Host 侧系统数据采集',url:'https://www.hiascend.com/doc_center/source/en/CANNCommunityEdition/910/devaids/Profiling/atlasprofiling_16_0014.html'},
+ window:{name:'MindStudio · 延迟采集性能数据',url:'https://www.hiascend.com/doc_center/source/en/CANNCommunityEdition/910/devaids/Profiling/atlasprofiling_16_0017.html'},
+ app:{name:'CANN 9.1 · 应用与输出参数',url:'https://www.hiascend.com/doc_center/source/en/CANNCommunityEdition/910/devaids/Profiling/atlasprofiling_16_0010.html'}
+};
+const helpDefinitions={
+ quick:{title:'快速摸底',text:'组合 L0 算子时间线、AscendCL 接口与业务打点。作为第一轮采集的示例组合，可逐项调整。',design:true},
+ timeline:{title:'下发与通信',text:'组合 L1、Runtime 接口、业务打点与 Host 资源。多卡任务的集合通信算子数据随 L1 采集。这个预设组合由本方案设计。',source:'task',design:true},
+ deep:{title:'算子深挖',text:'组合详细时间线、AI Core 硬件指标、算子内存与 AI CPU 明细，并把采集窗口缩短到最多 5 秒。',design:true},
+ application:{title:'应用启动命令',text:'映射 --application。由 msprof 启动用户应用并采集 CANN / NPU 数据，不包含框架层调用栈。',source:'app'},
+ output:{title:'结果保存目录',text:'映射 --output。性能数据保存在该目录生成的 PROF_* 子目录中。',source:'app'},
+ delay:{title:'采集开始时间',text:'左滑块表示相对应用启动的开始时刻，映射 --delay，单位秒。选 0 时省略延迟参数，立即采集。0–120 秒的时间轴是本方案的交互范围。',source:'window'},
+ duration:{title:'采集结束时间',text:'右滑块表示结束时刻；命令中的 --duration 自动计算为结束减去开始，单位秒。两个滑块至少相隔 1 秒；任务提前结束时，采集也随之结束。',source:'window'},
+ task:{title:'算子执行时间线与精度',text:'映射 --task-time。L0 记录算子下发与执行耗时；L1 还包含算子基本信息，并支持集合通信算子数据。关闭时显式输出 off。',source:'task'},
+ ascendcl:{title:'AscendCL 接口',text:'映射 --ascendcl。采集 AscendCL 接口性能，包括 Host / Device 之间的同步、异步内存复制时延。',source:'task'},
+ runtime:{title:'Runtime 接口',text:'映射 --runtime-api。采集 Runtime API 性能数据，辅助分析运行时调用和内存复制时延。',source:'task'},
+ mstx:{title:'业务自定义打点',text:'映射 --msproftx。需要程序先调用 mstx / msproftx API，开关不会自动插桩。Ascend PyTorch MSTX 请通过框架 Profiler 采集。',source:'mstx'},
+ core:{title:'AI Core 硬件指标',text:'映射 --ai-core=on 和 --aic-metrics；本面板使用 task-based，并联动 L1 以保留详细算子信息。联动 L1 是方案规则。',source:'task'},
+ metric:{title:'硬件指标组',text:'映射 --aic-metrics。分别观察流水线利用率、计算利用率、内存带宽或 L2 缓存命中。本面板一次选择一组；可用指标受芯片型号影响。',source:'task'},
+ memory:{title:'算子内存',text:'映射 --task-memory。采集 CANN 算子内存占用，具体采集范围取决于单算子、静态图等运行场景。',source:'task'},
+ host:{title:'Host CPU 与内存',text:'映射 --host-sys-usage=cpu,mem，采集主机系统及进程 CPU 和内存使用率；关闭后不拼接主机采样参数。',source:'host'},
+ 'host-freq':{title:'主机采样频率',text:'映射 --host-sys-usage-freq，官方范围为 1–50 Hz。只在 Host 采集开启时生效。面板默认 10 Hz 为方案选择，工具默认值为 50 Hz。',source:'host'},
+ aicpu:{title:'AI CPU 算子明细',text:'映射 --aicpu。采集 AI CPU 算子详细信息，例如计算耗时和数据拷贝耗时。',source:'task'},
+};
+for(const [key,title,source,kind,value,dep] of extraSpecs)helpDefinitions['extra-'+key]={title,text:'映射 --'+key+'。'+(dep?'仅当前置项 '+dep+' 启用时输出。':'')+(kind==='storage'?'达到上限会老化删除较早原始文件；不是总磁盘预算。':/^\d+:\d+$/.test(kind)?'范围 '+kind.replace(':','–')+'，面板初值 '+value+'。':key==='host-sys'?'仅应用进程相关项；disk 需 iotop，osrt 需 perf/ltrace，且可能扰动线程与 CPU。':key==='aic-mode'?'task-based 按任务采集；sample-based 按频率采样。':key==='type'?'选择采集后自动解析产物，不改变底层采集内容。':key.startsWith('mstx-domain')?'include/exclude 互斥，域名需与应用打点一致。':key==='host-sys-usage'?'cpu/mem 分别选择；与 host-sys 进程项区分。':'可用范围与默认值见官方参数表。')+(source==='system'?'采集内容和可用性取决于芯片、EP/RC、OS 与容器；面板不代表已验证支持。':''),source};
+helpDefinitions['extra-model-execution'].text='映射 --model-execution=on。CANN 9.1 仍列出该参数，但标注将弃用，建议使用 --task-time。默认关闭且不输出此参数；关闭不代表关闭 task-time 已涵盖的相关数据。仓库 all_switch 测试仍使用 on。';
+helpDefinitions['extra-hccl'].text='映射 --hccl=on。仅多卡、多节点或集群场景产生通信数据；CANN 9.1 标注将弃用，建议使用 --task-time。默认关闭且不输出此参数；关闭不代表关闭 task-time 涵盖的通信数据。';
+helpDefinitions['extra-sys-period'].text='映射 --sys-period，独立系统采集必填，单位秒。官方范围 (0,2592000]；面板使用整数 1–2592000。传入用户应用时该参数不生效，所以仅在独立系统采集展示。';
+helpDefinitions['extra-sys-devices'].text='映射 --sys-devices，独立系统采集必填。填写 all 或逗号分隔的设备 ID；不是 Rank 数。传入用户应用时不生效。A3/950 等共享 OS 的设备不能随意同时选择，需核对官方限制。';
+helpDefinitions['capture-scope']={title:'采集方式',text:'应用采集启动应用并使用 delay/duration；独立系统采集不启动应用，使用 sys-period/sys-devices，仅输出系统采集项。系统模式不会沿用训练负载的膨胀或体量模型。',source:'system'};
+attachHelp('capture-scope',document.querySelector('[data-label-for=capture-scope]'));
+for(const [id,title] of [['cal-environment','环境与负载标识'],['cal-baseline','基准耗时'],['cal-profiled','采集耗时'],['cal-raw','原始目录大小'],['cal-export','导出目录大小']])helpDefinitions[id]={title,text:'本页面的测量记录项，不是 msprof CLI 参数。固定同一工作量与环境，配对比较 (采集耗时/基准耗时 − 1) × 100%，显示中位数和观测范围；至少三对是页面的最低录入要求，不能代表统计收敛。原始与导出大小分开记录，不外推速率。',design:true};
+helpDefinitions['volume-ranks']={title:'预计采集的 Rank 数',text:'仅用于体量模型，不修改 msprof 命令。默认 1；按同配置、同事件密度乘 Rank 数。当前实测绑定此范围，修改后需要重新测量；目录实测请录入全部 Rank 总量。',design:true};
+helpDefinitions['download-content']={title:'计划下载什么',text:'完整目录按原始数据加导出结果合计；也可只选原始或导出。未压缩模型不是网络流量实测，压缩、老化、共享文件及打包清单可能改变实际下载量。',design:true};
+helpDefinitions.task.text+=' L2 进一步记录属性；L3 为试用能力，未接入。';
+helpDefinitions.delay.text+=' 官方 delay 非零取值与 duration 均可到 4294967295 秒；120 秒只是页面范围，延迟超过任务时长则不采集。';
+helpDefinitions.duration.text+=' 缩短时长不保证采集期间的膨胀比例下降。';
+helpDefinitions.core.text='映射 --ai-core 与 --aic-metrics；模式在更多采集项选择。至少 L1 是本面板组合规则，不能据此推断工具在其他组合下无采集能力。';
+helpDefinitions['extra-l2'].text+=' aclgraph 模型执行中开启采集时此项不生效；A2/A3 分析 AI Core L2 命中建议使用 aic-metrics=L2Cache。';
+helpDefinitions['extra-storage-limit'].text+=' 范围 200–4294967295 MB；命令会补 MB 单位；实际剩余空间不足也会触发老化。';
+helpDefinitions['extra-host-sys'].text+=' Kylin V10 SP1 aarch64 不支持 osrt；EulerOS 2.9 虚拟化环境不支持 network。';
+helpDefinitions.host.text='映射 --host-sys-usage，CPU 与内存在更多采集项独立选择；该参数覆盖系统与进程，进程 I/O 与系统调用另用 host-sys。';
+helpDefinitions.metric.text+=' L2Cache 不适用于 Atlas 推理系列；PipelineExecuteUtilization 与 MemoryAccess 仅部分产品支持，需先按官方芯片表核对。';
+helpDefinitions.estimate={title:'膨胀预估是怎么算的？',design:true,text:()=>{
+ if(state.scope==='system')return '独立系统采集没有应用基准耗时；尚未建立系统采集的开销与体量模型，不显示应用膨胀百分数。';
+ const e=estimate(state);
+ return '模型预估 = 采集基础权重 + 当前开启采集项的权重，按整数百分比展示。\n当前已建模部分：'+e.items.map(x=>x.name+' '+x.cost.toFixed(1)).join(' + ')+' = '+e.total.toFixed(1)+' 个百分点。\n这些权重是页面设计假设，未经硬件实测校准；不是官方性能指标。假设事件密度和工作负载固定、开销近似相加，不模拟交互效应。采集延迟和时长不直接改变采集期间的膨胀比例。\n'+(e.unknown.length?'额外开销未知：'+e.unknown.join('、')+'。当前数值只覆盖已建模部分，未建模项没有按零计算。':'开启未建模采集项时，将提示额外开销未知。')+'\n颜色按当前展示值分级：≤5% 绿色低扰动，>5% 且 ≤10% 橙色需关注，>10% 红色高扰动。这是页面设计阈值，不是通用行业标准；存在未知开销时不显示绿色总开销结论。\n当前 demo 没有内置或自动获得的实测数据；仅在用户录入外部对照数据后，优先展示 (采集耗时 ÷ 未采集耗时 − 1) × 100% 的配对中位数及观测范围。配置或环境变化后回退模型预估。';
+}};
+const helpTooltip=$('help-tooltip');let activeHelp=null,helpTimer;
+function hideHelp(){clearTimeout(helpTimer);helpTooltip.hidden=true;if(activeHelp){activeHelp.removeAttribute('aria-describedby');activeHelp.setAttribute('aria-expanded','false')}activeHelp=null}
+function scheduleHideHelp(){clearTimeout(helpTimer);helpTimer=setTimeout(hideHelp,180)}
+function positionHelp(){
+ if(!activeHelp)return;
+ const anchor=activeHelp.getBoundingClientRect(),rect=helpTooltip.getBoundingClientRect();
+ const width=document.documentElement.clientWidth||window.innerWidth,height=window.innerHeight||document.documentElement.clientHeight;
+ const left=Math.max(12,Math.min(anchor.left,width-rect.width-12));
+ let top=anchor.bottom+9;if(top+rect.height>height-12)top=Math.max(12,anchor.top-rect.height-9);
+ helpTooltip.style.left=left+'px';helpTooltip.style.top=top+'px';
+}
+function showHelp(button,key){
+ hideHelp();activeHelp=button;const info=helpDefinitions[key];
+ const title=document.createElement('strong');title.textContent=info.title;
+ const body=document.createElement('p');body.textContent=typeof info.text==='function'?info.text():info.text;if(['estimate','download-estimate'].includes(key))body.style.whiteSpace='pre-line';
+ const source=document.createElement('div');source.className='help-source';
+ const label=document.createElement('span');label.className='help-source-label';label.textContent='根据 / 来源';source.append(label);
+ if(info.source){const entry=sources[info.source],link=document.createElement('a');link.href=entry.url;link.textContent=entry.name+' ↗';link.target='_blank';link.rel='noopener';source.append(link)}
+ if(info.source&&!['app','general','window','remoteWorkflow','processing'].includes(info.source)){const evidence=document.createElement('a');evidence.href='https://gitcode.com/Ascend/msprof/blob/2238b62b101ddcff3e796e83da6f58f936f7ca4d/'+(key==='host'||key==='extra-host-sys'?'scripts/msprof_data_collection.sh':key==='application'||key==='output'?'docs/zh/quick_start/msprof_quick_start.md':'docs/zh/user_guide/profile_data_file_references_db.md');evidence.textContent='仓库侧解析/输出证据 · 2238b62b101d ↗';evidence.target='_blank';evidence.rel='noopener';source.append(evidence);}
+ for(const entry of info.references||[]){const link=document.createElement('a');link.href=entry.url;link.textContent=entry.name+' ↗';link.target='_blank';link.rel='noopener';source.append(link,document.createElement('br'))}
+ const boundary=document.createElement('p');boundary.textContent=info.evidenceNote||(key==='estimate'?'页面模型 v1 · 2026-11-18；全部权重见「预估模型依据与假设」，无官方或实测来源。':'核对于 2026-11-18；参数语义以链接版本为准，实际采集须核对目标 CANN/芯片。');source.append(boundary);
+ if(info.design){const note=document.createElement('p');note.textContent='本方案设计 · '+(info.source?'组合方式无外部实测依据':'无外部来源');source.append(note)}
+ helpTooltip.replaceChildren(title,body,source);helpTooltip.hidden=false;
+ button.setAttribute('aria-describedby','help-tooltip');button.setAttribute('aria-expanded','true');positionHelp();
+}
+function attachHelp(key,target,glyph='?'){
+ const button=document.createElement('button');button.type='button';button.className='help';button.dataset.help=key;button.textContent=glyph;
+ button.setAttribute('aria-label',helpDefinitions[key].title+'：查看说明与来源');button.setAttribute('aria-expanded','false');
+ button.addEventListener('pointerenter',()=>showHelp(button,key));button.addEventListener('focus',()=>showHelp(button,key));
+ button.addEventListener('pointerleave',scheduleHideHelp);button.addEventListener('blur',event=>{if(!helpTooltip.contains(event.relatedTarget))scheduleHideHelp()});
+ button.addEventListener('click',()=>showHelp(button,key));target.append(button);
+}
+helpDefinitions.artifacts={title:'格式与目录的依据',text:'原始采集记录在 host/data 和 device_{id}/data；不是由 type 选项切换成 DB。仓库说明：type=db 仅导出汇总 msprof_*.db；type=text 同时导出 DB 和 JSON/CSV。原始二进制文件的后缀不一定是 .bin，AI CPU 解析器以 rb 读取并解码。新采集的 PROF 名称及实际文件运行后确定；已有目录会在原目录内解析导出。',references:[{"name":"性能文件参考 · 原始数据与 DB/Text 目录","url":"https://gitcode.com/Ascend/msprof/blob/2238b62b101ddcff3e796e83da6f58f936f7ca4d/docs/zh/user_guide/profile_data_file_references.md#L5"},{"name":"解析使用说明 · type 参数与目录结构","url":"https://gitcode.com/Ascend/msprof/blob/2238b62b101ddcff3e796e83da6f58f936f7ca4d/docs/zh/user_guide/msprof_parsing_instruct.md#L127"},{"name":"快速入门 · 结果目录与 Insight 导入","url":"https://gitcode.com/Ascend/msprof/blob/2238b62b101ddcff3e796e83da6f58f936f7ca4d/docs/zh/quick_start/msprof_quick_start.md#L211"},{"name":"解析实现 · 按二进制读取 AI CPU 原始记录","url":"https://gitcode.com/Ascend/msprof/blob/2238b62b101ddcff3e796e83da6f58f936f7ca4d/analysis/msparser/aicpu/aicpu_bin_data_parser.py#L71"}],evidenceNote:'依据本地 msprof 提交 2238b62b101d（2026-11-18 核对）；预览不访问文件系统，不保证某项文件必然生成。'};
+attachHelp('artifacts',$('artifact-help-slot'));
+helpDefinitions['download-estimate']={title:'预计下载量',text:()=>['download-kind','volume-relation','download-description','download-advice'].map(id=>$(id).textContent).filter(Boolean).join('\n'),design:true,evidenceNote:'体量模型与测量口径见「数据量关系与模型边界」；仅作配置比较。'};
+attachHelp('download-estimate',$('download-help-slot'));
+attachHelp('estimate',document.querySelector('.estimate-label'),'?');
+for(const key of ['quick','timeline','deep']){const preset=document.querySelector('[data-preset='+key+']'),wrap=document.createElement('div');wrap.className='preset-choice';preset.replaceWith(wrap);wrap.append(preset);attachHelp(key,wrap)}
+for(const id of ['application','output'])attachHelp(id,document.querySelector('[data-label-for='+id+']'));
+attachHelp('delay',$('window-start-label'));attachHelp('duration',$('window-end-label'));
+for(const id of ['host-freq']){const label=document.querySelector('label[for='+id+']'),wrap=document.createElement('span');wrap.className='label-help';label.replaceWith(wrap);wrap.append(label);attachHelp(id,wrap)}
+for(const id of switches)attachHelp(id,$(id).closest('.control-row').querySelector('.control-name'));
+attachHelp('metric',document.querySelector('[data-label-for=metric]'));
+for(const [key] of extraSpecs)attachHelp('extra-'+key,document.querySelector('[data-label-for=extra-'+key+']'));
+for(const id of ['cal-environment','cal-baseline','cal-profiled','cal-raw','cal-export'])attachHelp(id,document.querySelector('[data-label-for='+id+']'));
+for(const id of ['volume-ranks','download-content'])attachHelp(id,document.querySelector('[data-label-for='+id+']'));
+// A dependent numeric control shares the switch name; only its unit is repeated visually.
+function shareSliderName(key,parent,name){
+ const input=$(key),field=input.closest('.field')||$('host-detail'),numeric=input.closest('.numeric-control');
+ if(field!==$('host-detail'))field.classList.add('dependent-slider');
+ const label=document.querySelector('label[for='+key+']'),heading=label.closest('[data-label-for]')||label.closest('.range-row');
+ if(heading)heading.classList.add('sr-only');
+ label.textContent=name;
+ const unit=document.createElement('span');unit.className='numeric-unit';unit.id=key+'-unit';unit.textContent='Hz';numeric.append(unit);
+ for(const control of numeric.querySelectorAll('input')){control.setAttribute('aria-label',name);control.setAttribute('aria-describedby',unit.id)}
+ helpDefinitions[key].title=name;
+ const help=document.querySelector('[data-help='+key+']');help.setAttribute('aria-label',name+'：查看采样频率说明与来源');numeric.append(help);
+}
+for(const [key,,,kind,,dep] of extraSpecs){
+ if(!/^\d+:\d+$/.test(kind)||!dep||dep==='system')continue;
+ const parent=dep==='sample'?$('core'):switches.includes(dep)?$(dep):$('extra-'+dep);
+ const name=parent.getAttribute('aria-label')||document.querySelector('[data-label-for=extra-'+dep+'] label').textContent;
+ shareSliderName('extra-'+key,parent,name);
+}
+shareSliderName('host-freq',$('host'),$('host').getAttribute('aria-label'));
+// Keep AI Core mode and its conditional frequency beside the AI Core switch details.
+$('core-detail').append($('extra-aic-mode').closest('.field'),$('extra-aic-freq').closest('.field'));
+// Reuse the established list-panel layout and keep each dependent control with its switch.
+const extraPanel=$('extra-fields'),advanced=extraPanel.closest('.advanced'),legacyBox=advanced.querySelector('.data-box');
+const rowDescriptions={
+ 'model-execution':'额外启用 GE 模型执行采集；建议使用 task-time。',hccl:'额外启用多卡/多节点通信采集；建议使用 task-time。',
+ 'ge-api':'动态 Shape 算子的 Host 调度耗时。',l2:'独立采集 L2 / TLB；可用性取决于芯片与场景。',
+ 'sys-hardware-mem':'Device 内存读写、缓存及带宽。','sys-cpu-profiling':'AI CPU、Ctrl CPU 等 Device CPU 明细。','sys-profiling':'Device 系统级 CPU 与内存。','sys-pid-profiling':'Device 各进程 CPU 与内存。',
+ 'sys-io-profiling':'NIC、RoCE、MAC 或 UB 带宽，按芯片支持采集。','sys-interconnection-profiling':'芯片间通信与 PCIe 等互联数据。','dvpp-profiling':'视频和图像预处理相关数据。',
+ 'host-sys':'填写 cpu、mem、disk、network、osrt，多个项目用逗号分隔。',type:'选择自动解析产物：text 或 db。','storage-limit':'限制原始数据存储量；留空表示不限制。',environment:'应用环境变量，格式为 KEY=value;KEY=value。'
+};
+function listField(key){
+ const field=$('extra-'+key).closest('.field');
+ field.classList.add('control-row');
+ const heading=field.querySelector('[data-label-for]');heading.classList.add('control-name');
+ const copy=document.createElement('div');copy.className='control-copy';
+ if(field.classList.contains('boolean-field')){field.insertBefore(copy,heading);copy.append(heading)}else field.classList.add('config-row');
+ if(rowDescriptions[key]){const desc=document.createElement('div');desc.className='control-desc';desc.textContent=rowDescriptions[key];if(field.classList.contains('boolean-field'))copy.append(desc);else heading.after(desc)}
+ return field;
+}
+const groupSpecs=[
+ ['compatibility','兼容采集开关','官方标注将弃用，建议优先使用算子时间线 task-time；关闭时省略兼容参数。',['model-execution','hccl']],
+ ['operators','算子补充','按分析目标补充算子与调度数据。',['aicpu','ge-api','l2']],
+ ['device-resources','Device 资源','采样频率随所属开关展开。',['sys-hardware-mem','sys-cpu-profiling','sys-profiling','sys-pid-profiling']],
+ ['device-io','网络与媒体','按芯片和运行环境核对可用能力。',['sys-io-profiling','sys-interconnection-profiling','dvpp-profiling']],
+ ['host-process','Host 进程与 I/O','与 04 中的 Host 系统资源采样分开配置。',['host-sys']],
+ ['output','输出与运行','控制结果格式、存储量及应用环境。',['type','storage-limit','environment']]
+];
+const grouped=[];
+for(const [id,title,description,keys] of groupSpecs){
+ const section=document.createElement('section');section.className='collection-group';section.dataset.collectionGroup=id;section.setAttribute('aria-labelledby','collection-group-'+id);
+ const heading=document.createElement('h3');heading.id='collection-group-'+id;heading.textContent=title;
+ const desc=document.createElement('p');desc.className='group-description';desc.textContent=description;
+ const box=document.createElement('div');box.className='data-box group-panel';
+ for(const key of keys){const item=document.createElement('div');item.className='collection-item';
+  if(key==='aicpu')item.append($('aicpu').closest('.control-row'));else item.append(listField(key));
+  for(const [child,,,,,dep] of extraSpecs)if(dep===key){const field=$('extra-'+child).closest('.field');if(!field.classList.contains('dependent-slider'))field.classList.add('nested');item.append(field)}
+  box.append(item);
+ }
+ section.append(heading,desc,box);grouped.push(section);
+}
+for(const key of ['sys-period','sys-devices'])$('system-scope-fields').append(listField(key));
+$('host-detail').append($('extra-host-sys-usage').closest('.field'));
+$('mstx-detail').append($('extra-mstx-domain-include').closest('.field'),$('extra-mstx-domain-exclude').closest('.field'));
+extraPanel.className='collection-groups';extraPanel.replaceChildren(...grouped);legacyBox.remove();
+// Give the optional measurement inputs the same bounded-list structure.
+for(const [title,ids] of [['对照耗时',['cal-environment','cal-baseline','cal-profiled']],['产物大小',['cal-raw','cal-export']]]){
+ const first=$(ids[0]).closest('.field'),caption=document.createElement('div'),box=document.createElement('div');caption.className='calibration-subtitle';caption.textContent=title;box.className='data-box calibration-panel';first.before(caption,box);for(const id of ids)box.append($(id).closest('.field'));
+}
+// Centralize post-processing controls instead of duplicating CLI fields.
+for(const section of document.querySelectorAll('.controls>.section'))if(section.id!=='postprocess-section')section.dataset.captureOnly='true';
+document.querySelector('.advanced').dataset.captureOnly='true';
+const outputField=$('output').closest('.field');outputField.classList.add('control-row','config-row');$('workflow-output-slot').append(outputField);
+const formatField=$('extra-type').closest('.field');$('workflow-format-slot').append(formatField);document.querySelector('label[for=extra-type]').textContent='解析产物格式';
+const downloadField=$('download-content').closest('.field');downloadField.classList.add('control-row','config-row');$('workflow-download-slot').append(downloadField);
+document.querySelector('.download-options>summary').textContent='调整估算范围（Rank）';
+for(const el of document.querySelector('.preview').children)if(el.id!=='artifact-preview')el.dataset.workflowCapturePreview='true';
+const preview=document.createElement('section');preview.id='workflow-existing-preview';preview.className='workflow-existing-preview';preview.hidden=true;const title=document.createElement('h3');title.textContent='已有数据补解析';const text=document.createElement('p');text.textContent='使用现有 PROF 数据生成解析导出命令。此流程不启动应用采集；解析耗时和已有数据大小需以实际结果为准。';preview.append(title,text);document.querySelector('.preview').append(preview);
+helpDefinitions['workflow-mode']={title:'处理流程',text:'新采集沿用 msprof 应用启动采集及自动解析；已有数据模式生成 export 命令，对未解析数据先解析再导出。流程选择不是新增 CLI 开关。',source:'processing'};
+helpDefinitions['workflow-prof-dir']={title:'已有数据目录（执行端）',text:'映射离线导出的 --output，可填写 PROF_XXX 或其父目录。需要解析工具能直接访问该文件目录，不接受对象存储 URL 或流式输入。',source:'processing'};
+helpDefinitions['workflow-view']={title:'查看方式',text:'本地查看需下载可导入产物；远端查看使用服务器已部署的 Insight/JupyterLab 服务，完整数据无需先下载到用户电脑。部署和联网不由 msprof 采集参数控制。',source:'remoteWorkflow'};
+helpDefinitions['workflow-service']={title:'已有 Insight 服务地址',text:'填写已部署的 Insight/JupyterLab 或平台代理入口，仅作为浏览器导航地址。demo 不部署服务、不做连通性检查、不发送数据路径，不代表边采集边流式分析。',source:'remoteWorkflow'};
+sources.processing={name:'仓库 · 解析与导出使用说明',url:'https://gitcode.com/Ascend/msprof/blob/2238b62b101ddcff3e796e83da6f58f936f7ca4d/docs/zh/user_guide/msprof_parsing_instruct.md'};
+sources.remoteWorkflow={name:'Insight 官方 · JupyterLab 与远程访问',url:'https://www.hiascend.com/document/detail/zh/mindstudio/82RC1/GUI_baseddevelopmenttool/msascendinsightug/Insight_userguide_0014.html'};
+for(const id of ['workflow-mode','workflow-prof-dir','workflow-view','workflow-service'])attachHelp(id,document.querySelector('[data-label-for='+id+']'));
+for(const id of ['workflow-mode','workflow-view'])$(id).addEventListener('change',()=>{workflow[id==='workflow-mode'?'mode':'view']=$(id).value;editorIssue='';update()});
+for(const id of ['workflow-prof-dir','workflow-service'])$(id).addEventListener('input',update);
+helpTooltip.addEventListener('pointerenter',()=>clearTimeout(helpTimer));helpTooltip.addEventListener('pointerleave',scheduleHideHelp);
+helpTooltip.addEventListener('focusout',event=>{if(!helpTooltip.contains(event.relatedTarget)&&event.relatedTarget!==activeHelp)scheduleHideHelp()});
+document.addEventListener('pointerdown',event=>{if(activeHelp&&!activeHelp.contains(event.target)&&!helpTooltip.contains(event.target))hideHelp()});
+document.querySelector('.body-grid').addEventListener('scroll',hideHelp,true);
+window.addEventListener('resize',hideHelp);
+
+const choicePills=[];
+const choiceLabels={
+ 'extra-aic-mode':{'task-based':'按任务','sample-based':'按频率'},
+ 'extra-host-sys-usage':{'cpu,mem':'CPU 与内存',cpu:'仅 CPU',mem:'仅内存'},
+ 'extra-ge-api':{off:'关闭',l0:'L0 主要阶段',l1:'L1 详细阶段'},
+ 'extra-llc-profiling':{read:'读取',write:'写入'},
+ 'extra-type':{text:'完整结果 · text',db:'Insight 数据库 · db'},
+ 'workflow-mode':{capture:'新采集',existing:'已有数据'},
+ 'workflow-view':{local:'本地 Insight',remote:'远端浏览器'},
+ 'download-content':{all:'完整目录',raw:'仅原始',export:'仅导出'}
+};
+function syncChoicePills(){for(const {select,group,buttons} of choicePills){group.setAttribute('aria-disabled',String(select.disabled));for(const button of buttons){const chosen=button.dataset.choiceValue===select.value;button.setAttribute('aria-checked',String(chosen));button.tabIndex=chosen&&!select.disabled?0:-1;button.disabled=select.disabled||Boolean(select.querySelector('option[value="'+button.dataset.choiceValue+'"]')?.disabled)}}}
+for(const select of document.querySelectorAll('select')){
+ const options=[...select.querySelectorAll('option')];if(options.length>4||!options.length)continue;
+ const group=document.createElement('div');group.className='pills choice-pills';group.dataset.choiceFor=select.id;group.setAttribute('role','radiogroup');group.style.setProperty('--choice-count',options.length);
+ const label=document.querySelector('label[for='+select.id+']');if(label){label.id=label.id||select.id+'-label';group.setAttribute('aria-labelledby',label.id);label.addEventListener('click',event=>{event.preventDefault();group.querySelector('[aria-checked=true]')?.focus()})}else group.setAttribute('aria-label',select.getAttribute('aria-label')||select.id);
+ const buttons=options.map(option=>{const button=document.createElement('button');button.type='button';button.className='pill';button.setAttribute('role','radio');button.dataset.choiceValue=option.value;button.textContent=choiceLabels[select.id]?.[option.value]||option.textContent;
+ button.addEventListener('click',()=>{if(select.disabled||button.disabled||select.value===option.value)return;select.value=option.value;select.dispatchEvent(new window.Event('change',{bubbles:true}));syncChoicePills()});group.append(button);return button});
+ group.addEventListener('keydown',event=>{const enabled=buttons.filter(button=>!button.disabled),index=enabled.indexOf(document.activeElement);if(index<0)return;let next;if(['ArrowRight','ArrowDown'].includes(event.key))next=(index+1)%enabled.length;else if(['ArrowLeft','ArrowUp'].includes(event.key))next=(index+enabled.length-1)%enabled.length;else if(event.key==='Home')next=0;else if(event.key==='End')next=enabled.length-1;else return;event.preventDefault();enabled[next].focus();enabled[next].click()});
+ select.hidden=true;select.tabIndex=-1;select.setAttribute('aria-hidden','true');select.after(group);choicePills.push({select,group,buttons});
+}
+document.addEventListener('change',syncChoicePills);
+syncChoicePills();
+// Keep estimate inputs with configuration; the preview only presents results.
+const rankField=$('volume-ranks').closest('.field'),rankBox=document.createElement('div');rankBox.className='data-box group-panel rank-setting';
+const rankNumeric=document.createElement('div');rankNumeric.className='numeric-control';const rankSlider=document.createElement('input');rankSlider.id='slider-volume-ranks';rankSlider.className='range';rankSlider.type='range';rankSlider.min='1';rankSlider.max='65536';rankSlider.step='1';rankSlider.value='1';rankSlider.setAttribute('aria-label','采集 Rank 数（估算范围）');
+$('volume-ranks').classList.add('step-input');$('volume-ranks').before(rankNumeric);rankNumeric.append(rankSlider,$('volume-ranks'));rankBox.append(rankField);$('application').closest('.section').append(rankBox);
+document.querySelector('label[for=volume-ranks]').textContent='采集 Rank 数（估算范围）';const rankNote=document.createElement('p');rankNote.className='control-desc';rankNote.textContent='只影响体量估算，不自动部署多卡任务，也不限制实际采集 Rank。';rankField.append(rankNote);
+rankSlider.addEventListener('input',()=>{$('volume-ranks').value=rankSlider.value;update()});
+document.querySelector('.download-options').remove();
+const searchBox=document.createElement('div');searchBox.className='parameter-search';searchBox.setAttribute('role','search');searchBox.innerHTML='<svg class="parameter-search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="6.7" cy="6.7" r="4.5"/><path d="m10 10 4 4"/></svg><input id="parameter-search" type="search" placeholder="搜索参数" aria-label="搜索配置参数" aria-controls="parameter-search-results" autocomplete="off"><div id="parameter-search-results" class="parameter-search-results" aria-label="参数搜索结果" hidden></div>';$('controls-header').append(searchBox);
+const searchMessage=document.createElement('p');searchMessage.id='parameter-search-message';searchMessage.className='parameter-search-message';searchMessage.setAttribute('role','status');searchMessage.hidden=true;$('controls-header').after(searchMessage);
+
+const applicationOnly=[document.querySelector('[data-preset]').closest('.section'),$('window-slider').closest('.section'),$('application').closest('.field'),$('app-hint'),$('mstx-detail'),$('host-detail'),$('volume-ranks').closest('.rank-setting'),...['task','ascendcl','runtime','mstx','memory','host','aicpu'].map(id=>$(id).closest('.control-row')),...['compatibility','operators','host-process'].map(id=>document.querySelector('[data-collection-group='+id+']')),$('extra-environment').closest('.field')];
+function renderCaptureScope(){
+ const system=state.scope==='system',existing=workflow.mode==='existing';$('capture-scope').value=state.scope;
+ for(const el of applicationOnly)if(el)el.hidden=system||existing;for(const key of ['sys-period','sys-devices'])$('extra-'+key).closest('.field').hidden=!system;
+ $('system-scope-fields').hidden=!system;
+ const coreNote=$('core-detail').querySelector('p');if(coreNote){coreNote.dataset.applicationText=coreNote.dataset.applicationText||coreNote.textContent;coreNote.textContent=system?'独立系统采集建议按频率采样；不需要联动应用时间线。':coreNote.dataset.applicationText}
+ $('mstx-detail').hidden=system||!state.mstx;$('host-detail').hidden=system||!state.host;
+ if(system&&!existing){
+  $('core-detail').hidden=!state.core;$('overhead').textContent='—';$('overhead-unit').hidden=true;$('overhead-title').textContent='系统采集开销';$('risk').textContent='尚未建模';$('risk').dataset.risk='medium';$('risk').closest('.estimate-head').dataset.risk='medium';
+  $('data-size-label').textContent='原始数据量';$('data-size').textContent='待采集';$('data-window').textContent=state.extra['sys-devices']+' · '+state.extra['sys-period']+' 秒；体量模型未校准';$('data-size').dataset.source='pending';
+  $('capture-range').textContent=state.extra['sys-period']+' 秒系统采集';$('enabled-count').textContent=(Number(state.core)+extraSpecs.filter(([key,,,kind])=>systemKeys.has(key)&&kind==='off,on'&&state.extra[key]==='on').length)+' 项数据';
+  $('download-size').textContent=workflow.view==='remote'?'无需整包下载':'待采集';$('download-kind').textContent='系统采集未建模';$('download-size').dataset.source='pending';$('download-description').textContent='独立系统采集需按实际设备与采样结果确认文件大小。';$('volume-relation').textContent='不使用应用事件密度和估算 Rank 数外推系统数据量。';$('download-advice').textContent='';$('breakdown').textContent='独立系统采集开销未建模。';
+ }
+ document.querySelector('.volume-breakdown').hidden=system;$('external-measurements').hidden=system;
+}
+$('capture-scope').addEventListener('change',()=>{state.scope=$('capture-scope').value;if(state.scope==='system'){state.core=true;state.extra={...state.extra,'aic-mode':'sample-based'}}editorIssue='';markCustom();update()});
+const parameterAliases={'capture-scope':'采集方式 独立系统 sys-period sys-devices',application:'--application 应用 启动 命令',output:'--output 输出 结果 路径 保存',task:'--task-time 算子 时间线',ascendcl:'--ascendcl ACL 接口',runtime:'--runtime-api 运行时',mstx:'--msproftx 打点',core:'--ai-core --aic-metrics PMU',memory:'--task-memory 算子 内存',host:'--host-sys-usage 主机 CPU 内存',aicpu:'--aicpu',metric:'--aic-metrics 指标组', 'host-freq':'--host-sys-usage-freq 主机采样频率', 'volume-ranks':'rank ranks 卡数 估算范围', 'window-start-number':'delay 采集开始 时间', 'window-end-number':'duration 采集结束 时长', 'workflow-mode':'采集 解析 export parse 流程','workflow-prof-dir':'PROF 原始 数据 目录','workflow-view':'本地 远端 浏览器 查看','workflow-service':'Insight 服务器 服务 地址 URL','download-content':'下载 原始 导出 产物'};
+const parameterEntries=[...document.querySelectorAll('.controls input[id],.controls select[id],.controls button[role=switch]')].filter(el=>!el.id.startsWith('slider-')&&!['parameter-search','host-freq-number'].includes(el.id)).map(el=>{
+ const spec=extraSpecs.find(x=>'extra-'+x[0]===el.id),label=document.querySelector('label[for='+el.id+']'),help=helpDefinitions[el.id],title=spec?spec[1]:label?label.textContent:el.getAttribute('aria-label')||el.id;
+ const flags=spec?'--'+spec[0]:parameterAliases[el.id]||el.id;return {id:el.id,title,flags,spec,keywords:(title+' '+flags+' '+(typeof help?.text==='string'?help.text:'')).toLowerCase()};
+});
+let parameterHighlight=null,parameterHighlightTimer;
+function clearParameterSearch(){const input=$('parameter-search');if(input)input.value='';$('parameter-search-results').hidden=true;$('parameter-search-message').hidden=true;clearTimeout(parameterHighlightTimer);if(parameterHighlight)parameterHighlight.removeAttribute('data-search-highlight');parameterHighlight=null}
+function resolveParameter(entry){
+ const element=$(entry.id);if(workflow.mode==='existing'&&element.closest('[data-capture-only]'))return {target:$('workflow-mode'),reason:'该参数用于新采集，请先在处理流程中选择“新采集”。'};
+ if(workflow.mode!=='existing'&&((entry.spec?.[5]==='system'&&state.scope!=='system')||(state.scope==='system'&&applicationOnly.some(el=>el?.contains(element)))))return {target:$('capture-scope'),reason:'请先切换到该参数适用的采集方式。'};
+ if(entry.spec&&!extraActive(entry.spec[0],state)){const dep=entry.spec[5];const parent=dep==='sample'?(state.core?$('extra-aic-mode'):$('core')):switches.includes(dep)?$(dep):$('extra-'+dep);return {target:parent,reason:dep==='sample'&&state.core?'请先将 AI Core 采集模式切换为“按频率”。':'请先开启“'+(parent.getAttribute('aria-label')||parent.closest('.field').querySelector('label').textContent)+'”。'};}
+ if((entry.id==='host-freq')&&!state.host)return {target:$('host'),reason:'请先开启“Host CPU 与内存”。'};
+ if(entry.id==='metric'&&!state.core)return {target:$('core'),reason:'请先开启“AI Core 硬件指标”。'};
+ if(entry.id==='workflow-prof-dir'&&workflow.mode!=='existing')return {target:$('workflow-mode'),reason:'请先在处理流程选择“已有数据”。'};
+ if(entry.id==='workflow-service'&&workflow.view!=='remote')return {target:$('workflow-view'),reason:'请先选择“远端浏览器”查看方式。'};
+ if(entry.id==='download-content'&&workflow.view==='remote')return {target:$('workflow-view'),reason:'请先选择“本地 Insight”查看方式。'};
+ return {target:element,reason:''};
+}
+function locateParameter(entry){
+ const resolved=resolveParameter(entry);let target=resolved.target;const pills=document.querySelector('[data-choice-for='+target.id+']');if(pills)target=pills.querySelector('[aria-checked=true]')||pills.querySelector('button');
+ for(let parent=target.parentElement;parent;parent=parent.parentElement)if(parent.tagName==='DETAILS')parent.open=true;
+ $('parameter-search-results').hidden=true;$('parameter-search-message').hidden=false;$('parameter-search-message').textContent='已定位：'+entry.title+'。'+resolved.reason;
+ clearTimeout(parameterHighlightTimer);if(parameterHighlight)parameterHighlight.removeAttribute('data-search-highlight');parameterHighlight=target.closest('.field,.control-row,.window-card')||target;parameterHighlight.setAttribute('data-search-highlight','true');
+ target.focus({preventScroll:true});const scroller=document.querySelector(window.innerWidth<=760?'.body-grid':'.controls'),rect=target.getBoundingClientRect(),port=scroller.getBoundingClientRect(),header=$('controls-header').getBoundingClientRect();scroller.scrollTo({top:Math.max(0,scroller.scrollTop+rect.top-port.top-header.height-28),behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+ parameterHighlightTimer=setTimeout(()=>{if(parameterHighlight)parameterHighlight.removeAttribute('data-search-highlight');parameterHighlight=null},2200);
+}
+function renderParameterSearch(){
+ const query=$('parameter-search').value.trim().toLowerCase(),results=$('parameter-search-results');results.replaceChildren();if(!query){results.hidden=true;return}
+ const terms=query.split(/\s+/),matches=parameterEntries.filter(entry=>terms.every(term=>entry.keywords.includes(term)));results.hidden=false;const headerRect=$('controls-header').getBoundingClientRect(),searchRect=searchBox.getBoundingClientRect();results.style.width=Math.min(370,headerRect.width-24,window.innerWidth-32)+'px';results.style.right=-(headerRect.right-12-searchRect.right)+'px';
+ const status=document.createElement('p');status.className='parameter-search-status';status.textContent=matches.length?'找到 '+matches.length+' 项'+(matches.length>8?'，显示前 8 项':''):'未找到匹配参数';status.setAttribute('role','status');results.append(status);
+ for(const entry of matches.slice(0,8)){const button=document.createElement('button');button.type='button';button.className='parameter-search-result';button.dataset.parameterId=entry.id;const title=document.createElement('span');title.textContent=entry.title;const flags=document.createElement('small'),resolved=resolveParameter(entry);flags.textContent=entry.flags+(resolved.reason?' · '+resolved.reason:'');button.append(title,flags);button.addEventListener('click',()=>locateParameter(entry));results.append(button)}
+}
+window.addEventListener('resize',()=>{if(!$('parameter-search-results').hidden)renderParameterSearch()});
+$('parameter-search').addEventListener('input',renderParameterSearch);$('parameter-search').addEventListener('focus',()=>{if($('parameter-search').value)renderParameterSearch()});
+searchBox.addEventListener('keydown',event=>{const buttons=[...$('parameter-search-results').querySelectorAll('button')];if(event.key==='Escape'){event.preventDefault();event.stopPropagation();clearParameterSearch();$('parameter-search').focus();return}if(event.key==='Enter'&&event.target===$('parameter-search')&&buttons.length){event.preventDefault();buttons[0].click();return}if(['ArrowDown','ArrowUp'].includes(event.key)&&buttons.length){event.preventDefault();const index=buttons.indexOf(document.activeElement),next=event.key==='ArrowDown'?(index+1)%buttons.length:(index<0?buttons.length-1:(index-1+buttons.length)%buttons.length);buttons[next].focus()}});
+document.addEventListener('pointerdown',event=>{if(!searchBox.contains(event.target))$('parameter-search-results').hidden=true});
+const originalFormState=new Map([...document.querySelectorAll('.lab-panel input,.lab-panel select')].map(el=>[el,{value:el.tagName==='SELECT'?(el.querySelector('option[selected]')||el.querySelector('option')).value:el.getAttribute('value')||'',min:el.getAttribute('min'),max:el.getAttribute('max'),step:el.getAttribute('step')} ]));
+const originalDetailsState=new Map([...document.querySelectorAll('.lab-panel details')].map(el=>[el,el.hasAttribute('open')]));
+const resetButton=$('reset');resetButton.className='button';resetButton.innerHTML='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5a5.5 5.5 0 1 1-.4 5M3 1.8V5h3.2"/></svg><span>复原</span>'; resetButton.setAttribute('aria-label','复原全部初始配置');document.querySelector('.toolbar-actions').append(resetButton);
+// Keep scrollbar geometry stable while hiding idle scroll thumbs.
+for(const scroller of document.querySelectorAll('.controls,.command-panel,.preview,#command,.body-grid')){
+ scroller.classList.add('transient-scrollbar');let scrollIdleTimer;
+ scroller.addEventListener('scroll',()=>{
+  scroller.classList.add('is-scrolling');clearTimeout(scrollIdleTimer);
+  scrollIdleTimer=setTimeout(()=>scroller.classList.remove('is-scrolling'),800);
+ },{passive:true});
+}
+update();
+
+</script>
+</body>
+</html>
