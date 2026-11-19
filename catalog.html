@@ -134,10 +134,13 @@ select {
 }
 
 .cann-primary {
+  width: 100%;
+  max-width: 1680px;
+  margin: 0 auto;
   height: 62px;
   padding: 0 32px;
   display: grid;
-  grid-template-columns: minmax(260px, 1fr) minmax(320px, 520px) minmax(260px, 1fr);
+  grid-template-columns: minmax(220px, 1fr) minmax(320px, 520px);
   align-items: center;
   gap: var(--space-6);
   overflow: hidden;
@@ -150,6 +153,7 @@ select {
 
 .cann-topbar.is-collapsed .cann-primary {
   height: 0;
+  min-height: 0;
   padding-top: 0;
   padding-bottom: 0;
   opacity: 0;
@@ -192,7 +196,7 @@ select {
   width: 84px;
   height: 32px;
   flex: 0 0 auto;
-  display: inline-flex;
+  display: none;
   align-items: center;
   justify-content: center;
   overflow: visible;
@@ -210,19 +214,6 @@ select {
   font-weight: 700;
   line-height: 1;
   white-space: nowrap;
-}
-
-.follow-pill {
-  height: 32px;
-  padding: 0 13px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-default);
-  background: var(--surface-1);
-  color: var(--foreground-secondary);
-  font-size: 13px;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
 }
 
 .global-search {
@@ -375,7 +366,7 @@ select {
 
 .side-nav {
   position: sticky;
-  top: 136px;
+  top: 84px;
   max-height: calc(100vh - 92px);
   overflow: auto;
   align-self: start;
@@ -384,7 +375,7 @@ select {
 }
 
 body.is-header-collapsed .side-nav {
-  top: 76px;
+  top: 22px;
 }
 
 .side-title {
@@ -801,7 +792,7 @@ body.is-header-collapsed .side-nav {
 @media (max-width: 1280px) {
   .cann-primary {
     padding: 0 22px;
-    grid-template-columns: minmax(220px, 1fr) minmax(260px, 420px) minmax(220px, 1fr);
+    grid-template-columns: minmax(220px, 1fr) minmax(260px, 420px);
   }
 
   .cann-nav-wrap {
@@ -826,10 +817,10 @@ body.is-header-collapsed .side-nav {
     height: auto;
     min-height: 118px;
     padding: 14px 18px;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr;
     grid-template-areas:
-      "brand actions"
-      "search search";
+      "brand"
+      "search";
     gap: var(--space-3);
   }
 
@@ -888,8 +879,7 @@ body.is-header-collapsed .side-nav {
     grid-template-columns: 1fr;
     grid-template-areas:
       "brand"
-      "search"
-      "actions";
+      "search";
   }
 
   .cann-actions {
@@ -900,11 +890,6 @@ body.is-header-collapsed .side-nav {
   .create-btn {
     min-width: 0;
     flex: 1;
-  }
-
-  .cann-name,
-  .follow-pill {
-    display: none;
   }
 
   .card-grid {
@@ -947,14 +932,10 @@ body.is-header-collapsed .side-nav {
   <header class="cann-topbar">
     <div class="cann-primary">
       <div class="cann-brand">
-        <button class="cann-menu" type="button" aria-label="打开主菜单">
-          <svg class="svg-icon"><use href="#icon-menu"></use></svg>
-        </button>
-        <a class="cann-logo" href="catalog.html" aria-label="返回陈列馆">
+        <a class="cann-logo" href="catalog.html" aria-label="返回陈列馆" hidden>
           <img src="assets/logo-cann.svg" alt="CANN">
         </a>
         <strong class="cann-name">AI 开发工具链</strong>
-        <span class="follow-pill">已关注</span>
       </div>
 
       <label class="global-search" aria-label="全局搜索">
@@ -962,29 +943,7 @@ body.is-header-collapsed .side-nav {
         <input id="globalSearch" type="search" placeholder="按下 / 快速开启搜索" autocomplete="off">
       </label>
 
-      <div class="cann-actions">
-        <a class="btn btn-solid create-btn" href="#grid">陈列馆</a>
-        <button class="bell-btn" type="button" aria-label="通知">
-          <svg class="svg-icon" aria-hidden="true"><use href="#icon-bell"></use></svg>
-          <span class="notify-count">92</span>
-        </button>
-        <button class="avatar-btn" type="button" aria-label="个人头像">
-          <svg class="svg-icon" aria-hidden="true"><use href="#icon-user-round"></use></svg>
-        </button>
-      </div>
     </div>
-
-    <nav class="cann-nav-wrap" aria-label="CANN 顶部导航">
-      <div class="cann-nav">
-        <a class="cann-nav-link" href="#grid"><svg class="svg-icon nav-icon" aria-hidden="true"><use href="#icon-folder"></use></svg>项目 <span class="count-badge" id="projectCount"></span></a>
-        <a class="cann-nav-link" href="#grid"><svg class="svg-icon nav-icon" aria-hidden="true"><use href="#icon-layers"></use></svg>合集</a>
-        <a class="cann-nav-link" href="#grid"><svg class="svg-icon nav-icon" aria-hidden="true"><use href="#icon-circle-dot"></use></svg>Issues</a>
-        <a class="cann-nav-link" href="#grid"><svg class="svg-icon nav-icon" aria-hidden="true"><use href="#icon-git-pull-request"></use></svg>Pull Requests</a>
-        <a class="cann-nav-link" href="#grid"><svg class="svg-icon nav-icon" aria-hidden="true"><use href="#icon-columns-3"></use></svg>看板</a>
-        <a class="cann-nav-link" href="#grid"><svg class="svg-icon nav-icon" aria-hidden="true"><use href="#icon-users-round"></use></svg>社区</a>
-        <a class="cann-nav-link is-active" href="#grid" aria-current="page"><svg class="svg-icon nav-icon" aria-hidden="true"><use href="#icon-toolbox"></use></svg>工具</a>
-      </div>
-    </nav>
   </header>
 
   <main class="page-shell">
@@ -1029,7 +988,7 @@ const launchItems = [
   {
     "title": "性能分析2.0",
     "group": "Agent与协作",
-    "status": "lo-fi",
+    "status": "hi-fi",
     "desc": "模型训/推性能分析，Agent辅助性能调优",
     "href": "https://lovebearanddonkey.github.io/InsightChat/app/pages/chat.html",
     "preview": "",
@@ -1045,7 +1004,7 @@ const launchItems = [
   {
     "title": "采集指令沙箱",
     "group": "采集与执行",
-    "status": "lo-fi",
+    "status": "hi-fi",
     "desc": "表单式、命令式采集指令编排与效果预估",
     "href": "https://lovebearanddonkey.github.io/AI-Development-Toolchain/性能采集实验台.html",
     "preview": "",
@@ -1061,7 +1020,7 @@ const launchItems = [
   {
     "title": "训练配置校验",
     "group": "底层与运行生态",
-    "status": "lo-fi",
+    "status": "hi-fi",
     "desc": "模型结构与并行配置可视化，训练配置兼容性校验，配置寻优",
     "href": "https://lovebearanddonkey.github.io/InsightChat/demo/",
     "preview": "",
@@ -1077,7 +1036,6 @@ const launchItems = [
 ];
 
 const visibleLaunchItems = launchItems.filter((item) => !item.hidden);
-document.getElementById("projectCount").textContent = visibleLaunchItems.length;
 
 const STATUS_META = {
   "hi-fi": { label: "可体验", cls: "is-live" },
