@@ -1,0 +1,1506 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>msModeling · 硬件画像</title>
+<!-- Local, standalone workbench. Form grouping follows config-relation-plane-mindspeed-config-mcp;
+     rank shells adapt rank-intro.html's three-face drawBox vocabulary and selection behavior.
+     Device data is embedded from the current msmodeling worktree; no simulation or registry write occurs. -->
+<style>
+:root{--fg:#182232;--muted:#637083;--soft:#8c96a5;--line:#e3e8ef;--blue:#2563eb;--tint:#eef4ff;--bg:#fff;--mono:ui-monospace,Consolas,"SFMono-Regular",monospace;font-family:Inter,"Segoe UI","Microsoft YaHei",sans-serif;color:var(--fg);font-size:14px;color-scheme:light}*{box-sizing:border-box}body{margin:0;background:var(--bg)}button,input,select,textarea{font:inherit}button{cursor:pointer;color:inherit}button:disabled{cursor:not-allowed;opacity:.45}button,input,select{accent-color:var(--blue)}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible,[role=button]:focus-visible{outline:3px solid #9ab9ff;outline-offset:3px}[hidden]{display:none!important}button{border:1px solid var(--line);background:white;border-radius:7px;padding:8px 12px}button:hover{border-color:#aebdd1}button.primary{background:var(--blue);border-color:var(--blue);color:white}a{color:var(--blue);text-underline-offset:3px}.topbar{height:66px;padding:0 28px;border-bottom:0;display:flex;align-items:center;justify-content:space-between;background:#fff;gap:16px}.brand{display:flex;align-items:center;gap:12px;white-space:nowrap}.brand-icon{width:29px;height:29px;background:#192c48;border-radius:8px;display:grid;place-items:center;color:white;font:700 17px var(--mono)}.brand strong{font-size:17px;letter-spacing:-.5px}.brand .divider{height:18px;width:1px;background:var(--line);margin:0 5px}.brand span:last-child{color:var(--muted)}.top-actions{display:flex;align-items:center;gap:9px}.local-label{font-size:12px;color:var(--soft);margin-right:7px}.workbench{height:calc(100dvh - 66px);display:grid;grid-template-columns:380px minmax(0,1fr);gap:12px;padding:12px}.config{min-height:0;background:transparent;border:0;border-radius:0;display:flex;flex-direction:column;overflow:hidden}.config-head{padding:19px 20px 14px;display:flex;align-items:center;justify-content:space-between}.config-head h1{font-size:17px;margin:0;font-weight:650}.secondary-btn{padding:6px 11px;border:1px solid #d9e0e9;border-radius:7px;color:var(--muted);font-size:12px;line-height:1.5;background:transparent}.secondary-btn:hover{background:#f5f7fa;border-color:#aebdd1;color:var(--fg)}.secondary-btn:active{background:#edf1f6}.config-tabs{display:flex;padding:0 20px;border-bottom:1px solid var(--line);gap:26px}.config-tabs button{padding:12px 0;border:0;border-radius:0;color:var(--muted);background:none;border-bottom:2px solid transparent}.config-tabs button[aria-selected=true]{color:var(--blue);border-bottom-color:var(--blue);font-weight:600}.config-body{padding:0 20px 24px;overflow:auto;min-height:0;scrollbar-width:thin;scrollbar-color:#d6dde7 transparent}.section{padding:22px 0;border-bottom:1px solid var(--line)}.section:last-child{border:0}.section-heading{display:flex;align-items:center;gap:8px;margin-bottom:15px}.section h2{font-size:14px;margin:0;font-weight:650}.section-heading .order{color:#9ca7b8;font:11px var(--mono);margin-right:3px}.subtle,.hint{font-size:12px;line-height:1.75;color:var(--muted);margin:9px 0 0}.hint{padding:10px 12px;border-radius:7px;background:#f6f8fb}.hint.blue{background:var(--tint);color:#335b9e}.field{margin-top:18px;min-width:0}.field:first-child{margin-top:0}.field-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}.field-head label{font-size:14px}.unit{font:12px var(--mono);color:var(--soft)}input[type=text],input[type=number],select{min-width:0;width:100%;height:37px;border:1px solid #d9e0e9;border-radius:7px;padding:7px 10px;background:white;color:var(--fg)}input:disabled,select:disabled{background:#f6f8fa;color:#748095;opacity:1}input[aria-invalid=true]{border-color:#ce4b4b;background:#fff8f7}input[type=range]{width:100%;height:5px;margin:10px 0;cursor:pointer}.numeric{display:grid;grid-template-columns:minmax(0,1fr) 90px;gap:14px;align-items:center}.numeric input[type=number]{text-align:right;font-family:var(--mono)}.limits{display:flex;justify-content:space-between;color:var(--soft);font-size:11px;margin-top:3px}.seg{display:flex;gap:3px;background:#f0f3f7;padding:3px;border-radius:8px}.seg button{flex:1;border:0;background:transparent;padding:8px 9px;white-space:nowrap;font-size:13px;color:var(--muted)}.seg button[aria-pressed=true]{background:white;box-shadow:0 1px 4px #1e325414;color:var(--blue);font-weight:600}.family-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.family-card{padding:11px 4px;text-align:center;font-size:12px;border-radius:8px}.family-card svg{display:block;margin:0 auto 7px;width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:1.2}.family-card[aria-pressed=true],choice-card[aria-pressed=true]{border-color:var(--blue);background:var(--tint);color:var(--blue)}.choice-list{display:grid;gap:7px}.choice-card{text-align:left;padding:11px 12px;font-size:13px}.choice-card[aria-pressed=true]{border-color:var(--blue);background:var(--tint);box-shadow:inset 3px 0 var(--blue)}.choice-card small{display:block;font-size:11px;color:var(--muted);margin-top:4px}.profile-id{font:11px/1.6 var(--mono);color:var(--soft);overflow-wrap:anywhere;margin-top:9px}.help{position:relative;display:inline-block;flex:none}.help summary{list-style:none;cursor:pointer;width:17px;height:17px;display:grid;place-items:center;border:1px solid #c5cedb;border-radius:50%;color:#8190a4;font:11px var(--mono)}.help summary::-webkit-details-marker{display:none}.help[open] summary{color:var(--blue);border-color:var(--blue)}.help>div{position:absolute;right:0;top:25px;width:278px;padding:13px 14px;z-index:40;background:#fff;border:1px solid var(--line);border-radius:9px;box-shadow:0 8px 25px #18223222;font-size:12px;line-height:1.8;color:var(--muted)}.help strong{color:var(--fg)}.help code{font:11px var(--mono);overflow-wrap:anywhere}.readout{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #edf0f5;padding:10px 0;font-size:13px}.readout span{color:var(--muted)}.readout b{font-weight:500;font-family:var(--mono)}.chip-tag{display:inline-flex;align-items:center;border:1px solid #dce6f6;background:#f6f9ff;color:#55709c;padding:3px 7px;border-radius:5px;font-size:11px}.two-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}.two-cols .field{margin-top:0}.metric-row{display:grid;grid-template-columns:70px 1fr 1fr;gap:8px;align-items:center;margin-top:9px;font-size:12px}.metric-row .dtype{font-family:var(--mono)}.metric-row input{text-align:right;font-family:var(--mono);font-size:13px}.metric-head{font-size:11px;color:var(--soft)}.topology-card{border:1px solid var(--line);border-radius:9px;padding:13px;margin-top:12px}.topology-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px;font-size:13px;font-weight:600}.stage{min-width:0;min-height:0;background:transparent;border:0;border-radius:0;display:flex;flex-direction:column;position:relative;overflow:hidden}.stage-top{padding:25px 30px 0;display:flex;justify-content:space-between;gap:14px}.stage-title{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:9px}.stage-title h2{font-size:28px;font-weight:600;letter-spacing:-1px;margin:0}.stage-top p{font-size:13px;color:var(--muted);margin:9px 0 0;line-height:1.7}.stage-top .seg{align-self:flex-start}.stage-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:19px 30px 0}.legend{display:flex;gap:18px;color:var(--muted);font-size:12px}.legend span{display:flex;align-items:center;gap:6px}.legend i{display:inline-block;width:8px;height:8px;border-radius:2px;border:1px solid #afbfce;background:#f3f6fa}.legend .selected{background:#5589f2;border-color:#5589f2}.legend .peer{background:#d8e6ff;border-color:#a6c1f0}.stage-toolbar .seg{background:#eaf0f6}.stage-toolbar .seg button{font-size:12px;padding:6px 10px}.scene{flex:1;min-height:260px;position:relative;overflow:hidden;background:transparent}#rank-scene{width:100%;height:100%;display:block;touch-action:pan-y}.rank-unit{cursor:pointer;outline:none}.rank-unit:hover .shell{stroke:#578af0;stroke-width:1.6}.rank-unit:focus-visible .shell{stroke:#1c56cb;stroke-width:2}.scene-tools{position:absolute;left:28px;bottom:18px;display:flex;align-items:center;gap:3px;border:1px solid var(--line);background:#ffffffed;border-radius:8px;padding:3px;box-shadow:0 3px 10px #27344806}.scene-tools button{border:0;padding:5px 11px;background:transparent;font-size:15px}.scene-tools output{font:12px var(--mono);min-width:42px;text-align:center}.paging{position:absolute;right:27px;bottom:18px;display:flex;align-items:center;gap:9px;color:var(--muted);font:11px var(--mono)}.paging button{padding:5px 10px;background:#fff}.selected-info{position:absolute;left:28px;top:17px;border-left:2px solid #638deb;padding-left:12px;pointer-events:none}.selected-info strong{font:600 14px var(--mono)}.selected-info p{font-size:12px;color:var(--muted);margin:6px 0 0;line-height:1.6}.stage-bottom{flex:none;margin:0 25px 21px}.detail-strip{background:transparent;border:0;border-radius:0;display:grid;grid-template-columns:repeat(4,1fr);padding:17px 4px;box-shadow:none}.detail-item{padding:0 18px;border-right:1px solid var(--line)}.detail-item:last-child{border:0}.detail-item span{font-size:12px;color:var(--muted)}.detail-item strong{display:block;font:500 23px/1.6 var(--mono);margin-top:3px;white-space:nowrap}.detail-item strong small{font:12px var(--mono);color:var(--muted);margin-left:5px}.detail-item p{font-size:11px;color:var(--soft);margin:3px 0 0;line-height:1.5}.error-box{color:#af342e;background:#fff4f2;border:1px solid #f3cfca;border-radius:7px;padding:10px 12px;font-size:12px;line-height:1.8;margin:14px 0 0}.export-box{width:min(900px,calc(100% - 32px));border:1px solid var(--line);border-radius:14px;padding:0;box-shadow:0 25px 80px #15233c30}.export-box::backdrop{background:#17274060;backdrop-filter:blur(3px)}.dialog-head{display:flex;justify-content:space-between;align-items:center;padding:19px 24px;border-bottom:1px solid var(--line)}.dialog-head h2{font-size:18px;margin:0}.dialog-body{padding:20px 24px;max-height:75dvh;overflow:auto}.dialog-body h3{font-size:16px;margin:24px 0 10px}.dialog-body h3:first-child{margin-top:0}.dialog-body p,.dialog-body li{font-size:14px;line-height:1.85;color:var(--muted)}.dialog-body table{border-collapse:collapse;width:100%;font-size:13px;line-height:1.8}.dialog-body th,.dialog-body td{text-align:left;padding:10px;border-bottom:1px solid var(--line);vertical-align:top}.dialog-body th{background:#f5f7fb}.dialog-body code{font:12px var(--mono);overflow-wrap:anywhere}pre{background:#f5f7fb;border:1px solid var(--line);border-radius:9px;padding:17px;font:12px/1.8 var(--mono);max-height:43dvh;overflow:auto;white-space:pre-wrap;word-break:break-word}.dialog-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:15px}.notice{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);padding:12px 20px;background:#1c2c46;color:white;border-radius:9px;box-shadow:0 5px 20px #18223220;z-index:100;font-size:13px;max-width:90vw}.scene-empty{font-size:16px;fill:#8d99ab}.custom-only-label{color:#b17a3c;font-size:11px}.topology-links{font-size:12px;line-height:1.8;color:var(--muted);margin-top:12px}.profile-picker-label{display:flex;justify-content:space-between}.profile-picker-label span{font-size:11px;color:var(--soft)}
+@media(min-width:1700px){.workbench{grid-template-columns:410px 1fr;padding:18px;gap:18px}.stage-top{padding-top:32px}.config-body{padding-left:25px;padding-right:25px}.stage-title h2{font-size:34px}}
+@media(max-width:1100px){.workbench{grid-template-columns:340px 1fr}.stage-top{padding:23px 20px 0;flex-wrap:wrap}.stage-title h2{font-size:24px}.stage-toolbar{padding-left:20px;padding-right:20px;flex-wrap:wrap}.detail-item{padding:0 10px}.detail-item strong{font-size:18px}.stage-bottom{margin:0 15px 18px}.local-label{display:none}.selected-info{left:20px}}
+@media(max-width:760px){.topbar{padding:12px 16px;height:auto;min-height:66px;gap:10px;flex-wrap:wrap}.brand strong{font-size:15px}.brand{gap:8px}.top-actions{gap:6px}.top-actions button{padding:7px 9px;font-size:12px}.workbench{height:auto;display:flex;flex-direction:column;padding:10px}.config{max-height:560px}.config-body{min-height:240px}.stage{min-height:690px}.scene{min-height:340px}.stage-top{padding:22px 18px 0}.stage-title h2{font-size:24px}.detail-strip{grid-template-columns:1fr 1fr;row-gap:18px}.detail-item:nth-child(2){border:0}.detail-item strong{font-size:21px}.paging{right:15px}.scene-tools{left:15px}.selected-info{top:12px;left:18px}.dialog-body{padding:17px}.dialog-head{padding:17px}.dialog-body table{font-size:12px}.scene-tools button{padding:5px 9px}}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="brand"><span class="brand-icon" aria-hidden="true">M</span><strong>msModeling</strong><span class="divider"></span><span>硬件画像</span></div><div class="top-actions"><span class="local-label">本地构建 · 无需连接设备</span><button id="rules-open">约束说明</button><button id="export-open" class="primary">导出画像</button></div></header>
+<main class="workbench">
+ <aside class="config" aria-label="硬件画像配置">
+  <div class="config-head"><h1>画像配置</h1><button class="secondary-btn" id="reset">恢复默认</button></div>
+  <div class="config-tabs" role="tablist" aria-label="配置分组"><button id="tab-device" role="tab" aria-selected="true" aria-controls="panel-device" data-tab="device">设备与规模</button><button id="tab-performance" role="tab" aria-selected="false" aria-controls="panel-performance" tabindex="-1" data-tab="performance">算力与内存</button><button id="tab-connect" role="tab" aria-selected="false" aria-controls="panel-connect" tabindex="-1" data-tab="connect">互连拓扑</button></div>
+  <div class="config-body">
+   <div id="panel-device" role="tabpanel" aria-labelledby="tab-device">
+    <section class="section"><div class="section-heading"><span class="order">01</span><h2>选择硬件</h2></div>
+     <div class="seg" id="source-mode" role="group" aria-label="画像来源"><button data-mode="builtin" aria-pressed="true">内置画像</button><button data-mode="custom" aria-pressed="false">自定义副本</button></div>
+     <p class="subtle" id="mode-hint">从仓库已注册设备中选择，规格与互连随型号载入；所有规格均可直接编辑。</p>
+     <div class="field"><div class="field-head"><label>设备系列</label><span class="unit" id="device-option-count"></span></div><div id="family" class="family-grid" role="group" aria-label="设备系列"></div><p class="subtle" id="family-filter-note">系列卡片仅筛选型号，不改变当前配置。</p></div>
+     <div class="field"><div class="field-head"><label id="profile-label">具体型号</label><details class="help"><summary aria-label="哪些设备可选">?</summary><div><strong>内置清单来自当前仓库。</strong><br>CLI 只接受已注册的 <code>DeviceProfile.name</code>。自定义设备不受厂商品牌名单限制，但需要先注册 Python 画像；导出文件不会自动注册。快照不自动探测本机设备。</div></details></div><div id="profile-picker"></div><div class="profile-id" id="profile-id"></div></div>
+     <div id="custom-identity" hidden><div class="field"><div class="field-head"><label for="custom-name">画像名称</label><span class="unit">唯一标识</span></div><input id="custom-name" type="text" spellcheck="false"><p class="subtle">建议大写字母、数字与下划线；必须与已注册名称不同。</p></div><div class="two-cols field"><div><label for="custom-vendor">厂商</label><input id="custom-vendor" type="text" style="margin-top:9px"></div><div><label for="granularity">建模单元</label><div class="seg" id="granularity" role="group" aria-label="自定义建模单元" style="margin-top:9px"><button data-grain="card" aria-pressed="true">单卡</button><button data-grain="die" aria-pressed="false">单 die</button><button data-grain="unit" aria-pressed="false">其他</button></div></div></div></div>
+     <p class="hint blue" id="granularity-note"></p>
+    </section>
+    <section class="section"><div class="section-heading"><span class="order">02</span><h2>选择互连方案</h2><details class="help" style="margin-left:auto"><summary aria-label="设备与互连方案的关系">?</summary><div>型号决定单元规格，互连方案决定设备如何连接及容量。下面列出仓库中该型号已有的方案；选择自定义可编辑网格与各层链路。已有方案不代表型号只能以这些方式组网，自定义后仍需核对实际硬件与后端支持。</div></details></div><div id="connection-picker"></div><p class="subtle" id="connection-note"></p></section>
+    <section class="section"><div class="section-heading"><span class="order">03</span><h2>部署规模</h2><details class="help" style="margin-left:auto"><summary aria-label="设备数的限制">?</summary><div><strong>本次使用数量与拓扑容量不同。</strong><br><code>num_devices</code> / <code>world_size</code> 为正整数，不超过画像的 <code>grid.numel()</code>。数量本身不强制为 2 的幂；实际仿真还受 TP/DP/PP 与模型整除关系约束。切换型号或方案会保留使用数量，超限时需要明确调整。</div></details></div>
+     <div class="field"><div class="field-head"><label for="device-count">本次使用的设备单元</label><span class="unit" id="count-unit">die</span></div><div class="numeric"><input id="count-slider" type="range" min="1" max="768" value="32" aria-label="设备单元数量滑动调节"><input id="device-count" type="number" min="1" max="768" step="1" value="32" aria-describedby="count-range"></div><div class="limits" id="count-range"><span>1</span><span>上限 768</span></div></div>
+     <div id="count-warning" class="error-box" role="alert" hidden><span id="count-warning-text"></span><button id="apply-capacity" class="secondary-btn" style="display:block;margin-top:9px">使用容量上限</button></div>
+     <div class="seg field" id="count-presets" role="group" aria-label="常用部署规模"></div>
+     <div class="readout"><span>物理卡折算</span><b id="card-count"></b></div><div class="readout"><span>布局分组</span><b id="node-count"></b></div><div class="readout"><span>拓扑容量</span><b id="grid-capacity"></b></div>
+     <p class="subtle">矩阵按每个设备单元一个 Rank 顺序编号示意。这里构建硬件与规模；TP、PP、DP、EP 等运行策略需在模型仿真时配置。</p>
+    </section>
+    <section class="section"><div class="section-heading"><h2>示例与测试</h2></div><p class="subtle">合成数据，用于熟悉仿真流程，不属于真实设备系列。</p><button id="load-test-profile" class="secondary-btn" style="margin-top:12px">载入测试画像</button></section>
+   </div>
+   <div id="panel-performance" role="tabpanel" aria-labelledby="tab-performance" hidden>
+    <section class="section"><div class="section-heading"><span class="order">01</span><h2>设备内存</h2><span class="custom-only-label" style="margin-left:auto">直接编辑 · 自动生成副本</span></div><div id="memory-fields"></div><p class="subtle">容量按 GiB（2³⁰ Bytes）、带宽按 GiB/s 显示；导出时恢复为 Bytes 与 Bytes/s。总内存是容量相加，不代表单个 Rank 可以访问全部内存。</p></section>
+    <section class="section"><div class="section-heading"><span class="order">02</span><h2>峰值计算能力</h2><details class="help" style="margin-left:auto"><summary aria-label="算力如何填写">?</summary><div><code>mma_ops</code> 为矩阵计算峰值，<code>gp_ops</code> 为通用/vector 计算峰值。表内单位均为 10¹² operations/s；整数常称 TOPS，浮点常称 TFLOPS。空白代表没有该条目，不表示零耗时或自动支持。FP8 变体在仓库中共享归一化性能值。</div></details></div><div class="metric-row metric-head"><span>数据类型</span><span>矩阵 · T op/s</span><span>通用 · T op/s</span></div><div id="compute-fields"></div><p class="subtle">填写峰值只提供性能模型参数，不会增加算子、模型或真实后端对该数据类型的支持。</p><div id="efficiency-fields"></div></section>
+    <section class="section"><div class="section-heading"><span class="order">03</span><h2>固定调度成本</h2></div><div id="static-fields"></div><p class="subtle">设备侧每次操作的固定成本，不是 msprof 采集开销。</p></section>
+   </div>
+   <div id="panel-connect" role="tabpanel" aria-labelledby="tab-connect" hidden>
+    <section class="section"><div class="section-heading"><span class="order">01</span><h2>通信网格</h2></div><div class="field"><div class="field-head"><label>拓扑维数</label><details class="help"><summary aria-label="通信网格硬限制">?</summary><div><strong>CommGrid 硬限制：</strong>至少一维，每一维大小至少为 2，且维数必须等于拓扑条目数。本页提供 1–4 维、每维 2–1024、总容量不超过 65,536，后三者是页面编辑范围，不是仓库统一上限。可用 1 个设备执行仿真，但网格仍至少容纳 2 个设备。</div></details></div><div id="grid-dimensions" class="seg" role="group" aria-label="拓扑维数"></div></div><div id="grid-fields"></div><p class="hint" id="grid-expression"></p><p class="subtle">维度从外到内排列，通常外层连接较慢、内层较快。每个 start_dim 对应从该维开始的子拓扑；分组示意不等于真实机架接线或通信组映射。</p></section>
+    <section class="section"><div class="section-heading"><span class="order">02</span><h2>各层互连</h2></div><div id="topology-fields"></div><p class="subtle">带宽均为单向，每层参数是仓库建模值。切换 Full mesh / CLOS 只改变拓扑类型，不自动调整带宽或证明物理连接可实现。</p></section>
+    <section class="section"><div class="section-heading"><span class="order">03</span><h2>主机与设备链路</h2></div><div id="host-fields"></div><p class="hint">主机带宽为 0 表示缺少可用链路，依赖 Host 传输的操作会被拒绝。内置 Host 延迟与传输效率含待标定占位值。</p></section>
+   </div>
+   <div id="validation-errors" class="error-box" role="alert" hidden></div>
+  </div>
+ </aside>
+ <section class="stage" aria-label="硬件实物布局">
+  <div class="stage-top"><div><div class="stage-title"><h2 id="hardware-title">Atlas 800 A3</h2><span class="chip-tag" id="source-badge">仓库内置</span></div><p id="hardware-subtitle"></p></div><div class="seg" id="scene-view" role="group" aria-label="布局视角"><button data-view="iso" aria-pressed="true">等距视图</button><button data-view="flat" aria-pressed="false">平面视图</button></div></div>
+  <div class="stage-toolbar"><div class="legend"><span><i class="selected"></i>选中单元</span><span><i class="peer"></i>同组单元</span><span><i></i>其他单元</span></div><div class="seg" id="scene-layer" role="group" aria-label="布局呈现内容"><button data-layer="device" aria-pressed="true">设备</button><button data-layer="memory" aria-pressed="false">内存容量</button><button data-layer="connect" aria-pressed="false">互连关系</button></div><div class="seg" id="scene-tiers" role="group" aria-label="查看互连层级" hidden></div></div>
+  <div class="scene" id="scene"><svg id="rank-scene" viewBox="0 0 1000 540" role="group" aria-label="可选择的 Rank 设备矩阵"></svg><div class="selected-info" id="selected-info"></div><div class="scene-tools"><button id="zoom-out" aria-label="缩小布局">−</button><output id="zoom-label">100%</output><button id="zoom-in" aria-label="放大布局">＋</button><button id="zoom-reset" aria-label="适配布局">适配</button></div><div class="paging"><button id="page-prev" aria-label="上一组设备">‹</button><span id="page-label"></span><button id="page-next" aria-label="下一组设备">›</button></div></div>
+  <div class="stage-bottom"><div class="detail-strip"><div class="detail-item"><span id="total-unit-label">设备单元</span><strong id="summary-count"></strong><p id="summary-count-note"></p></div><div class="detail-item"><span>总设备内存</span><strong id="summary-memory"></strong><p>全部所选单元的容量之和</p></div><div class="detail-item"><span>单元矩阵算力 · BF16</span><strong id="summary-compute"></strong><p>峰值，未乘计算效率</p></div><div class="detail-item"><span>单元内存带宽</span><strong id="summary-bandwidth"></strong><p>峰值，未乘访存效率</p></div></div></div>
+ </section>
+</main>
+<dialog id="rules-dialog" class="export-box" aria-labelledby="rules-title"><div class="dialog-head"><h2 id="rules-title">哪些是硬限制，哪些可以自定义？</h2><button data-close="rules-dialog" aria-label="关闭约束说明">关闭</button></div><div class="dialog-body">
+ <p>设备与互连选项整理自当前 msmodeling 工作树的 26 个内置画像；按规格合并为 15 种真实设备型号，测试画像另列。系列卡片只筛选型号，选择型号才应用规格。自定义副本允许编辑规格，导出后仍需在仓库中注册。页面不会执行模型仿真，也不会检测本机硬件。</p>
+ <table><thead><tr><th>配置项</th><th>仓库实际约束</th><th>本页的处理方式</th></tr></thead><tbody>
+ <tr><td>设备型号</td><td>运行时名称必须存在于 DeviceProfile 注册表；名称唯一。</td><td>内置规格可直接编辑，首次修改自动创建自定义副本。其他厂商可自行建画像。</td></tr>
+ <tr><td>本次使用数量</td><td>正整数，不能超过网格容量；运行时还有并行与模型约束。</td><td>1 到当前网格容量，支持非 2 的幂；切换型号或方案保留数量；超限时提示，用户可手动调整或选择“使用容量上限”。</td></tr>
+ <tr><td>通信网格</td><td>至少一维，每维 ≥2；维数等于拓扑条目数。</td><td>编辑器提供 1–4 维，每维 2–1024，总容量 ≤65,536。这是页面范围，仓库未规定统一容量上限。</td></tr>
+ <tr><td>内存、带宽、算力</td><td>DeviceProfile 构造器未统一校验数值最小/最大值；默认 0 不表示可用硬件能力。</td><td>有值时要求有限正数；Host 带宽允许为 0。滑条是快捷范围，输入框可填更大正数。</td></tr>
+ <tr><td>效率</td><td>构造器没有统一的 0–1 校验；不同消费者可能进一步约束。</td><td>采用 (0,1]，对应滑条 1–100%。这是页面合理性检查，不是声称所有后端都这样校验。</td></tr>
+ <tr><td>延迟与固定成本</td><td>构造器没有统一上限。</td><td>要求有限且 ≥0，单位 µs；滑条范围不作为输入上限。</td></tr>
+ <tr><td>拓扑类型</td><td>InterconnectType 为 CLOS 或 FULL_MESH。</td><td>两档页签；不推断真实硬件支持。</td></tr>
+ <tr><td>建模粒度</td><td>由画像定义决定；部分 A3 画像按单 die 计。</td><td>A3 内置画像每单元 64 GiB，两 die 折算一张卡；自定义单元不自动推断物理卡数。</td></tr>
+ </tbody></table>
+ <h3>数值来源与单位</h3><p>内置数据直接读取 <a href="../../msmodeling/tensor_cast/device.py" target="_blank" rel="noopener">tensor_cast/device.py</a> 及注册表，冻结于 2026-11-20 本地工作树。数值是仿真参数，包含效率估值、延迟与静态成本等待标定项，不应直接当作厂商规格承诺。</p><p>内存显示 GiB；内存带宽显示 GiB/s；互连与主机链路显示 GB/s。各项导出为 Bytes、Bytes/s、seconds 和 operations/s。总内存可相加，但不表示跨设备统一可寻址或模型一定放得下。</p>
+ <h3>导出的内容有什么用？</h3><p>JSON 保存画像规格、来源、页面校验范围和部署数量；Python 文件用于新增自定义 DeviceProfile。数量单独保存，不能写进单设备内存。保存 Python 到 <code>tensor_cast/device_profiles/</code> 后，需在新进程中执行导入注册检查，再通过模型仿真验证。内置画像可直接用原名称，页面不重复生成同名注册项。</p>
+ <p>参考：<a href="../../msmodeling/tensor_cast/device_profiles/README.md" target="_blank" rel="noopener">自定义画像指南</a> · <a href="../../msmodeling/cli/utils.py" target="_blank" rel="noopener">设备名称与拓扑容量检查</a> · <a href="../../msmodeling/cli/registry/validators.py" target="_blank" rel="noopener">并行策略关系校验</a>。</p>
+</div></dialog>
+<dialog id="export-dialog" class="export-box" aria-labelledby="export-title"><div class="dialog-head"><h2 id="export-title">导出硬件画像</h2><button data-close="export-dialog" aria-label="关闭导出">关闭</button></div><div class="dialog-body"><div class="seg" id="export-format" role="group" aria-label="导出格式"><button data-format="json" aria-pressed="true">JSON 配置</button><button data-format="python" aria-pressed="false">Python 画像</button></div><p id="export-description"></p><pre id="export-code" tabindex="0"></pre><div class="dialog-actions"><button id="copy-code">复制内容</button><button id="download-code" class="primary">下载文件</button></div><p class="subtle">导出保存在本机，不会提交、注册画像或运行性能仿真。</p></div></dialog>
+<div class="notice" id="notice" role="status" hidden></div>
+<script id="profile-snapshot" type="application/json">[
+  {
+    "name": "TEST_DEVICE",
+    "vendor": "TEST_VENDOR",
+    "compute_efficiency": 0.7,
+    "memory_size_bytes": 68719476736,
+    "memory_bandwidth_bytes_ps": 1759218604441.6,
+    "memory_efficiency": 0.6,
+    "host_bandwidth_bytes_ps": 32000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 99500000000000.0,
+      "bfloat16": 353900000000000.0,
+      "float16": 353900000000000.0,
+      "int8": 707800000000000.0,
+      "float8_e5m2": 707800000000000.0,
+      "hif8": 707800000000000.0,
+      "int4": 1415600000000000.0
+    },
+    "gp_ops": {
+      "float32": 5500000000000.0,
+      "bfloat16": 11000000000000.0,
+      "float16": 11000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 0
+    },
+    "grid": [
+      256,
+      8
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 50000000000.0,
+        "latency_s": 1e-05,
+        "comm_efficiency": 0.7,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 1,
+        "bandwidth_bytes_ps": 196000000000.0,
+        "latency_s": 1.3e-06,
+        "comm_efficiency": 0.7,
+        "type": "FULL_MESH"
+      }
+    ]
+  },
+  {
+    "name": "ATLAS_800_A2_376T_64G",
+    "vendor": "HUAWEI",
+    "compute_efficiency": 0.7,
+    "memory_size_bytes": 68719476736,
+    "memory_bandwidth_bytes_ps": 1759218604441.6,
+    "memory_efficiency": 0.6,
+    "host_bandwidth_bytes_ps": 32000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 99500000000000.0,
+      "bfloat16": 353900000000000.0,
+      "float16": 376000000000000.0,
+      "int8": 752000000000000.0
+    },
+    "gp_ops": {
+      "float32": 11000000000000.0,
+      "bfloat16": 22000000000000.0,
+      "float16": 22000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 9.999999999999999e-06
+    },
+    "grid": [
+      128,
+      8
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 25000000000.0,
+        "latency_s": 1.5e-06,
+        "comm_efficiency": 0.7,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 1,
+        "bandwidth_bytes_ps": 196000000000.0,
+        "latency_s": 5e-07,
+        "comm_efficiency": 0.7,
+        "type": "FULL_MESH"
+      }
+    ]
+  },
+  {
+    "name": "ATLAS_800_A2_313T_64G",
+    "vendor": "HUAWEI",
+    "compute_efficiency": 0.7,
+    "memory_size_bytes": 68719476736,
+    "memory_bandwidth_bytes_ps": 1759218604441.6,
+    "memory_efficiency": 0.6,
+    "host_bandwidth_bytes_ps": 32000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 83000000000000.0,
+      "bfloat16": 294900000000000.0,
+      "float16": 313000000000000.0,
+      "int8": 626000000000000.0
+    },
+    "gp_ops": {
+      "float32": 9000000000000.0,
+      "bfloat16": 18000000000000.0,
+      "float16": 18000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 9.999999999999999e-06
+    },
+    "grid": [
+      128,
+      8
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 25000000000.0,
+        "latency_s": 1.5e-06,
+        "comm_efficiency": 0.7,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 1,
+        "bandwidth_bytes_ps": 196000000000.0,
+        "latency_s": 5e-07,
+        "comm_efficiency": 0.7,
+        "type": "FULL_MESH"
+      }
+    ]
+  },
+  {
+    "name": "ATLAS_800_A2_280T_64G",
+    "vendor": "HUAWEI",
+    "compute_efficiency": 0.7,
+    "memory_size_bytes": 68719476736,
+    "memory_bandwidth_bytes_ps": 1759218604441.6,
+    "memory_efficiency": 0.6,
+    "host_bandwidth_bytes_ps": 32000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 75000000000000.0,
+      "bfloat16": 245800000000000.0,
+      "float16": 280000000000000.0,
+      "int8": 560000000000000.0
+    },
+    "gp_ops": {
+      "float32": 8000000000000.0,
+      "bfloat16": 16000000000000.0,
+      "float16": 16000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 9.999999999999999e-06
+    },
+    "grid": [
+      128,
+      8
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 25000000000.0,
+        "latency_s": 1.5e-06,
+        "comm_efficiency": 0.7,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 1,
+        "bandwidth_bytes_ps": 196000000000.0,
+        "latency_s": 5e-07,
+        "comm_efficiency": 0.7,
+        "type": "FULL_MESH"
+      }
+    ]
+  },
+  {
+    "name": "ATLAS_800_A2_280T_64G_PCIE",
+    "vendor": "HUAWEI",
+    "compute_efficiency": 0.7,
+    "memory_size_bytes": 68719476736,
+    "memory_bandwidth_bytes_ps": 1759218604441.6,
+    "memory_efficiency": 0.6,
+    "host_bandwidth_bytes_ps": 32000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 75000000000000.0,
+      "bfloat16": 245800000000000.0,
+      "float16": 280000000000000.0,
+      "int8": 560000000000000.0
+    },
+    "gp_ops": {
+      "float32": 8000000000000.0,
+      "bfloat16": 16000000000000.0,
+      "float16": 16000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 9.999999999999999e-06
+    },
+    "grid": [
+      8
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 64000000000.0,
+        "latency_s": 2e-07,
+        "comm_efficiency": 0.7,
+        "type": "CLOS"
+      }
+    ]
+  },
+  {
+    "name": "ATLAS_800_A2_280T_32G_PCIE",
+    "vendor": "HUAWEI",
+    "compute_efficiency": 0.7,
+    "memory_size_bytes": 34359738368,
+    "memory_bandwidth_bytes_ps": 879609302220.8,
+    "memory_efficiency": 0.6,
+    "host_bandwidth_bytes_ps": 32000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 75000000000000.0,
+      "bfloat16": 245800000000000.0,
+      "float16": 280000000000000.0,
+      "int8": 560000000000000.0
+    },
+    "gp_ops": {
+      "float32": 8000000000000.0,
+      "bfloat16": 16000000000000.0,
+      "float16": 16000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 9.999999999999999e-06
+    },
+    "grid": [
+      8
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 64000000000.0,
+        "latency_s": 2e-07,
+        "comm_efficiency": 0.7,
+        "type": "CLOS"
+      }
+    ]
+  },
+  {
+    "name": "ATLAS_800_A3_752T_128G_DIE",
+    "vendor": "HUAWEI",
+    "compute_efficiency": 0.7,
+    "memory_size_bytes": 68719476736,
+    "memory_bandwidth_bytes_ps": 1759218604441.6,
+    "memory_efficiency": 0.6,
+    "host_bandwidth_bytes_ps": 70000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 99500000000000.0,
+      "bfloat16": 353900000000000.0,
+      "float16": 376000000000000.0,
+      "int8": 752000000000000.0
+    },
+    "gp_ops": {
+      "float32": 11000000000000.0,
+      "bfloat16": 22000000000000.0,
+      "float16": 22000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 9.999999999999999e-06
+    },
+    "grid": [
+      48,
+      8,
+      2
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 196000000000.0,
+        "latency_s": 5.5e-06,
+        "comm_efficiency": 0.7,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 1,
+        "bandwidth_bytes_ps": 196000000000.0,
+        "latency_s": 5e-07,
+        "comm_efficiency": 0.7,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 2,
+        "bandwidth_bytes_ps": 224000000000.0,
+        "latency_s": 2e-07,
+        "comm_efficiency": 0.7,
+        "type": "CLOS"
+      }
+    ]
+  },
+  {
+    "name": "ATLAS_800_A3_560T_128G_DIE",
+    "vendor": "HUAWEI",
+    "compute_efficiency": 0.7,
+    "memory_size_bytes": 68719476736,
+    "memory_bandwidth_bytes_ps": 1759218604441.6,
+    "memory_efficiency": 0.6,
+    "host_bandwidth_bytes_ps": 70000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 75000000000000.0,
+      "bfloat16": 245800000000000.0,
+      "float16": 280000000000000.0,
+      "int8": 560000000000000.0
+    },
+    "gp_ops": {
+      "float32": 8000000000000.0,
+      "bfloat16": 16000000000000.0,
+      "float16": 16000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 9.999999999999999e-06
+    },
+    "grid": [
+      48,
+      8,
+      2
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 196000000000.0,
+        "latency_s": 5.5e-06,
+        "comm_efficiency": 0.7,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 1,
+        "bandwidth_bytes_ps": 196000000000.0,
+        "latency_s": 5e-07,
+        "comm_efficiency": 0.7,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 2,
+        "bandwidth_bytes_ps": 224000000000.0,
+        "latency_s": 2e-07,
+        "comm_efficiency": 0.7,
+        "type": "CLOS"
+      }
+    ]
+  },
+  {
+    "name": "ATLAS_800_A3_560T_128G_DIE_ROCE",
+    "vendor": "HUAWEI",
+    "compute_efficiency": 0.7,
+    "memory_size_bytes": 68719476736,
+    "memory_bandwidth_bytes_ps": 1759218604441.6,
+    "memory_efficiency": 0.6,
+    "host_bandwidth_bytes_ps": 70000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 75000000000000.0,
+      "bfloat16": 245800000000000.0,
+      "float16": 280000000000000.0,
+      "int8": 560000000000000.0
+    },
+    "gp_ops": {
+      "float32": 8000000000000.0,
+      "bfloat16": 16000000000000.0,
+      "float16": 16000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 9.999999999999999e-06
+    },
+    "grid": [
+      2,
+      8,
+      2
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 24500000000.0,
+        "latency_s": 5.5e-06,
+        "comm_efficiency": 0.7,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 1,
+        "bandwidth_bytes_ps": 196000000000.0,
+        "latency_s": 5e-07,
+        "comm_efficiency": 0.7,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 2,
+        "bandwidth_bytes_ps": 224000000000.0,
+        "latency_s": 2e-07,
+        "comm_efficiency": 0.7,
+        "type": "CLOS"
+      }
+    ]
+  },
+  {
+    "name": "ATLAS_350_425T_112G",
+    "vendor": "HUAWEI",
+    "compute_efficiency": 0.9,
+    "memory_size_bytes": 120259084288,
+    "memory_bandwidth_bytes_ps": 1539316278886.4,
+    "memory_efficiency": 0.8,
+    "host_bandwidth_bytes_ps": 112000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 189000000000000.0,
+      "bfloat16": 378000000000000.0,
+      "float16": 378000000000000.0,
+      "float8_e5m2": 756000000000000.0,
+      "hif8": 756000000000000.0,
+      "int8": 756000000000000.0,
+      "int4": 1512000000000000.0
+    },
+    "gp_ops": {
+      "float32": 24000000000000.0,
+      "bfloat16": 47000000000000.0,
+      "float16": 47000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 4.9999999999999996e-06
+    },
+    "grid": [
+      2,
+      2,
+      4
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 24000000000.0,
+        "latency_s": 4.5e-06,
+        "comm_efficiency": 0.5249999999999999,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 1,
+        "bandwidth_bytes_ps": 32000000000.0,
+        "latency_s": 3e-06,
+        "comm_efficiency": 0.5599999999999999,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 2,
+        "bandwidth_bytes_ps": 159000000000.0,
+        "latency_s": 1.5e-06,
+        "comm_efficiency": 0.85,
+        "type": "FULL_MESH"
+      }
+    ]
+  },
+  {
+    "name": "ATLAS_350_425T_84G",
+    "vendor": "HUAWEI",
+    "compute_efficiency": 0.9,
+    "memory_size_bytes": 90194313216,
+    "memory_bandwidth_bytes_ps": 1539316278886.4,
+    "memory_efficiency": 0.8,
+    "host_bandwidth_bytes_ps": 112000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 189000000000000.0,
+      "bfloat16": 378000000000000.0,
+      "float16": 378000000000000.0,
+      "float8_e5m2": 756000000000000.0,
+      "hif8": 756000000000000.0,
+      "int8": 756000000000000.0,
+      "int4": 1512000000000000.0
+    },
+    "gp_ops": {
+      "float32": 24000000000000.0,
+      "bfloat16": 47000000000000.0,
+      "float16": 47000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 4.9999999999999996e-06
+    },
+    "grid": [
+      2,
+      2,
+      4
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 24000000000.0,
+        "latency_s": 4.5e-06,
+        "comm_efficiency": 0.5249999999999999,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 1,
+        "bandwidth_bytes_ps": 32000000000.0,
+        "latency_s": 3e-06,
+        "comm_efficiency": 0.5599999999999999,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 2,
+        "bandwidth_bytes_ps": 159000000000.0,
+        "latency_s": 1.5e-06,
+        "comm_efficiency": 0.85,
+        "type": "FULL_MESH"
+      }
+    ]
+  },
+  {
+    "name": "ATLAS_850_486T_112G",
+    "vendor": "HUAWEI",
+    "compute_efficiency": 0.9,
+    "memory_size_bytes": 120259084288,
+    "memory_bandwidth_bytes_ps": 1539316278886.4,
+    "memory_efficiency": 0.8,
+    "host_bandwidth_bytes_ps": 112000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 216000000000000.0,
+      "bfloat16": 432000000000000.0,
+      "float16": 432000000000000.0,
+      "float8_e5m2": 865000000000000.0,
+      "hif8": 865000000000000.0,
+      "int8": 865000000000000.0,
+      "int4": 1730000000000000.0
+    },
+    "gp_ops": {
+      "float32": 27000000000000.0,
+      "bfloat16": 54000000000000.0,
+      "float16": 54000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 4.9999999999999996e-06
+    },
+    "grid": [
+      128,
+      8
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 448000000000.0,
+        "latency_s": 4.5e-06,
+        "comm_efficiency": 0.85,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 1,
+        "bandwidth_bytes_ps": 840000000000.0,
+        "latency_s": 2.2999999999999996e-06,
+        "comm_efficiency": 0.85,
+        "type": "FULL_MESH"
+      }
+    ]
+  },
+  {
+    "name": "ATLAS_850_486T_128G",
+    "vendor": "HUAWEI",
+    "compute_efficiency": 0.9,
+    "memory_size_bytes": 137438953472,
+    "memory_bandwidth_bytes_ps": 1759218604441.6,
+    "memory_efficiency": 0.8,
+    "host_bandwidth_bytes_ps": 112000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 216000000000000.0,
+      "bfloat16": 432000000000000.0,
+      "float16": 432000000000000.0,
+      "float8_e5m2": 865000000000000.0,
+      "hif8": 865000000000000.0,
+      "int8": 865000000000000.0,
+      "int4": 1730000000000000.0
+    },
+    "gp_ops": {
+      "float32": 27000000000000.0,
+      "bfloat16": 54000000000000.0,
+      "float16": 54000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 4.9999999999999996e-06
+    },
+    "grid": [
+      128,
+      8
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 448000000000.0,
+        "latency_s": 4.5e-06,
+        "comm_efficiency": 0.85,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 1,
+        "bandwidth_bytes_ps": 840000000000.0,
+        "latency_s": 2.2999999999999996e-06,
+        "comm_efficiency": 0.85,
+        "type": "FULL_MESH"
+      }
+    ]
+  },
+  {
+    "name": "ATLAS_850E_486T_96G",
+    "vendor": "HUAWEI",
+    "compute_efficiency": 0.9,
+    "memory_size_bytes": 103079215104,
+    "memory_bandwidth_bytes_ps": 4398046511104.0,
+    "memory_efficiency": 0.8,
+    "host_bandwidth_bytes_ps": 112000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 216000000000000.0,
+      "bfloat16": 432000000000000.0,
+      "float16": 432000000000000.0,
+      "float8_e5m2": 865000000000000.0,
+      "hif8": 865000000000000.0,
+      "int8": 865000000000000.0,
+      "int4": 1730000000000000.0
+    },
+    "gp_ops": {
+      "float32": 27000000000000.0,
+      "bfloat16": 54000000000000.0,
+      "float16": 54000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 4.9999999999999996e-06
+    },
+    "grid": [
+      128,
+      8
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 448000000000.0,
+        "latency_s": 4.5e-06,
+        "comm_efficiency": 0.85,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 1,
+        "bandwidth_bytes_ps": 840000000000.0,
+        "latency_s": 2.2999999999999996e-06,
+        "comm_efficiency": 0.85,
+        "type": "FULL_MESH"
+      }
+    ]
+  },
+  {
+    "name": "ATLAS_850E_425T_96G",
+    "vendor": "HUAWEI",
+    "compute_efficiency": 0.9,
+    "memory_size_bytes": 103079215104,
+    "memory_bandwidth_bytes_ps": 4398046511104.0,
+    "memory_efficiency": 0.8,
+    "host_bandwidth_bytes_ps": 112000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 189000000000000.0,
+      "bfloat16": 378000000000000.0,
+      "float16": 378000000000000.0,
+      "float8_e5m2": 756000000000000.0,
+      "hif8": 756000000000000.0,
+      "int8": 756000000000000.0,
+      "int4": 1512000000000000.0
+    },
+    "gp_ops": {
+      "float32": 24000000000000.0,
+      "bfloat16": 47000000000000.0,
+      "float16": 47000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 4.9999999999999996e-06
+    },
+    "grid": [
+      128,
+      8
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 448000000000.0,
+        "latency_s": 4.5e-06,
+        "comm_efficiency": 0.85,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 1,
+        "bandwidth_bytes_ps": 840000000000.0,
+        "latency_s": 2.2999999999999996e-06,
+        "comm_efficiency": 0.85,
+        "type": "FULL_MESH"
+      }
+    ]
+  },
+  {
+    "name": "ATLAS_850_486T_112G_ROCE",
+    "vendor": "HUAWEI",
+    "compute_efficiency": 0.9,
+    "memory_size_bytes": 120259084288,
+    "memory_bandwidth_bytes_ps": 1539316278886.4,
+    "memory_efficiency": 0.8,
+    "host_bandwidth_bytes_ps": 112000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 216000000000000.0,
+      "bfloat16": 432000000000000.0,
+      "float16": 432000000000000.0,
+      "float8_e5m2": 865000000000000.0,
+      "hif8": 865000000000000.0,
+      "int8": 865000000000000.0,
+      "int4": 1730000000000000.0
+    },
+    "gp_ops": {
+      "float32": 27000000000000.0,
+      "bfloat16": 54000000000000.0,
+      "float16": 54000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 4.9999999999999996e-06
+    },
+    "grid": [
+      8,
+      8
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 50000000000.0,
+        "latency_s": 9.999999999999999e-06,
+        "comm_efficiency": 0.85,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 1,
+        "bandwidth_bytes_ps": 392000000000.0,
+        "latency_s": 1.5e-06,
+        "comm_efficiency": 0.85,
+        "type": "FULL_MESH"
+      }
+    ]
+  },
+  {
+    "name": "ATLAS_850_486T_128G_ROCE",
+    "vendor": "HUAWEI",
+    "compute_efficiency": 0.9,
+    "memory_size_bytes": 137438953472,
+    "memory_bandwidth_bytes_ps": 1759218604441.6,
+    "memory_efficiency": 0.8,
+    "host_bandwidth_bytes_ps": 112000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 216000000000000.0,
+      "bfloat16": 432000000000000.0,
+      "float16": 432000000000000.0,
+      "float8_e5m2": 865000000000000.0,
+      "hif8": 865000000000000.0,
+      "int8": 865000000000000.0,
+      "int4": 1730000000000000.0
+    },
+    "gp_ops": {
+      "float32": 27000000000000.0,
+      "bfloat16": 54000000000000.0,
+      "float16": 54000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 4.9999999999999996e-06
+    },
+    "grid": [
+      8,
+      8
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 50000000000.0,
+        "latency_s": 9.999999999999999e-06,
+        "comm_efficiency": 0.85,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 1,
+        "bandwidth_bytes_ps": 392000000000.0,
+        "latency_s": 1.5e-06,
+        "comm_efficiency": 0.85,
+        "type": "FULL_MESH"
+      }
+    ]
+  },
+  {
+    "name": "ATLAS_850E_486T_96G_ROCE",
+    "vendor": "HUAWEI",
+    "compute_efficiency": 0.9,
+    "memory_size_bytes": 103079215104,
+    "memory_bandwidth_bytes_ps": 4398046511104.0,
+    "memory_efficiency": 0.8,
+    "host_bandwidth_bytes_ps": 112000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 216000000000000.0,
+      "bfloat16": 432000000000000.0,
+      "float16": 432000000000000.0,
+      "float8_e5m2": 865000000000000.0,
+      "hif8": 865000000000000.0,
+      "int8": 865000000000000.0,
+      "int4": 1730000000000000.0
+    },
+    "gp_ops": {
+      "float32": 27000000000000.0,
+      "bfloat16": 54000000000000.0,
+      "float16": 54000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 4.9999999999999996e-06
+    },
+    "grid": [
+      8,
+      8
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 50000000000.0,
+        "latency_s": 9.999999999999999e-06,
+        "comm_efficiency": 0.85,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 1,
+        "bandwidth_bytes_ps": 392000000000.0,
+        "latency_s": 1.5e-06,
+        "comm_efficiency": 0.85,
+        "type": "FULL_MESH"
+      }
+    ]
+  },
+  {
+    "name": "ATLAS_850E_425T_96G_ROCE",
+    "vendor": "HUAWEI",
+    "compute_efficiency": 0.9,
+    "memory_size_bytes": 103079215104,
+    "memory_bandwidth_bytes_ps": 4398046511104.0,
+    "memory_efficiency": 0.8,
+    "host_bandwidth_bytes_ps": 112000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 189000000000000.0,
+      "bfloat16": 378000000000000.0,
+      "float16": 378000000000000.0,
+      "float8_e5m2": 756000000000000.0,
+      "hif8": 756000000000000.0,
+      "int8": 756000000000000.0,
+      "int4": 1512000000000000.0
+    },
+    "gp_ops": {
+      "float32": 24000000000000.0,
+      "bfloat16": 47000000000000.0,
+      "float16": 47000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 4.9999999999999996e-06
+    },
+    "grid": [
+      8,
+      8
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 50000000000.0,
+        "latency_s": 9.999999999999999e-06,
+        "comm_efficiency": 0.85,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 1,
+        "bandwidth_bytes_ps": 392000000000.0,
+        "latency_s": 1.5e-06,
+        "comm_efficiency": 0.85,
+        "type": "FULL_MESH"
+      }
+    ]
+  },
+  {
+    "name": "ATLAS_850_486T_112G_FM16",
+    "vendor": "HUAWEI",
+    "compute_efficiency": 0.9,
+    "memory_size_bytes": 120259084288,
+    "memory_bandwidth_bytes_ps": 1539316278886.4,
+    "memory_efficiency": 0.8,
+    "host_bandwidth_bytes_ps": 112000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 216000000000000.0,
+      "bfloat16": 432000000000000.0,
+      "float16": 432000000000000.0,
+      "float8_e5m2": 865000000000000.0,
+      "hif8": 865000000000000.0,
+      "int8": 865000000000000.0,
+      "int4": 1730000000000000.0
+    },
+    "gp_ops": {
+      "float32": 27000000000000.0,
+      "bfloat16": 54000000000000.0,
+      "float16": 54000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 4.9999999999999996e-06
+    },
+    "grid": [
+      16
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 840000000000.0,
+        "latency_s": 1.5e-06,
+        "comm_efficiency": 0.85,
+        "type": "FULL_MESH"
+      }
+    ]
+  },
+  {
+    "name": "ATLAS_850_486T_128G_FM16",
+    "vendor": "HUAWEI",
+    "compute_efficiency": 0.9,
+    "memory_size_bytes": 137438953472,
+    "memory_bandwidth_bytes_ps": 1759218604441.6,
+    "memory_efficiency": 0.8,
+    "host_bandwidth_bytes_ps": 112000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 216000000000000.0,
+      "bfloat16": 432000000000000.0,
+      "float16": 432000000000000.0,
+      "float8_e5m2": 865000000000000.0,
+      "hif8": 865000000000000.0,
+      "int8": 865000000000000.0,
+      "int4": 1730000000000000.0
+    },
+    "gp_ops": {
+      "float32": 27000000000000.0,
+      "bfloat16": 54000000000000.0,
+      "float16": 54000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 4.9999999999999996e-06
+    },
+    "grid": [
+      16
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 840000000000.0,
+        "latency_s": 1.5e-06,
+        "comm_efficiency": 0.85,
+        "type": "FULL_MESH"
+      }
+    ]
+  },
+  {
+    "name": "ATLAS_850E_486T_96G_FM16",
+    "vendor": "HUAWEI",
+    "compute_efficiency": 0.9,
+    "memory_size_bytes": 103079215104,
+    "memory_bandwidth_bytes_ps": 4398046511104.0,
+    "memory_efficiency": 0.8,
+    "host_bandwidth_bytes_ps": 112000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 216000000000000.0,
+      "bfloat16": 432000000000000.0,
+      "float16": 432000000000000.0,
+      "float8_e5m2": 865000000000000.0,
+      "hif8": 865000000000000.0,
+      "int8": 865000000000000.0,
+      "int4": 1730000000000000.0
+    },
+    "gp_ops": {
+      "float32": 27000000000000.0,
+      "bfloat16": 54000000000000.0,
+      "float16": 54000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 4.9999999999999996e-06
+    },
+    "grid": [
+      16
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 840000000000.0,
+        "latency_s": 1.5e-06,
+        "comm_efficiency": 0.85,
+        "type": "FULL_MESH"
+      }
+    ]
+  },
+  {
+    "name": "ATLAS_850E_425T_96G_FM16",
+    "vendor": "HUAWEI",
+    "compute_efficiency": 0.9,
+    "memory_size_bytes": 103079215104,
+    "memory_bandwidth_bytes_ps": 4398046511104.0,
+    "memory_efficiency": 0.8,
+    "host_bandwidth_bytes_ps": 112000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 189000000000000.0,
+      "bfloat16": 378000000000000.0,
+      "float16": 378000000000000.0,
+      "float8_e5m2": 756000000000000.0,
+      "hif8": 756000000000000.0,
+      "int8": 756000000000000.0,
+      "int4": 1512000000000000.0
+    },
+    "gp_ops": {
+      "float32": 24000000000000.0,
+      "bfloat16": 47000000000000.0,
+      "float16": 47000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 4.9999999999999996e-06
+    },
+    "grid": [
+      16
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 840000000000.0,
+        "latency_s": 1.5e-06,
+        "comm_efficiency": 0.85,
+        "type": "FULL_MESH"
+      }
+    ]
+  },
+  {
+    "name": "ATLAS_950_486T_128G",
+    "vendor": "HUAWEI",
+    "compute_efficiency": 0.9,
+    "memory_size_bytes": 137438953472,
+    "memory_bandwidth_bytes_ps": 1759218604441.6,
+    "memory_efficiency": 0.8,
+    "host_bandwidth_bytes_ps": 112000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 216000000000000.0,
+      "bfloat16": 432000000000000.0,
+      "float16": 432000000000000.0,
+      "float8_e5m2": 865000000000000.0,
+      "hif8": 865000000000000.0,
+      "int8": 865000000000000.0,
+      "int4": 1730000000000000.0
+    },
+    "gp_ops": {
+      "float32": 27000000000000.0,
+      "bfloat16": 54000000000000.0,
+      "float16": 54000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 4.9999999999999996e-06
+    },
+    "grid": [
+      16,
+      8,
+      8
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 224000000000.0,
+        "latency_s": 4.5e-06,
+        "comm_efficiency": 0.85,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 1,
+        "bandwidth_bytes_ps": 448000000000.0,
+        "latency_s": 4.5e-06,
+        "comm_efficiency": 0.85,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 2,
+        "bandwidth_bytes_ps": 840000000000.0,
+        "latency_s": 2.2999999999999996e-06,
+        "comm_efficiency": 0.85,
+        "type": "FULL_MESH"
+      }
+    ]
+  },
+  {
+    "name": "ATLAS_950_486T_96G",
+    "vendor": "HUAWEI",
+    "compute_efficiency": 0.9,
+    "memory_size_bytes": 103079215104,
+    "memory_bandwidth_bytes_ps": 4398046511104.0,
+    "memory_efficiency": 0.8,
+    "host_bandwidth_bytes_ps": 112000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 216000000000000.0,
+      "bfloat16": 432000000000000.0,
+      "float16": 432000000000000.0,
+      "float8_e5m2": 865000000000000.0,
+      "hif8": 865000000000000.0,
+      "int8": 865000000000000.0,
+      "int4": 1730000000000000.0
+    },
+    "gp_ops": {
+      "float32": 27000000000000.0,
+      "bfloat16": 54000000000000.0,
+      "float16": 54000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 4.9999999999999996e-06
+    },
+    "grid": [
+      16,
+      8,
+      8
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 224000000000.0,
+        "latency_s": 4.5e-06,
+        "comm_efficiency": 0.85,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 1,
+        "bandwidth_bytes_ps": 448000000000.0,
+        "latency_s": 4.5e-06,
+        "comm_efficiency": 0.85,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 2,
+        "bandwidth_bytes_ps": 840000000000.0,
+        "latency_s": 2.2999999999999996e-06,
+        "comm_efficiency": 0.85,
+        "type": "FULL_MESH"
+      }
+    ]
+  },
+  {
+    "name": "ATLAS_950_486T_144G",
+    "vendor": "HUAWEI",
+    "compute_efficiency": 0.9,
+    "memory_size_bytes": 154618822656,
+    "memory_bandwidth_bytes_ps": 4398046511104.0,
+    "memory_efficiency": 0.8,
+    "host_bandwidth_bytes_ps": 112000000000.0,
+    "host_latency_s": 5e-06,
+    "host_transfer_efficiency": 0.8,
+    "mma_ops": {
+      "float32": 216000000000000.0,
+      "bfloat16": 432000000000000.0,
+      "float16": 432000000000000.0,
+      "float8_e5m2": 865000000000000.0,
+      "hif8": 865000000000000.0,
+      "int8": 865000000000000.0,
+      "int4": 1730000000000000.0
+    },
+    "gp_ops": {
+      "float32": 27000000000000.0,
+      "bfloat16": 54000000000000.0,
+      "float16": 54000000000000.0
+    },
+    "static_cost": {
+      "mma_op_cost_s": 4.9999999999999996e-06,
+      "gp_op_cost_s": 2e-06,
+      "comm_op_cost_s": 4.9999999999999996e-06
+    },
+    "grid": [
+      16,
+      8,
+      8
+    ],
+    "topologies": [
+      {
+        "start_dim": 0,
+        "bandwidth_bytes_ps": 224000000000.0,
+        "latency_s": 4.5e-06,
+        "comm_efficiency": 0.85,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 1,
+        "bandwidth_bytes_ps": 448000000000.0,
+        "latency_s": 4.5e-06,
+        "comm_efficiency": 0.85,
+        "type": "CLOS"
+      },
+      {
+        "start_dim": 2,
+        "bandwidth_bytes_ps": 840000000000.0,
+        "latency_s": 2.2999999999999996e-06,
+        "comm_efficiency": 0.85,
+        "type": "FULL_MESH"
+      }
+    ]
+  }
+]</script>
+<script>
+'use strict';
+const PROFILES=JSON.parse(document.getElementById('profile-snapshot').textContent);
+const $=id=>document.getElementById(id),clone=value=>JSON.parse(JSON.stringify(value)),esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const GiB=2**30,DTYPES=['float32','float16','bfloat16','int8','float8_e5m2','hif8','int4'],DTYPE_NAMES={float32:'FP32',float16:'FP16',bfloat16:'BF16',int8:'INT8',float8_e5m2:'FP8',hif8:'HiF8',int4:'FP4'};
+const state={mode:'builtin',family:'A3',base:'ATLAS_800_A3_752T_128G_DIE',profile:null,grain:'die',count:32,selected:0,tab:'device',view:'iso',layer:'device',tier:0,page:0,zoom:1,format:'json'};
+let noticeTimer,errors=[],exportText='';
+function notify(message){$('notice').textContent=message;$('notice').hidden=false;clearTimeout(noticeTimer);noticeTimer=setTimeout(()=>$('notice').hidden=true,3800)}
+function deviceKey(p){return p.name.replace(/_(ROCE|FM16|PCIE)$/,'')}
+function deviceChoices(family){const unique=new Map();for(const p of PROFILES.filter(p=>familyOf(p)===family))if(!unique.has(deviceKey(p)))unique.set(deviceKey(p),p);return [...unique.values()]}
+function deviceVariants(){return PROFILES.filter(p=>deviceKey(p)===deviceKey(PROFILES.find(p=>p.name===state.base)))}
+function topologyKey(p){return JSON.stringify([p.grid,p.topologies])}
+function connectionTitle(p){if(p.name==='TEST_DEVICE')return '合成测试互连';if(p.name.endsWith('_ROCE'))return 'RoCE';if(p.name.endsWith('_FM16'))return '16 单元 Full mesh';if(p.name.endsWith('_PCIE'))return 'PCIe';if(p.name.includes('_A3_'))return 'SIO + 分层互连';if(p.name.includes('_A2_'))return '节点内 Full mesh + CLOS';if(p.name.startsWith('ATLAS_350_'))return 'PCIe + UB';if(p.name.startsWith('ATLAS_950_'))return 'Pod 分层互连';return 'UB 分层互连'}
+function selectDevice(name){const candidates=PROFILES.filter(p=>deviceKey(p)===deviceKey(PROFILES.find(q=>q.name===name))),matched=candidates.find(p=>topologyKey(p)===topologyKey(state.profile));const previousUnit=unitName();setProfile((matched||candidates[0]).name);notify((matched?'已保留兼容互连方案':'已载入该型号的 '+connectionTitle(PROFILES.find(p=>p.name===state.base))+' 方案')+'；使用数量保留为 '+state.count+' '+unitName()+(previousUnit!==unitName()?'（原单位：'+previousUnit+'，请核对）':''))}
+function renderConnectionPicker(){const variants=deviceVariants(),custom=state.topologySource==='custom';$('connection-picker').innerHTML='<div class="choice-list" role="group" aria-label="当前型号互连方案">'+variants.map(p=>'<button class="choice-card" data-connection="'+p.name+'" aria-pressed="'+(!custom&&topologyKey(state.profile)===topologyKey(p))+'">'+esc(connectionTitle(p))+'<small>'+p.grid.join(' × ')+' 网格 · 容量 '+p.grid.reduce((a,b)=>a*b,1)+' '+unitName()+'</small></button>').join('')+'<button class="choice-card" data-connection="custom" aria-pressed="'+custom+'">自定义互连<small>自行配置网格、拓扑类型、带宽与延迟</small></button></div>';$('connection-note').textContent=custom?'使用自定义拓扑；请到“互连拓扑”配置网格与链路参数。':'选择此型号已有的互连方案，或按实际部署自定义。切换方案保留使用数量。'}
+function selectConnection(name){if(name==='custom'){ensureEditable();state.topologySource='custom';renderConnectionPicker();setTab('connect');return}const p=PROFILES.find(p=>p.name===name);if(!deviceVariants().some(q=>q.name===name))return;if(sourceLocked()){setProfile(name)}else{state.profile.grid=clone(p.grid);state.profile.topologies=clone(p.topologies);state.topologySource=name;state.tier=p.grid.length-1;state.page=0;renderConnectionPicker();renderCount();renderConnect();validate();renderSummary();renderScene()}notify('已选择 '+connectionTitle(p)+'；使用数量保留为 '+state.count+' '+unitName())}
+function familyOf(p){return p.name==='TEST_DEVICE'?'TEST':p.name.includes('_A2_')?'A2':p.name.includes('_A3_')?'A3':'A5'}
+function shortName(p){return p.name.replace('ATLAS_','').replace('_DIE',' · 单 die').replaceAll('_',' ')}
+function titleOf(p){if(p.name==='TEST_DEVICE')return 'Test Device';if(p.name.startsWith('ATLAS_800_A'))return p.name.includes('_A2_')?'Atlas 800 A2':'Atlas 800 A3';const m=p.name.match(/^ATLAS_(\d+E?)/);return m?'Atlas '+m[1]:p.name}
+function capacity(){return state.profile.grid.reduce((a,b)=>a*b,1)}
+function unitName(){return state.grain==='die'?'die':state.grain==='card'?'卡':'单元'}
+function groupSize(){const g=state.profile.grid;return g.length===1?Math.min(8,g[0]):g.slice(1).reduce((a,b)=>a*b,1)}
+function shownGroupSize(){return Math.min(16,groupSize())}
+function finite(v){return Number.isFinite(v)}
+function fmt(v,d=2){return Number(v).toLocaleString('en-US',{maximumFractionDigits:d})}
+function help(text){return '<details class="help"><summary aria-label="查看字段约束">?</summary><div>'+text+'</div></details>'}
+function numericField({id,label,value,min=0,max=1000,step=1,unit='',hint='',disabled=false,integer=false}){
+ return '<div class="field"><div class="field-head"><label for="'+id+'">'+label+'</label>'+help(hint||('输入有限'+(min===0?'非负':'正')+'数；滑条上限 '+max+' '+unit+' 是快捷编辑范围，输入框可继续输入更大值。'))+'</div><div class="numeric"><input id="'+id+'-slider" type="range" min="'+min+'" max="'+max+'" step="'+step+'" value="'+Math.min(max,value)+'" aria-label="'+label+'滑动调节"'+(disabled?' disabled':'')+'><input id="'+id+'" type="number" min="'+(integer?min:0)+'" step="'+(integer?1:'any')+'" value="'+value+'"'+(disabled?' disabled':'')+'></div><div class="limits"><span>'+unit+'</span><span>滑条 '+min+'–'+max+'</span></div></div>';
+}
+function bindNumber(id,callback){const number=$(id),slider=$(id+'-slider');const apply=value=>{ensureEditable();callback(value);if(id.startsWith('grid-')||id.startsWith('topo-')){state.topologySource='custom';renderConnectionPicker()}validate();renderScene();renderSummary()};number.addEventListener('input',()=>{slider.value=number.value;apply(number.value===''?NaN:Number(number.value))});slider.addEventListener('input',()=>{number.value=slider.value;apply(Number(slider.value))})}
+function sourceLocked(){return state.mode==='builtin'}
+function ensureEditable(){
+ if(!sourceLocked())return;
+ state.mode='custom';state.profile.name='CUSTOM_'+state.base;
+ renderIdentity();notify('已创建自定义副本，可继续修改规格');
+}
+function setProfile(name){const original=PROFILES.find(p=>p.name===name);if(!original)return;state.base=name;state.profile=clone(original);state.topologySource=name;state.grain=name==='TEST_DEVICE'?'unit':name.includes('_DIE')?'die':'card';if(state.mode==='custom'){state.profile.name='CUSTOM_'+name;state.profile.vendor=state.profile.vendor||'CUSTOM'}
+ state.selected=Number.isInteger(state.count)&&state.count>0?Math.min(state.selected,state.count-1):0;state.page=0;state.tier=state.profile.grid.length-1;state.zoom=1;renderAll();}
+function renderFamily(){const families=[['A2','Atlas A2'],['A3','Atlas A3'],['A5','Atlas A5']];$('family').innerHTML=families.map(([key,label])=>'<button class="family-card" data-family="'+key+'" aria-pressed="'+(key===state.family)+'"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M5 6h18v16H5zM9 10h10v8H9zM9 3v3m5-3v3m5-3v3M9 22v3m5-3v3m5-3v3M2 10h3m-3 5h3m18-5h3m-3 5h3"/></svg>'+label+'</button>').join('');
+ const choices=deviceChoices(state.family),activeKey=deviceKey(PROFILES.find(p=>p.name===state.base)),hasActive=choices.some(p=>deviceKey(p)===activeKey);$('device-option-count').textContent=choices.length+' 种规格';
+ const label=p=>shortName({...p,name:deviceKey(p)}),optionNote=p=>fmt(p.memory_size_bytes/GiB)+' GiB / '+(p.name.includes('_DIE')?'单 die':'单卡');
+ $('profile-picker').innerHTML=choices.length<=4?'<div class="choice-list" role="group" aria-labelledby="profile-label">'+choices.map(p=>'<button class="choice-card" data-profile="'+p.name+'" aria-pressed="'+(activeKey===deviceKey(p))+'">'+esc(label(p))+'<small>'+optionNote(p)+'</small></button>').join('')+'</div>':'<select id="profile-select" aria-labelledby="profile-label"><option value="" disabled'+(!hasActive?' selected':'')+'>请选择具体型号</option>'+choices.map(p=>'<option value="'+p.name+'"'+(deviceKey(p)===activeKey?' selected':'')+'>'+esc(label(p))+' · '+optionNote(p)+'</option>').join('')+'</select>';
+ $('family-filter-note').textContent=hasActive?'系列卡片仅筛选型号，不改变当前配置。':'正在浏览 '+(families.find(([k])=>k===state.family)?.[1]||state.family)+'；选择具体型号后才生效。当前仍使用 '+titleOf(PROFILES.find(p=>p.name===state.base))+'。';
+ if($('profile-select'))$('profile-select').addEventListener('change',e=>{if(e.target.value)selectDevice(e.target.value)});
+}
+function renderIdentity(){const p=state.profile,custom=!sourceLocked();$('custom-identity').hidden=!custom;$('custom-name').value=p.name;$('custom-vendor').value=p.vendor;$('profile-id').textContent=state.base;
+ document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===state.mode)));document.querySelectorAll('[data-grain]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.grain===state.grain)));
+ $('mode-hint').textContent=custom?'基于内置规格创建副本，修改项需用资料或实测校准。':'所有规格均可直接修改，首次修改内置规格时自动创建自定义副本。';
+ $('load-test-profile').setAttribute('aria-pressed',String(state.base==='TEST_DEVICE'));
+ $('granularity-note').textContent=state.base.includes('_DIE')&&state.grain==='die'?(state.mode==='builtin'?'此 A3 画像按单 die 建模：64 GiB / die；2 die 折算 1 张物理卡。名称中的 128G 是整卡口径。':'副本沿用 A3 的 2 die / 卡对应关系；修改容量与算力后需核对实际规格。'):state.grain==='card'?'每个矩阵单元按一张卡计；内存与算力均按单个画像单元填写。':'当前按'+(state.grain==='die'?'单 die':'自定义单元')+'计；未提供 die/卡对应关系，不推算物理卡数。';
+ if(state.base==='TEST_DEVICE')$('granularity-note').textContent='TEST_DEVICE 是合成测试画像，用于熟悉流程；其算力与拓扑不代表真实硬件。';
+}
+function renderCount(){const cap=capacity();$('device-count').max=cap;$('device-count').value=finite(state.count)?state.count:'';$('count-slider').max=cap;$('count-slider').value=finite(state.count)?state.count:1;$('count-unit').textContent=unitName();$('count-range').innerHTML='<span>1 '+unitName()+'</span><span>拓扑上限 '+cap+'</span>';
+ const values=[8,16,32,64].filter(v=>v<=cap);$('count-presets').innerHTML=values.map(v=>'<button data-count="'+v+'" aria-pressed="'+(state.count===v)+'">'+v+' '+unitName()+'</button>').join('');
+}
+function renderPerformance(){const p=state.profile,d=false;$('memory-fields').innerHTML=numericField({id:'memory-size',label:'单元内存容量',value:p.memory_size_bytes/GiB,min:1,max:256,unit:'GiB',disabled:d})+numericField({id:'memory-bw',label:'单元内存带宽',value:p.memory_bandwidth_bytes_ps/GiB,min:1,max:8192,unit:'GiB/s',disabled:d});bindNumber('memory-size',v=>p.memory_size_bytes=v*GiB);bindNumber('memory-bw',v=>p.memory_bandwidth_bytes_ps=v*GiB);
+ $('compute-fields').innerHTML=DTYPES.map(k=>'<div class="metric-row"><span class="dtype">'+DTYPE_NAMES[k]+'</span>'+['mma_ops','gp_ops'].map(kind=>'<input type="number" min="0" step="any" data-compute="'+kind+'" data-dtype="'+k+'" aria-label="'+DTYPE_NAMES[k]+(kind==='mma_ops'?'矩阵':'通用')+'算力，T operations/s" value="'+(p[kind][k]===undefined?'':p[kind][k]/1e12)+'" placeholder="未配置"'+(d?' disabled':'')+'>').join('')+'</div>').join('');
+ $('compute-fields').querySelectorAll('input').forEach(input=>input.addEventListener('input',()=>{ensureEditable();if(input.value==='')delete p[input.dataset.compute][input.dataset.dtype];else p[input.dataset.compute][input.dataset.dtype]=Number(input.value)*1e12;validate();renderSummary()}));
+ $('efficiency-fields').innerHTML=['compute_efficiency','memory_efficiency'].map((k,i)=>numericField({id:k,label:i?'访存效率':'计算效率',value:Math.round(p[k]*10000)/100,min:1,max:100,step:.1,unit:'%',disabled:d,hint:'本页采用大于 0、不超过 100% 的效率范围。DeviceProfile 构造器未统一限制；画像值为建模效率，并非实测利用率。'})).join('');for(const k of ['compute_efficiency','memory_efficiency'])bindNumber(k,v=>p[k]=v/100);
+ $('static-fields').innerHTML=['mma_op_cost_s','gp_op_cost_s','comm_op_cost_s'].map((k,i)=>numericField({id:k,label:['矩阵操作','通用操作','通信操作'][i],value:p.static_cost[k]*1e6,min:0,max:50,step:.1,unit:'µs',disabled:d})).join('');for(const k of Object.keys(p.static_cost))bindNumber(k,v=>p.static_cost[k]=v/1e6);
+}
+function renderConnect(){const p=state.profile,d=false;$('grid-dimensions').innerHTML=[1,2,3,4].map(n=>'<button data-dims="'+n+'" aria-pressed="'+(p.grid.length===n)+'"'+(d?' disabled':'')+'>'+n+' 维</button>').join('');$('grid-fields').innerHTML=p.grid.map((value,i)=>numericField({id:'grid-'+i,label:'维度 '+i+(i===p.grid.length-1?' · 最内层':i===0?' · 最外层':''),value,min:2,max:1024,unit:'设备单元',integer:true,disabled:d,hint:'仓库硬限制：整数且至少为 2。本页每维上限 1024、总容量上限 65,536，是编辑器范围；不是仓库统一上限。'})).join('');p.grid.forEach((_,i)=>bindNumber('grid-'+i,v=>{p.grid[i]=v;renderGridExpression();if(validGrid()){state.selected=Math.min(state.selected,state.count-1);state.page=0;renderCount()}}));renderGridExpression();
+ $('topology-fields').innerHTML=p.topologies.map((t,i)=>'<div class="topology-card"><div class="topology-title"><span>互连层 '+i+'</span><span class="unit">start_dim = '+i+'</span></div><div class="seg" role="group" aria-label="互连层 '+i+' 类型">'+[['CLOS','CLOS'],['FULL_MESH','Full mesh']].map(([key,label])=>'<button data-topology="'+i+'" data-type="'+key+'" aria-pressed="'+(t.type===key)+'"'+(d?' disabled':'')+'>'+label+'</button>').join('')+'</div>'+numericField({id:'topo-bw-'+i,label:'单向带宽',value:t.bandwidth_bytes_ps/1e9,min:.1,max:1024,step:.1,unit:'GB/s',disabled:d})+numericField({id:'topo-lat-'+i,label:'链路延迟',value:t.latency_s*1e6,min:0,max:50,step:.1,unit:'µs',disabled:d})+numericField({id:'topo-eff-'+i,label:'通信效率',value:Math.round(t.comm_efficiency*10000)/100,min:1,max:100,step:.1,unit:'%',disabled:d,hint:'页面合理性范围 (0,100%]，不是构造器统一硬校验。'})+'</div>').join('');p.topologies.forEach((t,i)=>{bindNumber('topo-bw-'+i,v=>t.bandwidth_bytes_ps=v*1e9);bindNumber('topo-lat-'+i,v=>t.latency_s=v/1e6);bindNumber('topo-eff-'+i,v=>t.comm_efficiency=v/100)});
+ $('host-fields').innerHTML=numericField({id:'host-bw',label:'Host 单向带宽',value:p.host_bandwidth_bytes_ps/1e9,min:0,max:256,step:.1,unit:'GB/s',disabled:d})+numericField({id:'host-lat',label:'Host 链路延迟',value:p.host_latency_s*1e6,min:0,max:50,step:.1,unit:'µs',disabled:d})+numericField({id:'host-eff',label:'Host 传输效率',value:p.host_transfer_efficiency*100,min:1,max:100,step:.1,unit:'%',disabled:d,hint:'页面合理性范围 (0,100%]。Host 带宽为 0 时，传输操作不可用。'});bindNumber('host-bw',v=>p.host_bandwidth_bytes_ps=v*1e9);bindNumber('host-lat',v=>p.host_latency_s=v/1e6);bindNumber('host-eff',v=>p.host_transfer_efficiency=v/100);
+}
+function renderGridExpression(){$('grid-expression').textContent='grid = ['+state.profile.grid.map(v=>finite(v)?v:'?').join(', ')+'] · 容量 '+(finite(capacity())?fmt(capacity(),0):'待补全')+' 个单元'}
+function validGrid(){return state.profile.grid.length>=1&&state.profile.grid.every(v=>Number.isInteger(v)&&v>=2&&v<=1024)&&capacity()<=65536}
+function validate(){const p=state.profile;errors=[];
+ if(!p.name.trim())errors.push('请填写画像名称。');if(!p.vendor.trim())errors.push('请填写厂商。');if(state.mode==='custom'&&PROFILES.some(q=>q.name===p.name))errors.push('画像名称已被内置设备占用，请改用唯一名称。');if(state.mode==='custom'&&!/^[A-Za-z_][A-Za-z0-9_]*$/.test(p.name))errors.push('本页名称使用字母、数字与下划线，且不能以数字开头。');
+ if(state.profile.grid.length>4)errors.push('本页编辑器最多提供 4 个拓扑维度。');if(!validGrid())errors.push('网格需为 1–4 维，每维整数 2–1024，总容量 ≤65,536（页面范围）。');if(p.grid.length!==p.topologies.length)errors.push('拓扑条目数必须等于网格维数。');
+ if(!Number.isInteger(state.count)||state.count<1||state.count>capacity())errors.push('本次使用数量需为 1–'+capacity()+' 的整数。');
+ for(const k of ['memory_size_bytes','memory_bandwidth_bytes_ps'])if(!finite(p[k])||p[k]<=0)errors.push(k+' 需为有限正数。');
+ for(const k of ['compute_efficiency','memory_efficiency','host_transfer_efficiency'])if(!finite(p[k])||p[k]<=0||p[k]>1)errors.push(k+' 需在 (0,100%]。');
+ if(!finite(p.host_bandwidth_bytes_ps)||p.host_bandwidth_bytes_ps<0)errors.push('Host 带宽需为有限非负数。');if(!finite(p.host_latency_s)||p.host_latency_s<0)errors.push('Host 延迟需为有限非负数。');
+ if(!Object.keys(p.mma_ops).length)errors.push('至少配置一种数据类型的矩阵峰值算力（页面构建要求）。');for(const kind of ['mma_ops','gp_ops'])for(const [k,v] of Object.entries(p[kind]))if(!finite(v)||v<=0)errors.push(DTYPE_NAMES[k]+' '+kind+' 需为有限正数，或留空。');
+ for(const v of Object.values(p.static_cost))if(!finite(v)||v<0)errors.push('固定调度成本需为有限非负数。');for(const t of p.topologies){if(!finite(t.bandwidth_bytes_ps)||t.bandwidth_bytes_ps<=0)errors.push('互连带宽需为有限正数。');if(!finite(t.latency_s)||t.latency_s<0)errors.push('互连延迟需为有限非负数。');if(!finite(t.comm_efficiency)||t.comm_efficiency<=0||t.comm_efficiency>1)errors.push('通信效率需在 (0,100%]。');}
+ const countOver=validGrid()&&Number.isInteger(state.count)&&state.count>capacity();$('count-warning').hidden=!countOver;$('count-warning-text').textContent=countOver?'保留的使用数量为 '+state.count+' '+unitName()+'，当前方案最多容纳 '+capacity()+'。请修改数量或选择更大容量的互连方案。':'';
+ $('validation-errors').hidden=errors.length===0;$('validation-errors').innerHTML=errors.map(esc).join('<br>');$('export-open').disabled=errors.length>0;
+ document.querySelectorAll('.config input[type=number]').forEach(input=>input.setAttribute('aria-invalid',String(!input.disabled&&input.value!==''&&!input.checkValidity())));return errors.length===0;
+}
+function renderSummary(){const p=state.profile,validCount=Number.isInteger(state.count)&&state.count>0&&state.count<=capacity(),n=validCount?state.count:0;const dieKnown=state.base.includes('_DIE')&&state.grain==='die';
+ $('hardware-title').textContent=state.mode==='builtin'?titleOf(p):titleOf(PROFILES.find(p=>p.name===state.base))+' · 自定义';$('source-badge').textContent=state.mode==='builtin'?(p.name==='TEST_DEVICE'?'合成测试画像':'仓库内置'):'自定义 · 待校准';$('hardware-subtitle').textContent=(state.mode==='builtin'?shortName(p):p.vendor+' · '+unitName())+' · '+fmt(p.memory_size_bytes/GiB)+' GiB / '+unitName();
+ $('card-count').textContent=state.base==='TEST_DEVICE'&&sourceLocked()?'不适用 · 测试数据':!validCount?'待调整':dieKnown?(n%2?'约 '+fmt(n/2)+' 卡（含单 die）':fmt(n/2)+' 张卡'):state.grain==='card'?fmt(n)+' 张卡':'待确认对应关系';$('node-count').textContent=!validCount?'待调整':fmt(Math.ceil(n/groupSize()))+' 组 × 最多 '+groupSize()+' 单元';$('grid-capacity').textContent=fmt(capacity(),0)+' 单元';
+ $('total-unit-label').textContent=state.grain==='die'?'设备单元 · die':state.grain==='card'?'设备单元 · 卡':'设备单元';$('summary-count').innerHTML=validCount?fmt(n,0)+'<small>'+unitName()+'</small>':'—';$('summary-count-note').textContent=state.base==='TEST_DEVICE'&&sourceLocked()?'合成设备单元':!validCount?'数量需在拓扑容量内':dieKnown?'折算 '+fmt(n/2)+' 张卡':state.grain==='card'?'按整卡单元建模':'物理卡数待确认';
+ const mem=p.memory_size_bytes/GiB*n;$('summary-memory').innerHTML=finite(mem)&&p.memory_size_bytes>0?fmt(mem>=1024?mem/1024:mem)+'<small>'+(mem>=1024?'TiB':'GiB')+'</small>':'—';$('summary-compute').innerHTML=p.mma_ops.bfloat16>0?fmt(p.mma_ops.bfloat16/1e12)+'<small>T op/s</small>':'未配置';$('summary-bandwidth').innerHTML=p.memory_bandwidth_bytes_ps>0?fmt(p.memory_bandwidth_bytes_ps/GiB,0)+'<small>GiB/s</small>':'—';
+ $('scene-tiers').hidden=state.layer!=='connect';$('scene-tiers').innerHTML=p.topologies.map((t,i)=>'<button data-tier="'+i+'" aria-pressed="'+(state.tier===i)+'">层 '+i+' · '+(i===p.grid.length-1?'内层':i===0?'外层':'中层')+'</button>').join('');
+}
+function points(pts){return pts.map(p=>p.map(v=>v.toFixed(2)).join(',')).join(' ')}
+// Adapted three-face box projection from rank-intro.html drawBox, rendered as accessible SVG.
+function box(x,y,z,w,h,d,faces,stroke,extra=''){
+ const P=state.view==='flat'?(x,y,z)=>[x*51+z*0,y*-42+z*52]:(x,y,z)=>[(x-z)*41,(x+z)*21-y*45];
+ const A=P(x,y,z),B=P(x+w,y,z),C=P(x+w,y+h,z),D=P(x,y+h,z),E=P(x,y,z+d),F=P(x+w,y,z+d),G=P(x+w,y+h,z+d),H=P(x,y+h,z+d);
+ if(state.view==='flat')return '<polygon class="shell" points="'+points([D,C,G,H])+'" fill="'+faces.top+'" stroke="'+stroke+'" '+extra+'/>';
+ return '<polygon points="'+points([E,F,G,H])+'" fill="'+faces.front+'" stroke="'+stroke+'" '+extra+'/><polygon points="'+points([B,F,G,C])+'" fill="'+faces.right+'" stroke="'+stroke+'" '+extra+'/><polygon class="shell" points="'+points([D,C,G,H])+'" fill="'+faces.top+'" stroke="'+stroke+'" '+extra+'/>';
+}
+function projected(x,y,z){return state.view==='flat'?[x*51,z*52-y*42]:[(x-z)*41,(x+z)*21-y*45]}
+function renderScene(){const p=state.profile,n=state.count;if(!validGrid()||!Number.isInteger(n)||n<1||n>capacity()||!finite(p.memory_size_bytes)||p.memory_size_bytes<=0){$('rank-scene').innerHTML='<text x="500" y="270" text-anchor="middle" class="scene-empty">补全有效配置后显示硬件布局</text>';$('selected-info').textContent='';$('page-label').textContent='待配置';return}
+ const perPage=64,totalPages=Math.ceil(n/perPage);state.page=Math.max(0,Math.min(state.page,totalPages-1));state.selected=Math.max(0,Math.min(state.selected,n-1));const start=state.page*perPage,end=Math.min(n,start+perPage),group=shownGroupSize(),columns=Math.min(4,group),rows=Math.ceil(group/columns),blockCols=Math.ceil(Math.sqrt(Math.ceil((end-start)/group)));
+ const positions=[],platforms=[];for(let rank=start;rank<end;rank++){const i=rank-start,b=Math.floor(i/group),j=i%group,x=(b%blockCols)*(columns*1.25+1.8)+(j%columns)*1.25,z=Math.floor(b/blockCols)*(rows*1.35+2.1)+Math.floor(j/columns)*1.35;positions.push({rank,x,z});if(j===0)platforms.push({x:x-.3,z:z-.3,w:columns*1.25-.05,d:Math.min(rows,Math.ceil((end-rank)/columns))*1.35-.05,start:rank})}
+ const tier=Math.min(state.tier,p.grid.length-1),subgroup=p.grid.slice(tier).reduce((a,b)=>a*b,1),same=r=>Math.floor(r/subgroup)===Math.floor(state.selected/subgroup);let shapes='',links='';let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+ const ext=(x,y,z)=>{const a=projected(x,y,z);minX=Math.min(minX,a[0]);maxX=Math.max(maxX,a[0]);minY=Math.min(minY,a[1]);maxY=Math.max(maxY,a[1])};platforms.forEach(b=>{[[b.x,b.z],[b.x+b.w,b.z],[b.x,b.z+b.d],[b.x+b.w,b.z+b.d]].forEach(([x,z])=>ext(x,0,z))});
+ const selected=positions.find(c=>c.rank===state.selected);if(state.layer==='connect'&&selected){const from=projected(selected.x+.45,.5,selected.z+.45);for(const c of positions.filter(c=>c.rank!==state.selected&&same(c.rank))){const to=projected(c.x+.45,.5,c.z+.45);links+='<path d="M '+from.join(' ')+' Q '+((from[0]+to[0])/2)+' '+(Math.min(from[1],to[1])-35)+' '+to.join(' ')+'" fill="none" stroke="#7d9fd4" stroke-width="1" stroke-dasharray="4 4" opacity=".65"/>'}}
+ positions.sort((a,b)=>(a.x+a.z)-(b.x+b.z)).forEach(c=>{const sel=c.rank===state.selected,peer=same(c.rank),h=state.layer==='memory'?Math.max(.3,Math.min(2,p.memory_size_bytes/GiB/70)):.95;ext(c.x,h+.4,c.z);ext(c.x+1,h,c.z+1);const faces=sel?{front:'#c9dbfa',right:'#aac4ed',top:'#e4eeff'}:peer?{front:'#dae6fa',right:'#b9cce8',top:'#f0f5ff'}:{front:'#e4eaf2',right:'#cdd8e5',top:'#f9fbfe'};const stroke=sel?'#3975df':peer?'#a2b8db':'#bfcbd9',center=projected(c.x+.48,h,c.z+.48),base=projected(c.x+.48,-.16,c.z+.48);shapes+='<g class="rank-unit" role="button" tabindex="0" data-rank="'+c.rank+'" aria-label="选择 Rank '+c.rank+'，'+fmt(p.memory_size_bytes/GiB)+' GiB" aria-pressed="'+sel+'"><title>R'+c.rank+' · '+fmt(p.memory_size_bytes/GiB)+' GiB / '+unitName()+'</title>'+box(c.x,0,c.z,.96,h,.96,faces,stroke,'stroke-width="'+(sel?1.5:.8)+'"')+'<text x="'+center[0]+'" y="'+(center[1]+3)+'" text-anchor="middle" font-family="Consolas,monospace" font-size="11" font-weight="'+(sel?700:500)+'" fill="'+(sel?'#2159b6':'#6b7f99')+'">R'+c.rank+'</text>'+(state.layer==='memory'?'<text x="'+base[0]+'" y="'+(base[1]+17)+'" text-anchor="middle" font-size="9" fill="#778ba5">'+fmt(p.memory_size_bytes/GiB)+' GiB</text>':'')+'</g>'});
+ const width=maxX-minX+115,height=maxY-minY+110,scale=Math.min(850/width,360/height)*state.zoom,cx=(minX+maxX)/2,cy=(minY+maxY)/2;$('rank-scene').innerHTML='<defs><pattern id="floor-grid" width="45" height="24" patternUnits="userSpaceOnUse" patternTransform="rotate(-26)"><path d="M 45 0 L 0 0 0 24" fill="none" stroke="#e8edf4" stroke-width=".6"/></pattern></defs><g transform="translate(500 295) scale('+scale+') translate('+(-cx)+' '+(-cy)+')">'+links+shapes+'</g>';
+ const t=p.topologies[tier];$('selected-info').innerHTML='<strong>R'+state.selected+' <span style="color:#8c9bb0;font-weight:400">/ '+unitName()+'</span></strong><p>'+fmt(p.memory_size_bytes/GiB)+' GiB · '+fmt((p.mma_ops.bfloat16||0)/1e12)+' T op/s BF16'+(state.layer==='connect'?'<br>互连层 '+tier+' · '+fmt(t.bandwidth_bytes_ps/1e9)+' GB/s · '+fmt(t.latency_s*1e6)+' µs':'<br>点击矩阵单元查看关联')+'</p>';
+ $('page-label').textContent='R'+start+'–R'+(end-1)+' / '+n;$('page-prev').disabled=state.page===0;$('page-next').disabled=state.page>=totalPages-1;$('zoom-label').textContent=Math.round(state.zoom*100)+'%';
+}
+function renderAll(){renderFamily();renderIdentity();renderConnectionPicker();renderCount();renderPerformance();renderConnect();validate();renderSummary();renderScene()}
+function setTab(key){state.tab=key;for(const k of ['device','performance','connect']){$('panel-'+k).hidden=k!==key;$('tab-'+k).setAttribute('aria-selected',String(k===key));$('tab-'+k).tabIndex=k===key?0:-1}document.querySelector('.config-body').scrollTop=0}
+function manifest(){const p=clone(state.profile);p.comm_grid={shape:p.grid,rank_order:'row-major',topologies:p.topologies};delete p.grid;delete p.topologies;return {schema:'msmodeling-hardware-workbench/v1',source:{base_profile:state.base,interconnect_profile:state.topologySource,mode:state.mode,scope:'local worktree snapshot',captured_on:'2026-11-20',needs_calibration:state.mode==='custom',note:'Built-in efficiency, host-link and static-cost values may also require calibration.'},device_profile:p,deployment:{num_devices:state.count,granularity:state.grain,rank_preview:'one rank per modeled unit; illustrative'},editor_constraints:{max_grid_dimensions:4,max_grid_dimension_size:1024,max_grid_capacity:65536,efficiency_interval:'(0,1]',note:'Editor limits are not universal backend limits.'}}}
+function pythonCode(){const p=state.profile;if(sourceLocked())return '# 已注册的内置画像，无需再次创建同名 DeviceProfile。\n# CLI 设备参数：\n# --device '+p.name+' --num-devices '+state.count+'\n# 完整仿真命令还需模型、负载和合法的并行配置。\n';const dtype={float32:'torch.float32',float16:'torch.float16',bfloat16:'torch.bfloat16',int8:'torch.int8',float8_e5m2:'DTYPE_FP8',hif8:'SimFormat.HIF8',int4:'DTYPE_FP4'},num=v=>String(v),dict=object=>'{'+Object.entries(object).map(([k,v])=>dtype[k]+': '+num(v)).join(', ')+'}';return '# Generated locally; custom specifications require review and calibration.\n# Save in tensor_cast/device_profiles/ and verify registration in a new process.\n# Deployment num_devices='+state.count+' ('+state.grain+'); not a DeviceProfile field.\nimport torch\nfrom tensor_cast.device import DeviceProfile, CommGrid, InterconnectTopology, InterconnectType, StaticCost\nfrom tensor_cast.utils import DTYPE_FP4, DTYPE_FP8, SimFormat\n\nPROFILE = DeviceProfile(\n    name='+JSON.stringify(p.name)+',\n    vendor='+JSON.stringify(p.vendor)+',\n    mma_ops='+dict(p.mma_ops)+',\n    gp_ops='+dict(p.gp_ops)+',\n'+['compute_efficiency','memory_size_bytes','memory_bandwidth_bytes_ps','memory_efficiency','host_bandwidth_bytes_ps','host_latency_s','host_transfer_efficiency'].map(k=>'    '+k+'='+num(p[k])+',\n').join('')+'    static_cost=StaticCost('+Object.entries(p.static_cost).map(([k,v])=>k+'='+num(v)).join(', ')+'),\n    comm_grid=CommGrid(\n        grid=torch.arange('+capacity()+').reshape('+p.grid.join(', ')+(p.grid.length===1?',':'')+'),\n        topologies={\n'+p.topologies.map((t,i)=>'            '+i+': InterconnectTopology(bandwidth_bytes_ps='+num(t.bandwidth_bytes_ps)+', latency_s='+num(t.latency_s)+', comm_efficiency='+num(t.comm_efficiency)+', type=InterconnectType.'+t.type+'),\n').join('')+'        },\n    ),\n)\n'}
+function renderExport(){exportText=state.format==='json'?JSON.stringify(manifest(),null,2):pythonCode();$('export-code').textContent=exportText;$('export-description').textContent=state.format==='json'?'规格、部署规模与来源一起保存。此 JSON 为本页面的交换格式，不是 msmodeling CLI 可直接读取的配置。':sourceLocked()?'此画像已在仓库注册，使用已有设备名即可；如需新增 Python 画像，请先切到“自定义副本”。':'Python 文件创建独立画像；保留所有参数与单位。注册前请审核规格、唯一名称和校准依据。';document.querySelectorAll('[data-format]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.format===state.format)))}
+function setCount(value){state.count=value;if(Number.isInteger(value)&&value>=1&&value<=capacity()){state.selected=Math.min(state.selected,value-1);state.page=Math.min(state.page,Math.ceil(value/64)-1)}$('device-count').value=finite(value)?value:'';$('count-slider').value=value;document.querySelectorAll('[data-count]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.count)===value)));validate();renderSummary();renderScene()}
+document.querySelector('.config-tabs').addEventListener('click',e=>{const tab=e.target.closest('[data-tab]');if(tab)setTab(tab.dataset.tab)});
+document.querySelector('.config-tabs').addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const tabs=['device','performance','connect'],i=tabs.indexOf(state.tab),key=e.key==='Home'?tabs[0]:e.key==='End'?tabs[2]:tabs[(i+(e.key==='ArrowRight'?1:2))%3];setTab(key);$('tab-'+key).focus()});
+document.addEventListener('click',e=>{const family=e.target.closest('[data-family]');if(family){state.family=family.dataset.family;renderFamily()}const profile=e.target.closest('[data-profile]');if(profile)selectDevice(profile.dataset.profile);const connection=e.target.closest('[data-connection]');if(connection)selectConnection(connection.dataset.connection);const mode=e.target.closest('[data-mode]');if(mode&&state.mode!==mode.dataset.mode){state.mode=mode.dataset.mode;setProfile(state.base)}const grain=e.target.closest('[data-grain]');if(grain){state.grain=grain.dataset.grain;renderIdentity();renderCount();renderSummary();renderScene()}const count=e.target.closest('[data-count]');if(count)setCount(Number(count.dataset.count));const dims=e.target.closest('[data-dims]');if(dims){ensureEditable();state.topologySource='custom';const n=Number(dims.dataset.dims),p=state.profile;while(p.grid.length<n){p.grid.push(2);p.topologies.push({start_dim:p.topologies.length,bandwidth_bytes_ps:50e9,latency_s:1e-6,comm_efficiency:.7,type:'CLOS'})}p.grid=p.grid.slice(0,n);p.topologies=p.topologies.slice(0,n);state.tier=n-1;if(validGrid()){state.selected=Math.min(state.selected,state.count-1)}renderConnectionPicker();renderConnect();renderCount();validate();renderSummary();renderScene()}
+ const tier=e.target.closest('[data-tier]');if(tier){state.tier=Number(tier.dataset.tier);renderSummary();renderScene()}
+ const top=e.target.closest('[data-topology]');if(top){ensureEditable();state.topologySource='custom';state.profile.topologies[Number(top.dataset.topology)].type=top.dataset.type;renderConnectionPicker();renderConnect();validate();renderSummary();renderScene()}const view=e.target.closest('[data-view]');if(view){state.view=view.dataset.view;document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b===view)));renderScene()}const layer=e.target.closest('[data-layer]');if(layer){state.layer=layer.dataset.layer;document.querySelectorAll('[data-layer]').forEach(b=>b.setAttribute('aria-pressed',String(b===layer)));renderScene();renderSummary()}const rank=e.target.closest('[data-rank]');if(rank){state.selected=Number(rank.dataset.rank);renderScene()}const close=e.target.closest('[data-close]');if(close)$(close.dataset.close).close();const format=e.target.closest('[data-format]');if(format){state.format=format.dataset.format;renderExport()}
+});
+$('rank-scene').addEventListener('keydown',e=>{const target=e.target.closest('[data-rank]');if(!target)return;let next=Number(target.dataset.rank);if(['Enter',' '].includes(e.key)){e.preventDefault();state.selected=next;renderScene();document.querySelector('[data-rank="'+next+'"]')?.focus()}else if(['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();next=Math.max(0,Math.min(state.count-1,next+(e.key==='ArrowRight'?1:-1)));state.selected=next;state.page=Math.floor(next/64);renderScene();document.querySelector('[data-rank="'+next+'"]')?.focus()}});
+$('apply-capacity').addEventListener('click',()=>{if(validGrid()){setCount(capacity());notify('已将使用数量调整为 '+capacity()+' '+unitName())}});
+$('load-test-profile').addEventListener('click',()=>{state.mode='builtin';setProfile('TEST_DEVICE');notify('已载入合成测试画像；使用数量保留。该画像不代表真实硬件。')});
+$('device-count').addEventListener('input',e=>setCount(e.target.value===''?NaN:Number(e.target.value)));$('count-slider').addEventListener('input',e=>setCount(Number(e.target.value)));
+$('custom-name').addEventListener('input',e=>{state.profile.name=e.target.value;validate();renderSummary()});$('custom-vendor').addEventListener('input',e=>{state.profile.vendor=e.target.value;validate();renderSummary()});
+$('reset').addEventListener('click',()=>{Object.assign(state,{mode:'builtin',family:'A3',count:32,selected:0,view:'iso',layer:'device'});setProfile('ATLAS_800_A3_752T_128G_DIE');document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view==='iso')));document.querySelectorAll('[data-layer]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.layer==='device')));setTab('device');notify('已恢复 Atlas 800 A3 · 32 die 默认画像')});
+$('zoom-in').addEventListener('click',()=>{state.zoom=Math.min(1.8,state.zoom+.15);renderScene()});$('zoom-out').addEventListener('click',()=>{state.zoom=Math.max(.55,state.zoom-.15);renderScene()});$('zoom-reset').addEventListener('click',()=>{state.zoom=1;renderScene()});$('page-prev').addEventListener('click',()=>{state.page--;state.selected=state.page*64;renderScene()});$('page-next').addEventListener('click',()=>{state.page++;state.selected=state.page*64;renderScene()});
+$('rules-open').addEventListener('click',()=>$('rules-dialog').showModal());$('export-open').addEventListener('click',()=>{if(!validate())return;renderExport();$('export-dialog').showModal()});$('copy-code').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(exportText);notify('画像内容已复制')}catch{const range=document.createRange();range.selectNodeContents($('export-code'));window.getSelection().removeAllRanges();window.getSelection().addRange(range);notify('已选中全部内容，请按 Ctrl+C 复制')}});$('download-code').addEventListener('click',()=>{if(!validate())return;const url=URL.createObjectURL(new Blob([exportText],{type:state.format==='json'?'application/json;charset=utf-8':'text/x-python;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download=state.profile.name+(state.format==='json'?'.json':'.py');a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);notify('已生成本地下载文件')});
+document.querySelectorAll('dialog').forEach(dialog=>dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close()}}));
+setProfile(state.base);
+</script>
+</body>
+</html>

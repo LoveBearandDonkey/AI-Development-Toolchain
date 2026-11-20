@@ -25,10 +25,10 @@ html{scrollbar-width:none}html::-webkit-scrollbar{display:none;width:0;height:0}
 button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid color-mix(in srgb,var(--brand-blue) 36%,transparent);outline-offset:3px}
 [hidden]{display:none!important}
 .workspace{padding:26px 40px;min-height:100vh;color:var(--foreground-secondary)}.workbrand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:650}.workbrand svg{width:26px;height:26px}.worknav{display:flex;gap:32px;border-bottom:1px solid var(--divider-strong);padding:32px 0 16px}.workspace>h2{font-size:22px;font-weight:500;margin:36px 0 12px}.workgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:30px}.ghost{height:130px;border:1px solid var(--divider-strong);border-radius:12px;background:var(--surface-1);padding:22px}.ghost span{display:block;height:9px;background:var(--divider-weak);width:70%;border-radius:3px;margin:16px 0}
-.lab-panel{width:100%;max-width:1680px;margin:12px auto 0;flex:1;display:flex;flex-direction:column;min-height:0}
+.lab-panel{width:100%;max-width:1680px;margin:0 auto;flex:1;display:flex;flex-direction:column;min-height:0}
 .lab-panel:focus,.lab-panel:focus-visible{outline:none}.heading{display:flex;align-items:center}h1{font-size:21px;letter-spacing:-.5px;margin:0;font-weight:650}.head-actions{display:flex;align-items:center}.icon-button{width:30px;height:30px;border:0;background:transparent;font-size:24px;line-height:1;color:var(--foreground-secondary);border-radius:6px}.icon-button:hover{background:var(--button-secondary-bg-press)}
-.body-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,2fr) minmax(0,1fr);min-height:0;flex:1;padding:0;gap:0}
-.controls,.command-panel,.preview{min-width:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--divider-strong) transparent}
+.body-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,2fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr);min-height:0;flex:1;padding:0;gap:0}
+.controls,.command-panel,.preview{min-width:0;min-height:0;overflow-y:auto;overscroll-behavior-y:contain;scrollbar-width:thin;scrollbar-color:var(--divider-strong) transparent}
 .controls{padding:12px 17px 22px 9px;background:transparent}.command-panel{background:var(--surface-1);padding:19px 20px 22px;border-radius:12px 0 0 12px;display:flex;flex-direction:column;gap:18px}.preview{padding:19px 16px 22px;background:var(--surface-1);border-left:1px solid var(--divider-weak);border-radius:0 12px 12px 0;display:flex;flex-direction:column;gap:22px}
 @supports selector(::-webkit-scrollbar){.controls,.command-panel,.preview{scrollbar-width:auto;scrollbar-color:auto}::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--divider-strong);border-radius:6px}::-webkit-scrollbar-button{display:none;width:0;height:0}}
 
@@ -41,12 +41,12 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible,su
 .range-row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px}.label-help{display:inline-flex;align-items:center;gap:5px}.range-row label{font-size:11px}.range-value{font-variant-numeric:tabular-nums;font-size:11px;color:var(--brand-blue);font-weight:600;white-space:nowrap}.range-value small{font-weight:400;color:var(--sub);margin-left:3px}.range{width:100%;height:20px;appearance:none;-webkit-appearance:none;background:transparent;padding:0;cursor:pointer;display:block;margin:6px 0}.range::-webkit-slider-runnable-track{height:4px;border:0;border-radius:4px;background:linear-gradient(to right,var(--brand-blue) calc(var(--fill,0%) + var(--fill-offset,6.5px)),var(--divider-weak) calc(var(--fill,0%) + var(--fill-offset,6.5px)))}.range::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;box-sizing:border-box;width:13px;height:13px;margin-top:-4.5px;background:var(--surface-1);border:3px solid var(--brand-blue);border-radius:50%}.range::-moz-range-track{height:4px;border:0;border-radius:4px;background:linear-gradient(to right,var(--brand-blue) calc(var(--fill,0%) + var(--fill-offset,6.5px)),var(--divider-weak) calc(var(--fill,0%) + var(--fill-offset,6.5px)))}.range::-moz-range-thumb{box-sizing:border-box;width:13px;height:13px;background:var(--surface-1);border:3px solid var(--brand-blue);border-radius:50%}.range::-moz-range-progress{background:transparent}.range:disabled{opacity:.35;cursor:not-allowed}.ticks{display:flex;justify-content:space-between;color:var(--foreground-placeholder);font-size:9px}
 .data-box{border:1px solid var(--divider-strong);border-radius:8px;background:var(--surface-1);overflow:hidden}.control-row{padding:13px 12px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:center;justify-content:space-between}.control-row:last-child{border-bottom:0}.control-copy{flex:1;min-width:0}.control-name{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11px;font-weight:550}.control-desc{font-size:10px;color:var(--sub);line-height:1.75;margin-top:4px}.cost{font-size:8px;border-radius:4px;padding:2px 4px;font-weight:400;white-space:nowrap;color:var(--sub);background:var(--divider-weak)}.cost.high{color:#805008;background:color-mix(in srgb,var(--warning) 16%,var(--surface-1))}.toggle{width:31px;height:18px;border-radius:12px;position:relative;border:0;background:var(--border-line);padding:0;flex:none}.toggle:after{content:'';position:absolute;width:12px;height:12px;top:3px;left:3px;background:var(--surface-1);border-radius:50%;transition:transform .15s}.toggle[aria-checked=true]{background:var(--brand-blue)}.toggle[aria-checked=true]:after{transform:translateX(13px)}.row-end{display:flex;align-items:center;gap:9px}.task-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px 10px}.task-row .control-copy{display:contents}.task-row .control-name{grid-column:1;grid-row:1}.task-row .row-end{grid-column:2;grid-row:1;justify-content:flex-end}.task-row .control-desc{grid-column:1/-1;grid-row:2;margin-top:0}.pills{display:inline-flex;background:var(--divider-weak);padding:3px;border-radius:7px;gap:2px}.pill{border:0;border-radius:5px;background:transparent;color:var(--sub);padding:5px 10px;font-size:10px;white-space:nowrap}.pill[aria-pressed=true]{background:var(--surface-1);color:var(--brand-blue)}.pill:disabled{opacity:.4}.nested{padding:12px;background:color-mix(in srgb,var(--brand-blue) 2%,var(--surface-1));border-bottom:1px solid var(--line)}.nested .hint{font-size:10px;line-height:1.8;color:var(--sub);margin:8px 0 0}.metric-select{width:100%;padding:8px;border:1px solid var(--border-line);border-radius:6px;background:var(--surface-1);color:var(--sub);font-size:10px}.dependency{font-size:10px;line-height:1.8;color:var(--sub);background:var(--brand-soft);border-radius:6px;padding:10px 12px;margin-top:10px}
 .advanced summary{font-size:12px;cursor:pointer;color:var(--sub);list-style:none;display:flex;align-items:center;gap:8px}.advanced summary:before{content:'›';font-size:19px}.advanced[open] summary:before{transform:rotate(90deg)}.advanced .data-box{margin-top:12px}.docs{margin-top:19px;font-size:10px;line-height:1.9;color:var(--sub)}.docs summary{cursor:pointer}.docs a{display:inline-block;margin-right:10px}.docs p{margin:7px 0}
-.estimate-label>.help{margin-left:6px}.estimate-label{font-size:12px;font-weight:600;line-height:1.7}.estimate-head{margin-top:8px;display:flex;flex-direction:column;align-items:flex-start;gap:10px}.big-number{font-size:48px;font-weight:600;line-height:1.12;letter-spacing:-2px;font-variant-numeric:tabular-nums;color:var(--brand-blue);white-space:nowrap}.big-number .unit{font-size:25px;letter-spacing:-1px;margin-left:2px}.risk{font-size:9px;color:var(--brand-green);background:color-mix(in srgb,var(--brand-green) 10%,var(--surface-1));padding:4px 7px;border-radius:5px;white-space:nowrap}.risk[data-risk=medium]{color:#805008;background:color-mix(in srgb,var(--warning) 16%,var(--surface-1))}.risk[data-risk=high]{color:#ba3157;background:color-mix(in srgb,var(--danger) 10%,var(--surface-1))}.comparison{height:27px;display:flex;gap:2px;align-items:center}.comparison span{height:5px;border-radius:2px}.comparison .baseline{background:var(--divider-strong)}.comparison .extra{background:var(--brand-blue);min-width:2px}.stats{display:grid;grid-template-columns:1fr;border:1px solid var(--divider-strong);background:var(--surface-1);border-radius:8px;padding:13px;gap:14px}.stat+.stat{border-top:1px solid var(--line);padding-top:13px}.stat span{display:block;color:var(--sub);font-size:10px;margin-bottom:7px}.stat strong{font-size:20px;letter-spacing:-.3px;font-weight:600}.stat strong small{font-size:10px;color:var(--sub);font-weight:400;margin-left:3px}.stat p{margin:5px 0 0;font-size:9px;color:var(--sub);line-height:1.8}
+.estimate-label>.help{margin-left:6px}.estimate-label{font-size:12px;font-weight:600;line-height:1.7}.estimate-head{margin-top:8px;display:flex;flex-direction:column;align-items:flex-start;gap:10px}.big-number{font-size:80px;font-weight:600;line-height:1.12;letter-spacing:-2px;font-variant-numeric:tabular-nums;color:var(--brand-blue);white-space:nowrap}.big-number .unit{font-size:80px;letter-spacing:-1px;margin-left:2px}.risk{font-size:9px;color:var(--brand-green);background:color-mix(in srgb,var(--brand-green) 10%,var(--surface-1));padding:4px 7px;border-radius:5px;white-space:nowrap}.risk[data-risk=medium]{color:#805008;background:color-mix(in srgb,var(--warning) 16%,var(--surface-1))}.risk[data-risk=high]{color:#ba3157;background:color-mix(in srgb,var(--danger) 10%,var(--surface-1))}.comparison{height:27px;display:flex;gap:2px;align-items:center}.comparison span{height:5px;border-radius:2px}.comparison .baseline{background:var(--divider-strong)}.comparison .extra{background:var(--brand-blue);min-width:2px}.stats{display:grid;grid-template-columns:1fr;border:1px solid var(--divider-strong);background:var(--surface-1);border-radius:8px;padding:13px;gap:14px}.stat+.stat{border-top:1px solid var(--line);padding-top:13px}.stat span{display:block;color:var(--sub);font-size:10px;margin-bottom:7px}.stat strong{font-size:20px;letter-spacing:-.3px;font-weight:600}.stat strong small{font-size:10px;color:var(--sub);font-weight:400;margin-left:3px}.stat p{margin:5px 0 0;font-size:9px;color:var(--sub);line-height:1.8}
 .breakdown-title{font-size:11px;color:var(--sub);margin-bottom:13px;display:flex;flex-direction:column;gap:5px}.breakdown-list{display:grid;gap:12px}.breakdown-row{display:grid;grid-template-columns:1fr auto;gap:6px;align-items:center;font-size:10px;color:var(--sub)}.track{height:4px;background:var(--divider-weak);border-radius:3px;overflow:hidden;grid-column:1/-1;grid-row:2}.track i{display:block;background:color-mix(in srgb,var(--brand-blue) 60%,var(--surface-1));height:100%;border-radius:3px}.breakdown-row b{text-align:right;font-size:10px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums;grid-column:2;grid-row:1}
 .terminal{background:var(--surface-1);border:1px solid var(--divider-strong);border-radius:8px;overflow:hidden;min-height:260px}.terminal-head{min-height:42px;padding:10px 13px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid var(--divider-weak);background:color-mix(in srgb,var(--brand-blue) 3%,var(--surface-1))}.terminal-title{font-size:10px;color:var(--sub);display:flex;align-items:center;gap:7px}.copy-btn,.button{border:1px solid var(--button-secondary-border);border-radius:var(--button-radius);background:var(--button-secondary-bg);color:var(--button-secondary-fg);padding:6px 9px;font-size:10px;box-shadow:var(--button-secondary-shadow);white-space:nowrap}.copy-btn{display:flex;align-items:center;gap:5px}.copy-btn:hover,.copy-btn:focus-visible,.button:hover,.button:focus-visible{border-color:var(--brand-blue);color:var(--brand-blue)}.copy-btn:active,.button:active{background:var(--button-secondary-bg-press)}.copy-btn svg{width:11px;height:11px}.copy-btn[data-copied=true]{border-color:var(--brand-green);color:var(--brand-green)}.validation{font-size:11px;line-height:1.7;padding:9px 11px;border-radius:6px;background:color-mix(in srgb,var(--danger) 8%,var(--surface-1));color:#ba3157;margin-bottom:10px}.manual-copy{width:100%;min-height:140px;border:1px solid var(--border-line);border-radius:6px;padding:10px;background:var(--surface-1);color:var(--ink);font-family:Consolas,monospace;font-size:11px;resize:vertical}.manual-wrap{padding:0 13px 13px}.manual-wrap label{display:block;color:var(--sub);font-size:10px;margin-bottom:8px}
 .help{width:15px;height:15px;display:inline-grid;place-items:center;border:1px solid var(--border-line);border-radius:50%;padding:0;background:transparent;color:var(--sub);font-size:10px;font-weight:500;line-height:1;flex:none;vertical-align:middle}.help:hover,.help:focus-visible,.help[aria-expanded=true]{border-color:var(--brand-blue);color:var(--brand-blue);background:var(--brand-soft)}.help-tooltip{max-height:calc(100dvh - 24px);overflow-y:auto;position:fixed;z-index:30;width:300px;max-width:calc(100vw - 24px);padding:14px 16px;background:var(--surface-1);border:1px solid var(--divider-strong);border-radius:10px;box-shadow:0 8px 28px #152b4d1f;color:var(--sub);font-size:11px;line-height:1.85;overflow-wrap:anywhere}.help-tooltip strong{display:block;font-size:12px;color:var(--ink);font-weight:600;margin-bottom:6px}.help-tooltip p{margin:0}.help-tooltip .help-source{border-top:1px solid var(--divider-weak);padding-top:9px;margin-top:9px;font-size:10px}.help-tooltip a{display:inline-block}.help-source-label{color:var(--foreground-placeholder);display:block}.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);padding:12px 20px;background:var(--surface-1);color:var(--foreground);border:1px solid var(--divider-strong);border-radius:9px;box-shadow:0 6px 24px #0001;z-index:40;font-size:12px;max-width:calc(100% - 32px);text-align:center}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-@media(max-width:1050px) and (min-width:761px){.body-grid{padding:0}.controls{padding-left:6px;padding-right:12px}.command-panel{padding:16px 13px}.preview{padding:16px 12px}.section-caption{flex-basis:100%;margin-left:17px}.big-number{font-size:48px}.big-number .unit{font-size:20px}.preset-grid{grid-template-columns:1fr}.preset{padding:10px 28px 10px 10px}.preset strong{display:inline;margin-right:6px}.preset-choice>.help{top:12px;bottom:auto}.stats{padding:10px}}
-@media(max-width:760px){.heading{gap:10px}.head-actions{gap:5px}h1{font-size:19px}.body-grid{display:flex;flex-direction:column;overflow:visible;padding:0;gap:10px}.controls,.command-panel,.preview{overflow:visible;flex:none;padding:18px 14px}.command-panel,.preview{border-radius:12px;border:0}.preview{display:grid;grid-template-columns:1fr 1fr;gap:20px}.preview>.estimate{grid-column:1/-1}.preview .estimate-label{display:flex;justify-content:space-between}.preview .estimate-head{flex-direction:row;align-items:center}.stat+.stat{border-top:0;border-left:1px solid var(--line);padding-top:0;padding-left:15px}.workspace{padding:24px}.workgrid{grid-template-columns:1fr}}
+@media(max-width:1050px) and (min-width:761px){.body-grid{padding:0}.controls{padding-left:6px;padding-right:12px}.command-panel{padding:16px 13px}.preview{padding:16px 12px}.section-caption{flex-basis:100%;margin-left:17px}.big-number{font-size:80px}.big-number .unit{font-size:80px}.preset-grid{grid-template-columns:1fr}.preset{padding:10px 28px 10px 10px}.preset strong{display:inline;margin-right:6px}.preset-choice>.help{top:12px;bottom:auto}.stats{padding:10px}}
+@media(max-width:760px){.heading{gap:10px}.head-actions{gap:5px}h1{font-size:19px}.body-grid{display:flex;flex-direction:column;overflow:visible;padding:0;gap:10px}.controls,.command-panel,.preview{overflow:visible;flex:none;padding:18px 14px}.command-panel,.preview{border-radius:12px;border:0}.preview{display:grid;grid-template-columns:1fr 1fr;gap:20px}.preview>.estimate{grid-column:1/-1}.preview .estimate-label{display:flex;justify-content:space-between}.preview .estimate-head{flex-direction:row;align-items:flex-end}.stat+.stat{border-top:0;border-left:1px solid var(--line);padding-top:0;padding-left:15px}.workspace{padding:24px}.workgrid{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 .estimate-head{--risk-color:var(--brand-green)}
 .estimate-head[data-risk=medium]{--risk-color:#805008}
@@ -78,19 +78,24 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible,su
 .controls .text-input:focus,.controls .text-input:focus-visible,.controls .metric-select:focus,.controls .metric-select:focus-visible{border-color:var(--brand-blue);background:var(--surface-1);box-shadow:none;outline:none}
 .controls .text-input[aria-invalid=true]{border-color:var(--danger)}
 
-.command-surface{position:relative;flex:1;min-height:0;overflow:hidden;background:var(--surface-1)}
+.command-surface{--line-number-width:48px;position:relative;flex:1;min-height:0;overflow:hidden;background:var(--surface-1)}
 .command-surface[data-invalid=true]{background:color-mix(in srgb,var(--warning) 4%,var(--surface-1))}
-.command-surface .command-editor,.command-highlight{position:absolute;inset:0;display:block;width:100%;height:100%;min-height:0;margin:0;border:0;border-radius:0;padding:18px 16px;font:400 12px/2 Consolas,"SFMono-Regular",monospace;letter-spacing:0;tab-size:2;white-space:pre-wrap;overflow-wrap:anywhere;word-break:normal;text-align:left}
+.command-surface .command-editor,.command-highlight{position:absolute;inset:0 0 0 var(--line-number-width);display:block;width:calc(100% - var(--line-number-width));height:100%;min-height:0;margin:0;border:0;border-radius:0;padding:18px 16px;font:400 12px/2 Consolas,"SFMono-Regular",monospace;letter-spacing:0;tab-size:2;white-space:pre-wrap;overflow-wrap:anywhere;word-break:normal;text-align:left}
+.command-line-numbers{position:absolute;inset:0 auto 0 0;width:var(--line-number-width);padding:18px 0;overflow:hidden;color:var(--sub);font:400 12px/2 Consolas,"SFMono-Regular",monospace;text-align:right;user-select:none;pointer-events:none}
+.command-line-numbers span{display:block;padding:0 10px 0 6px}
+.command-line-measure{position:absolute;top:0;left:0;visibility:hidden;pointer-events:none;font:400 12px/2 Consolas,"SFMono-Regular",monospace;letter-spacing:0;tab-size:2;white-space:pre-wrap;overflow-wrap:anywhere;word-break:normal}
 .command-highlight{overflow:hidden;pointer-events:none;user-select:none;color:var(--foreground);background:transparent}
 .command-highlight:after{content:' '}
 .command-surface .command-editor{z-index:1;resize:none;background:transparent;color:transparent;-webkit-text-fill-color:transparent;caret-color:var(--foreground);overflow:auto;outline:none}
 .command-surface .command-editor[aria-invalid=true]{background:transparent}
 .command-editor::selection{background:color-mix(in srgb,var(--brand-blue) 18%,transparent)}
-.syntax-command{color:var(--brand-blue)}.syntax-flag{color:var(--brand-purple)}.syntax-string{color:color-mix(in srgb,var(--brand-green) 68%,#000)}.syntax-number{color:#945216}.syntax-value{color:#006D93}.syntax-comment,.syntax-escape,.syntax-operator{color:var(--foreground-secondary)}
 @media(forced-colors:active){.command-highlight{display:none}.command-surface .command-editor{color:CanvasText;-webkit-text-fill-color:CanvasText;caret-color:CanvasText}}
 .lab-page{--page-gutter:28px;padding:0 var(--page-gutter) 40px;background:#F6F7FB;color:var(--foreground)}
-.lab-page:has(>#lab-panel:not([hidden])){display:flex;flex-direction:column;height:100dvh;min-height:100dvh;padding-bottom:8px}
-.evidence-toolbar-band{flex:none;margin:0 calc(-1 * var(--page-gutter));padding:0 var(--page-gutter);position:sticky;top:0;z-index:2;border-bottom:1px solid var(--divider-strong);background:color-mix(in srgb,#F6F7FB 95%,transparent);backdrop-filter:blur(8px)}
+/* The sandbox owns the viewport; documentation keeps normal page scrolling. */
+body[data-page=sandbox]{height:100dvh;overflow:hidden}
+body[data-page=sandbox] .lab-page{display:flex;flex-direction:column;height:100dvh;min-height:0;padding-bottom:8px;overflow:hidden}
+.command-editor,.body-grid{overscroll-behavior-y:contain}
+.evidence-toolbar-band{flex:none;margin:0 calc(-1 * var(--page-gutter));padding:0 var(--page-gutter);position:sticky;top:0;z-index:2;background:color-mix(in srgb,#F6F7FB 95%,transparent);backdrop-filter:blur(8px)}
 .evidence-toolbar{font-family:"Cascadia Mono","SFMono-Regular","SF Mono",Menlo,Consolas,Monaco,"PingFang SC","Microsoft YaHei",monospace;max-width:1680px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:18px;height:56px;min-height:56px}
 .toolbar-main{display:flex;align-items:center;gap:24px;min-width:0}.evidence-brand{font-size:16px;font-weight:700;min-width:0}.evidence-brand small{font-size:12px;font-weight:400;color:var(--foreground-secondary);margin-left:12px}.toolbar-actions{display:flex;flex:none;align-items:center;gap:12px}
 .numeric-control{display:flex;align-items:center;gap:10px}.numeric-control .range{flex:1;min-width:40px;margin:0}.step-input{width:100px!important;flex:none}.boolean-field{display:flex;align-items:center;justify-content:space-between;gap:12px}.boolean-field>[data-label-for]{margin:0}.numeric-note{font-size:10px;color:var(--sub);line-height:1.6;margin-top:5px}.window-number{width:76px!important;margin-top:5px}.window-reading-input{display:flex;gap:6px;align-items:center;font-size:10px;color:var(--sub)}
@@ -107,8 +112,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible,su
 /* Compact collection preview. */
 .preview{padding-top:0}
 .preview-header{position:sticky;top:0;z-index:9;flex:none;display:flex;align-items:center;min-height:55px;padding:14px 16px;margin:0 -16px;border-bottom:1px solid var(--divider-weak);border-radius:11px 11px 0 0;background:var(--surface-1)}
-.estimate-head{flex-direction:row;align-items:center;gap:12px}
-#overhead{font-size:60px}
+.estimate-head{flex-direction:row;align-items:flex-end;gap:12px}
+#overhead{font-size:80px}
 .estimate-head .risk{white-space:normal;line-height:1.5}
 .stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:12px 8px;margin-top:16px}
 .stat+.stat{padding-left:8px}
@@ -172,7 +177,7 @@ body[data-page=docs] .toolbar-actions{display:none}
 .scene>summary:before,.config-details>summary:before{content:'';width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(-45deg);margin:0 4px 0 2px;color:var(--sub)}
 .scene[open]>summary:before,.config-details[open]>summary:before{transform:rotate(45deg);margin-top:-3px}
 .scene-field{border:0;padding:0;margin:17px 0 0;min-width:0}.scene-field>label,.scene-field>legend{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;margin-bottom:9px;padding:0}
-.scene-selection-mode{font-size:11px;color:var(--sub);font-weight:400}.scene-choice-grid{display:grid;grid-template-columns:repeat(var(--scene-columns,3),minmax(0,1fr));gap:7px}
+.scene-choice-grid{display:grid;grid-template-columns:repeat(var(--scene-columns,3),minmax(0,1fr));gap:7px}
 .scene-choice{min-width:0;position:relative;border:1px solid var(--divider-strong);border-radius:7px;padding:9px 6px;background:var(--surface-1);text-align:center;font-size:12px;color:var(--sub);line-height:1.5;overflow-wrap:anywhere}
 .scene-choice:hover,.scene-goal:hover,.scene-phase:hover{border-color:var(--brand-blue)}
 .scene-choice[aria-checked=true],.scene-goal[aria-pressed=true],.scene-phase[aria-pressed=true]{border-color:var(--brand-blue);background:var(--brand-soft);color:var(--brand-blue)}
@@ -183,20 +188,31 @@ body[data-page=docs] .toolbar-actions{display:none}
 .round-copy-actions{display:flex;gap:7px}.collection-rounds{padding:11px 13px;border-bottom:1px solid var(--divider-weak)}.collection-rounds p{margin:0 0 8px;font-size:12px;color:var(--sub);line-height:1.7}.collection-round-tabs{display:flex;flex-wrap:wrap;gap:6px}.collection-round-tabs button{border:1px solid var(--divider-strong);border-radius:6px;padding:6px 8px;background:var(--surface-1);font-size:12px;color:var(--sub)}.collection-round-tabs button[aria-selected=true]{border-color:var(--brand-blue);color:var(--brand-blue);background:var(--brand-soft)}
 .scene-goals{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
 .scene-goal{min-width:0;position:relative;padding:10px 25px 10px 10px;border:1px solid var(--divider-strong);border-radius:7px;background:var(--surface-1);text-align:left;font-size:12px;line-height:1.65}
-.scene-goal:last-child{grid-column:1/-1}.scene-goal:after,.scene-phase:after{content:'';position:absolute;right:8px;top:50%;transform:translateY(-50%);width:10px;height:10px;border:1px solid var(--border-line);border-radius:3px}
+.scene-goal:after,.scene-phase:after{content:'';position:absolute;right:8px;top:50%;transform:translateY(-50%);width:10px;height:10px;border:1px solid var(--border-line);border-radius:3px}
 .scene-goal[aria-pressed=true]:after,.scene-phase[aria-pressed=true]:after{content:'✓';display:grid;place-items:center;font-size:9px;line-height:1;border-color:var(--brand-blue);background:var(--brand-blue);color:white}
-.scene-phases{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.scene-phase{position:relative;min-width:0;border:1px solid var(--divider-strong);background:var(--surface-1);padding:9px 23px 9px 8px;border-radius:7px;font-size:12px;text-align:left;line-height:1.5}
+.scene-phases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.scene-phase{position:relative;min-width:0;border:1px solid var(--divider-strong);background:var(--surface-1);padding:9px 23px 9px 8px;border-radius:7px;font-size:12px;text-align:left;line-height:1.5}
 .scene-window{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.scene-window label{font-size:12px;color:var(--sub)}.scene-window input{font-size:13px;margin-top:5px}.scene-window-value{display:block;margin-top:8px;color:var(--sub);font-size:11px;font-variant-numeric:tabular-nums}
 .scene-budget-line{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--sub)}.scene-budget-line output{color:var(--brand-blue);font-weight:600;font-size:16px}.scene-budget-ticks{display:flex;justify-content:space-between;font-size:11px;color:var(--sub)}
 .scene-supplements{display:flex;flex-wrap:wrap;gap:9px 12px;font-size:12px;color:var(--sub);margin-top:17px}.scene-supplements label{display:flex;align-items:center;gap:5px}.scene-supplements input{accent-color:var(--brand-blue);margin:0;width:14px;height:14px}
-.scene-environment{margin-top:19px}.scene-environment>summary{cursor:pointer;display:flex;align-items:center;gap:7px;list-style:none;font-size:13px;font-weight:600;color:var(--ink)}.scene-environment>summary::-webkit-details-marker{display:none}.scene-environment>summary:after{content:'';width:6px;height:6px;border-right:1.5px solid var(--sub);border-bottom:1.5px solid var(--sub);transform:rotate(-45deg);margin-left:auto;margin-right:3px}.scene-environment[open]>summary:after{transform:rotate(45deg);margin-top:-3px}
-.scene-supplements{margin:0;gap:10px 14px}.scene-supplement-field{margin-top:19px}.capture-code-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 13px 11px;border-bottom:1px solid var(--divider-weak)}.capture-method-tabs{display:flex;gap:3px;flex-wrap:wrap;min-width:0}.capture-method-tabs button{padding:7px 6px;border:0;border-bottom:2px solid transparent;background:transparent;font-size:12px;color:var(--sub);white-space:nowrap}.capture-method-tabs button[aria-selected=true]{border-bottom-color:var(--brand-blue);color:var(--brand-blue)}.capture-code-toolbar .round-copy-actions{flex:none}.code-language{font-size:11px;color:var(--sub)}.code-settings{padding:13px;border-bottom:1px solid var(--divider-weak);display:grid;gap:12px}.code-settings .field{margin:0}.code-settings label{font-size:12px;color:var(--sub)}.code-settings .text-input{font-size:12px;margin-top:5px}.code-step-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.code-status{font-size:12px;line-height:1.7;color:var(--sub);padding:0 13px;margin:10px 0}.code-reference{font-size:11px;margin-left:auto;color:var(--sub)}.command-editor[readonly]{cursor:text}
+.scene-environment{margin-top:19px}.scene-environment>summary{cursor:pointer;display:flex;align-items:center;gap:7px;list-style:none;font-size:13px;font-weight:600;color:var(--ink)}.scene-environment>summary::-webkit-details-marker{display:none}.scene-environment>summary:before{content:'';width:6px;height:6px;border-right:1.5px solid var(--sub);border-bottom:1.5px solid var(--sub);transform:rotate(-45deg);margin:0 4px 0 2px;flex:none}.scene-environment[open]>summary:before{transform:rotate(45deg);margin-top:-3px}
+.scene-supplements{margin:0;gap:10px 14px}.scene-supplement-field{margin-top:19px}.capture-code-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 13px 11px;}.capture-method-tabs{display:flex;gap:3px;flex-wrap:wrap;min-width:0}.capture-method-tabs button{padding:7px 6px;border:0;border-bottom:2px solid transparent;background:transparent;font-size:12px;color:var(--sub);white-space:nowrap}.capture-method-tabs button[aria-selected=true]{border-bottom-color:var(--brand-blue);color:var(--brand-blue)}.capture-code-toolbar .round-copy-actions{flex:none}.code-language{font-size:11px;color:var(--sub)}.code-settings{padding:13px;border-bottom:1px solid var(--divider-weak);display:grid;gap:12px}.code-settings .field{margin:0}.code-settings label{font-size:12px;color:var(--sub)}.code-settings .text-input{font-size:12px;margin-top:5px}.code-step-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.code-reference{font-size:11px;margin-left:auto;color:var(--sub)}.command-editor[readonly]{cursor:text}
 @media(max-width:1100px){.capture-code-toolbar{align-items:flex-start;flex-wrap:wrap}.capture-method-tabs{flex:1 1 100%}.capture-code-toolbar .round-copy-actions{margin-left:auto}.code-step-fields{grid-template-columns:1fr 1fr}}
 .scene-env-grid{display:grid;gap:12px;margin-top:13px}.scene-env-field{border:0;padding:0;margin:0;min-width:0}.scene-env-field>label{display:block;font-size:12px;color:var(--sub);margin-bottom:7px}.scene-env-grid .scene-choice-grid[data-scene-choice-for=scene-chip]{--scene-columns:4}
-.scene-ranks{display:grid;grid-template-columns:1fr 100px;align-items:center;gap:10px;font-size:12px;color:var(--sub)}.scene-ranks input{font-size:13px}.scene-feedback{color:#805008;font-size:12px;line-height:1.7;margin:12px 0 0}.scene-inactive{font-size:12px;color:var(--sub);line-height:1.8;margin:12px 0}.scene-legacy{display:none!important}
+.scene-ranks{display:grid;grid-template-columns:1fr 100px;align-items:center;gap:10px;font-size:12px;color:var(--sub)}.scene-ranks input{font-size:13px}.scene-inactive{font-size:12px;color:var(--sub);line-height:1.8;margin:12px 0}.scene-legacy{display:none!important}
 .config-details{border:0;border-radius:0;background:transparent;padding:0;margin:0 0 24px}.config-details[open]>summary{margin-bottom:14px}
-@media(max-width:1050px) and (min-width:761px){.scene-phases{grid-template-columns:1fr}.scene-goals{grid-template-columns:1fr}.scene-env-grid .scene-choice-grid[data-scene-choice-for=scene-chip]{--scene-columns:2}}
-@media(max-width:420px){.scene-phases{grid-template-columns:1fr}.scene-env-grid .scene-choice-grid[data-scene-choice-for=scene-chip]{--scene-columns:2}}
+.code-input-purpose{display:block;font-size:11px;font-weight:400;color:var(--sub);line-height:1.7;margin-top:5px}
+.code-settings{background:#eef2f6;border:0;border-radius:16px;margin:12px 13px 0;padding:16px;gap:12px}.code-settings-title{font-size:13px;font-weight:600;color:var(--ink)}
+.command-highlight .token.comment,.command-highlight .token.prolog,.command-highlight .token.doctype,.command-highlight .token.cdata{color:#6A737D}.command-highlight .token.keyword,.command-highlight .token.boolean,.command-highlight .token.builtin,.command-highlight .token.directive{color:#005CC5}.command-highlight .token.function,.command-highlight .token.class-name{color:#6F42C1}.command-highlight .token.string,.command-highlight .token.char,.command-highlight .token.attr-value{color:#22863A}.command-highlight .token.number,.command-highlight .token.constant{color:#B05A00}.command-highlight .token.operator,.command-highlight .token.punctuation{color:#586069}.command-highlight .token.variable,.command-highlight .token.parameter{color:#007A8A}.command-highlight .token.property,.command-highlight .token.symbol{color:#005CC5}
+.code-settings .choice-pills{background:var(--surface-1);border:1px solid var(--border-line)}
+.code-settings .choice-pills .pill:not(:disabled):not([aria-checked=true]):hover{background:#e2ebf7;color:var(--brand-blue)}
+.code-settings .choice-pills .pill[aria-checked=true]{background:var(--brand-blue);color:var(--surface-1);font-weight:600;box-shadow:none}
+.code-settings .range::-webkit-slider-runnable-track{height:6px;background:linear-gradient(to right,var(--brand-blue) calc(var(--fill,0%) + var(--fill-offset,6.5px)),#94a3b8 calc(var(--fill,0%) + var(--fill-offset,6.5px)))}
+.code-settings .range::-webkit-slider-thumb{margin-top:-3.5px}
+.code-settings .range::-moz-range-track{height:6px;background:linear-gradient(to right,var(--brand-blue) calc(var(--fill,0%) + var(--fill-offset,6.5px)),#94a3b8 calc(var(--fill,0%) + var(--fill-offset,6.5px)))}
+.code-number-control{display:flex;align-items:center;gap:7px;margin-top:5px;min-width:0}.code-number-control .range{flex:1 1 0;min-width:28px;max-width:160px;margin:0;width:0}.code-settings .code-number-control .step-input{flex:none;width:88px!important;margin:0;padding:0 5px}.code-number-control input[type=number]::-webkit-inner-spin-button{opacity:1}
+.controls-header{margin-bottom:0}.config-view-tabs{position:sticky;top:55px;z-index:8;display:flex;gap:12px;flex-wrap:wrap;margin:0 -16px 16px;padding:0 16px 11px;background:var(--surface-1)}.config-view-tabs button{border:0;border-bottom:2px solid transparent;background:transparent;padding:7px 6px;font-size:12px;color:var(--sub);white-space:nowrap}.config-view-tabs button[aria-selected=true]{border-bottom-color:var(--brand-blue);color:var(--brand-blue)}.config-view{min-width:0}.config-view[data-config-panel=scene]>.scene>summary{display:none}.config-view[data-config-panel=scene] .scene-field:first-child{margin-top:0}.scene-workflow-choices{--scene-columns:2}.scene-workflow-dependent{display:block;margin-top:10px;font-size:12px;color:var(--sub)}.scene-workflow-dependent .text-input{margin-top:6px;font-size:12px}.scene-workflow-link{display:inline-block;margin-top:9px;text-decoration:none}.preview .big-number[data-source=reference]{font-variant-numeric:tabular-nums}
+@media(max-width:1050px) and (min-width:761px){.scene-env-grid .scene-choice-grid[data-scene-choice-for=scene-chip]{--scene-columns:2}}
+@media(max-width:420px){.scene-env-grid .scene-choice-grid[data-scene-choice-for=scene-chip]{--scene-columns:2}}
 </style>
 </head>
 <body data-page="sandbox">
@@ -206,23 +222,27 @@ body[data-page=docs] .toolbar-actions{display:none}
  <div class="body-grid">
   <div class="controls" aria-label="采集控制器">
    <header class="controls-header" id="controls-header"><div class="controls-title">采集配置</div></header>
+   <div class="config-view-tabs" role="tablist" aria-label="配置方式"><button type="button" id="config-tab-scene" data-config-view="scene" role="tab" aria-selected="true" aria-controls="config-view-scene">场景化配置</button><button type="button" id="config-tab-manual" data-config-view="manual" role="tab" aria-selected="false" aria-controls="config-view-manual" tabindex="-1">手动配置</button><button type="button" id="config-tab-ai" data-config-view="ai" role="tab" aria-selected="false" aria-controls="config-view-ai" tabindex="-1">AI帮配</button></div>
+   <div class="config-view" id="config-view-scene" data-config-panel="scene" role="tabpanel" aria-labelledby="config-tab-scene"></div>
+   <div class="config-view" id="config-view-manual" data-config-panel="manual" role="tabpanel" aria-labelledby="config-tab-manual" hidden></div>
+   <div class="config-view" id="config-view-ai" data-config-panel="ai" role="tabpanel" aria-labelledby="config-tab-ai" hidden></div>
     <details class="scene" id="scene-panel" open>
      <summary id="scene-heading">场景化配置</summary>
      <p class="scene-inactive" id="scene-inactive" hidden></p>
      <div id="scene-form">
       <div class="scene-field"><label for="scene-workload">你要运行什么？</label><select id="scene-workload" hidden><option value="training">模型训练</option><option value="inference">离线推理</option><option value="service">在线推理服务</option><option value="operator">单算子 / 小段程序</option></select></div>
-      <fieldset class="scene-field"><legend><span>主要想发现什么？</span><span class="scene-selection-mode">可多选</span></legend><div class="scene-goals" role="group" aria-label="主要发现目标，可多选">
+      <fieldset class="scene-field"><legend>主要想发现什么？</legend><div class="scene-goals" role="group" aria-label="主要发现目标，可多选">
        <button type="button" class="scene-goal" data-scene-goal="overview" aria-pressed="true" title="采集基础下发与执行耗时">先看看慢在哪里</button>
        <button type="button" class="scene-goal" data-scene-goal="waiting" aria-pressed="false" title="关联 Runtime 调用、时间线和主机资源">NPU 为什么在等</button>
        <button type="button" class="scene-goal" data-scene-goal="communication" aria-pressed="false" title="采集 L1 通信数据；实际任务需存在集合通信">多卡为什么跑不快</button>
        <button type="button" class="scene-goal" data-scene-goal="memory" aria-pressed="false" title="采集 CANN 算子内存；框架张量与泄漏来源需使用框架 Profiler">内存占用与增长</button>
        <button type="button" class="scene-goal" data-scene-goal="operator" aria-pressed="false" title="采集详细算子信息和所选硬件指标">算子瓶颈在哪里</button>
       </div></fieldset>
-      <div class="scene-field" id="scene-metric-field" hidden><label for="scene-metric">算子分析重点 <span class="scene-selection-mode">可多选</span></label><select id="scene-metric" multiple hidden><option value="pipeline" selected>计算与搬运</option><option value="compute">计算利用率</option><option value="bandwidth">内存带宽</option><option value="cache">L2 缓存命中</option></select><output id="scene-metric-round-count" class="scene-window-value"></output></div>
-      <fieldset class="scene-field" id="scene-phase-field"><legend><span>重点观察哪些阶段？</span><span class="scene-selection-mode">可多选</span></legend><div class="scene-phases" role="group" aria-label="采集阶段，可多选"><button type="button" class="scene-phase" data-scene-phase="startup" aria-pressed="false">启动与首次执行</button><button type="button" class="scene-phase" data-scene-phase="stable" aria-pressed="true" title="默认从第 10 秒开始，可在具体配置中调整">稳定运行阶段</button><button type="button" class="scene-phase" data-scene-phase="custom" aria-pressed="false">指定时间段</button></div>
+      <div class="scene-field" id="scene-metric-field" hidden><label for="scene-metric">算子分析重点</label><select id="scene-metric" multiple hidden><option value="pipeline" selected>计算与搬运</option><option value="compute">计算利用率</option><option value="bandwidth">内存带宽</option><option value="cache">L2 缓存命中</option></select><output id="scene-metric-round-count" class="scene-window-value"></output></div>
+      <fieldset class="scene-field" id="scene-phase-field"><legend>重点观察哪些阶段？</legend><div class="scene-phases" role="group" aria-label="采集阶段，可多选"><button type="button" class="scene-phase" data-scene-phase="startup" aria-pressed="false">启动与首次执行</button><button type="button" class="scene-phase" data-scene-phase="stable" aria-pressed="true" title="默认从第 10 秒开始，可在具体配置中调整">稳定运行阶段</button><button type="button" class="scene-phase" data-scene-phase="custom" aria-pressed="false">指定时间段</button></div>
        <div class="scene-window" id="scene-window" hidden><label for="scene-delay">开始时间（秒）<input id="scene-delay" class="text-input" type="number" min="0" max="119" step="1" value="10"></label><label for="scene-duration">持续时长（秒）<input id="scene-duration" class="text-input" type="number" min="1" max="120" step="1" value="10"></label></div><output class="scene-window-value" id="scene-window-summary" title="多个阶段合并为一个连续采集窗口，包含阶段之间的时间。"></output>
       </fieldset>
-      <fieldset class="scene-field"><legend>采集详细程度</legend><div class="scene-budget-line"><span title="档位调整可选采集项和采样频率；右侧按最终配置估算开销。">采集策略</span><output id="scene-budget-value" for="scene-budget">均衡</output></div><input id="scene-budget" class="range" type="range" min="0" max="2" step="1" value="1" aria-label="采集详细程度"><div class="scene-budget-ticks"><span>轻量</span><span>均衡</span><span>深入</span></div></fieldset>
+      <fieldset class="scene-field"><legend>采集详细程度</legend><div class="scene-budget-line"><span title="每档应用完整的采集配置；右侧按最终配置估算开销。">采集策略</span><output id="scene-budget-value" for="scene-budget">均衡</output></div><input id="scene-budget" class="range" type="range" min="0" max="4" step="1" value="2" aria-label="采集详细程度"><div class="scene-budget-ticks"><span>极简</span><span>轻量</span><span>均衡</span><span>详细</span><span>深入</span></div></fieldset>
       <fieldset class="scene-field scene-supplement-field"><legend>补充观察</legend><div class="scene-supplements" role="group" aria-label="补充观察"><label><input id="scene-host" type="checkbox">主机资源</label><label><input id="scene-memory" type="checkbox">算子内存</label><label title="采集应用已有的 MSTX 标记"><input id="scene-mstx" type="checkbox">业务打点</label></div></fieldset>
       <details class="scene-environment" id="scene-environment"><summary>运行环境</summary><div class="scene-env-grid">
        <div class="scene-env-field"><label for="scene-chip">芯片系列</label><select id="scene-chip" hidden><option value="unknown">未指定</option><option value="a2">Atlas A2</option><option value="a3">Atlas A3</option><option value="950">Ascend 950</option><option value="infer">Atlas 推理系列</option></select></div>
@@ -230,8 +250,9 @@ body[data-page=docs] .toolbar-actions{display:none}
        <div class="scene-env-field"><label for="scene-deployment">运行范围</label><select id="scene-deployment" hidden><option value="unknown">未指定</option><option value="single">单卡</option><option value="multi">单机多卡</option><option value="cluster">多机多卡</option></select></div>
        <label class="scene-ranks" id="scene-ranks-field" for="scene-ranks" hidden>采集 Rank 数<input id="scene-ranks" class="text-input" type="number" min="1" max="65536" step="1" value="1"></label>
       </div></details>
-      <p class="scene-feedback" id="scene-feedback" role="status" hidden></p>
      </div>
+     <fieldset class="scene-field" id="scene-data-source"><legend>处理什么数据？</legend><div class="scene-choice-grid scene-workflow-choices" role="radiogroup" aria-label="数据来源"><button type="button" class="scene-choice" data-scene-workflow-mode="capture" role="radio" aria-checked="true">新采集数据</button><button type="button" class="scene-choice" data-scene-workflow-mode="existing" role="radio" aria-checked="false">已有采集数据</button></div><label class="scene-workflow-dependent" id="scene-prof-dir-field" for="scene-prof-dir" hidden>已有数据目录<input id="scene-prof-dir" class="text-input" data-workflow-mirror="workflow-prof-dir" value="" placeholder="/data/profiling/PROF_XXX" autocomplete="off" spellcheck="false"></label></fieldset>
+     <fieldset class="scene-field" id="scene-view-location"><legend>在哪里查看？</legend><div class="scene-choice-grid scene-workflow-choices" role="radiogroup" aria-label="结果查看位置"><button type="button" class="scene-choice" data-scene-workflow-view="local" role="radio" aria-checked="true">本地 Insight</button><button type="button" class="scene-choice" data-scene-workflow-view="remote" role="radio" aria-checked="false">远端浏览器</button></div><label class="scene-workflow-dependent" id="scene-service-field" for="scene-service" hidden>远端查看地址<input id="scene-service" class="text-input" data-workflow-mirror="workflow-service" value="" placeholder="https://insight.example.com/" autocomplete="off" spellcheck="false"></label><a class="button scene-workflow-link" id="scene-open-service" target="_blank" rel="noopener noreferrer" hidden>打开远端查看</a></fieldset>
     </details>
     <details class="config-details" id="config-details"><summary>具体配置</summary></details>
    <section class="section">
@@ -311,13 +332,13 @@ body[data-page=docs] .toolbar-actions{display:none}
 <div class="field"><div data-label-for="extra-type"><label for="extra-type">自动解析结果格式</label></div><select id="extra-type" class="metric-select"><option value="text" selected>text</option><option value="db">db</option></select></div>
 <div class="field"><div data-label-for="extra-storage-limit"><label for="extra-storage-limit">原始数据存储上限（MB，空为不限制）</label></div><div class="numeric-control"><input id="slider-extra-storage-limit" type="range" class="range" min="0" max="1000" step="1" value="200" aria-label="storage-limit 滑动调节"><input id="extra-storage-limit" class="text-input step-input" type="number" min="200" max="4294967295" step="1" value="" autocomplete="off"></div><p class="numeric-note">滑条按对数缩放；输入框精确设置 MB，留空表示不限制。</p></div>
 <div class="field"><div data-label-for="extra-environment"><label for="extra-environment">应用环境变量（KEY=value;KEY=value）</label></div><input id="extra-environment" class="text-input" type="text"  value="" autocomplete="off"></div></div></details>
-   <section class="section workflow-section" id="postprocess-section" aria-labelledby="postprocess-title">
-    <div class="section-title"><span class="num">05</span><h2 id="postprocess-title">采集后如何处理？</h2></div>
+   <details class="config-details workflow-section" id="postprocess-section" open>
+    <summary id="postprocess-title">采集后如何处理？</summary>
     <div class="collection-group"><h3>解析与产物</h3><div class="data-box group-panel">
      <div class="field control-row config-row"><div data-label-for="workflow-mode"><label for="workflow-mode">处理流程</label></div><select id="workflow-mode" class="metric-select"><option value="capture">新采集并自动解析</option><option value="existing">已有数据补解析</option></select></div>
      <div class="control-row"><div class="control-copy"><div class="control-name" id="parse-behavior">采集结束后自动解析</div><div class="control-desc" id="parse-behavior-note">当前 msprof 应用启动模式的默认行为，无需手工再启动解析；不是一个可关闭的采集开关。</div></div><span class="cost" id="parse-behavior-badge">自动</span></div>
      <div id="workflow-format-slot"></div><div id="workflow-output-slot"></div>
-     <div class="field control-row config-row" id="workflow-prof-row" hidden><div data-label-for="workflow-prof-dir"><label for="workflow-prof-dir">已有数据目录（执行端）</label></div><input id="workflow-prof-dir" class="text-input" value="" placeholder="/data/profiling/PROF_XXX" autocomplete="off" spellcheck="false"><p class="control-desc">填写 PROF_XXX 或其父目录。export 会先解析未解析数据，再导出结果。</p></div>
+     <div class="field control-row config-row" id="workflow-prof-row" hidden><div data-label-for="workflow-prof-dir"><label for="workflow-prof-dir">已有数据目录（执行端）</label></div><input id="workflow-prof-dir" class="text-input" value="" placeholder="/data/profiling/PROF_XXX" autocomplete="off" spellcheck="false"><p class="control-desc">填写 PROF_XXX 或其父目录。export 会解析输入数据并生成解析数据。</p></div>
     </div></div>
     <div class="collection-group" style="margin-top:16px"><h3>数据保留与查看</h3><div class="data-box group-panel">
      <div class="field control-row config-row"><div data-label-for="workflow-view"><label for="workflow-view">查看方式</label></div><select id="workflow-view" class="metric-select"><option value="local">下载后用本地 Insight 查看</option><option value="remote">远端浏览器查看（数据留在服务器）</option></select></div>
@@ -327,7 +348,7 @@ body[data-page=docs] .toolbar-actions{display:none}
     <div class="dependency" id="workflow-route" role="status"></div><p class="subtle" id="workflow-status" role="status"></p>
     <a id="workflow-open-service" class="button" target="_blank" rel="noopener noreferrer" hidden>打开已有 Insight 服务</a>
     <p class="subtle">当前 demo 只生成命令与查看方案，不执行采集、解析或下载，也不部署、连接检测远端服务。远端查看仍读取文件，不代表边采边流式分析。</p>
-   </section>
+   </details>
    <details class="docs"><summary>参数依据与概念边界</summary><p>采集工具：MindStudio Profiler（msprof）。本例使用 CANN 9.1 的应用启动采集参数；命令需在已安装 CANN 的 Linux 环境中执行，并以本机 msprof --help 与实际芯片支持为准。CLI 采集不包含 PyTorch / MindSpore 框架调用栈。</p><p>通信数据随 L1/L2 的集合通信算子采集，不另行拼接已计划废弃的 --hccl。硬件指标支持 task-based / sample-based，主机频率仅在主机采集开启时生效。关闭的基础开关会显式写为 off，避免工具默认开启。</p><p>未录入同环境配对测量时，显示低可信度的模型膨胀预估；数据量给出低可信度的概念预估，并优先使用目录实测。录入后优先显示当前命令的实测结果，配置或环境变化即回退模型预估。没有执行训练或性能采集。</p><a href="https://www.hiascend.com/doc_center/source/en/CANNCommunityEdition/910/devaids/Profiling/atlasprofiling_16_0011.html" target="_blank" rel="noopener">任务采集参数 ↗</a><a href="https://www.hiascend.com/doc_center/source/en/CANNCommunityEdition/910/devaids/Profiling/atlasprofiling_16_0015.html" target="_blank" rel="noopener">msproftx 打点 ↗</a><a href="https://www.hiascend.com/doc_center/source/en/CANNCommunityEdition/910/devaids/Profiling/atlasprofiling_16_0014.html" target="_blank" rel="noopener">Host 采集参数 ↗</a><a href="https://www.hiascend.com/doc_center/source/en/CANNCommunityEdition/910/devaids/Profiling/atlasprofiling_16_0017.html" target="_blank" rel="noopener">延迟与时长 ↗</a></details>
 <details class="docs"><summary>核对结果与未接入的采集模式 · 2026-11-18</summary>
 <p>本面板生成应用启动 + 延迟采集命令。msprof 仓库主要实现解析与导出，底层采集器在 cann/runtime/src/dfx/msprof；解析器存在不等于所有芯片都能采集。核对基线：msprof 2238b62b101d，CANN 9.1 官方 CLI 文档。</p>
@@ -335,27 +356,30 @@ body[data-page=docs] .toolbar-actions{display:none}
 <p>尚未接入：无应用的系统采集（sys-devices/sys-period）、动态 launch/attach（dynamic/pid，与 delay/duration 互斥）、instr-profiling 及周期（与任务/API/AI Core 等互斥）、950 专用 task-block、自定义 PMU 寄存器、Host 指定 PID、950 的内存高频扩展和试用 L3/PyPTO。以上不是“不支持”，需要独立模式及芯片适配；当前粘贴未映射参数会保留原文并阻止复制。</p>
 <p>model-execution/hccl 已提供兼容开关，官方标注将弃用，建议优先使用 task-time。with_stack、record_shapes、profile_memory、框架采集日程等属于框架 Profiler，不应直接拼入本 CLI。没有自动识别芯片、验证依赖、远程启动或数据完整性检查。</p>
 <p>注意：应用模式下 sys-devices/sys-period 不生效；部分 EP 整网推理系统采集项无数据；A3/950 共享 OS 设备有组合约束。硬件与 OS 限制请逐项查看 @ 来源，最终以目标环境 msprof --help 为准。task-memory 不能代表框架显存快照。</p>
-<p>耗时模型保留构造权重用于配置比较；数据量模型使用明确披露的示意速率，不是吞吐基准。性能变化受算子密度、芯片、卡数、软件版本、负载和交互影响，不能相加归因。缩短窗口减少总数据和受扰动时段，不能保证采集期间的膨胀率下降。数据量须分开记录原始采集数据与解析导出产物。</p>
+<p>耗时模型保留构造权重用于配置比较；数据量模型使用明确披露的示意速率，不是吞吐基准。性能变化受算子密度、芯片、卡数、软件版本、负载和交互影响，不能相加归因。缩短窗口减少总数据和受扰动时段，不能保证采集期间的膨胀率下降。数据量须分开记录原始采集数据与解析数据。</p>
 <p>仓库证据：<a href="https://gitcode.com/Ascend/msprof/blob/2238b62b101ddcff3e796e83da6f58f936f7ca4d/docs/zh/user_guide/profile_data_file_references_db.md">DB 字段与采集开关</a>、<a href="https://gitcode.com/Ascend/msprof/blob/2238b62b101ddcff3e796e83da6f58f936f7ca4d/analysis/framework/config_data_parsers.py">解析器注册</a>、<a href="https://gitcode.com/Ascend/msprof/blob/2238b62b101ddcff3e796e83da6f58f936f7ca4d/scripts/msprof_data_collection.sh">Host 外部工具调用</a>。官方证据见各 @；未执行 NPU 采集。</p></details>
    <button class="button reset-controls" id="reset">恢复推荐配置</button>
   </div>
   <section class="command-panel" aria-label="执行命令">
    <div class="terminal">
-     <div class="terminal-head"><div class="terminal-title">采集代码</div><a id="code-reference" class="code-reference" href="https://www.hiascend.com/doc_center/source/en/CANNCommunityEdition/910/devaids/Profiling/atlasprofiling_16_0011.html" target="_blank" rel="noopener">接口文档</a><span id="code-language" class="code-language">Bash</span></div>
+     <div class="terminal-head"><div class="terminal-title">采集代码</div><a id="code-reference" class="code-reference" href="https://www.hiascend.com/doc_center/source/en/CANNCommunityEdition/910/devaids/Profiling/atlasprofiling_16_0011.html" target="_blank" rel="noopener" title="查看当前采集方式的官方参数和接入示例">官方用法</a><span id="code-language" class="code-language">Bash</span></div>
      <div class="capture-code-toolbar"><div class="capture-method-tabs" role="tablist" aria-label="采集接入方式">
       <button type="button" id="method-launch" data-capture-method="launch" role="tab" aria-selected="true" aria-controls="command-surface">命令启动</button><button type="button" id="method-dynamic" data-capture-method="dynamic" role="tab" aria-selected="false" aria-controls="command-surface" tabindex="-1">动态接入</button><button type="button" id="method-framework" data-capture-method="framework" role="tab" aria-selected="false" aria-controls="command-surface" tabindex="-1">框架接口</button><button type="button" id="method-native" data-capture-method="native" role="tab" aria-selected="false" aria-controls="command-surface" tabindex="-1">原生接口</button><button type="button" id="method-mstx" data-capture-method="mstx" role="tab" aria-selected="false" aria-controls="command-surface" tabindex="-1">业务打点</button>
      </div><div class="round-copy-actions"><button class="copy-btn" id="copy-all" hidden>复制全部</button><button class="copy-btn" id="copy"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="5" y="5" width="8" height="9" rx="1.5"/><path d="M10 3V2H2v9h1"/></svg><span id="copy-label">复制</span></button></div></div>
-     <div class="code-settings" id="code-settings" hidden>
-      <div class="field" id="code-pid-field" hidden><label for="code-pid">目标进程 PID</label><input id="code-pid" class="text-input" placeholder="进程 PID，多个用逗号分隔" value="" autocomplete="off"></div>
+     <div class="code-settings" id="code-settings" role="group" aria-labelledby="code-settings-title" hidden>
+      <div class="code-settings-title" id="code-settings-title">接入配置</div>
+      <div class="field" id="code-pid-field" hidden><label for="code-pid">目标进程 PID</label><input id="code-pid" class="text-input" placeholder="进程 PID，多个用逗号分隔" value="" autocomplete="off" aria-describedby="code-pid-purpose"><small class="code-input-purpose" id="code-pid-purpose">要接入的任务进程号，不是设备 ID。</small></div>
       <div class="field" id="code-framework-field" hidden><label for="code-framework">框架</label><select id="code-framework" class="metric-select"><option value="pytorch">Ascend PyTorch</option><option value="mindspore">MindSpore 2.7.1</option></select></div>
       <div class="field" id="code-mstx-api-field" hidden><label for="code-mstx-api">打点接口</label><select id="code-mstx-api" class="metric-select"><option value="pytorch">Ascend PyTorch</option><option value="native">原生 C++</option></select></div>
-      <div class="code-step-fields" id="code-step-fields" hidden><label for="code-skip">跳过 Step<input id="code-skip" class="text-input" type="number" min="0" max="10000000" value="1" step="1"></label><label for="code-warmup">预热 Step<input id="code-warmup" class="text-input" type="number" min="0" max="100" value="1" step="1"></label><label for="code-active">采集 Step<input id="code-active" class="text-input" type="number" min="1" max="1000" value="5" step="1"></label></div>
-      <div class="field" id="code-device-field" hidden><label for="code-device">设备 ID</label><input id="code-device" class="text-input" type="number" min="0" max="65535" value="0" step="1"></div>
-      <div class="field" id="code-mark-field" hidden><label for="code-mark">业务区间名称</label><input id="code-mark" class="text-input" value="关键业务阶段" maxlength="128"></div>
-     </div><p class="code-status" id="code-status" hidden></p>
+      <div class="code-step-fields" id="code-step-fields" hidden><div><label for="code-skip">跳过步数（Step）</label><input id="code-skip" class="text-input" type="number" min="0" max="10000000" value="1" step="1" aria-describedby="code-skip-purpose"><small class="code-input-purpose" id="code-skip-purpose">开始前略过的迭代数。</small></div><div><label for="code-warmup">预热步数（Step）</label><input id="code-warmup" class="text-input" type="number" min="0" max="100" value="1" step="1" aria-describedby="code-warmup-purpose"><small class="code-input-purpose" id="code-warmup-purpose">正式记录前，采集器预热的步数。</small></div><div><label for="code-active">采集步数（Step）</label><input id="code-active" class="text-input" type="number" min="1" max="1000" value="5" step="1" aria-describedby="code-active-purpose"><small class="code-input-purpose" id="code-active-purpose">正式记录的迭代数，不是秒数。</small></div></div>
+      <div class="field" id="code-device-field" hidden><label for="code-device">设备 ID</label><input id="code-device" class="text-input" type="number" min="0" max="65535" value="0" step="1" aria-describedby="code-device-purpose"><small class="code-input-purpose" id="code-device-purpose">要采集的 NPU 编号，需与应用实际设备一致；不是卡数。</small></div>
+      <div class="field" id="code-mark-field" hidden><label for="code-mark">业务区间名称</label><input id="code-mark" class="text-input" value="关键业务阶段" maxlength="128" aria-describedby="code-mark-purpose"><small class="code-input-purpose" id="code-mark-purpose">显示在时间线上的名称，例如 forward。</small></div>
+     </div>
      <div class="collection-rounds" id="collection-rounds" hidden><p id="collection-round-summary"></p><div id="collection-round-tabs" class="collection-round-tabs" role="tablist" aria-label="分轮采集命令"></div></div>
     <div class="validation" id="validation" role="alert" hidden></div>
     <div class="command-surface" id="command-surface">
+     <div class="command-line-numbers" aria-hidden="true"><div id="command-line-numbers"></div></div>
+     <div id="command-line-measure" class="command-line-measure" aria-hidden="true"></div>
      <pre id="command-highlight" class="command-highlight" aria-hidden="true"></pre>
      <textarea id="command" class="command-editor" aria-label="可编辑的 Bash 采集命令" aria-describedby="command-feedback" spellcheck="false" autocomplete="off" autocapitalize="off" wrap="soft"></textarea>
     </div>
@@ -364,8 +388,8 @@ body[data-page=docs] .toolbar-actions{display:none}
     <div class="manual-wrap" id="manual-wrap" hidden><label for="manual-copy">自动复制不可用，请选中后按 Ctrl / ⌘ + C</label><textarea id="manual-copy" class="manual-copy" readonly spellcheck="false"></textarea></div>
    </div>
   </section>
-  <aside class="preview" aria-label="采集预览">
-   <header class="preview-header"><div class="controls-title">采集预览</div></header>
+  <aside class="preview" aria-label="成本与产物大小">
+   <header class="preview-header"><div class="controls-title">成本与产物大小</div></header>
    <section class="estimate">
     <div class="estimate-label"><span id="overhead-title">性能膨胀预估</span></div>
     <div class="estimate-head"><div class="big-number"><span id="overhead">≈4</span><span class="unit" id="overhead-unit">%</span></div><span class="risk" id="risk" data-risk="low">预估 · 未校准</span></div>
@@ -377,19 +401,19 @@ body[data-page=docs] .toolbar-actions{display:none}
      </div>
      <details class="download-options"><summary>调整估算范围与下载内容</summary>
       <div class="field"><div data-label-for="volume-ranks"><label for="volume-ranks">预计采集的 Rank 数</label></div><input id="volume-ranks" class="text-input" type="number" min="1" max="65536" step="1" value="1"></div>
-      <div class="field"><div data-label-for="download-content"><label for="download-content">计划下载什么</label></div><select id="download-content" class="metric-select"><option value="all">完整目录：原始 + 导出</option><option value="raw">仅原始数据</option><option value="export">仅导出结果</option></select></div>
+      <div class="field"><div data-label-for="download-content"><label for="download-content">计划下载什么</label></div><select id="download-content" class="metric-select"><option value="all">完整目录：原始 + 解析数据</option><option value="raw">仅原始数据</option><option value="export">仅解析数据</option></select></div>
       <p class="subtle">只影响体量估算，不修改命令。默认 1 Rank；多 Rank 按相同事件密度估算。未扣压缩、文件老化或共享数据。</p>
      </details>
     </div><div class="stat"><span>采集覆盖</span><strong id="enabled-count">3<small>项数据</small></strong><p id="capture-range">第 10–20 秒</p></div></div>
-    <section class="volume-breakdown" aria-labelledby="volume-breakdown-title"><h3 id="volume-breakdown-title">原始体量构成 · 模型占比</h3><p class="volume-breakdown-note" id="volume-breakdown-note">按预计体量从大到小排列，不含解析导出产物；尚未校准。</p><div id="volume-breakdown-list" class="volume-breakdown-list"></div></section>
+    <section class="volume-breakdown" aria-labelledby="volume-breakdown-title"><h3 id="volume-breakdown-title">原始体量构成 · 模型占比</h3><p class="volume-breakdown-note" id="volume-breakdown-note">按预计体量从大到小排列，不含解析数据；尚未校准。</p><div id="volume-breakdown-list" class="volume-breakdown-list"></div></section>
 
    </section>
    <section class="artifact-preview" id="artifact-preview" aria-labelledby="artifact-title"><div class="artifact-heading"><h3 id="artifact-title">格式与目录预览</h3><span id="artifact-help-slot"></span></div><p class="artifact-path-label" id="artifact-path-label">执行端目录（预期）</p><code class="artifact-path" id="artifact-path"></code><pre class="artifact-tree" id="artifact-tree" aria-label="预期产物目录树"></pre><p class="artifact-note" id="artifact-path-note"></p><p class="artifact-note" id="artifact-delivery-note"></p></section>
    <details class="docs"><summary>预估模型依据与假设</summary><p>页面设计模型 v1，非官方性能承诺、非芯片基准。颜色阈值为页面设计：展示值 ≤5% 为绿，>5% 且 ≤10% 为橙，>10% 为红；没有已核实的统一行业阈值。未建模开销存在时至少提示橙色，不能把部分预估标为绿色总开销。基于原概念稿的构造权重做配置比较，尚无训练样本或误差验证。百分比按相同工作量相对未采集耗时理解。</p><p>权重（百分点）：基础 0.9；L0 1.8、L1 4.2；AscendCL 1.0、Runtime 1.6、MSTX 0.4、算子内存 3.8、AI CPU 1.2；Host CPU+mem 为 0.6 + 0.03 × Hz；task-based PMU 为 Pipe 7.5、Arithmetic 6.8、Memory 8.6、L2Cache 6.1。上述系数均为人为设定，不能作为实际开销证据。</p><p>假设事件密度与工作负载相对固定、开销近似相加，不模拟交互效应。延迟与时长不直接改变采集期间百分比。L2 的属性增量、sample-based、新 PMU 组、Device 系统、进程 I/O 和域过滤等未建模，开启时只显示已建模部分，并提示额外开销未知。实测优先，不把单次校准外推到不同配置。数据量另用示意速率模型，口径与假设可在下方展开核对。</p></details>
    <details class="docs" id="external-measurements"><summary>高级：录入外部对照数据</summary><p>当前 demo 没有内置实测数据，也未自动运行对照实验；以下仅接收用户自行测得的外部数据。</p><p>固定芯片/卡数、CANN/驱动/框架、模型/输入与并行策略，预热后对相同工作量交替测量至少 3 对。使用相同口径（稳定步耗时或端到端总耗时），记录同步点。实测数据只用于当前配置；新配置回退未校准模型。</p>
-<div class="field"><div data-label-for="cal-environment"><label for="cal-environment">测量环境与负载标识</label></div><input id="cal-environment" class="text-input" autocomplete="off"></div><div class="field"><div data-label-for="cal-baseline"><label for="cal-baseline">未采集耗时（ms，多次用逗号分隔）</label></div><input id="cal-baseline" class="text-input" autocomplete="off"></div><div class="field"><div data-label-for="cal-profiled"><label for="cal-profiled">开启采集耗时（ms，按顺序配对）</label></div><input id="cal-profiled" class="text-input" autocomplete="off"></div><div class="field"><div data-label-for="cal-raw"><label for="cal-raw">原始采集目录实际大小（MB，可空）</label></div><div class="numeric-control"><input id="slider-cal-raw" class="range" type="range" min="0" max="10240" step="0.1" value="0" aria-label="原始目录大小滑动调节"><input id="cal-raw" class="text-input step-input" type="number" min="0" step="0.1" autocomplete="off"></div></div><div class="field"><div data-label-for="cal-export"><label for="cal-export">解析导出产物大小（MB，可空）</label></div><div class="numeric-control"><input id="slider-cal-export" class="range" type="range" min="0" max="10240" step="0.1" value="0" aria-label="导出产物大小滑动调节"><input id="cal-export" class="text-input step-input" type="number" min="0" step="0.1" autocomplete="off"></div></div>
+<div class="field"><div data-label-for="cal-environment"><label for="cal-environment">测量环境与负载标识</label></div><input id="cal-environment" class="text-input" autocomplete="off"></div><div class="field"><div data-label-for="cal-baseline"><label for="cal-baseline">未采集耗时（ms，多次用逗号分隔）</label></div><input id="cal-baseline" class="text-input" autocomplete="off"></div><div class="field"><div data-label-for="cal-profiled"><label for="cal-profiled">开启采集耗时（ms，按顺序配对）</label></div><input id="cal-profiled" class="text-input" autocomplete="off"></div><div class="field"><div data-label-for="cal-raw"><label for="cal-raw">原始采集目录实际大小（MB，可空）</label></div><div class="numeric-control"><input id="slider-cal-raw" class="range" type="range" min="0" max="10240" step="0.1" value="0" aria-label="原始目录大小滑动调节"><input id="cal-raw" class="text-input step-input" type="number" min="0" step="0.1" autocomplete="off"></div></div><div class="field"><div data-label-for="cal-export"><label for="cal-export">解析数据大小（MB，可空）</label></div><div class="numeric-control"><input id="slider-cal-export" class="range" type="range" min="0" max="10240" step="0.1" value="0" aria-label="解析数据大小滑动调节"><input id="cal-export" class="text-input step-input" type="number" min="0" step="0.1" autocomplete="off"></div></div>
 <p class="subtle">目录大小请填本次全部 Rank 的总量，不是单 Rank 大小；应用后不会再次乘 Rank 数。</p><button id="apply-calibration" class="button">应用外部对照数据</button><p class="subtle" id="cal-status" role="status">未录入实测，显示未校准模型预估。</p></details>
-   <details class="docs" data-volume-model><summary>数据量关系与模型边界</summary><p>原始数据量是性能采集文件，不是训练数据集大小或模型张量占用。预计下载量按当前所选的原始、导出结果或两者合计计算；完整目录包含两类数据，不能把原始量与下载量看成同一个值。</p><p>批次/Step 数、微批次、采集窗口与切片数、B（batch）、S（序列长度）、H（隐藏维度）及 TP/PP/DP 并行切分会通过算子调用、记录密度、元数据与每 Rank 工作量影响实际体量；不应直接按 B×S×H 换算 profiling 文件大小。固定秒数下，更大的 B/S/H 也可能使完成的 Step 更少，并非文件一定更大。当前模型只使用采集项、秒数、频率和 Rank，没有识别上述工作负载因素，也没有把 H、张量大小或存储切分直接当作采集字节数。</p><p>这是页面构造的体量模型，不是官方吞吐或采集承诺。默认 1 Rank，假设各 Rank 配置与事件密度相同。每轮原始 MB = Rank 数 ×（8 MB 固定量 + 采集秒数 × 示意速率）。多轮数据量逐轮求和，固定量也按轮计算；采集时间显示各轮窗口合计，不含应用启动和预热的总运行时间。Rank 数只影响估算，不会自动部署多卡任务。</p><p>示意速率（MB/s/Rank）：L0 8、L1 18、L2 25；AscendCL 3、Runtime 7、MSTX 1.5、算子内存 11、AI CPU 5；task-based PMU 26，sample-based PMU 为 0.12 × Hz；Host CPU+mem 为 0.3 + 0.035 × Hz，单项取 60%；Device 系统项按各自频率乘 0.012–0.03；Host 进程项每项 1，osrt 取 8；GE l0/l1 为 0.7/1.4，独立 L2 为 0.5。不同指标组暂共用 PMU 速率。</p><p>导出大小按原始量乘 text 1.6、db 0.5；预计下载量按所选的原始、导出或两者合计。以上系数均未校准，事件密度、字段、芯片和版本会改变结果，不能作为空间保证。未估压缩率，不因设置 storage-limit 就把整包限额；GB/TB 按 1000 换算显示。</p><p>同配置、同环境、同 Rank 数的目录实测优先。测量已包含所有 Rank，不会再乘 Rank 数；只测了其中一项时，另一项仍用模型，并标为混合估算。配置或 Rank 范围变化后回退模型，不外推旧实测。</p></details>
+   <details class="docs" data-volume-model><summary>数据量关系与模型边界</summary><p>原始数据量是性能采集文件，不是训练数据集大小或模型张量占用。预计下载量按当前所选的原始、解析数据或两者合计计算；完整目录包含两类数据，不能把原始量与下载量看成同一个值。</p><p>批次/Step 数、微批次、采集窗口与切片数、B（batch）、S（序列长度）、H（隐藏维度）及 TP/PP/DP 并行切分会通过算子调用、记录密度、元数据与每 Rank 工作量影响实际体量；不应直接按 B×S×H 换算 profiling 文件大小。固定秒数下，更大的 B/S/H 也可能使完成的 Step 更少，并非文件一定更大。当前模型只使用采集项、秒数、频率和 Rank，没有识别上述工作负载因素，也没有把 H、张量大小或存储切分直接当作采集字节数。</p><p>这是页面构造的体量模型，不是官方吞吐或采集承诺。默认 1 Rank，假设各 Rank 配置与事件密度相同。每轮原始 MB = Rank 数 ×（8 MB 固定量 + 采集秒数 × 示意速率）。多轮数据量逐轮求和，固定量也按轮计算；采集时间显示各轮窗口合计，不含应用启动和预热的总运行时间。Rank 数只影响估算，不会自动部署多卡任务。</p><p>示意速率（MB/s/Rank）：L0 8、L1 18、L2 25；AscendCL 3、Runtime 7、MSTX 1.5、算子内存 11、AI CPU 5；task-based PMU 26，sample-based PMU 为 0.12 × Hz；Host CPU+mem 为 0.3 + 0.035 × Hz，单项取 60%；Device 系统项按各自频率乘 0.012–0.03；Host 进程项每项 1，osrt 取 8；GE l0/l1 为 0.7/1.4，独立 L2 为 0.5。不同指标组暂共用 PMU 速率。</p><p>解析数据大小按原始量乘 text 1.6、db 0.5；预计下载量按所选的原始、解析数据或两者合计。以上系数均未校准，事件密度、字段、芯片和版本会改变结果，不能作为空间保证。未估压缩率，不因设置 storage-limit 就把整包限额；GB/TB 按 1000 换算显示。</p><p>同配置、同环境、同 Rank 数的目录实测优先。测量已包含所有 Rank，不会再乘 Rank 数；只测了其中一项时，另一项仍用模型，并标为混合估算。配置或 Rank 范围变化后回退模型，不外推旧实测。</p></details>
    <section aria-label="采集开销构成"><div class="breakdown-title"><span>采集开销的判断依据</span></div><div class="breakdown-list" id="breakdown"></div></section>
   </aside>
  </div>
@@ -405,7 +429,7 @@ body[data-page=docs] .toolbar-actions{display:none}
     <h2>1、msmodeling 的仿真能力能辅助性能膨胀预估吗？如果能，耗时多久？</h2>
     <p class="faq-callout"><strong>能辅助：msmodeling 可以提供推理负载的算子次数、耗时与通信特征，再结合采集开销的实测标定，估算性能膨胀和落盘大小。</strong>已有画像和标定结果后，调整采集配置可做到毫秒至秒级反馈；首次推理仿真先按几十秒至数分钟规划，这些是工程估计，并非本页实测结果。</p>
     <h3>这个沙箱目前怎样估算？</h3>
-    <p>当前页面是命令编排与概念估算 demo，没有接入 msmodeling，也不会执行训练或性能采集。性能膨胀采用基础开销加各采集开关的人为权重；原始数据量采用固定大小加“示意 MB/s × 采集时长 × Rank 数”；导出大小再按格式系数估算。</p>
+    <p>当前页面是命令编排与概念估算 demo，没有接入 msmodeling，也不会执行训练或性能采集。性能膨胀采用基础开销加各采集开关的人为权重；原始数据量采用固定大小加“示意 MB/s × 采集时长 × Rank 数”；解析数据大小再按格式系数估算。</p>
     <p>页面支持录入同环境、同配置的配对耗时与目录大小，并优先展示实测。当前模型适合比较配置，但尚不能区分“同样采集 10 秒，是大量短算子，还是少量长算子”。</p>
     <h3>仿真能补上哪些信息？</h3>
     <p>建议的接入方式是：<strong>msmodeling 生成负载画像，再用实测标定采集成本，最后由沙箱计算膨胀和数据量。</strong></p>
@@ -421,7 +445,7 @@ body[data-page=docs] .toolbar-actions{display:none}
      <li><strong>仿真算子数不等于 msprof 记录数。</strong>融合、图执行和后端实现都会改变实际 kernel、API 与记录数量。</li>
      <li><strong>各项开销不能简单相加。</strong>CPU 记录、设备执行与异步写盘可能重叠，也可能因缓冲阻塞影响关键路径。</li>
      <li><strong>固定秒数与固定工作量要分开。</strong>采集使业务变慢后，同一时间窗口内完成的操作可能减少，不能一直按未采集事件速率外推。</li>
-     <li><strong>落盘量要区分原始数据与解析导出产物。</strong>不能直接用模型张量大小替代采集记录大小，也不能把仿真 trace 文件大小当成 msprof 文件大小。</li>
+     <li><strong>落盘量要区分原始数据与解析数据。</strong>不能直接用模型张量大小替代采集记录大小，也不能把仿真 trace 文件大小当成 msprof 文件大小。</li>
     </ul>
     <p>CANN 文档区分按 task 采集和按固定周期采样，并说明 L0 相对 L1 的采集开销较低；这些语义不能直接换算成适用于所有负载的统一百分比。</p>
     <h3>训练任务能直接使用吗？</h3>
@@ -453,7 +477,7 @@ body[data-page=docs] .toolbar-actions{display:none}
     <h3>这个实验台适合先落地什么？</h3>
     <ol>
      <li><strong>先建立负载画像。</strong>已支持的推理模型使用仿真；训练和其他应用优先使用历史统计或短采集结果，记录模型、输入、并行配置和软件环境。</li>
-     <li><strong>用画像改善数据量估算。</strong>把当前统一的示意 MB/s，逐步替换为与事件类型、密度、采样频率和 Rank 角色有关的估算，并分别标定原始与导出大小。</li>
+     <li><strong>用画像改善数据量估算。</strong>把当前统一的示意 MB/s，逐步替换为与事件类型、密度、采样频率和 Rank 角色有关的估算，并分别标定原始与解析数据大小。</li>
      <li><strong>按瓶颈推荐采集项。</strong>例如通信问题优先补充通信与时间线证据，再对可疑算子做硬件指标深挖，减少无关采集。</li>
      <li><strong>同步积累膨胀标定数据。</strong>固定环境、相同工作量，预热后进行多组开关采集配对实验，验证组合效果与误差范围；通过验证后再用于相近场景的估算。</li>
     </ol>
@@ -466,6 +490,7 @@ body[data-page=docs] .toolbar-actions{display:none}
 </main>
 <div id="help-tooltip" class="help-tooltip" role="tooltip" hidden></div>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<script src="../vendor/prismjs/prism-1.30.0.js"></script>
 <script>
 'use strict';
 
@@ -492,43 +517,34 @@ const presetDefinitions={
 const metricLabels={MemoryL0:'L0 带宽',MemoryUB:'UB 带宽',ResourceConflictRatio:'资源冲突',PipelineExecuteUtilization:'流水执行',MemoryAccess:'内存访问',PipeUtilization:'流水线利用率',ArithmeticUtilization:'计算利用率',Memory:'内存带宽',L2Cache:'L2 缓存命中'};
 function notify(message){clearTimeout(toastTimer);$('toast').textContent=message;$('toast').hidden=false;toastTimer=setTimeout(()=>$('toast').hidden=true,3000)}
 function shellQuote(value){return "'"+value.replace(/'/g,"'\"'\"'")+"'"}
-// Highlight raw text without changing the editable value, caret or selection.
-function highlightBash(text){
- const fragment=document.createDocumentFragment();
- const add=(value,type)=>{if(!type){fragment.append(document.createTextNode(value));return}const token=document.createElement('span');token.className='syntax-'+type;token.textContent=value;fragment.append(token)};
- let i=0;
- while(i<text.length){
-  const start=i,c=text[i];
-  if(/\s/.test(c)){while(i<text.length&&/\s/.test(text[i]))i++;add(text.slice(start,i));continue}
-  if(c==='#'&&(i===0||/\s/.test(text[i-1]))){while(i<text.length&&text[i]!=='\n')i++;add(text.slice(start,i),'comment');continue}
-  if(c==="'"||c==='"'){
-   i++;while(i<text.length){if(c==='"'&&text[i]==='\\'&&i+1<text.length){i+=2;continue}if(text[i++]===c)break}
-   add(text.slice(start,i),'string');continue;
-  }
-  if(c==='\\'){i=Math.min(i+2,text.length);add(text.slice(start,i),'escape');continue}
-  if('=;|&<>()'.includes(c)){add(c,'operator');i++;continue}
-  const match=/^[^\s"'\\=;|&<>()]+/.exec(text.slice(i));
-  if(!match){add(c);i++;continue}
-  const word=match[0];i+=word.length;
-  const type=word==='msprof'?'command':/^--[a-zA-Z][\w-]*$/.test(word)?'flag':/^-?\d+(?:\.\d+)?$/.test(word)?'number':/^(on|off|l0|l1|task-based|cpu,mem|mem,cpu)$/.test(word)||Object.hasOwn(metricLabels,word)?'value':'';
-  add(word,type);
- }
- return fragment;
-}
 function syncCommandScroll(){
  const editor=$('command'),highlight=$('command-highlight');
  // Match the textarea's actual text width, excluding its vertical scrollbar.
  if(editor.clientWidth>0)highlight.style.width=editor.clientWidth+'px';
  highlight.scrollTop=editor.scrollTop;highlight.scrollLeft=editor.scrollLeft;
+ $('command-line-numbers').style.transform='translateY('+-editor.scrollTop+'px)';
+}
+function renderCommandLineNumbers(){
+ const editor=$('command'),surface=$('command-surface'),measure=$('command-line-measure'),numbers=$('command-line-numbers'),lines=editor.value.split('\n');
+ surface.style.setProperty('--line-number-width',Math.max(48,String(lines.length).length*8+20)+'px');
+ const style=getComputedStyle(editor),lineHeight=parseFloat(style.lineHeight)||24;
+ // Measure each logical line at the textarea's text width so wrapped continuations keep their line number.
+ measure.style.width=Math.max(1,editor.clientWidth-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight))+'px';
+ const rows=document.createDocumentFragment();
+ for(const line of lines){const row=document.createElement('div');row.textContent=line||'\u200b';rows.append(row)}
+ measure.replaceChildren(rows);
+ const labels=document.createDocumentFragment();
+ for(const [index,row]of [...measure.children].entries()){const label=document.createElement('span');label.textContent=index+1;label.style.height=(row.getBoundingClientRect().height||lineHeight)+'px';labels.append(label)}
+ numbers.replaceChildren(labels);syncCommandScroll();
 }
 function renderCommandHighlight(){
  $('command-highlight').replaceChildren(highlightSource($('command').value));
  $('command-surface').dataset.invalid=$('command').getAttribute('aria-invalid')||'false';
- syncCommandScroll();
+ renderCommandLineNumbers();
 }
 $('command').addEventListener('scroll',syncCommandScroll);
-window.addEventListener('resize',syncCommandScroll);
-if(typeof ResizeObserver==='function')new ResizeObserver(syncCommandScroll).observe($('command'));
+window.addEventListener('resize',renderCommandLineNumbers);
+if(typeof ResizeObserver==='function')new ResizeObserver(renderCommandLineNumbers).observe($('command'));
 let calibration=null;
 let roundOutputOverrides={};
 const sceneMetricValues={pipeline:'PipeUtilization',compute:'ArithmeticUtilization',bandwidth:'Memory',cache:'L2Cache'};
@@ -558,8 +574,8 @@ function renderCollectionRounds(){
   button.textContent=(index+1)+' · '+(roundMetricLabels[round.metric]||round.metric);button.addEventListener('click',()=>{state.metric=round.metric;update()});tabs.append(button);
  }
  if(multiple){
-  const estimates=rounds.map(round=>({metric:round.metric,...estimate(round)})),min=Math.min(...estimates.map(e=>e.total)),max=Math.max(...estimates.map(e=>e.total)),unknown=estimates.some(e=>e.unknown.length);
-  $('overhead-title').textContent='每轮性能膨胀预估';$('overhead').textContent='≈'+(Math.round(min)===Math.round(max)?Math.round(max):Math.round(min)+'–'+Math.round(max));
+  const estimates=rounds.map(round=>({metric:round.metric,...estimate(round)})),max=Math.max(...estimates.map(e=>e.total)),unknown=estimates.some(e=>e.unknown.length);
+  $('overhead-title').textContent='性能膨胀预估';$('overhead-title').title='按当前完整配置中模型开销最高的一轮估算，各轮百分比不相加。';$('overhead').textContent='≈'+Math.round(max);
   const risk=overheadBand(Math.round(max),unknown);$('risk').dataset.risk=risk;$('risk').closest('.estimate-head').dataset.risk=risk;$('risk').textContent=unknown?'部分预估':{low:'低扰动',medium:'需关注',high:'高扰动'}[risk];
   $('capture-range').textContent=rounds.length+' 轮 × '+state.duration+' 秒，共 '+(rounds.length*state.duration)+' 秒采集；每轮第 '+state.delay+'–'+(state.delay+state.duration)+' 秒';
   $('breakdown').textContent='各轮模型预估：'+estimates.map(e=>(roundMetricLabels[e.metric]||e.metric)+' ≈'+e.total.toFixed(1)+'%'+(e.unknown.length?'（部分）':'')).join('；')+'。百分比不相加。';
@@ -615,7 +631,7 @@ function estimateVolume(s,measured=null){
 function renderVolumeContributions(v){
  const list=$('volume-breakdown-list');
  if(!v){list.textContent='请先填写有效的采集 Rank 数。';return}
- $('volume-breakdown-note').textContent=(v.rawMeasured?'已录入目录总量，但没有分项实测；下列仍为模型占比。':'按预计原始体量降序排列；尚未校准。')+'不含解析导出产物。';
+ $('volume-breakdown-note').textContent=(v.rawMeasured?'已录入目录总量，但没有分项实测；下列仍为模型占比。':'按预计原始体量降序排列；尚未校准。')+'不含解析数据。';
  list.replaceChildren(...v.contributions.map(item=>{const share=item.mb/v.modeledRaw*100,row=document.createElement('div');row.className='volume-contribution';row.dataset.mb=item.mb;row.dataset.share=share;
  const name=document.createElement('span');name.className='volume-contribution-name';name.textContent=item.name;
  const value=document.createElement('b');value.className='volume-contribution-value';value.textContent=share.toFixed(1)+'%';const size=document.createElement('small');size.textContent=formatVolume(item.mb,true);value.append(size);
@@ -626,13 +642,13 @@ function renderVolume(s,measured){
  if(!v){$('data-size').dataset.source='pending';$('download-size').dataset.source='pending';$('data-size').textContent='—';$('data-size-label').textContent='原始数据量 · 待配置';$('data-window').textContent='请填写 1–65536 的整数 Rank 数';$('download-size').textContent='—';$('download-kind').textContent='估算范围待补全';$('download-description').textContent='';$('volume-relation').textContent='Rank 范围未补全，暂不计算体量关系。';$('download-advice').textContent='补全 Rank 数后恢复估算，不影响命令编辑。';return}
  $('data-size').dataset.source=v.rawMeasured?'measured':'model';$('download-size').dataset.source=v.downloadMeasured?'measured':v.rawMeasured||v.exportMeasured?'mixed':'model';
  $('data-size-label').textContent='原始数据量 · '+(v.roundCount>1?v.roundCount+' 轮合计':v.rawMeasured?'用户录入':'预估');$('data-size').textContent=formatVolume(v.raw,!v.rawMeasured);
- $('data-window').textContent=v.ranks+' Rank'+(v.roundCount>1?'/轮 · '+v.roundCount+' × '+s.duration+' 秒':' · '+s.duration+' 秒')+'；导出 '+formatVolume(v.exported,!v.exportMeasured);
+ $('data-window').textContent=v.ranks+' Rank'+(v.roundCount>1?'/轮 · '+v.roundCount+' × '+s.duration+' 秒':' · '+s.duration+' 秒')+'；解析数据 '+formatVolume(v.exported,!v.exportMeasured);
  $('download-size').textContent=formatVolume(v.download,!v.downloadMeasured);
- $('volume-relation').textContent='原始 '+formatVolume(v.raw,!v.rawMeasured)+'；导出 '+formatVolume(v.exported,!v.exportMeasured)+'。'+({all:'完整目录 = 原始 + 导出。',raw:'本次下载量 = 原始数据量。',export:'本次下载量 = 导出结果量。'}[v.choice]);
+ $('volume-relation').textContent='原始 '+formatVolume(v.raw,!v.rawMeasured)+'；解析数据 '+formatVolume(v.exported,!v.exportMeasured)+'。'+({all:'完整目录 = 原始 + 解析数据。',raw:'本次下载量 = 原始数据量。',export:'本次下载量 = 解析数据量。'}[v.choice]);
  $('download-kind').textContent=v.downloadMeasured?'手动录入合计':v.rawMeasured||v.exportMeasured?'手动录入 + 模型估算':'未校准模型';
- $('download-description').textContent=({'all':'完整目录：原始 + 导出','raw':'仅原始数据','export':'仅导出结果'}[v.choice])+' · 未压缩；'+(v.downloadMeasured?'按本次全部 Rank 目录总量计算。':'低可信度概念预估，供下载前比较配置。');
+ $('download-description').textContent=({'all':'完整目录：原始 + 解析数据','raw':'仅原始数据','export':'仅解析数据'}[v.choice])+' · 未压缩；'+(v.downloadMeasured?'按本次全部 Rank 目录总量计算。':'低可信度概念预估，供下载前比较配置。');
  const level=v.download>=10000?'huge':v.download>=1000?'large':'normal';$('download-advice').dataset.level=level;
- $('download-advice').textContent=(level==='huge'?'预计下载体量很大，优先考虑远端查看、摘要或缩短窗口。':level==='large'?'预计超过 1 GB，可先只下载导出结果或缩短窗口。':'可调整 Rank、窗口和下载内容，比较下载体量。')+(s.extra['storage-limit']?' 已设原始文件老化阈值；此估算不将其当作总下载上限。':'');
+ $('download-advice').textContent=(level==='huge'?'预计下载体量很大，优先考虑远端查看、摘要或缩短窗口。':level==='large'?'预计超过 1 GB，可先只下载解析数据或缩短窗口。':'可调整 Rank、窗口和下载内容，比较下载体量。')+(s.extra['storage-limit']?' 已设原始文件老化阈值；此估算不将其当作总下载上限。':'');
 }
 $('volume-ranks').addEventListener('input',()=>update());$('download-content').addEventListener('change',()=>update());
 // Planning coefficients, not benchmarks. Unknown contributions remain explicit.
@@ -783,7 +799,7 @@ function renderArtifactPreview(){
  if(!db)tree.push('└─ mindstudio_profiler_output/','   ├─ msprof_*.json','   └─ *_*.csv');
  $('artifact-tree').textContent=tree.join('\n');
  $('artifact-path-note').textContent=(existing?(multiple?'按父目录下各 PROF_* 分别解析导出；不新建采集目录。':'在所选 PROF_* 内解析导出，不新建采集目录。'):'PROF 名称、时间戳和设备 ID 在运行后确定；多采集进程可能生成多个 PROF_*。')+'目录树仅示意常见结构，实际文件取决于已采集内容；不是产物验收结果。';
- $('artifact-delivery-note').textContent=workflow.view==='remote'?'这些文件位于执行端；远端 Insight 服务须能访问。浏览器查看不会将整个目录改存到本地。':({'all':'计划交付原始数据与导出结果。',raw:'计划仅交付原始数据；仍需解析导出后供可视化使用。',export:'计划仅交付导出结果。'}[$('download-content').value])+'上方目录树展示执行端产物结构，不代表已下载。';
+ $('artifact-delivery-note').textContent=workflow.view==='remote'?'这些文件位于执行端；远端 Insight 服务须能访问。浏览器查看不会将整个目录改存到本地。':({'all':'计划交付原始数据与解析数据。',raw:'计划仅交付原始数据；仍需解析导出后供可视化使用。',export:'计划仅交付解析数据。'}[$('download-content').value])+'上方目录树展示执行端产物结构，不代表已下载。';
 }
 function renderWorkflow(){
  const existing=workflow.mode==='existing',remote=workflow.view==='remote';
@@ -802,7 +818,7 @@ function renderWorkflow(){
  else $('workflow-service').setAttribute('aria-invalid','false');
  $('workflow-status').textContent=note;
  document.querySelectorAll('[data-workflow-capture-preview]').forEach(el=>el.hidden=existing);$('workflow-existing-preview').hidden=!existing;
- if(!existing&&remote){$('volume-relation').textContent='原始与导出数值表示服务器文件体量；此路线不按整包合计作为本地下载量。';$('download-size').textContent='无需整包下载';$('download-kind').textContent='远端查看方案';$('download-description').textContent='完整数据留在服务器；浏览器仍会传输查询结果和页面数据。';$('download-advice').textContent='不代表零网络流量，也不是采集流式中转。';}
+ if(!existing&&remote){$('volume-relation').textContent='原始与解析数据数值表示服务器文件体量；此路线不按整包合计作为本地下载量。';$('download-size').textContent='无需整包下载';$('download-kind').textContent='远端查看方案';$('download-description').textContent='完整数据留在服务器；浏览器仍会传输查询结果和页面数据。';$('download-advice').textContent='不代表零网络流量，也不是采集流式中转。';}
 }
 function validate(){
  const app=$('application').value.trim(),output=$('output').value.trim(),errors=[];
@@ -863,6 +879,7 @@ function update(options={}){
  const risk=overheadBand(displayedOverhead,unknown);$('risk').dataset.risk=risk;$('risk').closest('.estimate-head').dataset.risk=risk;
  $('risk').textContent=unknown?(risk==='high'?'高扰动 · 部分预估':'开销未定 · 部分预估'):{low:'低扰动',medium:'需关注',high:'高扰动'}[risk];
  $('overhead-title').textContent=measured?'性能膨胀 · 外部对照':'性能膨胀预估';
+ $('overhead-title').removeAttribute('title');$('overhead').dataset.source=measured?'measured':'model';
  $('extra-bar').parentElement.hidden=true;
  renderVolume(state,measured);
  $('enabled-count').textContent=e.count+' 项数据';$('capture-range').textContent='第 '+state.delay+'–'+(state.delay+state.duration)+' 秒';
@@ -877,7 +894,7 @@ function update(options={}){
  $('command-feedback').hidden=!pending;$('command-feedback').dataset.error=String(pending);$('command-feedback').textContent=pending?editorIssue+' 表单与统计仍对应当前有效配置，未应用这段命令。':'';
  $('restore-command').hidden=!pending;document.querySelector('.preview').dataset.commandPending=String(pending);
  $('manual-copy').value=currentCommand;$('manual-wrap').hidden=true;
-   renderWorkflow();renderCaptureScope();renderArtifactPreview();syncAllRanges();syncChoicePills();renderCommandHighlight();renderScenario();renderCollectionRounds();renderCaptureCode();
+   renderWorkflow();renderCaptureScope();renderArtifactPreview();syncAllRanges();syncChoicePills();renderCommandHighlight();renderScenario();renderCollectionRounds();renderCaptureCode();renderSceneWorkflow();
  clearTimeout(copyTimer);$('copy-label').textContent=captureRoundStates(state).length>1?'复制本轮':'复制';$('copy').dataset.copied='false';
 }
 function markCustom(){state.preset='custom'}
@@ -911,6 +928,7 @@ function setWindowBoundary(boundary,value){
  if(boundary==='start'){
   const end=state.delay+state.duration;state.delay=Math.max(0,Math.min(end-1,seconds));state.duration=end-state.delay;
  }else state.duration=Math.max(state.delay+1,Math.min(WINDOW_MAX,seconds))-state.delay;
+ scenePhases=new Set(['custom']);$('scene-delay').value=state.delay;$('scene-duration').value=state.duration;
  update();
 }
 const windowSlider=$('window-slider');let draggingBoundary=null,dragPointerId=null,dragOffset=0;
@@ -995,9 +1013,9 @@ helpDefinitions['extra-sys-period'].text='映射 --sys-period，独立系统采�
 helpDefinitions['extra-sys-devices'].text='映射 --sys-devices，独立系统采集必填。填写 all 或逗号分隔的设备 ID；不是 Rank 数。传入用户应用时不生效。A3/950 等共享 OS 的设备不能随意同时选择，需核对官方限制。';
 helpDefinitions['capture-scope']={title:'采集方式',text:'应用采集启动应用并使用 delay/duration；独立系统采集不启动应用，使用 sys-period/sys-devices，仅输出系统采集项。系统模式不会沿用训练负载的膨胀或体量模型。',source:'system'};
 attachHelp('capture-scope',document.querySelector('[data-label-for=capture-scope]'));
-for(const [id,title] of [['cal-environment','环境与负载标识'],['cal-baseline','基准耗时'],['cal-profiled','采集耗时'],['cal-raw','原始目录大小'],['cal-export','导出目录大小']])helpDefinitions[id]={title,text:'本页面的测量记录项，不是 msprof CLI 参数。固定同一工作量与环境，配对比较 (采集耗时/基准耗时 − 1) × 100%，显示中位数和观测范围；至少三对是页面的最低录入要求，不能代表统计收敛。原始与导出大小分开记录，不外推速率。',design:true};
+for(const [id,title] of [['cal-environment','环境与负载标识'],['cal-baseline','基准耗时'],['cal-profiled','采集耗时'],['cal-raw','原始目录大小'],['cal-export','解析数据目录大小']])helpDefinitions[id]={title,text:'本页面的测量记录项，不是 msprof CLI 参数。固定同一工作量与环境，配对比较 (采集耗时/基准耗时 − 1) × 100%，显示中位数和观测范围；至少三对是页面的最低录入要求，不能代表统计收敛。原始与解析数据大小分开记录，不外推速率。',design:true};
 helpDefinitions['volume-ranks']={title:'预计采集的 Rank 数',text:'仅用于体量模型，不修改 msprof 命令。默认 1；按同配置、同事件密度乘 Rank 数。当前实测绑定此范围，修改后需要重新测量；目录实测请录入全部 Rank 总量。',design:true};
-helpDefinitions['download-content']={title:'计划下载什么',text:'完整目录按原始数据加导出结果合计；也可只选原始或导出。未压缩模型不是网络流量实测，压缩、老化、共享文件及打包清单可能改变实际下载量。',design:true};
+helpDefinitions['download-content']={title:'计划下载什么',text:'完整目录按原始数据加解析数据合计；也可只选原始或解析数据。未压缩模型不是网络流量实测，压缩、老化、共享文件及打包清单可能改变实际下载量。',design:true};
 helpDefinitions.task.text+=' L2 进一步记录属性；L3 为试用能力，未接入。';
 helpDefinitions.delay.text+=' 官方 delay 非零取值与 duration 均可到 4294967295 秒；120 秒只是页面范围，延迟超过任务时长则不采集。';
 helpDefinitions.duration.text+=' 缩短时长不保证采集期间的膨胀比例下降。';
@@ -1159,7 +1177,7 @@ const choiceLabels={
  'extra-type':{text:'完整结果 · text',db:'Insight 数据库 · db'},
  'workflow-mode':{capture:'新采集',existing:'已有数据'},
  'workflow-view':{local:'本地 Insight',remote:'远端浏览器'},
- 'download-content':{all:'完整目录',raw:'仅原始',export:'仅导出'}
+ 'download-content':{all:'完整目录',raw:'仅原始',export:'仅解析数据'}
 };
 function syncChoicePills(){for(const {select,group,buttons} of choicePills){group.setAttribute('aria-disabled',String(select.disabled));for(const button of buttons){const chosen=button.dataset.choiceValue===select.value;button.setAttribute('aria-checked',String(chosen));button.tabIndex=chosen&&!select.disabled?0:-1;button.disabled=select.disabled||Boolean(select.querySelector('option[value="'+button.dataset.choiceValue+'"]')?.disabled)}}}
 for(const select of document.querySelectorAll('select')){
@@ -1219,6 +1237,7 @@ function resolveParameter(entry){
  return {target:element,reason:''};
 }
 function locateParameter(entry){
+ setConfigView('manual');
  const resolved=resolveParameter(entry);let target=resolved.target;const pills=document.querySelector('[data-choice-for='+target.id+']');if(pills)target=pills.querySelector('[aria-checked=true]')||pills.querySelector('button');
  for(let parent=target.parentElement;parent;parent=parent.parentElement)if(parent.tagName==='DETAILS')parent.open=true;
  $('parameter-search-results').hidden=true;$('parameter-search-message').hidden=false;$('parameter-search-message').textContent='已定位：'+entry.title+'。'+resolved.reason;
@@ -1239,6 +1258,15 @@ document.addEventListener('pointerdown',event=>{if(!searchBox.contains(event.tar
 // Scenario changes merge the required evidence and immediately update affected fields.
 const sceneGoalLabels={overview:'基础耗时',waiting:'下发与等待',communication:'多卡通信',memory:'算子内存',operator:'算子硬件指标'};
 const sceneManaged=['level',...switches,'metric','metrics','hostFreq','delay','duration'];
+// Each tier is a concrete configuration; explicit investigation goals retain their required data.
+const sceneStrategies=[
+ {label:'极简',level:'l0',ascendcl:false,runtime:false,host:false,memory:false,aicpu:false,hostFreq:1},
+ {label:'轻量',level:'l0',ascendcl:true,runtime:false,host:false,memory:false,aicpu:false,hostFreq:5},
+ {label:'均衡',level:'l1',ascendcl:true,runtime:true,host:false,memory:false,aicpu:false,hostFreq:10},
+ {label:'详细',level:'l1',ascendcl:true,runtime:true,host:true,memory:false,aicpu:false,hostFreq:20},
+ {label:'深入',level:'l1',ascendcl:true,runtime:true,host:true,memory:true,aicpu:true,hostFreq:50}
+];
+const sceneStrategyManaged=new Set(['level',...switches,'hostFreq']);
 let sceneGoals=new Set(['overview']),scenePhases=new Set(['stable']),sceneLastPlan=null,sceneInputError='',sceneRankError='';
 const sceneUnsupportedMetrics={infer:['L2Cache','PipelineExecuteUtilization'],a2:['PipelineExecuteUtilization'],a3:['PipelineExecuteUtilization'],'950':['PipelineExecuteUtilization','MemoryAccess']};
 const sceneIcons={
@@ -1263,12 +1291,12 @@ for(const select of document.querySelectorAll('.scene select')){
 }
 function syncSceneChoices(){for(const {select,buttons} of sceneChoices){const selected=buttons.find(b=>b.dataset.sceneValue===select.value);for(const button of buttons){const option=select.querySelector('option[value="'+button.dataset.sceneValue+'"]'),chosen=select.multiple?option.selected:button===selected;button.setAttribute('aria-checked',String(chosen));button.disabled=Boolean(option.disabled);button.tabIndex=select.multiple||chosen||!selected&&button===buttons.find(b=>!b.disabled)?0:-1}}}
 function buildScenePlan(){
- const workload=$('scene-workload').value,budget=[5,10,20][Number($('scene-budget').value)],next={...defaults,extra:{...defaults.extra}},errors=[];
+ const workload=$('scene-workload').value,strategy=sceneStrategies[Number($('scene-budget').value)],next={...defaults,extra:{...defaults.extra}},errors=[];
  const has=key=>sceneGoals.has(key);
- next.mstx=$('scene-mstx').checked;next.memory=has('memory')||$('scene-memory').checked;next.host=has('waiting')||$('scene-host').checked;next.hostFreq=budget<=5?5:budget>=20?20:10;
- next.level=has('waiting')||has('communication')||has('memory')||has('operator')||next.memory||budget>=20?'l1':'l0';
- next.runtime=has('waiting')||has('communication')&&budget>=10;
- next.core=has('operator');next.aicpu=next.core&&budget>=20;
+ next.ascendcl=strategy.ascendcl;next.mstx=$('scene-mstx').checked;next.memory=has('memory')||$('scene-memory').checked||strategy.memory;next.host=has('waiting')||$('scene-host').checked||strategy.host;next.hostFreq=strategy.hostFreq;
+ next.level=has('waiting')||has('communication')||has('memory')||has('operator')||next.memory?'l1':strategy.level;
+ next.runtime=has('waiting')||strategy.runtime;
+ next.core=has('operator');next.aicpu=strategy.aicpu;
  next.metrics=[...$('scene-metric').selectedOptions].map(option=>sceneMetricValues[option.value]);if(!next.metrics.length)next.metrics=state.metrics||[state.metric];next.metric=next.metrics[0];
  const baseDuration=workload==='operator'?3:workload==='inference'?5:10,duration=next.core?Math.min(baseDuration,5):baseDuration,windows=[];
  if(scenePhases.has('startup'))windows.push([0,duration]);
@@ -1281,25 +1309,25 @@ function buildScenePlan(){
  if(windows.length){next.delay=Math.min(...windows.map(x=>x[0]));next.duration=Math.max(...windows.map(x=>x[1]))-next.delay}
  return {next,errors};
 }
-function applySceneChanges(){
+function applySceneChanges(forceStrategy=false){
  if(workflow.mode==='existing'||state.scope==='system'){renderScenario();return}
  const plan=buildScenePlan();sceneInputError=plan.errors.join(' ');
  if(sceneInputError){renderScenario();return}
  // A scene edit changes its own deltas; unrelated manual parameters remain intact.
  const previous=sceneLastPlan||defaults;
- for(const key of sceneManaged)if(JSON.stringify(previous[key])!==JSON.stringify(plan.next[key]))state[key]=plan.next[key];
+ for(const key of sceneManaged)if(forceStrategy&&sceneStrategyManaged.has(key)||JSON.stringify(previous[key])!==JSON.stringify(plan.next[key]))state[key]=plan.next[key];
  if(state.metrics&&!state.metrics.includes(state.metric))state.metric=state.metrics[0];
  sceneLastPlan=plan.next;state.preset='custom';calibration=null;update();
 }
 function renderScenario(){
  const inactive=workflow.mode==='existing'||state.scope==='system';$('scene-form').hidden=inactive;$('scene-inactive').hidden=!inactive;$('scene-panel').hidden=false;$('config-details').hidden=false;
- if(inactive){$('scene-inactive').textContent=workflow.mode==='existing'?'已有数据无需配置采集场景。':'独立系统采集请使用下方具体配置。';return}
+  if(inactive){$('scene-inactive').textContent=workflow.mode==='existing'?'已有数据无需配置采集场景。':'独立系统采集请在手动配置中调整。';return}
  document.querySelectorAll('[data-scene-goal]').forEach(b=>b.setAttribute('aria-pressed',String(sceneGoals.has(b.dataset.sceneGoal))));
  document.querySelectorAll('[data-scene-phase]').forEach(b=>b.setAttribute('aria-pressed',String(scenePhases.has(b.dataset.scenePhase))));
  $('scene-metric-field').hidden=!sceneGoals.has('operator');$('scene-window').hidden=!scenePhases.has('custom');
  const activeMetrics=state.metrics||[state.metric];for(const option of $('scene-metric').options)option.selected=activeMetrics.includes(sceneMetricValues[option.value]);
  $('scene-metric-round-count').textContent='需采集 '+captureRoundStates(state).length+' 轮';
- const detailLabel=['轻量','均衡','深入'][Number($('scene-budget').value)];$('scene-budget-value').textContent=detailLabel;$('scene-budget').setAttribute('aria-valuetext',detailLabel+'采集');
+ const detailLabel=sceneStrategies[Number($('scene-budget').value)].label;$('scene-budget-value').textContent=detailLabel;$('scene-budget').setAttribute('aria-valuetext',detailLabel+'采集');
  const framework=['pytorch','mindspore'].includes($('scene-stack').value),mstx=$('scene-mstx');mstx.disabled=framework;mstx.closest('label').title=framework?'此技术栈的业务打点需通过框架 Profiler 采集':'采集应用已有 MSTX 标记';
  const unsupported=sceneUnsupportedMetrics[$('scene-chip').value]||[];$('scene-metric').querySelector('option[value=cache]').disabled=unsupported.includes('L2Cache');
  for(const option of $('metric').options)option.disabled=unsupported.includes(option.value);
@@ -1307,17 +1335,12 @@ function renderScenario(){
  if(Number.isInteger(ranks)&&ranks>=1&&deployment.value!=='unknown'){if(ranks===1)deployment.value='single';else if(deployment.value==='single')deployment.value='multi'}
  if(!sceneRankError)$('scene-ranks').value=$('volume-ranks').value;$('scene-ranks-field').hidden=!['multi','cluster'].includes(deployment.value);
  $('scene-window-summary').textContent='连续采集 '+state.delay+'–'+(state.delay+state.duration)+' 秒'+(scenePhases.size>1?' · 已合并 '+scenePhases.size+' 个阶段':'');
- const feedback=[];
- if(sceneInputError)feedback.push(sceneInputError);
- if(sceneRankError)feedback.push(sceneRankError);
- if(sceneGoals.has('communication')&&$('scene-deployment').value==='single')feedback.push('单卡任务不产生多卡通信数据。');
- if(!sceneInputError&&scenePhases.size>1)feedback.push('阶段之间的时间也会采集。');
- $('scene-feedback').textContent=feedback.join(' ');$('scene-feedback').hidden=!feedback.length;
- if(sceneInputError||sceneRankError)$('copy').disabled=true;
+ if(sceneInputError||sceneRankError){$('copy').disabled=true;$('validation').hidden=false;$('validation').textContent=[sceneInputError,sceneRankError].filter(Boolean).join(' ')}
  syncSceneChoices();syncRangeVisual($('scene-budget'));
 }
-function resetScenario(){sceneGoals=new Set(['overview']);scenePhases=new Set(['stable']);sceneInputError='';sceneRankError='';roundOutputOverrides={};codeMethod='launch';launchDraft=null;for(const k of ['host','memory','mstx'])$('scene-'+k).checked=false;sceneLastPlan=buildScenePlan().next}
+function resetScenario(){sceneGoals=new Set(['overview']);scenePhases=new Set(['stable']);sceneInputError='';sceneRankError='';roundOutputOverrides={};codeMethod='launch';launchDraft=null;setConfigView('scene');for(const k of ['host','memory','mstx'])$('scene-'+k).checked=false;sceneLastPlan=buildScenePlan().next;for(const key of sceneManaged)state[key]=sceneLastPlan[key];state.preset='custom'}
 for(const control of document.querySelectorAll('.scene select,.scene input'))control.addEventListener(control.type==='range'||control.type==='number'?'input':'change',()=>{
+ if(control.hasAttribute('data-workflow-mirror'))return;
  if(control.id==='scene-workload'){
   if(control.value==='operator')sceneGoals.add('operator');
  }
@@ -1341,7 +1364,7 @@ for(const control of document.querySelectorAll('.scene select,.scene input'))con
   sceneRankError='';control.setAttribute('aria-invalid','false');$('volume-ranks').value=String(ranks);
   if(ranks===1)$('scene-deployment').value='single';else if($('scene-deployment').value==='single')$('scene-deployment').value='multi';
  }
- applySceneChanges();
+ applySceneChanges(control.id==='scene-budget');
 });
 document.querySelectorAll('[data-scene-goal]').forEach(button=>button.addEventListener('click',()=>{
  const key=button.dataset.sceneGoal;if(sceneGoals.has(key))sceneGoals.delete(key);else sceneGoals.add(key);if(!sceneGoals.size)sceneGoals.add('overview');applySceneChanges();
@@ -1396,7 +1419,7 @@ function codeInputErrors(){
  const outputs=captureRoundStates(state).map(round=>roundOutput(state,round,output));if(new Set(outputs).size!==outputs.length)errors.push('各轮结果需保存到不同目录。');
  if(codeMethod==='mstx'&&$('code-mstx-api').value==='native'&&(!$('application').value.trim()||/[\x00-\x1f\x7f]/.test($('application').value)))errors.push('请填写有效的应用启动命令。');
  const stepMode=codeMethod==='framework'||codeMethod==='mstx'&&$('code-mstx-api').value==='pytorch';
- for(const [id,min,max]of stepMode?[['code-skip',0,10000000],['code-warmup',0,100],['code-active',1,1000]]:codeMethod==='native'?[['code-device',0,65535]]:[]){const el=$(id),value=Number(el.value),valid=el.value!==''&&Number.isInteger(value)&&value>=min&&value<=max;el.setAttribute('aria-invalid',String(!valid));if(!valid)errors.push(el.parentElement.textContent.trim()+'需为 '+min+'–'+max+' 的整数。')}
+ for(const [id,min,max]of stepMode?[['code-skip',0,10000000],['code-warmup',0,100],['code-active',1,1000]]:codeMethod==='native'?[['code-device',0,65535]]:[]){const el=$(id),value=Number(el.value),valid=el.value!==''&&Number.isInteger(value)&&value>=min&&value<=max;el.setAttribute('aria-invalid',String(!valid));if(!valid)errors.push(document.querySelector('label[for='+id+']').textContent.trim()+'需为 '+min+'–'+max+' 的整数。')}
  if(codeMethod==='dynamic'&&!/^[1-9]\d*(?:,[1-9]\d*)*$/.test($('code-pid').value.trim()))errors.push('请填写目标进程 PID。');
  if(codeMethod==='mstx'&&(!$('code-mark').value.trim()||/[\x00-\x1f\x7f]/.test($('code-mark').value)))errors.push('请填写单行的业务区间名称。');
  return errors;
@@ -1407,11 +1430,22 @@ function allMethodCode(){
  return captureRoundStates(state).map((round,index)=>comment+' 第 '+(index+1)+' 轮 · '+(roundMetricLabels[round.metric]||round.metric)+'\n'+methodCode(round,index)).join('\n\n');
 }
 function highlightSource(text){
- if(['launch','dynamic'].includes(codeMethod))return highlightBash(text);
- const fragment=document.createDocumentFragment(),tokens=/(#[^\n]*|\/\/[^\n]*|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\b(?:import|from|def|with|as|for|in|range|try|finally|except|return|if|throw|catch|void|const|auto|nullptr|True|False)\b|\b\d+\b)/g;let start=0;
- for(const match of text.matchAll(tokens)){fragment.append(document.createTextNode(text.slice(start,match.index)));const token=document.createElement('span'),value=match[0];token.className='syntax-'+(/^(#|\/\/)/.test(value)?'comment':/^['"]/.test(value)?'string':/^\d/.test(value)?'number':'command');token.textContent=value;fragment.append(token);start=match.index+value.length}fragment.append(document.createTextNode(text.slice(start)));return fragment;
+ const fragment=document.createDocumentFragment(),prism=window.Prism;
+ const language=['launch','dynamic'].includes(codeMethod)?'bash':codeMethod==='framework'||codeMethod==='mstx'&&$('code-mstx-api').value==='pytorch'?'python':'cpp';
+ if(!prism||!prism.languages[language]){fragment.append(document.createTextNode(text));return fragment}
+ if(!prism.languages.python['function-call'])prism.languages.insertBefore('python','punctuation',{'function-call':{pattern:/\b[A-Za-z_]\w*(?=\s*\()/,alias:'function'}});
+ if(!prism.languages.bash['profiler-command'])prism.languages.insertBefore('bash','function',{'profiler-command':{pattern:/(^|[;&|]\s*|\n\s*)msprof\b/,lookbehind:true,alias:'function'},'profiler-option':{pattern:/(^|\s)--[a-z][\w-]*(?==|\s|$)/,lookbehind:true,alias:'parameter'}});
+ const append=(parent,value)=>{
+  if(typeof value==='string'){parent.append(document.createTextNode(value));return}
+  if(Array.isArray(value)){for(const item of value)append(parent,item);return}
+  const token=document.createElement('span');token.classList.add('token',value.type);
+  for(const alias of value.alias?(Array.isArray(value.alias)?value.alias:[value.alias]):[])token.classList.add(alias);
+  append(token,value.content);parent.append(token);
+ };
+ append(fragment,prism.tokenize(text,prism.languages[language]));return fragment;
 }
 function renderCaptureCode(){
+ syncCodeRangeControls();
  const restricted=workflow.mode==='existing'||state.scope==='system';if(restricted&&codeMethod!=='launch'){codeMethod='launch';launchDraft=null}
  document.querySelector('.terminal-title').textContent='采集代码';
  for(const button of document.querySelectorAll('[data-capture-method]')){const selected=button.dataset.captureMethod===codeMethod;button.setAttribute('aria-selected',String(selected));button.tabIndex=selected?0:-1;button.disabled=restricted&&button.dataset.captureMethod!=='launch'}
@@ -1420,20 +1454,20 @@ function renderCaptureCode(){
  $('code-language').textContent=python?'Python':native?'C++':'Bash';$('code-reference').href=codeMethod==='framework'&&$('code-framework').value==='mindspore'?'https://www.mindspore.cn/docs/en/r2.7.1/api_python/mindspore/mindspore.profiler.profile.html':codeMethod==='mstx'&&native?'https://www.hiascend.com/doc_center/source/en/canncommercial/850/devaids/optool/atlasopdev_16_0115.html':codeDocumentation[codeMethod];
  $('command').readOnly=!launch;$('command').setAttribute('aria-label',launch?'可编辑的 Bash 采集命令':'可复制的'+$('code-language').textContent+'采集代码');
  const nativeMarkers=codeMethod==='mstx'&&native;$('scene-phase-field').hidden=!(launch||nativeMarkers)||restricted;
- if(launch){$('code-status').hidden=true;return}
+ if(launch)return;
  $('window-slider').closest('.section').hidden=!nativeMarkers;$('application').closest('.field').hidden=!nativeMarkers;$('app-hint').hidden=true;
  const errors=codeInputErrors(),rounds=captureRoundStates(state),index=Math.max(0,rounds.findIndex(round=>round.metric===state.metric));
  const text=errors.length?(native?'// ':'# ')+errors.join(' '):methodCode(rounds[index],index);
  $('command').value=text;currentCommand=errors.length?'':text;$('manual-copy').value=currentCommand;
  $('validation').hidden=!errors.length;$('validation').textContent=errors.join(' ');$('copy').disabled=Boolean(errors.length);$('copy-all').disabled=Boolean(errors.length);$('copy-all').hidden=rounds.length<2;
  $('command-feedback').hidden=true;$('restore-command').hidden=true;$('command').setAttribute('aria-invalid','false');
- const messages={dynamic:'目标任务需以 PROFILING_MODE=dynamic 启动；连接后交互控制采集。',framework:'将 profile_region 及其配置接入现有训练循环。',native:'在已有 AscendCL 应用的目标代码区间调用。',mstx:python?'包裹业务单步并通过框架 Profiler 采集打点。':'包裹目标业务区间，编译后使用下方注释中的采集命令。'};
- $('code-status').hidden=false;$('code-status').textContent=messages[codeMethod]+(codeMethod==='native'&&state.host?' Host 资源需另用命令行采集。':python&&state.host?' Host 采样频率使用框架默认值。':'');
  $('collection-round-summary').textContent='需采集 '+rounds.length+' 轮 · '+(codeMethod==='dynamic'?'分别交互采集':'各轮独立运行相同负载');
- $('overhead-title').textContent='性能开销';$('overhead').textContent='—';$('overhead-unit').hidden=true;$('risk').textContent='待实测';$('risk').dataset.risk='medium';$('risk').closest('.estimate-head').dataset.risk='medium';
+ const reference=rounds.map(round=>estimate({...round,mstx:round.mstx||codeMethod==='mstx'})),max=Math.max(...reference.map(e=>e.total));
+ $('overhead-title').textContent='同配置开销参考';$('overhead-title').title='基于命令行采集项模型，显示完整配置中模型开销最高的一轮；不代表当前接入方式的实测或完整开销。';$('overhead').textContent='≈'+Math.round(max);$('overhead-unit').hidden=false;$('overhead').dataset.source='reference';
+ const referenceRisk=overheadBand(Math.round(max),true);$('risk').textContent='未校准';$('risk').dataset.risk=referenceRisk;$('risk').closest('.estimate-head').dataset.risk=referenceRisk;
  $('data-size').textContent='待采集';$('data-size-label').textContent='原始数据量';$('data-size').dataset.source='pending';$('data-window').textContent=python?'按 '+$('code-active').value+' Step / 轮采集':codeMethod==='dynamic'?'由 start / stop 确定采集范围':nativeMarkers?'CLI 窗口第 '+state.delay+'–'+(state.delay+state.duration)+' 秒；打点标记业务区间':'按传入的业务代码区间采集';
  $('download-size').textContent=workflow.view==='remote'?'无需整包下载':'待采集';$('download-size').dataset.source='pending';$('download-kind').textContent='实际目录大小待测量';$('volume-relation').textContent='按各轮实际采集与导出目录确认。';$('download-description').textContent='';$('download-advice').textContent='';$('capture-range').textContent=rounds.length+' 轮 · '+(python?'Step 窗口':codeMethod==='dynamic'?'交互窗口':'代码区间');
- $('breakdown').textContent='该接入方式尚无校准后的开销模型。';document.querySelector('.volume-breakdown').hidden=true;$('external-measurements').hidden=true;
+ $('breakdown').textContent='沿用命令行采集项模型作同配置参考：'+reference.map((e,index)=>(roundMetricLabels[rounds[index].metric]||rounds[index].metric)+' ≈'+e.total.toFixed(1)+'%').join('；')+'。尚未覆盖当前接入方式的额外开销；各轮百分比不相加。';document.querySelector('.volume-breakdown').hidden=true;$('external-measurements').hidden=true;
  renderCommandHighlight();
 }
 function setCaptureMethod(method){
@@ -1448,6 +1482,45 @@ for(const button of document.querySelectorAll('[data-capture-method]'))button.ad
 document.querySelector('.capture-method-tabs').addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;const buttons=[...document.querySelectorAll('[data-capture-method]:not(:disabled)')],index=buttons.indexOf(document.activeElement);if(index<0)return;event.preventDefault();const next=event.key==='Home'?0:event.key==='End'?buttons.length-1:(index+(event.key==='ArrowRight'?1:-1)+buttons.length)%buttons.length,button=buttons[next];button.click();button.focus()});
 for(const control of document.querySelectorAll('.code-settings input,.code-settings select'))control.addEventListener(control.tagName==='SELECT'?'change':'input',()=>update());
 
+const codeRangeControls=[];
+for(const [id,initialMax]of [['code-skip',100],['code-warmup',20],['code-active',100],['code-device',15]]){
+ const number=$(id),label=document.querySelector('label[for='+id+']'),row=document.createElement('div'),slider=document.createElement('input');
+ row.className='code-number-control';slider.id='slider-'+id;slider.type='range';slider.className='range';slider.min=number.min;slider.max=String(initialMax);slider.step=number.step;slider.setAttribute('value',number.getAttribute('value'));
+ label.id=label.id||id+'-label';slider.setAttribute('aria-labelledby',label.id);slider.setAttribute('aria-describedby',number.getAttribute('aria-describedby'));
+ number.classList.add('step-input');number.before(row);row.append(slider,number);
+ slider.addEventListener('input',()=>{number.value=slider.value;number.dispatchEvent(new Event('input',{bubbles:true}))});
+ codeRangeControls.push({number,slider,initialMax});
+}
+function syncCodeRangeControls(){
+ for(const {number,slider,initialMax}of codeRangeControls){const value=Number(number.value);if(number.value!==''&&Number.isInteger(value)&&value>=Number(number.min)&&value<=Number(number.max)){slider.max=String(Math.max(initialMax,value));slider.value=number.value}syncRangeVisual(slider)}
+}
+
+// Configuration views reuse the same controls and state; changing views never reapplies a preset.
+let configView='scene';
+$('config-view-scene').append($('scene-panel'));
+$('config-view-manual').append($('config-details'),$('postprocess-section'));
+for(const child of [...document.querySelector('.controls').children])if(child.matches('details.docs'))$('config-view-manual').append(child);
+function setConfigView(view){
+ if(!['scene','manual','ai'].includes(view))return;configView=view;
+ if(view==='manual')$('config-details').open=true;
+ for(const panel of document.querySelectorAll('[data-config-panel]'))panel.hidden=panel.dataset.configPanel!==view;
+ for(const button of document.querySelectorAll('[data-config-view]')){const selected=button.dataset.configView===view;button.setAttribute('aria-selected',String(selected));button.tabIndex=selected?0:-1}
+ $('parameter-search-results').hidden=true;
+}
+function renderSceneWorkflow(){
+ for(const [key,value]of [['mode',workflow.mode],['view',workflow.view]])for(const button of document.querySelectorAll('[data-scene-workflow-'+key+']')){const selected=button.dataset[key==='mode'?'sceneWorkflowMode':'sceneWorkflowView']===value;button.setAttribute('aria-checked',String(selected));button.tabIndex=selected?0:-1}
+ $('scene-prof-dir-field').hidden=workflow.mode!=='existing';$('scene-service-field').hidden=workflow.view!=='remote';
+ for(const input of document.querySelectorAll('[data-workflow-mirror]')){const actual=$(input.dataset.workflowMirror);input.value=actual.value;input.setAttribute('aria-invalid',actual.getAttribute('aria-invalid')||'false')}
+ const actualLink=$('workflow-open-service'),link=$('scene-open-service');link.hidden=workflow.view!=='remote'||actualLink.hidden;if(link.hidden)link.removeAttribute('href');else link.href=actualLink.href;
+}
+for(const key of ['mode','view'])for(const button of document.querySelectorAll('[data-scene-workflow-'+key+']'))button.addEventListener('click',()=>{const actual=$('workflow-'+key);actual.value=button.dataset[key==='mode'?'sceneWorkflowMode':'sceneWorkflowView'];actual.dispatchEvent(new Event('change',{bubbles:true}))});
+for(const input of document.querySelectorAll('[data-workflow-mirror]'))input.addEventListener('input',()=>{const actual=$(input.dataset.workflowMirror);actual.value=input.value;actual.dispatchEvent(new Event('input',{bubbles:true}))});
+for(const key of ['host','memory','mstx'])$(key).addEventListener('click',()=>{$('scene-'+key).checked=state[key];renderScenario()});
+for(const group of document.querySelectorAll('.scene-workflow-choices'))group.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;const buttons=[...group.querySelectorAll('button')],index=buttons.indexOf(document.activeElement);if(index<0)return;event.preventDefault();const next=event.key==='Home'?0:event.key==='End'?buttons.length-1:(index+(event.key==='ArrowRight'?1:-1)+buttons.length)%buttons.length;buttons[next].click();buttons[next].focus()});
+document.querySelector('.config-view-tabs').addEventListener('click',event=>{const button=event.target.closest('[data-config-view]');if(button)setConfigView(button.dataset.configView)});
+document.querySelector('.config-view-tabs').addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;const buttons=[...document.querySelectorAll('[data-config-view]')],index=buttons.indexOf(document.activeElement);if(index<0)return;event.preventDefault();const next=event.key==='Home'?0:event.key==='End'?buttons.length-1:(index+(event.key==='ArrowRight'?1:-1)+buttons.length)%buttons.length;setConfigView(buttons[next].dataset.configView);buttons[next].focus()});
+setConfigView(configView);
+
 const originalFormState=new Map([...document.querySelectorAll('.lab-panel input,.lab-panel select')].map(el=>[el,{value:el.tagName==='SELECT'?(el.querySelector('option[selected]')||el.querySelector('option')).value:el.getAttribute('value')||'',min:el.getAttribute('min'),max:el.getAttribute('max'),step:el.getAttribute('step')} ]));
 const originalDetailsState=new Map([...document.querySelectorAll('.lab-panel details')].map(el=>[el,el.hasAttribute('open')]));
 const resetButton=$('reset');resetButton.className='button';resetButton.innerHTML='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5a5.5 5.5 0 1 1-.4 5M3 1.8V5h3.2"/></svg><span>复原</span>'; resetButton.setAttribute('aria-label','复原全部初始配置');document.querySelector('.toolbar-actions').append(resetButton);
@@ -1459,7 +1532,7 @@ for(const scroller of document.querySelectorAll('.controls,.command-panel,.previ
   scrollIdleTimer=setTimeout(()=>scroller.classList.remove('is-scrolling'),800);
  },{passive:true});
 }
-update();
+resetScenario();update();
 
 // Page tabs preserve the sandbox inputs, command and each panel's scroll position.
 let pageView='sandbox';
