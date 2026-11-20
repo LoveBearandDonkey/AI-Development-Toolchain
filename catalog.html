@@ -511,13 +511,10 @@ body.is-header-collapsed .side-nav {
   cursor: pointer;
   overflow: hidden;
   border: 0;
-  transition:
-    transform var(--duration-fast) var(--easing-default),
-    box-shadow var(--duration-fast) var(--easing-default);
+  transition: box-shadow var(--duration-fast) var(--easing-default);
 }
 
 .launch-card:hover {
-  transform: translateY(-2px);
   box-shadow: 0 16px 34px rgba(15, 23, 42, 0.09);
 }
 
@@ -650,8 +647,8 @@ body.is-header-collapsed .side-nav {
 }
 
 .status-pill.is-doc {
-  background: color-mix(in srgb, var(--accent) 18%, var(--surface-1));
-  color: color-mix(in srgb, var(--accent) 55%, var(--foreground));
+  background: var(--surface-3);
+  color: var(--foreground-secondary);
 }
 
 .launch-card .card-demo-title {
@@ -728,7 +725,7 @@ body.is-header-collapsed .side-nav {
   display: flex;
   align-items: center;
   gap: 6px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .variant-link {
@@ -740,6 +737,11 @@ body.is-header-collapsed .side-nav {
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 700;
+}
+
+.variant-link:hover,
+.variant-link:active {
+  transform: none;
 }
 
 .launch-card.has-variant-grid .card-demo-footer {
@@ -1006,14 +1008,14 @@ const launchItems = [
     "group": "采集与执行",
     "status": "hi-fi",
     "desc": "表单式、命令式采集指令编排与效果预估",
-    "href": "https://lovebearanddonkey.github.io/AI-Development-Toolchain/性能采集实验台.html",
+    "href": "https://lovebearanddonkey.github.io/AI-Development-Toolchain/msProf/性能采集实验台.html",
     "preview": "",
     "blankPreview": true,
     "tags": [],
     "variants": [
       {
         "label": "沙箱",
-        "href": "https://lovebearanddonkey.github.io/AI-Development-Toolchain/性能采集实验台.html"
+        "href": "https://lovebearanddonkey.github.io/AI-Development-Toolchain/msProf/性能采集实验台.html"
       }
     ]
   },
@@ -1030,6 +1032,22 @@ const launchItems = [
       {
         "label": "训练配置校验",
         "href": "https://lovebearanddonkey.github.io/InsightChat/demo/"
+      }
+    ]
+  },
+  {
+    "title": "重计算与Swap提升性能",
+    "group": "底层与运行生态",
+    "status": "doc",
+    "desc": "重计算与Swap的细粒度控制对内存和性能影响",
+    "href": "",
+    "preview": "",
+    "blankPreview": true,
+    "tags": [],
+    "variants": [
+      {
+        "label": "场景教学",
+        "href": ""
       }
     ]
   }
