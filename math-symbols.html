@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>模型计算 · 数学符号</title>
+<style>
+  :root { color-scheme: dark; font-family: "Segoe UI", "Microsoft YaHei", sans-serif; color: #ededed; background: #0a0a0a; }
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  main { max-width: 1180px; margin: 0 auto; padding: 56px 32px 80px; }
+  header { margin-bottom: 40px; }
+  .eyebrow { margin: 0 0 18px; color: #bca6db; font: 13px Consolas, monospace; letter-spacing: .08em; }
+  h1 { margin: 0 0 18px; font-size: clamp(28px, 4vw, 48px); font-weight: 500; letter-spacing: -.04em; }
+  .intro { margin: 0; color: #a3a3a3; font-size: 16px; line-height: 1.8; }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  article { min-width: 0; padding: 28px 30px; background: #151515; border-radius: 18px; }
+  .heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+  h2 { margin: 0; font-size: 18px; font-weight: 500; }
+  .english { color: #929292; font: 12px Consolas, monospace; }
+  .symbol { min-height: 138px; display: grid; place-items: center; color: #decdf5; }
+  math { font-family: "Cambria Math", "STIX Two Math", "Latin Modern Math", math; }
+  .symbol math { font-size: 64px; margin: 12px 0; }
+  .formula { display: flex; align-items: center; justify-content: center; min-height: 96px; padding: 12px 0; overflow-x: auto; }
+  .formula math { flex: 0 0 auto; margin: 0; font-size: clamp(19px, 2vw, 25px); }
+  .note { margin: 18px 0 0; color: #aaa; font-size: 14px; line-height: 1.8; }
+  code { color: #d1c0e8; font-family: Consolas, monospace; }
+  footer { margin-top: 28px; color: #888; font-size: 13px; line-height: 1.8; }
+  @media (max-width: 720px) {
+    main { padding: 36px 20px 48px; }
+    .grid { grid-template-columns: 1fr; gap: 16px; }
+    article { padding: 24px; }
+    .heading { flex-wrap: wrap; gap: 8px; }
+    .symbol { min-height: 120px; }
+  }
+  @media print {
+    :root { color-scheme: light; color: #111; background: white; }
+    main { max-width: none; padding: 0; }
+    article { break-inside: avoid; background: #f4f4f4; }
+    .symbol { color: #222; }
+    .note, .intro, footer, .english { color: #444; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="eyebrow">AI COMPUTATION / MATHEMATICAL NOTATION</p>
+    <h1>模型计算中的 10 个数学符号</h1>
+    <p class="intro">算子、训练与推理中的常见表达。每个符号配一条典型公式。</p>
+  </header>
+
+  <section class="grid" aria-label="十个数学符号及示例公式">
+    <article>
+      <div class="heading"><h2>矩阵乘法</h2><span class="english">Matrix multiplication</span></div>
+      <div class="symbol"><math display="block" aria-label="乘号"><mo>×</mo></math></div>
+      <div class="formula"><math display="block" aria-label="Y 等于 X 乘 W 加 b"><mi mathvariant="bold">Y</mi><mo>=</mo><mi mathvariant="bold">X</mi><mi mathvariant="bold">W</mi><mo>+</mo><mi mathvariant="bold">b</mi></math></div>
+      <p class="note">线性层的典型表达；代码中常写作 <code>X @ W + b</code>。</p>
+    </article>
+
+    <article>
+      <div class="heading"><h2>求和与归约</h2><span class="english">Summation</span></div>
+      <div class="symbol"><math display="block" aria-label="求和符号"><mo>∑</mo></math></div>
+      <div class="formula"><math display="block" aria-label="y 等于从 i 等于 1 到 n 的 x i 之和"><mi>y</mi><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>x</mi><mi>i</mi></msub></math></div>
+      <p class="note">用于点积、损失聚合与 ReduceSum。</p>
+    </article>
+
+    <article>
+      <div class="heading"><h2>逐元素乘法</h2><span class="english">Hadamard product</span></div>
+      <div class="symbol"><math display="block" aria-label="逐元素乘号"><mo>⊙</mo></math></div>
+      <div class="formula"><math display="block" aria-label="C 等于 A 与 B 的逐元素乘积"><mi mathvariant="bold">C</mi><mo>=</mo><mi mathvariant="bold">A</mi><mo>⊙</mo><mi mathvariant="bold">B</mi></math></div>
+      <p class="note">用于门控、掩码与特征缩放。与张量积符号 ⊗ 区分。</p>
+    </article>
+
+    <article>
+      <div class="heading"><h2>梯度</h2><span class="english">Gradient</span></div>
+      <div class="symbol"><math display="block" aria-label="梯度算子 nabla"><mo>∇</mo></math></div>
+      <div class="formula"><math display="block" aria-label="下一步参数等于当前参数减去学习率乘损失梯度"><msub><mi>θ</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>θ</mi><mi>t</mi></msub><mo>−</mo><mi>η</mi><msub><mo>∇</mo><mi>θ</mi></msub><mrow><mi mathvariant="script">L</mi><mo>(</mo><msub><mi>θ</mi><mi>t</mi></msub><mo>)</mo></mrow></math></div>
+      <p class="note">梯度下降更新；η 表示学习率。</p>
+    </article>
+
+    <article>
+      <div class="heading"><h2>偏导数</h2><span class="english">Partial derivative</span></div>
+      <div class="symbol"><math display="block" aria-label="偏导符号"><mo>∂</mo></math></div>
+      <div class="formula"><math display="block" aria-label="标量链式法则"><mfrac><mrow><mo>∂</mo><mi mathvariant="script">L</mi></mrow><mrow><mo>∂</mo><mi>x</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mo>∂</mo><mi mathvariant="script">L</mi></mrow><mrow><mo>∂</mo><mi>y</mi></mrow></mfrac><mo>·</mo><mfrac><mrow><mo>∂</mo><mi>y</mi></mrow><mrow><mo>∂</mo><mi>x</mi></mrow></mfrac></math></div>
+      <p class="note">标量链式法则，是反向传播与算子求导的基础。</p>
+    </article>
+
+    <article>
+      <div class="heading"><h2>转置</h2><span class="english">Transpose</span></div>
+      <div class="symbol"><math display="block" aria-label="A 的转置"><msup><mi mathvariant="bold">A</mi><mi mathvariant="normal">T</mi></msup></math></div>
+      <div class="formula"><math display="block" aria-label="S 等于 Q 乘 K 的转置"><mi mathvariant="bold">S</mi><mo>=</mo><mi mathvariant="bold">Q</mi><msup><mi mathvariant="bold">K</mi><mi mathvariant="normal">T</mi></msup></math></div>
+      <p class="note">Attention 的原始打分矩阵；T 位于矩阵符号右上角。</p>
+    </article>
+
+    <article>
+      <div class="heading"><h2>指数运算</h2><span class="english">Exponential</span></div>
+      <div class="symbol"><math display="block" aria-label="e 的 x 次方"><msup><mi mathvariant="normal">e</mi><mi>x</mi></msup></math></div>
+      <div class="formula"><math display="block" aria-label="Softmax 概率等于指数得分除以所有指数得分之和"><msub><mi>p</mi><mi>i</mi></msub><mo>=</mo><mfrac><msup><mi mathvariant="normal">e</mi><msub><mi>z</mi><mi>i</mi></msub></msup><mrow><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msup><mi mathvariant="normal">e</mi><msub><mi>z</mi><mi>j</mi></msub></msup></mrow></mfrac></math></div>
+      <p class="note">Softmax 将得分转换为归一化的概率分布。</p>
+    </article>
+
+    <article>
+      <div class="heading"><h2>平方根</h2><span class="english">Square root</span></div>
+      <div class="symbol"><math display="block" aria-label="x 的平方根"><msqrt><mi>x</mi></msqrt></math></div>
+      <div class="formula"><math display="block" aria-label="归一化后的 x i 等于 x i 减均值，再除以方差加 epsilon 的平方根"><msub><mover><mi>x</mi><mo>^</mo></mover><mi>i</mi></msub><mo>=</mo><mfrac><mrow><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><mi>μ</mi></mrow><msqrt><msup><mi>σ</mi><mn>2</mn></msup><mo>+</mo><mi>ε</mi></msqrt></mfrac></math></div>
+      <p class="note">归一化中的标准化步骤；ε 用于数值稳定。</p>
+    </article>
+
+    <article>
+      <div class="heading"><h2>Sigmoid</h2><span class="english">Activation</span></div>
+      <div class="symbol"><math display="block" aria-label="小写 sigma"><mi>σ</mi></math></div>
+      <div class="formula"><math display="block" aria-label="Sigmoid x 等于一除以一加 e 的负 x 次方"><mrow><mi>σ</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mo>=</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><msup><mi mathvariant="normal">e</mi><mrow><mo>−</mo><mi>x</mi></mrow></msup></mrow></mfrac></math></div>
+      <p class="note">常用于门控；在归一化公式中，σ 也可表示标准差。</p>
+    </article>
+
+    <article>
+      <div class="heading"><h2>模型参数</h2><span class="english">Parameters</span></div>
+      <div class="symbol"><math display="block" aria-label="theta"><mi>θ</mi></math></div>
+      <div class="formula"><math display="block" aria-label="最优参数等于使损失函数最小的参数"><msup><mi>θ</mi><mo>∗</mo></msup><mo>=</mo><munder><mrow><mi mathvariant="normal">arg</mi><mspace width="0.2em"/><mo>min</mo></mrow><mi>θ</mi></munder><mrow><mi mathvariant="script">L</mi><mo>(</mo><mi>θ</mi><mo>)</mo></mrow></math></div>
+      <p class="note">θ 表示待学习的参数，θ* 表示优化目标中的最优参数。</p>
+    </article>
+  </section>
+  <footer>符号按用途整理。求和使用运算符 ∑，转置使用正体上标 T；数学变量、上下标、分式与根式均采用公式排版。</footer>
+</main>
+</body>
+</html>

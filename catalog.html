@@ -1,911 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="light">
+<html lang="zh-CN" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI 开发工具链 · 陈列馆</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23ffffff'/%3E%3Cpath d='M17 40V24h8c4 0 7 3 7 8s-3 8-7 8h-8Zm20 0V24h10v4h-6v3h5v4h-5v5h-4Z' fill='%230f172a'/%3E%3Cpath d='M14 18h20l-5 7H14z' fill='%23e5484d'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="vendor/pto-design-system/tokens/foundation.css">
-<link rel="stylesheet" href="vendor/pto-design-system/tokens/semantic.css">
-<link rel="stylesheet" href="vendor/pto-design-system/tokens/components.css">
-<link rel="stylesheet" href="vendor/pto-design-system/css/style.css">
-<style>
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  margin: 0;
-  min-height: 100%;
-}
-
-html {
-  height: auto;
-  overflow-x: hidden;
-  overflow-y: auto;
-  scrollbar-color: color-mix(in srgb, var(--foreground-muted) 52%, transparent) transparent;
-  scrollbar-width: thin;
-}
-
-body {
-  min-width: 320px;
-  height: auto;
-  min-height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
-  display: block;
-  position: relative;
-  isolation: isolate;
-  background: #ffffff;
-  background-attachment: fixed;
-  color: var(--foreground);
-  font-family: var(--font-sans);
-}
-* {
-  scrollbar-color: color-mix(in srgb, var(--foreground-muted) 52%, transparent) transparent;
-  scrollbar-width: thin;
-}
-*::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-*::-webkit-scrollbar-track {
-  background: transparent;
-}
-*::-webkit-scrollbar-thumb {
-  min-height: 32px;
-  border: 2px solid transparent;
-  border-radius: var(--radius-pill);
-  background: color-mix(in srgb, var(--foreground-muted) 56%, transparent);
-  background-clip: content-box;
-}
-*::-webkit-scrollbar-thumb:hover {
-  background: color-mix(in srgb, var(--foreground-secondary) 62%, transparent);
-  background-clip: content-box;
-}
-*::-webkit-scrollbar-corner {
-  background: transparent;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background: url("assets/bg.png") left top / auto 100vh no-repeat;
-  opacity: 0.15;
-  transform: scaleX(-1);
-}
-
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 12% 6%, rgba(247, 183, 219, 0.41) 0, rgba(247, 183, 219, 0) 34%),
-    radial-gradient(circle at 88% 8%, rgba(247, 191, 132, 0.34) 0, rgba(247, 191, 132, 0) 30%),
-    radial-gradient(circle at 46% 0%, rgba(189, 169, 232, 0.32) 0, rgba(189, 169, 232, 0) 34%),
-    linear-gradient(180deg, #f8efff 0%, #eef4ff 47%, #e9eef8 100%);
-  opacity: 0.2;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-button,
-input,
-select {
-  font: inherit;
-}
-
-.svg-icon {
-  width: 18px;
-  height: 18px;
-  display: inline-block;
-  flex: 0 0 auto;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.cann-app {
-  position: relative;
-  z-index: 1;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.cann-topbar {
-  position: sticky;
-  top: 0;
-  z-index: var(--z-modal);
-  background: rgba(255, 255, 255, 0.5);
-  border-bottom: 1px solid var(--border-subtle);
-  backdrop-filter: blur(16px);
-}
-
-.cann-primary {
-  width: 100%;
-  max-width: 1680px;
-  margin: 0 auto;
-  height: 62px;
-  padding: 0 32px;
-  display: grid;
-  grid-template-columns: minmax(220px, 1fr) minmax(320px, 520px);
-  align-items: center;
-  gap: var(--space-6);
-  overflow: hidden;
-  transition:
-    height var(--duration-base) var(--easing-default),
-    padding var(--duration-base) var(--easing-default),
-    opacity var(--duration-fast) var(--easing-default),
-    transform var(--duration-base) var(--easing-default);
-}
-
-.cann-topbar.is-collapsed .cann-primary {
-  height: 0;
-  min-height: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(-8px);
-}
-
-.cann-brand,
-.cann-actions,
-.cann-nav {
-  display: flex;
-  align-items: center;
-}
-
-.cann-brand {
-  min-width: 0;
-  gap: var(--space-3);
-}
-
-.cann-actions {
-  justify-content: flex-end;
-  gap: var(--space-3);
-  min-width: 0;
-}
-
-.cann-menu {
-  width: 36px;
-  height: 36px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 0;
-  border-radius: var(--radius-md);
-  color: var(--foreground-secondary);
-  background: transparent;
-  cursor: pointer;
-}
-
-.cann-logo {
-  width: 84px;
-  height: 32px;
-  flex: 0 0 auto;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  overflow: visible;
-}
-
-.cann-logo img {
-  width: 84px;
-  height: 32px;
-  display: block;
-}
-
-.cann-name {
-  color: var(--foreground);
-  font-size: 19px;
-  font-weight: 700;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-.global-search {
-  min-width: 0;
-  height: 38px;
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-pill);
-  background: color-mix(in srgb, var(--surface-1) 88%, var(--background));
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: 0 16px;
-  color: var(--foreground-muted);
-}
-
-.search-icon {
-  width: 17px;
-  height: 17px;
-}
-
-.global-search input {
-  min-width: 0;
-  width: 100%;
-  border: 0;
-  outline: 0;
-  background: transparent;
-  color: var(--foreground);
-}
-
-.global-search input::placeholder {
-  color: var(--foreground-muted);
-}
-
-.create-btn {
-  min-width: 130px;
-  border-radius: var(--radius-pill);
-}
-
-.bell-btn,
-.avatar-btn {
-  position: relative;
-  width: 36px;
-  height: 36px;
-  border: 0;
-  border-radius: var(--radius-pill);
-  background: transparent;
-  color: var(--foreground-secondary);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.notify-count {
-  position: absolute;
-  top: 2px;
-  right: -1px;
-  min-width: 22px;
-  height: 18px;
-  padding: 0 5px;
-  border-radius: var(--radius-pill);
-  background: var(--danger);
-  color: var(--primary-foreground);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.avatar-btn {
-  background:
-    radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--warning) 28%, white) 0 32%, transparent 34%),
-    color-mix(in srgb, var(--warning) 18%, var(--surface-1));
-  color: color-mix(in srgb, var(--warning) 70%, var(--foreground));
-}
-
-.cann-nav-wrap {
-  height: 58px;
-  padding: 0 132px;
-  display: flex;
-  align-items: center;
-}
-
-.cann-nav {
-  height: 100%;
-  gap: 28px;
-}
-
-.cann-nav-link {
-  height: 100%;
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  position: relative;
-  color: var(--foreground-secondary);
-  font-size: 15px;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.cann-nav-link.is-active {
-  color: var(--foreground);
-}
-
-.cann-nav-link.is-active::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 3px;
-  border-radius: 0;
-  background: var(--foreground);
-}
-
-.nav-icon {
-  color: var(--foreground-disabled);
-  width: 17px;
-  height: 17px;
-}
-
-.cann-nav-link.is-active .nav-icon,
-.cann-nav-link:first-child .nav-icon {
-  color: var(--danger);
-}
-
-.count-badge {
-  min-width: 23px;
-  height: 20px;
-  padding: 0 7px;
-  border-radius: var(--radius-sm);
-  background: var(--surface-3);
-  color: var(--foreground-secondary);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.page-shell {
-  width: min(1680px, calc(100vw - 96px));
-  margin: 0 auto;
-  padding: 22px 0 28px;
-  display: grid;
-  grid-template-columns: 230px minmax(0, 1fr);
-  gap: 32px;
-}
-
-.side-nav {
-  position: sticky;
-  top: 84px;
-  max-height: calc(100vh - 92px);
-  overflow: auto;
-  align-self: start;
-  padding-top: 18px;
-  transition: top var(--duration-base) var(--easing-default);
-}
-
-body.is-header-collapsed .side-nav {
-  top: 22px;
-}
-
-.side-title {
-  margin: 0 0 16px;
-  padding-left: 18px;
-  color: var(--foreground);
-  font-size: 18px;
-  font-weight: 800;
-}
-
-.side-list {
-  display: grid;
-  gap: var(--space-2);
-}
-
-.side-item {
-  width: 100%;
-  min-height: 46px;
-  padding: 0 16px;
-  border: 0;
-  border-radius: var(--radius-md);
-  background: transparent;
-  color: var(--foreground-secondary);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-  cursor: pointer;
-  text-align: left;
-}
-
-.side-item:hover {
-  background: rgba(255, 255, 255, 0.34);
-  color: var(--foreground);
-}
-
-.side-item.is-active {
-  background: rgba(255, 255, 255, 0.50);
-  color: var(--foreground);
-}
-
-.side-label {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  min-width: 0;
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.side-icon {
-  width: 18px;
-  height: 18px;
-  color: var(--foreground-muted);
-  flex: 0 0 auto;
-}
-
-.side-count {
-  color: var(--foreground-muted);
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.side-legend {
-  margin: 18px 12px 0;
-  padding-top: 16px;
-  border-top: 1px solid var(--border-subtle);
-  display: grid;
-  gap: 8px;
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--foreground-muted);
-  font-size: 12px;
-}
-
-.legend-item .status-pill {
-  flex: 0 0 auto;
-}
-
-.main-column {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.section-head {
-  min-height: 42px;
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: var(--space-4);
-}
-
-.section-title {
-  margin: 0;
-  color: var(--foreground);
-  font-size: 20px;
-  font-weight: 800;
-}
-
-.section-subtitle {
-  margin: 5px 0 0;
-  color: var(--foreground-muted);
-  font-size: 13px;
-}
-
-.result-count {
-  color: var(--foreground-muted);
-  font-size: 13px;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-  align-content: start;
-  padding: 2px 0 8px;
-}
-
-.launch-card {
-  width: 100%;
-  min-height: 0;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
-  overflow: hidden;
-  border: 0;
-  transition: box-shadow var(--duration-fast) var(--easing-default);
-}
-
-.launch-card:hover {
-  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.09);
-}
-
-.card-preview {
-  margin: 10px 10px 0;
-  aspect-ratio: 16 / 9;
-  border: 0;
-  border-radius: var(--radius-md);
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--surface-2) 70%, white), var(--surface-1));
-  overflow: hidden;
-  flex: 0 0 auto;
-}
-
-.card-preview img,
-.card-preview iframe {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
-
-.card-preview img {
-  object-fit: cover;
-  object-position: top center;
-}
-
-.card-preview img.is-contain {
-  object-fit: cover;
-  padding: 0;
-}
-
-.preview-duo {
-  width: 100%;
-  height: 100%;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1px;
-  background: var(--surface-2);
-}
-
-.preview-duo img {
-  min-width: 0;
-  object-position: left top;
-}
-
-.card-preview iframe {
-  pointer-events: none;
-  transform: scale(0.82);
-  transform-origin: top left;
-  width: 122%;
-  height: 122%;
-  background: var(--surface-1);
-}
-
-/* Code Recovery 的预览需要保留左侧源码窗的滚动与标注交互。 */
-.card-preview iframe.is-interactive {
-  pointer-events: auto;
-}
-
-.preview-placeholder {
-  height: 100%;
-  display: grid;
-  place-items: center;
-  padding: var(--space-4);
-  color: var(--foreground-muted);
-  font-size: 13px;
-  font-weight: 700;
-  text-align: center;
-}
-
-.launch-card .card-demo-header {
-  padding: 10px 13px 9px;
-  flex: 1;
-  min-height: 0;
-  gap: 4px;
-  overflow: hidden;
-}
-
-.card-kicker {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2);
-  color: var(--foreground-muted);
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.card-group-name {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.card-group-name::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--foreground-muted);
-  flex: 0 0 auto;
-}
-
-.status-pill {
-  height: 19px;
-  padding: 0 7px;
-  border-radius: var(--radius-pill);
-  background: var(--surface-3);
-  color: var(--foreground-secondary);
-  display: inline-flex;
-  align-items: center;
-  font-size: 11px;
-  font-weight: 700;
-  flex: 0 0 auto;
-}
-
-.status-pill.is-live {
-  background: color-mix(in srgb, var(--success) 16%, var(--surface-1));
-  color: color-mix(in srgb, var(--success) 60%, var(--foreground));
-}
-
-.status-pill.is-proto {
-  background: color-mix(in srgb, var(--warning) 18%, var(--surface-1));
-  color: color-mix(in srgb, var(--warning) 62%, var(--foreground));
-}
-
-.status-pill.is-doc {
-  background: var(--surface-3);
-  color: var(--foreground-secondary);
-}
-
-.launch-card .card-demo-title {
-  display: -webkit-box;
-  overflow: hidden;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  font-size: 15.5px;
-  line-height: 1.2;
-}
-
-.launch-card .card-demo-sub {
-  margin-top: 1px;
-  color: var(--foreground-muted);
-  font-size: 11.5px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.launch-card .card-demo-description {
-  display: -webkit-box;
-  overflow: hidden;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-
-.tag-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  max-height: 46px;
-  margin-top: 5px;
-  overflow: hidden;
-}
-
-.tag-chip {
-  height: var(--tag-height);
-  padding: 0 var(--tag-padding-x);
-  border-radius: var(--tag-radius);
-  border: 1px solid var(--comp-tag-border);
-  background: var(--comp-tag-bg);
-  color: var(--comp-tag-fg);
-  display: inline-flex;
-  align-items: center;
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.launch-card .card-demo-footer {
-  margin-top: auto;
-  min-height: 34px;
-  padding: 5px 12px 10px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: var(--space-2);
-  border-top: 0;
-}
-
-.launch-card:not(.has-variants) .card-demo-header {
-  padding-bottom: 12px;
-}
-
-.launch-card.has-variants .tag-row {
-  display: none;
-}
-
-.variant-list {
-  min-width: 0;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  overflow: visible;
-}
-
-.variant-link {
-  min-width: 58px;
-  max-width: 122px;
-  min-height: 28px;
-  padding-inline: 11px;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-weight: 700;
-}
-
-.variant-link:hover,
-.variant-link:active {
-  transform: none;
-}
-
-.launch-card.has-variant-grid .card-demo-footer {
-  min-height: 67px;
-  align-items: flex-start;
-}
-
-.launch-card.has-variant-grid .variant-list {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  overflow: visible;
-}
-
-.launch-card.has-variant-grid .variant-link {
-  width: 100%;
-  max-width: none;
-}
-
-.empty-state {
-  min-height: 260px;
-  border-radius: var(--radius-lg);
-  border: 1px dashed var(--border-default);
-  background: var(--surface-1);
-  color: var(--foreground-muted);
-  display: none;
-  place-items: center;
-  align-content: center;
-  text-align: center;
-  gap: 6px;
-  padding: var(--space-6);
-}
-
-.empty-state.is-visible {
-  display: grid;
-}
-
-.empty-state .empty-title {
-  margin: 0;
-  color: var(--foreground-secondary);
-  font-size: 15px;
-  font-weight: 700;
-}
-
-.empty-state .empty-hint {
-  margin: 0 0 10px;
-  font-size: 13px;
-}
-
-@media (max-width: 1280px) {
-  .cann-primary {
-    padding: 0 22px;
-    grid-template-columns: minmax(220px, 1fr) minmax(260px, 420px);
-  }
-
-  .cann-nav-wrap {
-    padding: 0 88px;
-  }
-
-  .page-shell {
-    width: min(1180px, calc(100vw - 48px));
-    grid-template-columns: 210px minmax(0, 1fr);
-    gap: 24px;
-  }
-}
-
-@media (max-width: 1080px) {
-  .card-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 920px) {
-  .cann-primary {
-    height: auto;
-    min-height: 118px;
-    padding: 14px 18px;
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "brand"
-      "search";
-    gap: var(--space-3);
-  }
-
-  .cann-brand {
-    grid-area: brand;
-  }
-
-  .global-search {
-    grid-area: search;
-  }
-
-  .cann-actions {
-    grid-area: actions;
-  }
-
-  .cann-nav-wrap {
-    height: 52px;
-    padding: 0 18px;
-    overflow-x: auto;
-  }
-
-  .cann-nav {
-    gap: 22px;
-  }
-
-  .page-shell {
-    width: min(100%, calc(100vw - 28px));
-    grid-template-columns: 1fr;
-  }
-
-  .side-nav {
-    position: static;
-    padding-top: 0;
-    max-height: none;
-    overflow: hidden;
-  }
-
-  .side-title {
-    padding-left: 0;
-  }
-
-  .side-list {
-    display: flex;
-    overflow-x: auto;
-    padding-bottom: 4px;
-  }
-
-  .side-item {
-    width: auto;
-    flex: 0 0 auto;
-  }
-}
-
-@media (max-width: 640px) {
-  .cann-primary {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "brand"
-      "search";
-  }
-
-  .cann-actions {
-    justify-content: flex-start;
-    width: 100%;
-  }
-
-  .create-btn {
-    min-width: 0;
-    flex: 1;
-  }
-
-  .card-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .section-head {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-}
-.launch-card:not([data-href]) { cursor: default; }
-.variant-link:disabled { cursor: not-allowed; opacity: 0.5; }
-</style>
+<link rel="stylesheet" href="catalog/catalog.css">
 </head>
 <body>
 <svg aria-hidden="true" width="0" height="0" style="position:absolute;overflow:hidden">
@@ -934,39 +34,67 @@ body.is-header-collapsed .side-nav {
   <header class="cann-topbar">
     <div class="cann-primary">
       <div class="cann-brand">
-        <a class="cann-logo" href="catalog.html" aria-label="返回陈列馆" hidden>
-          <img src="assets/logo-cann.svg" alt="CANN">
-        </a>
         <strong class="cann-name">AI 开发工具链</strong>
       </div>
 
-      <label class="global-search" aria-label="全局搜索">
-        <svg class="svg-icon search-icon" aria-hidden="true"><use href="#icon-search"></use></svg>
-        <input id="globalSearch" type="search" placeholder="按下 / 快速开启搜索" autocomplete="off">
-      </label>
+      <div class="cann-actions">
+        <label class="global-search" aria-label="全局搜索">
+          <svg class="svg-icon search-icon" aria-hidden="true"><use href="#icon-search"></use></svg>
+          <input id="globalSearch" type="search" placeholder="搜索工具" autocomplete="off">
+          <kbd class="search-shortcut" aria-hidden="true">/</kbd>
+        </label>
+        <div class="catalog-avatar" data-catalog-avatar role="img" aria-label="蓝色花瓣 AI 头像">
+          <div class="catalog-avatar-stage">
+            <svg class="catalog-avatar-art" viewBox="0 0 320 300" aria-hidden="true">
+              <defs>
+                <radialGradient id="avatar-material" cx="32%" cy="22%" r="85%">
+                  <stop offset="0" stop-color="#b5dcff" data-avatar-color="light"/>
+                  <stop offset=".52" stop-color="#78a7fa" data-avatar-color="middle"/>
+                  <stop offset="1" stop-color="#4d71e4" data-avatar-color="dark"/>
+                </radialGradient>
+                <radialGradient id="avatar-ground">
+                  <stop stop-color="#7c9af5" stop-opacity=".55"/>
+                  <stop offset="1" stop-color="#7c9af5" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <ellipse data-avatar-shadow cx="160" cy="267" rx="78" ry="10" fill="url(#avatar-ground)" opacity=".25"/>
+              <g data-avatar-body>
+                <path data-avatar-shape fill="url(#avatar-material)" d="M261.00,145.00C261.00,148.20 259.56,151.65 257.60,154.61C255.64,157.57 252.13,160.29 249.25,162.75C246.37,165.21 242.72,167.16 240.31,169.36C237.91,171.57 235.88,173.46 234.83,176.00C233.78,178.53 233.88,181.30 234.02,184.56C234.16,187.82 235.37,191.78 235.66,195.56C235.96,199.33 236.52,203.74 235.81,207.22C235.10,210.69 233.68,214.15 231.42,216.42C229.15,218.68 225.69,220.10 222.22,220.81C218.74,221.52 214.33,220.96 210.56,220.66C206.78,220.37 202.82,219.16 199.56,219.02C196.30,218.88 193.53,218.78 191.00,219.83C188.46,220.88 186.57,222.91 184.36,225.31C182.16,227.72 180.21,231.37 177.75,234.25C175.29,237.13 172.57,240.64 169.61,242.60C166.65,244.56 163.20,246.00 160.00,246.00C156.80,246.00 153.35,244.56 150.39,242.60C147.43,240.64 144.71,237.13 142.25,234.25C139.79,231.37 137.84,227.72 135.64,225.31C133.43,222.91 131.54,220.88 129.00,219.83C126.47,218.78 123.70,218.88 120.44,219.02C117.18,219.16 113.22,220.37 109.44,220.66C105.67,220.96 101.26,221.52 97.78,220.81C94.31,220.10 90.85,218.68 88.58,216.42C86.32,214.15 84.90,210.69 84.19,207.22C83.48,203.74 84.04,199.33 84.34,195.56C84.63,191.78 85.84,187.82 85.98,184.56C86.12,181.30 86.22,178.53 85.17,176.00C84.12,173.46 82.09,171.57 79.69,169.36C77.28,167.16 73.63,165.21 70.75,162.75C67.87,160.29 64.36,157.57 62.40,154.61C60.44,151.65 59.00,148.20 59.00,145.00C59.00,141.80 60.44,138.35 62.40,135.39C64.36,132.43 67.87,129.71 70.75,127.25C73.63,124.79 77.28,122.84 79.69,120.64C82.09,118.43 84.12,116.54 85.17,114.00C86.22,111.47 86.12,108.70 85.98,105.44C85.84,102.18 84.63,98.22 84.34,94.44C84.04,90.67 83.48,86.26 84.19,82.78C84.90,79.31 86.32,75.85 88.58,73.58C90.85,71.32 94.31,69.90 97.78,69.19C101.26,68.48 105.67,69.04 109.44,69.34C113.22,69.63 117.18,70.84 120.44,70.98C123.70,71.12 126.47,71.22 129.00,70.17C131.54,69.12 133.43,67.09 135.64,64.69C137.84,62.28 139.79,58.63 142.25,55.75C144.71,52.87 147.43,49.36 150.39,47.40C153.35,45.44 156.80,44.00 160.00,44.00C163.20,44.00 166.65,45.44 169.61,47.40C172.57,49.36 175.29,52.87 177.75,55.75C180.21,58.63 182.16,62.28 184.36,64.69C186.57,67.09 188.46,69.12 191.00,70.17C193.53,71.22 196.30,71.12 199.56,70.98C202.82,70.84 206.78,69.63 210.56,69.34C214.33,69.04 218.74,68.48 222.22,69.19C225.69,69.90 229.15,71.32 231.42,73.58C233.68,75.85 235.10,79.31 235.81,82.78C236.52,86.26 235.96,90.67 235.66,94.44C235.37,98.22 234.16,102.18 234.02,105.44C233.88,108.70 233.78,111.47 234.83,114.00C235.88,116.54 237.91,118.43 240.31,120.64C242.72,122.84 246.37,124.79 249.25,127.25C252.13,129.71 255.64,132.43 257.60,135.39C259.56,138.35 261.00,141.80 261.00,145.00Z"/>
+              </g>
+                <g data-avatar-face fill="#172b58" data-avatar-color="face">
+                  <ellipse data-avatar-eye cx="140" cy="137" rx="5.5" ry="8"/>
+                  <ellipse data-avatar-eye cx="180" cy="137" rx="5.5" ry="8"/>
+                  <path data-avatar-mouth d="M145 157 Q160 179 175 157" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/>
+                </g>
+            </svg>
+          </div>
+        </div>
+      </div>
 
     </div>
   </header>
 
   <main class="page-shell">
-    <aside class="side-nav" aria-label="陈列馆分类">
-      <h2 class="side-title">分类</h2>
-      <div class="side-list" id="categoryList"></div>
-      <div class="side-legend">
-        <span class="legend-item"><span class="status-pill is-live">可体验</span>可真实交互</span>
-        <span class="legend-item"><span class="status-pill is-proto">原型</span>草图 / 占位</span>
-        <span class="legend-item"><span class="status-pill is-doc">文档</span>白皮书 / 说明</span>
+    <section class="catalog-intro" aria-labelledby="catalogTitle">
+      <div class="catalog-intro-copy">
+        <p class="catalog-eyebrow">AI DEVELOPMENT TOOLCHAIN</p>
+        <h1 id="catalogTitle">
+          <span>AI Development</span>
+          <span>Toolchain UX</span>
+        </h1>
+        <p>分析、诊断与执行，从这里开始。</p>
       </div>
-    </aside>
+      <nav class="side-nav" aria-label="陈列馆分类">
+        <div class="side-list" id="categoryList"></div>
+      </nav>
+    </section>
 
     <section class="main-column">
       <div class="section-head">
         <div>
           <h2 class="section-title" id="activeTitle">全部项目</h2>
         </div>
-        <div class="result-count" id="resultCount"></div>
       </div>
-
       <div class="card-grid" id="grid" aria-live="polite"></div>
       <div class="empty-state" id="emptyState">
         <p class="empty-title">没有匹配的工具</p>
@@ -977,6 +105,11 @@ body.is-header-collapsed .side-nav {
   </main>
 </div>
 
+<script defer src="catalog/vendor/gsap/gsap.min.js"></script>
+<script defer src="catalog/vendor/gsap/MorphSVGPlugin.min.js"></script>
+<script defer src="catalog/avatar/avatar-config.js"></script>
+<script defer src="catalog/avatar/catalog-avatar.js"></script>
+<script defer src="catalog/card-glow.js"></script>
 <script>
 const categories = [
   { id: "all", label: "全部", icon: "icon-layout-grid" },
@@ -993,14 +126,9 @@ const launchItems = [
     "status": "hi-fi",
     "desc": "推理性能仿真的硬件画像建模",
     "href": "https://lovebearanddonkey.github.io/AI-Development-Toolchain/msModeling/%E7%A1%AC%E4%BB%B6%E7%94%BB%E5%83%8F.html",
-    "preview": "",
-    "blankPreview": true,
-    "tags": [],
-    "variants": [
-      {
-        "label": "硬件建模",
-        "href": "https://lovebearanddonkey.github.io/AI-Development-Toolchain/msModeling/%E7%A1%AC%E4%BB%B6%E7%94%BB%E5%83%8F.html"
-      }
+    "preview": "assets/modeling.png",
+    "tags": [
+      "MS Modeling"
     ]
   },
   {
@@ -1009,14 +137,9 @@ const launchItems = [
     "status": "hi-fi",
     "desc": "模型训/推性能分析，Agent辅助性能调优",
     "href": "https://lovebearanddonkey.github.io/InsightChat/app/pages/chat.html",
-    "preview": "",
-    "blankPreview": true,
-    "tags": [],
-    "variants": [
-      {
-        "label": "性能分析2.0",
-        "href": "https://lovebearanddonkey.github.io/InsightChat/app/pages/chat.html"
-      }
+    "preview": "assets/insight.png",
+    "tags": [
+      "MS Insight"
     ]
   },
   {
@@ -1025,14 +148,9 @@ const launchItems = [
     "status": "hi-fi",
     "desc": "表单式、命令式采集指令编排与效果预估",
     "href": "https://lovebearanddonkey.github.io/AI-Development-Toolchain/msProf/性能采集实验台.html",
-    "preview": "",
-    "blankPreview": true,
-    "tags": [],
-    "variants": [
-      {
-        "label": "沙箱",
-        "href": "https://lovebearanddonkey.github.io/AI-Development-Toolchain/msProf/性能采集实验台.html"
-      }
+    "preview": "assets/prof.png",
+    "tags": [
+      "MS Profiler"
     ]
   },
   {
@@ -1041,14 +159,9 @@ const launchItems = [
     "status": "hi-fi",
     "desc": "模型结构与并行配置可视化，训练配置兼容性校验，配置寻优",
     "href": "https://lovebearanddonkey.github.io/InsightChat/demo/",
-    "preview": "",
-    "blankPreview": true,
-    "tags": [],
-    "variants": [
-      {
-        "label": "训练配置校验",
-        "href": "https://lovebearanddonkey.github.io/InsightChat/demo/"
-      }
+    "preview": "assets/speed.png",
+    "tags": [
+      "MindSpeed"
     ]
   },
   {
@@ -1057,14 +170,9 @@ const launchItems = [
     "status": "doc",
     "desc": "重计算与Swap的细粒度控制对内存和性能影响",
     "href": "https://lovebearanddonkey.github.io/AI-Development-Toolchain/FSDP%20Turbo/%E9%87%8D%E8%AE%A1%E7%AE%97%E4%B8%8ESwap-%E6%BF%80%E6%B4%BB%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.html",
-    "preview": "",
-    "blankPreview": true,
-    "tags": [],
-    "variants": [
-      {
-        "label": "场景教学",
-        "href": "https://lovebearanddonkey.github.io/AI-Development-Toolchain/FSDP%20Turbo/%E9%87%8D%E8%AE%A1%E7%AE%97%E4%B8%8ESwap-%E6%BF%80%E6%B4%BB%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.html"
-      }
+    "preview": "assets/fsdp.png",
+    "tags": [
+      "FSDP Turbo"
     ]
   }
 ];
@@ -1087,9 +195,8 @@ const state = {
 const categoryList = document.getElementById("categoryList");
 const grid = document.getElementById("grid");
 const emptyState = document.getElementById("emptyState");
-const resultCount = document.getElementById("resultCount");
 const activeTitle = document.getElementById("activeTitle");
-const topbar = document.querySelector(".cann-topbar");
+
 const globalSearch = document.getElementById("globalSearch");
 
 function itemTargetAttrs(href) {
@@ -1101,7 +208,7 @@ function normalize(value) {
   return String(value || "").trim().toLowerCase();
 }
 
-function renderCategories() {
+function renderCategories(animate = false) {
   const counts = visibleLaunchItems.reduce((acc, item) => {
     acc[item.group] = (acc[item.group] || 0) + 1;
     return acc;
@@ -1111,12 +218,25 @@ function renderCategories() {
     const count = category.id === "all" ? visibleLaunchItems.length : (counts[category.id] || 0);
     const active = state.category === category.id ? " is-active" : "";
     return `
-      <button class="side-item${active}" type="button" data-category="${category.id}">
-        <span class="side-label"><svg class="svg-icon side-icon" aria-hidden="true"><use href="#${category.icon}"></use></svg>${category.label}</span>
+      <button class="side-item${active}" type="button" data-category="${category.id}" aria-pressed="${state.category === category.id}">
+        <span class="side-label">${category.label}</span>
         <span class="side-count">${count}</span>
       </button>
     `;
   }).join("");
+  if (animate && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    categoryList.querySelectorAll('.side-item').forEach((item, index) => {
+      item.animate([
+        { opacity: 0, scale: '0.6', translate: '0 16px' },
+        { opacity: 1, scale: '1', translate: '0 0' }
+      ], {
+        duration: 550,
+        delay: index * 80,
+        easing: 'cubic-bezier(.34, 1.56, .64, 1)',
+        fill: 'backwards'
+      });
+    });
+  }
 }
 
 function getFilteredItems() {
@@ -1132,8 +252,7 @@ function getFilteredItems() {
       (STATUS_META[item.status] || {}).label,
       item.desc,
       item.href,
-      ...(item.tags || []),
-      ...(item.variants || []).map((variant) => `${variant.label} ${variant.href}`)
+      ...(item.tags || [])
     ].join(" "));
     return inCategory && inStatus && (!query || haystack.includes(query));
   });
@@ -1175,43 +294,28 @@ function renderPreview(item) {
 
 function renderCard(item) {
   const hasLink = Boolean(item.href);
-  const linkAttrs = hasLink ? ` href="${item.href}"${itemTargetAttrs(item.href)}` : "";
-  const cardAttrs = hasLink ? ` data-href="${item.href}" role="link" tabindex="0"` : "";
-  const previewTag = hasLink ? "a" : "div";
-  const titleTag = hasLink ? "a" : "div";
-  const variants = item.variants || [];
-  const hasVariants = variants.length > 0;
-  const variantLayoutClass = item.variantLayout === "grid" ? " has-variant-grid" : "";
-  const footerHtml = hasVariants ? variants.map((variant) => {
-    if (!variant.href) return `<button class="btn btn-sm variant-link" type="button" disabled>${variant.label}</button>`;
-    const target = variant.newTab ? ' target="_blank" rel="noreferrer"' : itemTargetAttrs(variant.href);
-    return `
-    <a class="btn btn-sm variant-link" href="${variant.href}"${target}>${variant.label}</a>
-  `;
-  }).join("") : "";
+  const cardTag = hasLink ? "a" : "article";
+  const cardAttrs = hasLink ? ` href="${item.href}"${itemTargetAttrs(item.href)} aria-label="${item.title}"` : "";
+  const hasPreview = !item.blankPreview && Boolean(item.preview || item.previewFrame);
 
   const tagHtml = (item.tags || []).slice(0, 3).map((tag) => `<span class="tag-chip">${tag}</span>`).join("");
   const status = STATUS_META[item.status] || { label: item.status, cls: "" };
 
   return `
-    <article class="card-demo launch-card${hasVariants ? " has-variants" : ""}${variantLayoutClass}" data-group="${item.group}" data-status="${item.status}" ${cardAttrs}>
-      <${previewTag} class="card-preview"${linkAttrs}${hasLink ? ` aria-label="打开 ${item.title}"` : ' aria-hidden="true"'}>
+    <${cardTag} class="card-demo launch-card" data-group="${item.group}" data-status="${item.status}"${cardAttrs}>
+      ${hasPreview ? `<div class="card-preview">
         ${renderPreview(item)}
-      </${previewTag}>
+      </div>` : ""}
       <div class="card-demo-header">
-        <div class="card-kicker">
-          <span class="card-group-name">${item.group}</span>
+        <div class="card-title-row">
+          <h3 class="card-demo-title">${item.title}</h3>
           <span class="status-pill${status.cls ? " " + status.cls : ""}">${status.label}</span>
         </div>
-        <${titleTag} class="card-demo-title"${linkAttrs}>${item.title}</${titleTag}>
         ${item.sub ? `<div class="card-demo-sub">${item.sub}</div>` : ""}
         <div class="card-demo-description">${item.desc}</div>
         <div class="tag-row">${tagHtml}</div>
       </div>
-      ${hasVariants ? `<div class="card-demo-footer">
-        <div class="variant-list">${footerHtml}</div>
-      </div>` : ""}
-    </article>
+    </${cardTag}>
   `;
 }
 
@@ -1219,7 +323,6 @@ function renderGrid() {
   const items = getFilteredItems();
   const activeCategory = categories.find((category) => category.id === state.category);
   activeTitle.textContent = state.category === "all" ? "全部项目" : activeCategory.label;
-  resultCount.textContent = `${items.length}/${visibleLaunchItems.length}`;
   grid.innerHTML = items.map(renderCard).join("");
   emptyState.classList.toggle("is-visible", items.length === 0);
 }
@@ -1234,7 +337,11 @@ categoryList.addEventListener("click", (event) => {
   const button = event.target.closest("[data-category]");
   if (!button) return;
   state.category = button.dataset.category;
-  renderCategories();
+  categoryList.querySelectorAll('.side-item').forEach((item) => {
+    const active = item === button;
+    item.classList.toggle('is-active', active);
+    item.setAttribute('aria-pressed', String(active));
+  });
   renderGrid();
 });
 
@@ -1249,65 +356,16 @@ resetFilters.addEventListener("click", () => {
   renderGrid();
 });
 
-grid.addEventListener("click", (event) => {
-  if (event.target.closest("a, button, input, select")) return;
-  const card = event.target.closest(".launch-card[data-href]");
-  if (!card) return;
-  const href = card.dataset.href;
-  if (/^https?:\/\//.test(href)) {
-    window.open(href, "_blank", "noreferrer");
-  } else {
-    window.location.href = href;
-  }
-});
-
-grid.addEventListener("keydown", (event) => {
-  if (event.key !== "Enter" && event.key !== " ") return;
-  const card = event.target.closest(".launch-card[data-href]");
-  if (!card) return;
-  event.preventDefault();
-  card.click();
-});
-
 window.addEventListener("keydown", (event) => {
-  const isTyping = ["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement.tagName);
+  if (event.ctrlKey || event.metaKey || event.altKey || event.repeat) return;
+  const isTyping = ["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement.tagName) || document.activeElement.isContentEditable;
   if (event.key === "/" && !isTyping) {
     event.preventDefault();
     globalSearch.focus();
   }
 });
 
-let lastScrollY = window.scrollY;
-let scrollTicking = false;
-
-function setHeaderCollapsed(collapsed) {
-  topbar.classList.toggle("is-collapsed", collapsed);
-  document.body.classList.toggle("is-header-collapsed", collapsed);
-}
-
-function updateHeaderOnScroll() {
-  const currentY = window.scrollY;
-  const delta = currentY - lastScrollY;
-
-  if (currentY <= 8) {
-    setHeaderCollapsed(false);
-  } else if (delta > 8) {
-    setHeaderCollapsed(true);
-  } else if (delta < -8) {
-    setHeaderCollapsed(false);
-  }
-
-  lastScrollY = currentY;
-  scrollTicking = false;
-}
-
-window.addEventListener("scroll", () => {
-  if (scrollTicking) return;
-  scrollTicking = true;
-  window.requestAnimationFrame(updateHeaderOnScroll);
-}, { passive: true });
-
-renderCategories();
+renderCategories(true);
 renderGrid();
 </script>
 </body>
