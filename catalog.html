@@ -6,6 +6,7 @@
 <title>AI 开发工具链 · 陈列馆</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23ffffff'/%3E%3Cpath d='M17 40V24h8c4 0 7 3 7 8s-3 8-7 8h-8Zm20 0V24h10v4h-6v3h5v4h-5v5h-4Z' fill='%230f172a'/%3E%3Cpath d='M14 18h20l-5 7H14z' fill='%23e5484d'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="catalog/catalog.css">
+<link rel="stylesheet" href="catalog/avatar/symbol-theatre.css">
 </head>
 <body>
 <svg aria-hidden="true" width="0" height="0" style="position:absolute;overflow:hidden">
@@ -108,7 +109,9 @@
 <script defer src="catalog/vendor/gsap/gsap.min.js"></script>
 <script defer src="catalog/vendor/gsap/MorphSVGPlugin.min.js"></script>
 <script defer src="catalog/avatar/avatar-config.js"></script>
+<script defer src="catalog/avatar/math-expressions.js"></script>
 <script defer src="catalog/avatar/catalog-avatar.js"></script>
+<script defer src="catalog/avatar/symbol-theatre.js"></script>
 <script defer src="catalog/card-glow.js"></script>
 <script>
 const categories = [
@@ -120,6 +123,17 @@ const categories = [
 ];
 
 const launchItems = [
+  {
+    "title": "智能计算助手",
+    "group": "Agent与协作",
+    "status": "hi-fi",
+    "desc": "计算领域知识百科，工具百事通。兼顾GUI和TUI",
+    "href": "https://lovebearanddonkey.github.io/InsightChat/demo/",
+    "preview": "assets/agent.png",
+    "tags": [
+      "msAgent"
+    ]
+  },
   {
     "title": "硬件画像",
     "group": "决策与诊断",

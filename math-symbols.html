@@ -1,127 +1,232 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>模型计算 · 数学符号</title>
-<style>
-  :root { color-scheme: dark; font-family: "Segoe UI", "Microsoft YaHei", sans-serif; color: #ededed; background: #0a0a0a; }
-  * { box-sizing: border-box; }
-  body { margin: 0; }
-  main { max-width: 1180px; margin: 0 auto; padding: 56px 32px 80px; }
-  header { margin-bottom: 40px; }
-  .eyebrow { margin: 0 0 18px; color: #bca6db; font: 13px Consolas, monospace; letter-spacing: .08em; }
-  h1 { margin: 0 0 18px; font-size: clamp(28px, 4vw, 48px); font-weight: 500; letter-spacing: -.04em; }
-  .intro { margin: 0; color: #a3a3a3; font-size: 16px; line-height: 1.8; }
-  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
-  article { min-width: 0; padding: 28px 30px; background: #151515; border-radius: 18px; }
-  .heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
-  h2 { margin: 0; font-size: 18px; font-weight: 500; }
-  .english { color: #929292; font: 12px Consolas, monospace; }
-  .symbol { min-height: 138px; display: grid; place-items: center; color: #decdf5; }
-  math { font-family: "Cambria Math", "STIX Two Math", "Latin Modern Math", math; }
-  .symbol math { font-size: 64px; margin: 12px 0; }
-  .formula { display: flex; align-items: center; justify-content: center; min-height: 96px; padding: 12px 0; overflow-x: auto; }
-  .formula math { flex: 0 0 auto; margin: 0; font-size: clamp(19px, 2vw, 25px); }
-  .note { margin: 18px 0 0; color: #aaa; font-size: 14px; line-height: 1.8; }
-  code { color: #d1c0e8; font-family: Consolas, monospace; }
-  footer { margin-top: 28px; color: #888; font-size: 13px; line-height: 1.8; }
-  @media (max-width: 720px) {
-    main { padding: 36px 20px 48px; }
-    .grid { grid-template-columns: 1fr; gap: 16px; }
-    article { padding: 24px; }
-    .heading { flex-wrap: wrap; gap: 8px; }
-    .symbol { min-height: 120px; }
-  }
-  @media print {
-    :root { color-scheme: light; color: #111; background: white; }
-    main { max-width: none; padding: 0; }
-    article { break-inside: avoid; background: #f4f4f4; }
-    .symbol { color: #222; }
-    .note, .intro, footer, .english { color: #444; }
-  }
-</style>
-</head>
-<body>
-<main>
-  <header>
-    <p class="eyebrow">AI COMPUTATION / MATHEMATICAL NOTATION</p>
-    <h1>模型计算中的 10 个数学符号</h1>
-    <p class="intro">算子、训练与推理中的常见表达。每个符号配一条典型公式。</p>
-  </header>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>计算符号 · 表情实验室</title><style>
+:root{color-scheme:dark;color:#f0eef4;background:#0a0a0c;font-family:"Segoe UI","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box}body{margin:0}main{max-width:1200px;margin:0 auto;padding:56px 32px 80px}.eyebrow{margin:0 0 20px;color:#b9a6da;font:13px Consolas,monospace;letter-spacing:.08em}h1{margin:0 0 20px;font-size:clamp(30px,4vw,48px);font-weight:500;letter-spacing:-.04em}.intro{max-width:780px;margin:0;color:#aaa8b0;font-size:16px;line-height:1.9}.interaction-hint{margin:16px 0 0;color:#8e8a98;font-size:14px}header{margin-bottom:36px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}article{min-width:0;padding:26px 28px;background:#151518;border-radius:20px;box-shadow:inset 0 0 0 1px #ffffff0c}.heading{display:flex;justify-content:space-between;align-items:center;gap:16px}h2{margin:0;font-size:20px;font-weight:500}.symbol-key{color:#ccb6ef;font:32px "Cambria Math",math}.face-toggle{display:flex;align-items:center;flex-direction:column;width:100%;border:0;background:transparent;padding:0;margin:0 0 26px;color:inherit;font:inherit;cursor:pointer;border-radius:12px}.face-toggle:focus-visible{outline:2px solid #cbb2f4;outline-offset:4px}.face-toggle svg{display:block;width:min(100%,290px);height:auto}.face-features{fill:#172b58;color:#172b58}.stroke{fill:none;stroke:currentColor;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}.stroke.thin{stroke-width:4.5}.math-ink{font-family:"Cambria Math","STIX Two Math",math;text-anchor:middle;fill:currentColor;font-weight:400}.plain-feature{display:none}.face-toggle[aria-pressed=false] .plain-feature{display:inline}.face-toggle[aria-pressed=false] .math-feature{display:none}.mode-label{margin-top:-6px;color:#a8a0b7;font-size:12px}.concept-meta{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}.placement{color:#decef4;font-size:14px}.tier{font-size:12px;color:#96929d}.tier.recommended{color:#9acbb1}.design-note{margin:16px 0 10px;color:#c5c2cb;font-size:15px;line-height:1.9}.scenario{margin:0;color:#99949f;font-size:13px;line-height:1.9}details{margin-top:22px}summary{cursor:pointer;color:#a499b5;font-size:13px}summary:focus-visible{outline:2px solid #cbb2f4;outline-offset:4px}.formula{display:flex;justify-content:center;align-items:center;min-height:100px;overflow-x:auto;padding:18px 0}math{font-family:"Cambria Math","STIX Two Math",math;font-size:23px;flex:0 0 auto}.formula-note{color:#99949f;font-size:13px;line-height:1.8}code{color:#ccbae8;font-family:Consolas,monospace}footer{margin-top:28px;max-width:900px;color:#aaa5b2;font-size:14px;line-height:1.9}@media(max-width:720px){main{padding:36px 20px 48px}.grid{grid-template-columns:1fr;gap:16px}article{padding:24px}.face-toggle svg{width:260px}math{font-size:20px}}@media print{:root{color-scheme:light;background:white;color:#111}article{break-inside:avoid;background:#f4f4f4;box-shadow:none}.heading h2,.design-note,.intro,.scenario,footer{color:#333}.mode-label{display:none}summary{color:#555}}
+.bubble-caption{margin:0 0 18px;padding:11px 14px;border-radius:10px;background:#192331;color:#d7e4fc;font-size:15px;line-height:1.7}.bubble-label{display:block;margin-bottom:3px;color:#8ea8cc;font-size:12px}.interlude-record{margin-top:28px;padding:26px 28px;border-radius:20px;background:#151518}.interlude-record h2{font-size:22px}.interlude-record p{color:#aaa5b2;font-size:14px;line-height:1.8}.interlude-record ul{margin:18px 0 0;padding-left:22px;color:#d7e4fc;font-size:16px;line-height:1.9}.interlude-record li+li{margin-top:8px}
+</style></head>
+<body><main><header><p class="eyebrow">MATH SYMBOLS / EXPRESSION STUDIES</p><h1>让计算符号成为表情</h1><p class="intro">把眼睛、嘴巴和眉毛本身变成计算符号。在统一的蓝色花瓣轮廓上比较 10 种情绪，让符号参与表情的含义。</p><p class="interaction-hint">点选头像，对比普通表情与符号表情。原始公式保留在每张卡片的折叠区。</p></header><section class="grid" aria-label="十种计算符号表情示意"><article data-concept="1">
+  <div class="heading"><h2>算晕了</h2><span class="symbol-key">×</span></div>
+  <button class="face-toggle" type="button" aria-pressed="true" aria-label="算晕了：× 融入双眼，点击查看普通表情">
+    <svg viewBox="0 0 320 300" aria-hidden="true">
+      <defs><radialGradient id="face-material-0" cx="28%" cy="20%" r="95%"><stop stop-color="#c4e7ff"/><stop offset=".56" stop-color="#82b4ff"/><stop offset="1" stop-color="#5a7de8"/></radialGradient><radialGradient id="face-shadow-0"><stop stop-color="#7598f4" stop-opacity=".2"/><stop offset="1" stop-color="#7598f4" stop-opacity="0"/></radialGradient></defs>
+      <ellipse cx="160" cy="270" rx="75" ry="9" fill="url(#face-shadow-0)"/>
+      <g transform="rotate(-6 160 145)">
+        <path d="M261.00,145.00C261.00,148.20 259.56,151.65 257.60,154.61C255.64,157.57 252.13,160.29 249.25,162.75C246.37,165.21 242.72,167.16 240.31,169.36C237.91,171.57 235.88,173.46 234.83,176.00C233.78,178.53 233.88,181.30 234.02,184.56C234.16,187.82 235.37,191.78 235.66,195.56C235.96,199.33 236.52,203.74 235.81,207.22C235.10,210.69 233.68,214.15 231.42,216.42C229.15,218.68 225.69,220.10 222.22,220.81C218.74,221.52 214.33,220.96 210.56,220.66C206.78,220.37 202.82,219.16 199.56,219.02C196.30,218.88 193.53,218.78 191.00,219.83C188.46,220.88 186.57,222.91 184.36,225.31C182.16,227.72 180.21,231.37 177.75,234.25C175.29,237.13 172.57,240.64 169.61,242.60C166.65,244.56 163.20,246.00 160.00,246.00C156.80,246.00 153.35,244.56 150.39,242.60C147.43,240.64 144.71,237.13 142.25,234.25C139.79,231.37 137.84,227.72 135.64,225.31C133.43,222.91 131.54,220.88 129.00,219.83C126.47,218.78 123.70,218.88 120.44,219.02C117.18,219.16 113.22,220.37 109.44,220.66C105.67,220.96 101.26,221.52 97.78,220.81C94.31,220.10 90.85,218.68 88.58,216.42C86.32,214.15 84.90,210.69 84.19,207.22C83.48,203.74 84.04,199.33 84.34,195.56C84.63,191.78 85.84,187.82 85.98,184.56C86.12,181.30 86.22,178.53 85.17,176.00C84.12,173.46 82.09,171.57 79.69,169.36C77.28,167.16 73.63,165.21 70.75,162.75C67.87,160.29 64.36,157.57 62.40,154.61C60.44,151.65 59.00,148.20 59.00,145.00C59.00,141.80 60.44,138.35 62.40,135.39C64.36,132.43 67.87,129.71 70.75,127.25C73.63,124.79 77.28,122.84 79.69,120.64C82.09,118.43 84.12,116.54 85.17,114.00C86.22,111.47 86.12,108.70 85.98,105.44C85.84,102.18 84.63,98.22 84.34,94.44C84.04,90.67 83.48,86.26 84.19,82.78C84.90,79.31 86.32,75.85 88.58,73.58C90.85,71.32 94.31,69.90 97.78,69.19C101.26,68.48 105.67,69.04 109.44,69.34C113.22,69.63 117.18,70.84 120.44,70.98C123.70,71.12 126.47,71.22 129.00,70.17C131.54,69.12 133.43,67.09 135.64,64.69C137.84,62.28 139.79,58.63 142.25,55.75C144.71,52.87 147.43,49.36 150.39,47.40C153.35,45.44 156.80,44.00 160.00,44.00C163.20,44.00 166.65,45.44 169.61,47.40C172.57,49.36 175.29,52.87 177.75,55.75C180.21,58.63 182.16,62.28 184.36,64.69C186.57,67.09 188.46,69.12 191.00,70.17C193.53,71.22 196.30,71.12 199.56,70.98C202.82,70.84 206.78,69.63 210.56,69.34C214.33,69.04 218.74,68.48 222.22,69.19C225.69,69.90 229.15,71.32 231.42,73.58C233.68,75.85 235.10,79.31 235.81,82.78C236.52,86.26 235.96,90.67 235.66,94.44C235.37,98.22 234.16,102.18 234.02,105.44C233.88,108.70 233.78,111.47 234.83,114.00C235.88,116.54 237.91,118.43 240.31,120.64C242.72,122.84 246.37,124.79 249.25,127.25C252.13,129.71 255.64,132.43 257.60,135.39C259.56,138.35 261.00,141.80 261.00,145.00Z" fill="url(#face-material-0)"/>
+        <g class="plain-feature"><g class="face-features"><path class="stroke" d="M127 133 L147 141 M173 141 L193 133"/><path class="stroke" d="M140 171 Q150 162 160 171 T180 171"/></g></g>
+        <g class="math-feature"><g class="face-features"><text class="math-ink" x="137" y="149" font-size="45" >×</text><text class="math-ink" x="183" y="149" font-size="45" >×</text><path class="stroke" d="M140 171 Q150 162 160 171 T180 171"/></g></g>
+      </g>
+    </svg>
+    <span class="mode-label">符号融合</span>
+  </button>
+  <p class="bubble-caption"><span class="bubble-label">气泡文案</span><span data-expression-caption>算晕了</span></p>
+  <div class="concept-meta"><span class="placement">× · 双眼</span><span class="tier recommended">优先尝试</span></div>
+  <p class="design-note">两只眼睛变成 ×，直接传达算力过载、晕头转向。</p>
+  <p class="scenario">适合：计算过载、任务失败后的轻松反馈。</p>
+  <details><summary>符号原义与公式</summary><div class="formula"><math display="block" aria-label="Y 等于 X 乘 W 加 b"><mi mathvariant="bold">Y</mi><mo>=</mo><mi mathvariant="bold">X</mi><mi mathvariant="bold">W</mi><mo>+</mo><mi mathvariant="bold">b</mi></math></div><p class="formula-note">线性层的典型表达；代码中常写作 <code>X @ W + b</code>。</p></details>
+</article>
+<article data-concept="2">
+  <div class="heading"><h2>努力计算</h2><span class="symbol-key">∑</span></div>
+  <button class="face-toggle" type="button" aria-pressed="true" aria-label="努力计算：∑ 融入紧眯的双眼，点击查看普通表情">
+    <svg viewBox="0 0 320 300" aria-hidden="true">
+      <defs><radialGradient id="face-material-1" cx="28%" cy="20%" r="95%"><stop stop-color="#c4e7ff"/><stop offset=".56" stop-color="#82b4ff"/><stop offset="1" stop-color="#5a7de8"/></radialGradient><radialGradient id="face-shadow-1"><stop stop-color="#7598f4" stop-opacity=".2"/><stop offset="1" stop-color="#7598f4" stop-opacity="0"/></radialGradient></defs>
+      <ellipse cx="160" cy="270" rx="75" ry="9" fill="url(#face-shadow-1)"/>
+      <g transform="rotate(0 160 145)">
+        <path d="M261.00,145.00C261.00,148.20 259.56,151.65 257.60,154.61C255.64,157.57 252.13,160.29 249.25,162.75C246.37,165.21 242.72,167.16 240.31,169.36C237.91,171.57 235.88,173.46 234.83,176.00C233.78,178.53 233.88,181.30 234.02,184.56C234.16,187.82 235.37,191.78 235.66,195.56C235.96,199.33 236.52,203.74 235.81,207.22C235.10,210.69 233.68,214.15 231.42,216.42C229.15,218.68 225.69,220.10 222.22,220.81C218.74,221.52 214.33,220.96 210.56,220.66C206.78,220.37 202.82,219.16 199.56,219.02C196.30,218.88 193.53,218.78 191.00,219.83C188.46,220.88 186.57,222.91 184.36,225.31C182.16,227.72 180.21,231.37 177.75,234.25C175.29,237.13 172.57,240.64 169.61,242.60C166.65,244.56 163.20,246.00 160.00,246.00C156.80,246.00 153.35,244.56 150.39,242.60C147.43,240.64 144.71,237.13 142.25,234.25C139.79,231.37 137.84,227.72 135.64,225.31C133.43,222.91 131.54,220.88 129.00,219.83C126.47,218.78 123.70,218.88 120.44,219.02C117.18,219.16 113.22,220.37 109.44,220.66C105.67,220.96 101.26,221.52 97.78,220.81C94.31,220.10 90.85,218.68 88.58,216.42C86.32,214.15 84.90,210.69 84.19,207.22C83.48,203.74 84.04,199.33 84.34,195.56C84.63,191.78 85.84,187.82 85.98,184.56C86.12,181.30 86.22,178.53 85.17,176.00C84.12,173.46 82.09,171.57 79.69,169.36C77.28,167.16 73.63,165.21 70.75,162.75C67.87,160.29 64.36,157.57 62.40,154.61C60.44,151.65 59.00,148.20 59.00,145.00C59.00,141.80 60.44,138.35 62.40,135.39C64.36,132.43 67.87,129.71 70.75,127.25C73.63,124.79 77.28,122.84 79.69,120.64C82.09,118.43 84.12,116.54 85.17,114.00C86.22,111.47 86.12,108.70 85.98,105.44C85.84,102.18 84.63,98.22 84.34,94.44C84.04,90.67 83.48,86.26 84.19,82.78C84.90,79.31 86.32,75.85 88.58,73.58C90.85,71.32 94.31,69.90 97.78,69.19C101.26,68.48 105.67,69.04 109.44,69.34C113.22,69.63 117.18,70.84 120.44,70.98C123.70,71.12 126.47,71.22 129.00,70.17C131.54,69.12 133.43,67.09 135.64,64.69C137.84,62.28 139.79,58.63 142.25,55.75C144.71,52.87 147.43,49.36 150.39,47.40C153.35,45.44 156.80,44.00 160.00,44.00C163.20,44.00 166.65,45.44 169.61,47.40C172.57,49.36 175.29,52.87 177.75,55.75C180.21,58.63 182.16,62.28 184.36,64.69C186.57,67.09 188.46,69.12 191.00,70.17C193.53,71.22 196.30,71.12 199.56,70.98C202.82,70.84 206.78,69.63 210.56,69.34C214.33,69.04 218.74,68.48 222.22,69.19C225.69,69.90 229.15,71.32 231.42,73.58C233.68,75.85 235.10,79.31 235.81,82.78C236.52,86.26 235.96,90.67 235.66,94.44C235.37,98.22 234.16,102.18 234.02,105.44C233.88,108.70 233.78,111.47 234.83,114.00C235.88,116.54 237.91,118.43 240.31,120.64C242.72,122.84 246.37,124.79 249.25,127.25C252.13,129.71 255.64,132.43 257.60,135.39C259.56,138.35 261.00,141.80 261.00,145.00Z" fill="url(#face-material-1)"/>
+        <g class="plain-feature"><g class="face-features"><path class="stroke" d="M127 131 L143 140 L127 149 M193 131 L177 140 L193 149 M149 178 L171 178"/></g></g>
+        <g class="math-feature"><g class="face-features"><path class="stroke thin" d="M122 115 L143 121 M178 121 L198 115"/><text class="math-ink" x="137" y="152" font-size="40" >∑</text><text class="math-ink" x="183" y="152" font-size="40" transform="translate(366 0) scale(-1 1)">∑</text><path class="stroke" d="M149 178 L171 178"/></g></g>
+      </g>
+    </svg>
+    <span class="mode-label">符号融合</span>
+  </button>
+  <p class="bubble-caption"><span class="bubble-label">气泡文案</span><span data-expression-caption>努力计算，薅尽你的NPU</span></p>
+  <div class="concept-meta"><span class="placement">∑ · 紧眯的双眼</span><span class="tier ">探索方案</span></div>
+  <p class="design-note">求和符号的折角变成用力眯起的眼睛，眉毛轻轻向内收。</p>
+  <p class="scenario">适合：复杂分析、集中思考；较抽象，建议低频出现。</p>
+  <details><summary>符号原义与公式</summary><div class="formula"><math display="block" aria-label="y 等于从 i 等于 1 到 n 的 x i 之和"><mi>y</mi><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>x</mi><mi>i</mi></msub></math></div><p class="formula-note">用于点积、损失聚合与 ReduceSum。</p></details>
+</article>
+<article data-concept="3">
+  <div class="heading"><h2>灵光一现</h2><span class="symbol-key">⊙</span></div>
+  <button class="face-toggle" type="button" aria-pressed="true" aria-label="灵光一现：⊙ 融入圆眼与瞳孔，点击查看普通表情">
+    <svg viewBox="0 0 320 300" aria-hidden="true">
+      <defs><radialGradient id="face-material-2" cx="28%" cy="20%" r="95%"><stop stop-color="#c4e7ff"/><stop offset=".56" stop-color="#82b4ff"/><stop offset="1" stop-color="#5a7de8"/></radialGradient><radialGradient id="face-shadow-2"><stop stop-color="#7598f4" stop-opacity=".2"/><stop offset="1" stop-color="#7598f4" stop-opacity="0"/></radialGradient></defs>
+      <ellipse cx="160" cy="270" rx="75" ry="9" fill="url(#face-shadow-2)"/>
+      <g transform="rotate(3 160 145)">
+        <path d="M261.00,145.00C261.00,148.20 259.56,151.65 257.60,154.61C255.64,157.57 252.13,160.29 249.25,162.75C246.37,165.21 242.72,167.16 240.31,169.36C237.91,171.57 235.88,173.46 234.83,176.00C233.78,178.53 233.88,181.30 234.02,184.56C234.16,187.82 235.37,191.78 235.66,195.56C235.96,199.33 236.52,203.74 235.81,207.22C235.10,210.69 233.68,214.15 231.42,216.42C229.15,218.68 225.69,220.10 222.22,220.81C218.74,221.52 214.33,220.96 210.56,220.66C206.78,220.37 202.82,219.16 199.56,219.02C196.30,218.88 193.53,218.78 191.00,219.83C188.46,220.88 186.57,222.91 184.36,225.31C182.16,227.72 180.21,231.37 177.75,234.25C175.29,237.13 172.57,240.64 169.61,242.60C166.65,244.56 163.20,246.00 160.00,246.00C156.80,246.00 153.35,244.56 150.39,242.60C147.43,240.64 144.71,237.13 142.25,234.25C139.79,231.37 137.84,227.72 135.64,225.31C133.43,222.91 131.54,220.88 129.00,219.83C126.47,218.78 123.70,218.88 120.44,219.02C117.18,219.16 113.22,220.37 109.44,220.66C105.67,220.96 101.26,221.52 97.78,220.81C94.31,220.10 90.85,218.68 88.58,216.42C86.32,214.15 84.90,210.69 84.19,207.22C83.48,203.74 84.04,199.33 84.34,195.56C84.63,191.78 85.84,187.82 85.98,184.56C86.12,181.30 86.22,178.53 85.17,176.00C84.12,173.46 82.09,171.57 79.69,169.36C77.28,167.16 73.63,165.21 70.75,162.75C67.87,160.29 64.36,157.57 62.40,154.61C60.44,151.65 59.00,148.20 59.00,145.00C59.00,141.80 60.44,138.35 62.40,135.39C64.36,132.43 67.87,129.71 70.75,127.25C73.63,124.79 77.28,122.84 79.69,120.64C82.09,118.43 84.12,116.54 85.17,114.00C86.22,111.47 86.12,108.70 85.98,105.44C85.84,102.18 84.63,98.22 84.34,94.44C84.04,90.67 83.48,86.26 84.19,82.78C84.90,79.31 86.32,75.85 88.58,73.58C90.85,71.32 94.31,69.90 97.78,69.19C101.26,68.48 105.67,69.04 109.44,69.34C113.22,69.63 117.18,70.84 120.44,70.98C123.70,71.12 126.47,71.22 129.00,70.17C131.54,69.12 133.43,67.09 135.64,64.69C137.84,62.28 139.79,58.63 142.25,55.75C144.71,52.87 147.43,49.36 150.39,47.40C153.35,45.44 156.80,44.00 160.00,44.00C163.20,44.00 166.65,45.44 169.61,47.40C172.57,49.36 175.29,52.87 177.75,55.75C180.21,58.63 182.16,62.28 184.36,64.69C186.57,67.09 188.46,69.12 191.00,70.17C193.53,71.22 196.30,71.12 199.56,70.98C202.82,70.84 206.78,69.63 210.56,69.34C214.33,69.04 218.74,68.48 222.22,69.19C225.69,69.90 229.15,71.32 231.42,73.58C233.68,75.85 235.10,79.31 235.81,82.78C236.52,86.26 235.96,90.67 235.66,94.44C235.37,98.22 234.16,102.18 234.02,105.44C233.88,108.70 233.78,111.47 234.83,114.00C235.88,116.54 237.91,118.43 240.31,120.64C242.72,122.84 246.37,124.79 249.25,127.25C252.13,129.71 255.64,132.43 257.60,135.39C259.56,138.35 261.00,141.80 261.00,145.00Z" fill="url(#face-material-2)"/>
+        <g class="plain-feature"><g class="face-features"><ellipse cx="137" cy="138" rx="11" ry="15"/><ellipse cx="183" cy="138" rx="11" ry="15"/><ellipse cx="160" cy="178" rx="8" ry="11"/></g></g>
+        <g class="math-feature"><g class="face-features"><text class="math-ink" x="137" y="154" font-size="52" >⊙</text><text class="math-ink" x="183" y="154" font-size="52" >⊙</text><ellipse cx="160" cy="178" rx="8" ry="11"/></g></g>
+      </g>
+    </svg>
+    <span class="mode-label">符号融合</span>
+  </button>
+  <p class="bubble-caption"><span class="bubble-label">气泡文案</span><span data-expression-caption>灵光一现</span></p>
+  <div class="concept-meta"><span class="placement">⊙ · 圆眼与瞳孔</span><span class="tier recommended">优先尝试</span></div>
+  <p class="design-note">⊙ 的圆环是睁大的眼睛，中心点就是瞳孔，表情一眼能读懂。</p>
+  <p class="scenario">适合：发现瓶颈、找到证据、收到新结果。</p>
+  <details><summary>符号原义与公式</summary><div class="formula"><math display="block" aria-label="C 等于 A 与 B 的逐元素乘积"><mi mathvariant="bold">C</mi><mo>=</mo><mi mathvariant="bold">A</mi><mo>⊙</mo><mi mathvariant="bold">B</mi></math></div><p class="formula-note">用于门控、掩码与特征缩放。与张量积符号 ⊗ 区分。</p></details>
+</article>
+<article data-concept="4">
+  <div class="heading"><h2>开心大笑</h2><span class="symbol-key">∇</span></div>
+  <button class="face-toggle" type="button" aria-pressed="true" aria-label="开心大笑：∇ 融入张开的嘴巴，点击查看普通表情">
+    <svg viewBox="0 0 320 300" aria-hidden="true">
+      <defs><radialGradient id="face-material-3" cx="28%" cy="20%" r="95%"><stop stop-color="#c4e7ff"/><stop offset=".56" stop-color="#82b4ff"/><stop offset="1" stop-color="#5a7de8"/></radialGradient><radialGradient id="face-shadow-3"><stop stop-color="#7598f4" stop-opacity=".2"/><stop offset="1" stop-color="#7598f4" stop-opacity="0"/></radialGradient></defs>
+      <ellipse cx="160" cy="270" rx="75" ry="9" fill="url(#face-shadow-3)"/>
+      <g transform="rotate(-5 160 145)">
+        <path d="M261.00,145.00C261.00,148.20 259.56,151.65 257.60,154.61C255.64,157.57 252.13,160.29 249.25,162.75C246.37,165.21 242.72,167.16 240.31,169.36C237.91,171.57 235.88,173.46 234.83,176.00C233.78,178.53 233.88,181.30 234.02,184.56C234.16,187.82 235.37,191.78 235.66,195.56C235.96,199.33 236.52,203.74 235.81,207.22C235.10,210.69 233.68,214.15 231.42,216.42C229.15,218.68 225.69,220.10 222.22,220.81C218.74,221.52 214.33,220.96 210.56,220.66C206.78,220.37 202.82,219.16 199.56,219.02C196.30,218.88 193.53,218.78 191.00,219.83C188.46,220.88 186.57,222.91 184.36,225.31C182.16,227.72 180.21,231.37 177.75,234.25C175.29,237.13 172.57,240.64 169.61,242.60C166.65,244.56 163.20,246.00 160.00,246.00C156.80,246.00 153.35,244.56 150.39,242.60C147.43,240.64 144.71,237.13 142.25,234.25C139.79,231.37 137.84,227.72 135.64,225.31C133.43,222.91 131.54,220.88 129.00,219.83C126.47,218.78 123.70,218.88 120.44,219.02C117.18,219.16 113.22,220.37 109.44,220.66C105.67,220.96 101.26,221.52 97.78,220.81C94.31,220.10 90.85,218.68 88.58,216.42C86.32,214.15 84.90,210.69 84.19,207.22C83.48,203.74 84.04,199.33 84.34,195.56C84.63,191.78 85.84,187.82 85.98,184.56C86.12,181.30 86.22,178.53 85.17,176.00C84.12,173.46 82.09,171.57 79.69,169.36C77.28,167.16 73.63,165.21 70.75,162.75C67.87,160.29 64.36,157.57 62.40,154.61C60.44,151.65 59.00,148.20 59.00,145.00C59.00,141.80 60.44,138.35 62.40,135.39C64.36,132.43 67.87,129.71 70.75,127.25C73.63,124.79 77.28,122.84 79.69,120.64C82.09,118.43 84.12,116.54 85.17,114.00C86.22,111.47 86.12,108.70 85.98,105.44C85.84,102.18 84.63,98.22 84.34,94.44C84.04,90.67 83.48,86.26 84.19,82.78C84.90,79.31 86.32,75.85 88.58,73.58C90.85,71.32 94.31,69.90 97.78,69.19C101.26,68.48 105.67,69.04 109.44,69.34C113.22,69.63 117.18,70.84 120.44,70.98C123.70,71.12 126.47,71.22 129.00,70.17C131.54,69.12 133.43,67.09 135.64,64.69C137.84,62.28 139.79,58.63 142.25,55.75C144.71,52.87 147.43,49.36 150.39,47.40C153.35,45.44 156.80,44.00 160.00,44.00C163.20,44.00 166.65,45.44 169.61,47.40C172.57,49.36 175.29,52.87 177.75,55.75C180.21,58.63 182.16,62.28 184.36,64.69C186.57,67.09 188.46,69.12 191.00,70.17C193.53,71.22 196.30,71.12 199.56,70.98C202.82,70.84 206.78,69.63 210.56,69.34C214.33,69.04 218.74,68.48 222.22,69.19C225.69,69.90 229.15,71.32 231.42,73.58C233.68,75.85 235.10,79.31 235.81,82.78C236.52,86.26 235.96,90.67 235.66,94.44C235.37,98.22 234.16,102.18 234.02,105.44C233.88,108.70 233.78,111.47 234.83,114.00C235.88,116.54 237.91,118.43 240.31,120.64C242.72,122.84 246.37,124.79 249.25,127.25C252.13,129.71 255.64,132.43 257.60,135.39C259.56,138.35 261.00,141.80 261.00,145.00Z" fill="url(#face-material-3)"/>
+        <g class="plain-feature"><g class="face-features"><path class="stroke" d="M125 140 Q137 125 149 140 M171 140 Q183 125 195 140"/><path d="M140 163 Q160 201 180 163 Z"/></g></g>
+        <g class="math-feature"><g class="face-features"><path class="stroke" d="M125 140 Q137 125 149 140 M171 140 Q183 125 195 140"/><text class="math-ink" x="160" y="195" font-size="49" >∇</text></g></g>
+      </g>
+    </svg>
+    <span class="mode-label">符号融合</span>
+  </button>
+  <p class="bubble-caption"><span class="bubble-label">气泡文案</span><span data-expression-caption>开心大笑</span></p>
+  <div class="concept-meta"><span class="placement">∇ · 张开的嘴巴</span><span class="tier recommended">优先尝试</span></div>
+  <p class="design-note">∇ 的倒三角轮廓成为张大的笑嘴，配合弯弯的笑眼。</p>
+  <p class="scenario">适合：诊断完成、优化有效、任务成功。</p>
+  <details><summary>符号原义与公式</summary><div class="formula"><math display="block" aria-label="下一步参数等于当前参数减去学习率乘损失梯度"><msub><mi>θ</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>θ</mi><mi>t</mi></msub><mo>−</mo><mi>η</mi><msub><mo>∇</mo><mi>θ</mi></msub><mrow><mi mathvariant="script">L</mi><mo>(</mo><msub><mi>θ</mi><mi>t</mi></msub><mo>)</mo></mrow></math></div><p class="formula-note">梯度下降更新；η 表示学习率。</p></details>
+</article>
+<article data-concept="5">
+  <div class="heading"><h2>好奇探头</h2><span class="symbol-key">∂</span></div>
+  <button class="face-toggle" type="button" aria-pressed="true" aria-label="好奇探头：∂ 融入卷起的单侧眉梢，点击查看普通表情">
+    <svg viewBox="0 0 320 300" aria-hidden="true">
+      <defs><radialGradient id="face-material-4" cx="28%" cy="20%" r="95%"><stop stop-color="#c4e7ff"/><stop offset=".56" stop-color="#82b4ff"/><stop offset="1" stop-color="#5a7de8"/></radialGradient><radialGradient id="face-shadow-4"><stop stop-color="#7598f4" stop-opacity=".2"/><stop offset="1" stop-color="#7598f4" stop-opacity="0"/></radialGradient></defs>
+      <ellipse cx="160" cy="270" rx="75" ry="9" fill="url(#face-shadow-4)"/>
+      <g transform="rotate(9 160 145)">
+        <path d="M261.00,145.00C261.00,148.20 259.56,151.65 257.60,154.61C255.64,157.57 252.13,160.29 249.25,162.75C246.37,165.21 242.72,167.16 240.31,169.36C237.91,171.57 235.88,173.46 234.83,176.00C233.78,178.53 233.88,181.30 234.02,184.56C234.16,187.82 235.37,191.78 235.66,195.56C235.96,199.33 236.52,203.74 235.81,207.22C235.10,210.69 233.68,214.15 231.42,216.42C229.15,218.68 225.69,220.10 222.22,220.81C218.74,221.52 214.33,220.96 210.56,220.66C206.78,220.37 202.82,219.16 199.56,219.02C196.30,218.88 193.53,218.78 191.00,219.83C188.46,220.88 186.57,222.91 184.36,225.31C182.16,227.72 180.21,231.37 177.75,234.25C175.29,237.13 172.57,240.64 169.61,242.60C166.65,244.56 163.20,246.00 160.00,246.00C156.80,246.00 153.35,244.56 150.39,242.60C147.43,240.64 144.71,237.13 142.25,234.25C139.79,231.37 137.84,227.72 135.64,225.31C133.43,222.91 131.54,220.88 129.00,219.83C126.47,218.78 123.70,218.88 120.44,219.02C117.18,219.16 113.22,220.37 109.44,220.66C105.67,220.96 101.26,221.52 97.78,220.81C94.31,220.10 90.85,218.68 88.58,216.42C86.32,214.15 84.90,210.69 84.19,207.22C83.48,203.74 84.04,199.33 84.34,195.56C84.63,191.78 85.84,187.82 85.98,184.56C86.12,181.30 86.22,178.53 85.17,176.00C84.12,173.46 82.09,171.57 79.69,169.36C77.28,167.16 73.63,165.21 70.75,162.75C67.87,160.29 64.36,157.57 62.40,154.61C60.44,151.65 59.00,148.20 59.00,145.00C59.00,141.80 60.44,138.35 62.40,135.39C64.36,132.43 67.87,129.71 70.75,127.25C73.63,124.79 77.28,122.84 79.69,120.64C82.09,118.43 84.12,116.54 85.17,114.00C86.22,111.47 86.12,108.70 85.98,105.44C85.84,102.18 84.63,98.22 84.34,94.44C84.04,90.67 83.48,86.26 84.19,82.78C84.90,79.31 86.32,75.85 88.58,73.58C90.85,71.32 94.31,69.90 97.78,69.19C101.26,68.48 105.67,69.04 109.44,69.34C113.22,69.63 117.18,70.84 120.44,70.98C123.70,71.12 126.47,71.22 129.00,70.17C131.54,69.12 133.43,67.09 135.64,64.69C137.84,62.28 139.79,58.63 142.25,55.75C144.71,52.87 147.43,49.36 150.39,47.40C153.35,45.44 156.80,44.00 160.00,44.00C163.20,44.00 166.65,45.44 169.61,47.40C172.57,49.36 175.29,52.87 177.75,55.75C180.21,58.63 182.16,62.28 184.36,64.69C186.57,67.09 188.46,69.12 191.00,70.17C193.53,71.22 196.30,71.12 199.56,70.98C202.82,70.84 206.78,69.63 210.56,69.34C214.33,69.04 218.74,68.48 222.22,69.19C225.69,69.90 229.15,71.32 231.42,73.58C233.68,75.85 235.10,79.31 235.81,82.78C236.52,86.26 235.96,90.67 235.66,94.44C235.37,98.22 234.16,102.18 234.02,105.44C233.88,108.70 233.78,111.47 234.83,114.00C235.88,116.54 237.91,118.43 240.31,120.64C242.72,122.84 246.37,124.79 249.25,127.25C252.13,129.71 255.64,132.43 257.60,135.39C259.56,138.35 261.00,141.80 261.00,145.00Z" fill="url(#face-material-4)"/>
+        <g class="plain-feature"><g class="face-features"><path class="stroke thin" d="M126 117 Q137 112 147 119 M174 113 Q184 99 197 109"/><ellipse cx="137" cy="137" rx="6" ry="9"/><ellipse cx="183" cy="137" rx="6" ry="9"/><path class="stroke" d="M146 173 Q160 179 173 169"/></g></g>
+        <g class="math-feature"><g class="face-features"><path class="stroke thin" d="M126 117 Q137 112 147 119"/><text class="math-ink" x="185" y="116" font-size="39" transform="translate(0 55) scale(1 .5)">∂</text><ellipse cx="137" cy="137" rx="6" ry="9"/><ellipse cx="183" cy="137" rx="6" ry="9"/><path class="stroke" d="M146 173 Q160 179 173 169"/></g></g>
+      </g>
+    </svg>
+    <span class="mode-label">符号融合</span>
+  </button>
+  <p class="bubble-caption"><span class="bubble-label">气泡文案</span><span data-expression-caption>好奇探头</span></p>
+  <div class="concept-meta"><span class="placement">∂ · 卷起的单侧眉梢</span><span class="tier ">探索方案</span></div>
+  <p class="design-note">∂ 的弯钩像挑起来的眉梢，另一侧保持简单，让好奇有一点俏皮。</p>
+  <p class="scenario">适合：发现异常、追问原因、等待用户补充。</p>
+  <details><summary>符号原义与公式</summary><div class="formula"><math display="block" aria-label="标量链式法则"><mfrac><mrow><mo>∂</mo><mi mathvariant="script">L</mi></mrow><mrow><mo>∂</mo><mi>x</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mo>∂</mo><mi mathvariant="script">L</mi></mrow><mrow><mo>∂</mo><mi>y</mi></mrow></mfrac><mo>·</mo><mfrac><mrow><mo>∂</mo><mi>y</mi></mrow><mrow><mo>∂</mo><mi>x</mi></mrow></mfrac></math></div><p class="formula-note">标量链式法则，是反向传播与算子求导的基础。</p></details>
+</article>
+<article data-concept="6">
+  <div class="heading"><h2>认真审视</h2><span class="symbol-key">T</span></div>
+  <button class="face-toggle" type="button" aria-pressed="true" aria-label="认真审视：T 融入眉梁与鼻梁，点击查看普通表情">
+    <svg viewBox="0 0 320 300" aria-hidden="true">
+      <defs><radialGradient id="face-material-5" cx="28%" cy="20%" r="95%"><stop stop-color="#c4e7ff"/><stop offset=".56" stop-color="#82b4ff"/><stop offset="1" stop-color="#5a7de8"/></radialGradient><radialGradient id="face-shadow-5"><stop stop-color="#7598f4" stop-opacity=".2"/><stop offset="1" stop-color="#7598f4" stop-opacity="0"/></radialGradient></defs>
+      <ellipse cx="160" cy="270" rx="75" ry="9" fill="url(#face-shadow-5)"/>
+      <g transform="rotate(0 160 145)">
+        <path d="M261.00,145.00C261.00,148.20 259.56,151.65 257.60,154.61C255.64,157.57 252.13,160.29 249.25,162.75C246.37,165.21 242.72,167.16 240.31,169.36C237.91,171.57 235.88,173.46 234.83,176.00C233.78,178.53 233.88,181.30 234.02,184.56C234.16,187.82 235.37,191.78 235.66,195.56C235.96,199.33 236.52,203.74 235.81,207.22C235.10,210.69 233.68,214.15 231.42,216.42C229.15,218.68 225.69,220.10 222.22,220.81C218.74,221.52 214.33,220.96 210.56,220.66C206.78,220.37 202.82,219.16 199.56,219.02C196.30,218.88 193.53,218.78 191.00,219.83C188.46,220.88 186.57,222.91 184.36,225.31C182.16,227.72 180.21,231.37 177.75,234.25C175.29,237.13 172.57,240.64 169.61,242.60C166.65,244.56 163.20,246.00 160.00,246.00C156.80,246.00 153.35,244.56 150.39,242.60C147.43,240.64 144.71,237.13 142.25,234.25C139.79,231.37 137.84,227.72 135.64,225.31C133.43,222.91 131.54,220.88 129.00,219.83C126.47,218.78 123.70,218.88 120.44,219.02C117.18,219.16 113.22,220.37 109.44,220.66C105.67,220.96 101.26,221.52 97.78,220.81C94.31,220.10 90.85,218.68 88.58,216.42C86.32,214.15 84.90,210.69 84.19,207.22C83.48,203.74 84.04,199.33 84.34,195.56C84.63,191.78 85.84,187.82 85.98,184.56C86.12,181.30 86.22,178.53 85.17,176.00C84.12,173.46 82.09,171.57 79.69,169.36C77.28,167.16 73.63,165.21 70.75,162.75C67.87,160.29 64.36,157.57 62.40,154.61C60.44,151.65 59.00,148.20 59.00,145.00C59.00,141.80 60.44,138.35 62.40,135.39C64.36,132.43 67.87,129.71 70.75,127.25C73.63,124.79 77.28,122.84 79.69,120.64C82.09,118.43 84.12,116.54 85.17,114.00C86.22,111.47 86.12,108.70 85.98,105.44C85.84,102.18 84.63,98.22 84.34,94.44C84.04,90.67 83.48,86.26 84.19,82.78C84.90,79.31 86.32,75.85 88.58,73.58C90.85,71.32 94.31,69.90 97.78,69.19C101.26,68.48 105.67,69.04 109.44,69.34C113.22,69.63 117.18,70.84 120.44,70.98C123.70,71.12 126.47,71.22 129.00,70.17C131.54,69.12 133.43,67.09 135.64,64.69C137.84,62.28 139.79,58.63 142.25,55.75C144.71,52.87 147.43,49.36 150.39,47.40C153.35,45.44 156.80,44.00 160.00,44.00C163.20,44.00 166.65,45.44 169.61,47.40C172.57,49.36 175.29,52.87 177.75,55.75C180.21,58.63 182.16,62.28 184.36,64.69C186.57,67.09 188.46,69.12 191.00,70.17C193.53,71.22 196.30,71.12 199.56,70.98C202.82,70.84 206.78,69.63 210.56,69.34C214.33,69.04 218.74,68.48 222.22,69.19C225.69,69.90 229.15,71.32 231.42,73.58C233.68,75.85 235.10,79.31 235.81,82.78C236.52,86.26 235.96,90.67 235.66,94.44C235.37,98.22 234.16,102.18 234.02,105.44C233.88,108.70 233.78,111.47 234.83,114.00C235.88,116.54 237.91,118.43 240.31,120.64C242.72,122.84 246.37,124.79 249.25,127.25C252.13,129.71 255.64,132.43 257.60,135.39C259.56,138.35 261.00,141.80 261.00,145.00Z" fill="url(#face-material-5)"/>
+        <g class="plain-feature"><g class="face-features"><path class="stroke thin" d="M123 118 L147 123 M173 123 L197 118 M160 127 L160 146"/><ellipse cx="137" cy="137" rx="6" ry="9"/><ellipse cx="183" cy="137" rx="6" ry="9"/><path class="stroke" d="M148 174 L172 174"/></g></g>
+        <g class="math-feature"><g class="face-features"><path class="stroke thin" d="M126 119 H194 M160 119 V150"/><ellipse cx="137" cy="137" rx="6" ry="9"/><ellipse cx="183" cy="137" rx="6" ry="9"/><path class="stroke" d="M148 174 L172 174"/></g></g>
+      </g>
+    </svg>
+    <span class="mode-label">符号融合</span>
+  </button>
+  <p class="bubble-caption"><span class="bubble-label">气泡文案</span><span data-expression-caption>认真审视你的算法</span></p>
+  <div class="concept-meta"><span class="placement">T · 眉梁与鼻梁</span><span class="tier ">探索方案</span></div>
+  <p class="design-note">T 的横画连接眉部，竖画落到鼻梁，形成专注、严肃的中轴。</p>
+  <p class="scenario">适合：配置校验、比较差异、确认约束。</p>
+  <details><summary>符号原义与公式</summary><div class="formula"><math display="block" aria-label="S 等于 Q 乘 K 的转置"><mi mathvariant="bold">S</mi><mo>=</mo><mi mathvariant="bold">Q</mi><msup><mi mathvariant="bold">K</mi><mi mathvariant="normal">T</mi></msup></math></div><p class="formula-note">Attention 的原始打分矩阵；T 位于矩阵符号右上角。</p></details>
+</article>
+<article data-concept="7">
+  <div class="heading"><h2>期待拉满</h2><span class="symbol-key">eˣ</span></div>
+  <button class="face-toggle" type="button" aria-pressed="true" aria-label="期待拉满：eˣ 融入卷曲眼睛与眉梢，点击查看普通表情">
+    <svg viewBox="0 0 320 300" aria-hidden="true">
+      <defs><radialGradient id="face-material-6" cx="28%" cy="20%" r="95%"><stop stop-color="#c4e7ff"/><stop offset=".56" stop-color="#82b4ff"/><stop offset="1" stop-color="#5a7de8"/></radialGradient><radialGradient id="face-shadow-6"><stop stop-color="#7598f4" stop-opacity=".2"/><stop offset="1" stop-color="#7598f4" stop-opacity="0"/></radialGradient></defs>
+      <ellipse cx="160" cy="270" rx="75" ry="9" fill="url(#face-shadow-6)"/>
+      <g transform="rotate(-4 160 145)">
+        <path d="M261.00,145.00C261.00,148.20 259.56,151.65 257.60,154.61C255.64,157.57 252.13,160.29 249.25,162.75C246.37,165.21 242.72,167.16 240.31,169.36C237.91,171.57 235.88,173.46 234.83,176.00C233.78,178.53 233.88,181.30 234.02,184.56C234.16,187.82 235.37,191.78 235.66,195.56C235.96,199.33 236.52,203.74 235.81,207.22C235.10,210.69 233.68,214.15 231.42,216.42C229.15,218.68 225.69,220.10 222.22,220.81C218.74,221.52 214.33,220.96 210.56,220.66C206.78,220.37 202.82,219.16 199.56,219.02C196.30,218.88 193.53,218.78 191.00,219.83C188.46,220.88 186.57,222.91 184.36,225.31C182.16,227.72 180.21,231.37 177.75,234.25C175.29,237.13 172.57,240.64 169.61,242.60C166.65,244.56 163.20,246.00 160.00,246.00C156.80,246.00 153.35,244.56 150.39,242.60C147.43,240.64 144.71,237.13 142.25,234.25C139.79,231.37 137.84,227.72 135.64,225.31C133.43,222.91 131.54,220.88 129.00,219.83C126.47,218.78 123.70,218.88 120.44,219.02C117.18,219.16 113.22,220.37 109.44,220.66C105.67,220.96 101.26,221.52 97.78,220.81C94.31,220.10 90.85,218.68 88.58,216.42C86.32,214.15 84.90,210.69 84.19,207.22C83.48,203.74 84.04,199.33 84.34,195.56C84.63,191.78 85.84,187.82 85.98,184.56C86.12,181.30 86.22,178.53 85.17,176.00C84.12,173.46 82.09,171.57 79.69,169.36C77.28,167.16 73.63,165.21 70.75,162.75C67.87,160.29 64.36,157.57 62.40,154.61C60.44,151.65 59.00,148.20 59.00,145.00C59.00,141.80 60.44,138.35 62.40,135.39C64.36,132.43 67.87,129.71 70.75,127.25C73.63,124.79 77.28,122.84 79.69,120.64C82.09,118.43 84.12,116.54 85.17,114.00C86.22,111.47 86.12,108.70 85.98,105.44C85.84,102.18 84.63,98.22 84.34,94.44C84.04,90.67 83.48,86.26 84.19,82.78C84.90,79.31 86.32,75.85 88.58,73.58C90.85,71.32 94.31,69.90 97.78,69.19C101.26,68.48 105.67,69.04 109.44,69.34C113.22,69.63 117.18,70.84 120.44,70.98C123.70,71.12 126.47,71.22 129.00,70.17C131.54,69.12 133.43,67.09 135.64,64.69C137.84,62.28 139.79,58.63 142.25,55.75C144.71,52.87 147.43,49.36 150.39,47.40C153.35,45.44 156.80,44.00 160.00,44.00C163.20,44.00 166.65,45.44 169.61,47.40C172.57,49.36 175.29,52.87 177.75,55.75C180.21,58.63 182.16,62.28 184.36,64.69C186.57,67.09 188.46,69.12 191.00,70.17C193.53,71.22 196.30,71.12 199.56,70.98C202.82,70.84 206.78,69.63 210.56,69.34C214.33,69.04 218.74,68.48 222.22,69.19C225.69,69.90 229.15,71.32 231.42,73.58C233.68,75.85 235.10,79.31 235.81,82.78C236.52,86.26 235.96,90.67 235.66,94.44C235.37,98.22 234.16,102.18 234.02,105.44C233.88,108.70 233.78,111.47 234.83,114.00C235.88,116.54 237.91,118.43 240.31,120.64C242.72,122.84 246.37,124.79 249.25,127.25C252.13,129.71 255.64,132.43 257.60,135.39C259.56,138.35 261.00,141.80 261.00,145.00Z" fill="url(#face-material-6)"/>
+        <g class="plain-feature"><g class="face-features"><ellipse cx="137" cy="137" rx="6" ry="9"/><ellipse cx="183" cy="137" rx="6" ry="9"/><path class="stroke thin" d="M172 113 Q184 103 196 112"/><path class="stroke" d="M142 166 Q160 186 178 166"/></g></g>
+        <g class="math-feature"><g class="face-features"><ellipse cx="137" cy="138" rx="7" ry="10"/><text class="math-ink" x="181" y="152" font-size="48">e<tspan dx="1" dy="-25" font-size="24">x</tspan></text><path class="stroke" d="M142 166 Q160 186 178 166"/></g></g>
+      </g>
+    </svg>
+    <span class="mode-label">符号融合</span>
+  </button>
+  <p class="bubble-caption"><span class="bubble-label">气泡文案</span><span data-expression-caption>期待拉满</span></p>
+  <div class="concept-meta"><span class="placement">eˣ · 卷曲眼睛与眉梢</span><span class="tier ">探索方案</span></div>
+  <p class="design-note">e 成为一只卷曲的眼睛，上标 x 像翘起的眉梢，保留指数结构。</p>
+  <p class="scenario">适合：开始新任务、尝试新方案；更偏角色化表达。</p>
+  <details><summary>符号原义与公式</summary><div class="formula"><math display="block" aria-label="Softmax 概率等于指数得分除以所有指数得分之和"><msub><mi>p</mi><mi>i</mi></msub><mo>=</mo><mfrac><msup><mi mathvariant="normal">e</mi><msub><mi>z</mi><mi>i</mi></msub></msup><mrow><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msup><mi mathvariant="normal">e</mi><msub><mi>z</mi><mi>j</mi></msub></msup></mrow></mfrac></math></div><p class="formula-note">Softmax 将得分转换为归一化的概率分布。</p></details>
+</article>
+<article data-concept="8">
+  <div class="heading"><h2>有点怀疑</h2><span class="symbol-key">√</span></div>
+  <button class="face-toggle" type="button" aria-pressed="true" aria-label="有点怀疑：√ 融入单侧挑起的眉毛，点击查看普通表情">
+    <svg viewBox="0 0 320 300" aria-hidden="true">
+      <defs><radialGradient id="face-material-7" cx="28%" cy="20%" r="95%"><stop stop-color="#c4e7ff"/><stop offset=".56" stop-color="#82b4ff"/><stop offset="1" stop-color="#5a7de8"/></radialGradient><radialGradient id="face-shadow-7"><stop stop-color="#7598f4" stop-opacity=".2"/><stop offset="1" stop-color="#7598f4" stop-opacity="0"/></radialGradient></defs>
+      <ellipse cx="160" cy="270" rx="75" ry="9" fill="url(#face-shadow-7)"/>
+      <g transform="rotate(5 160 145)">
+        <path d="M261.00,145.00C261.00,148.20 259.56,151.65 257.60,154.61C255.64,157.57 252.13,160.29 249.25,162.75C246.37,165.21 242.72,167.16 240.31,169.36C237.91,171.57 235.88,173.46 234.83,176.00C233.78,178.53 233.88,181.30 234.02,184.56C234.16,187.82 235.37,191.78 235.66,195.56C235.96,199.33 236.52,203.74 235.81,207.22C235.10,210.69 233.68,214.15 231.42,216.42C229.15,218.68 225.69,220.10 222.22,220.81C218.74,221.52 214.33,220.96 210.56,220.66C206.78,220.37 202.82,219.16 199.56,219.02C196.30,218.88 193.53,218.78 191.00,219.83C188.46,220.88 186.57,222.91 184.36,225.31C182.16,227.72 180.21,231.37 177.75,234.25C175.29,237.13 172.57,240.64 169.61,242.60C166.65,244.56 163.20,246.00 160.00,246.00C156.80,246.00 153.35,244.56 150.39,242.60C147.43,240.64 144.71,237.13 142.25,234.25C139.79,231.37 137.84,227.72 135.64,225.31C133.43,222.91 131.54,220.88 129.00,219.83C126.47,218.78 123.70,218.88 120.44,219.02C117.18,219.16 113.22,220.37 109.44,220.66C105.67,220.96 101.26,221.52 97.78,220.81C94.31,220.10 90.85,218.68 88.58,216.42C86.32,214.15 84.90,210.69 84.19,207.22C83.48,203.74 84.04,199.33 84.34,195.56C84.63,191.78 85.84,187.82 85.98,184.56C86.12,181.30 86.22,178.53 85.17,176.00C84.12,173.46 82.09,171.57 79.69,169.36C77.28,167.16 73.63,165.21 70.75,162.75C67.87,160.29 64.36,157.57 62.40,154.61C60.44,151.65 59.00,148.20 59.00,145.00C59.00,141.80 60.44,138.35 62.40,135.39C64.36,132.43 67.87,129.71 70.75,127.25C73.63,124.79 77.28,122.84 79.69,120.64C82.09,118.43 84.12,116.54 85.17,114.00C86.22,111.47 86.12,108.70 85.98,105.44C85.84,102.18 84.63,98.22 84.34,94.44C84.04,90.67 83.48,86.26 84.19,82.78C84.90,79.31 86.32,75.85 88.58,73.58C90.85,71.32 94.31,69.90 97.78,69.19C101.26,68.48 105.67,69.04 109.44,69.34C113.22,69.63 117.18,70.84 120.44,70.98C123.70,71.12 126.47,71.22 129.00,70.17C131.54,69.12 133.43,67.09 135.64,64.69C137.84,62.28 139.79,58.63 142.25,55.75C144.71,52.87 147.43,49.36 150.39,47.40C153.35,45.44 156.80,44.00 160.00,44.00C163.20,44.00 166.65,45.44 169.61,47.40C172.57,49.36 175.29,52.87 177.75,55.75C180.21,58.63 182.16,62.28 184.36,64.69C186.57,67.09 188.46,69.12 191.00,70.17C193.53,71.22 196.30,71.12 199.56,70.98C202.82,70.84 206.78,69.63 210.56,69.34C214.33,69.04 218.74,68.48 222.22,69.19C225.69,69.90 229.15,71.32 231.42,73.58C233.68,75.85 235.10,79.31 235.81,82.78C236.52,86.26 235.96,90.67 235.66,94.44C235.37,98.22 234.16,102.18 234.02,105.44C233.88,108.70 233.78,111.47 234.83,114.00C235.88,116.54 237.91,118.43 240.31,120.64C242.72,122.84 246.37,124.79 249.25,127.25C252.13,129.71 255.64,132.43 257.60,135.39C259.56,138.35 261.00,141.80 261.00,145.00Z" fill="url(#face-material-7)"/>
+        <g class="plain-feature"><g class="face-features"><path class="stroke thin" d="M123 120 L148 114 M173 113 L196 107"/><ellipse cx="137" cy="138" rx="6" ry="8"/><ellipse cx="183" cy="138" rx="6" ry="10"/><path class="stroke" d="M147 174 Q160 169 173 173"/></g></g>
+        <g class="math-feature"><g class="face-features"><path class="stroke thin" d="M123 120 L148 114"/><path class="stroke thin" d="M172 117 L178 124 L185 106 H201"/><ellipse cx="137" cy="138" rx="6" ry="8"/><ellipse cx="183" cy="138" rx="6" ry="10"/><path class="stroke" d="M147 174 Q160 169 173 173"/></g></g>
+      </g>
+    </svg>
+    <span class="mode-label">符号融合</span>
+  </button>
+  <p class="bubble-caption"><span class="bubble-label">气泡文案</span><span data-expression-caption>有点怀疑你的算法</span></p>
+  <div class="concept-meta"><span class="placement">√ · 单侧挑起的眉毛</span><span class="tier recommended">优先尝试</span></div>
+  <p class="design-note">√ 的折角与长横直接成为挑眉，配合高低眼和微歪的嘴。</p>
+  <p class="scenario">适合：结果不一致、参数可疑、需要复核。</p>
+  <details><summary>符号原义与公式</summary><div class="formula"><math display="block" aria-label="归一化后的 x i 等于 x i 减均值，再除以方差加 epsilon 的平方根"><msub><mover><mi>x</mi><mo>^</mo></mover><mi>i</mi></msub><mo>=</mo><mfrac><mrow><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><mi>μ</mi></mrow><msqrt><msup><mi>σ</mi><mn>2</mn></msup><mo>+</mo><mi>ε</mi></msqrt></mfrac></math></div><p class="formula-note">归一化中的标准化步骤；ε 用于数值稳定。</p></details>
+</article>
+<article data-concept="9">
+  <div class="heading"><h2>瞌睡流口水</h2><span class="symbol-key">σ</span></div>
+  <button class="face-toggle" type="button" aria-pressed="true" aria-label="瞌睡流口水：σ 融入困倦小嘴与下垂口水，点击查看普通表情">
+    <svg viewBox="0 0 320 300" aria-hidden="true">
+      <defs><radialGradient id="face-material-8" cx="28%" cy="20%" r="95%"><stop stop-color="#c4e7ff"/><stop offset=".56" stop-color="#82b4ff"/><stop offset="1" stop-color="#5a7de8"/></radialGradient><radialGradient id="face-shadow-8"><stop stop-color="#7598f4" stop-opacity=".2"/><stop offset="1" stop-color="#7598f4" stop-opacity="0"/></radialGradient></defs>
+      <ellipse cx="160" cy="270" rx="75" ry="9" fill="url(#face-shadow-8)"/>
+      <g transform="rotate(8 160 145)">
+        <path d="M261.00,145.00C261.00,148.20 259.56,151.65 257.60,154.61C255.64,157.57 252.13,160.29 249.25,162.75C246.37,165.21 242.72,167.16 240.31,169.36C237.91,171.57 235.88,173.46 234.83,176.00C233.78,178.53 233.88,181.30 234.02,184.56C234.16,187.82 235.37,191.78 235.66,195.56C235.96,199.33 236.52,203.74 235.81,207.22C235.10,210.69 233.68,214.15 231.42,216.42C229.15,218.68 225.69,220.10 222.22,220.81C218.74,221.52 214.33,220.96 210.56,220.66C206.78,220.37 202.82,219.16 199.56,219.02C196.30,218.88 193.53,218.78 191.00,219.83C188.46,220.88 186.57,222.91 184.36,225.31C182.16,227.72 180.21,231.37 177.75,234.25C175.29,237.13 172.57,240.64 169.61,242.60C166.65,244.56 163.20,246.00 160.00,246.00C156.80,246.00 153.35,244.56 150.39,242.60C147.43,240.64 144.71,237.13 142.25,234.25C139.79,231.37 137.84,227.72 135.64,225.31C133.43,222.91 131.54,220.88 129.00,219.83C126.47,218.78 123.70,218.88 120.44,219.02C117.18,219.16 113.22,220.37 109.44,220.66C105.67,220.96 101.26,221.52 97.78,220.81C94.31,220.10 90.85,218.68 88.58,216.42C86.32,214.15 84.90,210.69 84.19,207.22C83.48,203.74 84.04,199.33 84.34,195.56C84.63,191.78 85.84,187.82 85.98,184.56C86.12,181.30 86.22,178.53 85.17,176.00C84.12,173.46 82.09,171.57 79.69,169.36C77.28,167.16 73.63,165.21 70.75,162.75C67.87,160.29 64.36,157.57 62.40,154.61C60.44,151.65 59.00,148.20 59.00,145.00C59.00,141.80 60.44,138.35 62.40,135.39C64.36,132.43 67.87,129.71 70.75,127.25C73.63,124.79 77.28,122.84 79.69,120.64C82.09,118.43 84.12,116.54 85.17,114.00C86.22,111.47 86.12,108.70 85.98,105.44C85.84,102.18 84.63,98.22 84.34,94.44C84.04,90.67 83.48,86.26 84.19,82.78C84.90,79.31 86.32,75.85 88.58,73.58C90.85,71.32 94.31,69.90 97.78,69.19C101.26,68.48 105.67,69.04 109.44,69.34C113.22,69.63 117.18,70.84 120.44,70.98C123.70,71.12 126.47,71.22 129.00,70.17C131.54,69.12 133.43,67.09 135.64,64.69C137.84,62.28 139.79,58.63 142.25,55.75C144.71,52.87 147.43,49.36 150.39,47.40C153.35,45.44 156.80,44.00 160.00,44.00C163.20,44.00 166.65,45.44 169.61,47.40C172.57,49.36 175.29,52.87 177.75,55.75C180.21,58.63 182.16,62.28 184.36,64.69C186.57,67.09 188.46,69.12 191.00,70.17C193.53,71.22 196.30,71.12 199.56,70.98C202.82,70.84 206.78,69.63 210.56,69.34C214.33,69.04 218.74,68.48 222.22,69.19C225.69,69.90 229.15,71.32 231.42,73.58C233.68,75.85 235.10,79.31 235.81,82.78C236.52,86.26 235.96,90.67 235.66,94.44C235.37,98.22 234.16,102.18 234.02,105.44C233.88,108.70 233.78,111.47 234.83,114.00C235.88,116.54 237.91,118.43 240.31,120.64C242.72,122.84 246.37,124.79 249.25,127.25C252.13,129.71 255.64,132.43 257.60,135.39C259.56,138.35 261.00,141.80 261.00,145.00Z" fill="url(#face-material-8)"/>
+        <g class="plain-feature"><g class="face-features"><path class="stroke" d="M124 137 Q136 147 148 137 M170 137 Q182 147 194 137"/><ellipse cx="164" cy="176" rx="8" ry="10"/></g></g>
+        <g class="math-feature"><g class="face-features"><path class="stroke" d="M124 137 Q136 147 148 137 M170 137 Q182 147 194 137"/><g data-sigma-mouth><circle class="stroke thin" cx="164" cy="174" r="10"/><path class="stroke thin" d="M174 174 V202"/></g></g></g>
+      </g>
+    </svg>
+    <span class="mode-label">符号融合</span>
+  </button>
+  <p class="bubble-caption"><span class="bubble-label">气泡文案</span><span data-expression-caption>瞌睡流口水</span></p>
+  <div class="concept-meta"><span class="placement">σ · 困倦小嘴与下垂口水</span><span class="tier recommended">优先尝试</span></div>
+  <p class="design-note">将 σ 顺时针转向：圆圈成为睡着时微张的小嘴，圆圈右侧的竖条向下延伸，直接成为流出的口水；双眼闭合、脑袋轻歪。</p>
+  <p class="scenario">适合：休息、长时间待机、轻松等待。</p>
+  <details><summary>符号原义与公式</summary><div class="formula"><math display="block" aria-label="Sigmoid x 等于一除以一加 e 的负 x 次方"><mrow><mi>σ</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mo>=</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><msup><mi mathvariant="normal">e</mi><mrow><mo>−</mo><mi>x</mi></mrow></msup></mrow></mfrac></math></div><p class="formula-note">常用于门控；在归一化公式中，σ 也可表示标准差。</p></details>
+</article>
+<article data-concept="10">
+  <div class="heading"><h2>有一次看到一个长条wait困到半眯</h2><span class="symbol-key">θ</span></div>
+  <button class="face-toggle" type="button" aria-pressed="true" aria-label="有一次看到一个长条wait困到半眯：θ 融入半闭的双眼，点击查看普通表情">
+    <svg viewBox="0 0 320 300" aria-hidden="true">
+      <defs><radialGradient id="face-material-9" cx="28%" cy="20%" r="95%"><stop stop-color="#c4e7ff"/><stop offset=".56" stop-color="#82b4ff"/><stop offset="1" stop-color="#5a7de8"/></radialGradient><radialGradient id="face-shadow-9"><stop stop-color="#7598f4" stop-opacity=".2"/><stop offset="1" stop-color="#7598f4" stop-opacity="0"/></radialGradient></defs>
+      <ellipse cx="160" cy="270" rx="75" ry="9" fill="url(#face-shadow-9)"/>
+      <g transform="rotate(4 160 145)">
+        <path d="M261.00,145.00C261.00,148.20 259.56,151.65 257.60,154.61C255.64,157.57 252.13,160.29 249.25,162.75C246.37,165.21 242.72,167.16 240.31,169.36C237.91,171.57 235.88,173.46 234.83,176.00C233.78,178.53 233.88,181.30 234.02,184.56C234.16,187.82 235.37,191.78 235.66,195.56C235.96,199.33 236.52,203.74 235.81,207.22C235.10,210.69 233.68,214.15 231.42,216.42C229.15,218.68 225.69,220.10 222.22,220.81C218.74,221.52 214.33,220.96 210.56,220.66C206.78,220.37 202.82,219.16 199.56,219.02C196.30,218.88 193.53,218.78 191.00,219.83C188.46,220.88 186.57,222.91 184.36,225.31C182.16,227.72 180.21,231.37 177.75,234.25C175.29,237.13 172.57,240.64 169.61,242.60C166.65,244.56 163.20,246.00 160.00,246.00C156.80,246.00 153.35,244.56 150.39,242.60C147.43,240.64 144.71,237.13 142.25,234.25C139.79,231.37 137.84,227.72 135.64,225.31C133.43,222.91 131.54,220.88 129.00,219.83C126.47,218.78 123.70,218.88 120.44,219.02C117.18,219.16 113.22,220.37 109.44,220.66C105.67,220.96 101.26,221.52 97.78,220.81C94.31,220.10 90.85,218.68 88.58,216.42C86.32,214.15 84.90,210.69 84.19,207.22C83.48,203.74 84.04,199.33 84.34,195.56C84.63,191.78 85.84,187.82 85.98,184.56C86.12,181.30 86.22,178.53 85.17,176.00C84.12,173.46 82.09,171.57 79.69,169.36C77.28,167.16 73.63,165.21 70.75,162.75C67.87,160.29 64.36,157.57 62.40,154.61C60.44,151.65 59.00,148.20 59.00,145.00C59.00,141.80 60.44,138.35 62.40,135.39C64.36,132.43 67.87,129.71 70.75,127.25C73.63,124.79 77.28,122.84 79.69,120.64C82.09,118.43 84.12,116.54 85.17,114.00C86.22,111.47 86.12,108.70 85.98,105.44C85.84,102.18 84.63,98.22 84.34,94.44C84.04,90.67 83.48,86.26 84.19,82.78C84.90,79.31 86.32,75.85 88.58,73.58C90.85,71.32 94.31,69.90 97.78,69.19C101.26,68.48 105.67,69.04 109.44,69.34C113.22,69.63 117.18,70.84 120.44,70.98C123.70,71.12 126.47,71.22 129.00,70.17C131.54,69.12 133.43,67.09 135.64,64.69C137.84,62.28 139.79,58.63 142.25,55.75C144.71,52.87 147.43,49.36 150.39,47.40C153.35,45.44 156.80,44.00 160.00,44.00C163.20,44.00 166.65,45.44 169.61,47.40C172.57,49.36 175.29,52.87 177.75,55.75C180.21,58.63 182.16,62.28 184.36,64.69C186.57,67.09 188.46,69.12 191.00,70.17C193.53,71.22 196.30,71.12 199.56,70.98C202.82,70.84 206.78,69.63 210.56,69.34C214.33,69.04 218.74,68.48 222.22,69.19C225.69,69.90 229.15,71.32 231.42,73.58C233.68,75.85 235.10,79.31 235.81,82.78C236.52,86.26 235.96,90.67 235.66,94.44C235.37,98.22 234.16,102.18 234.02,105.44C233.88,108.70 233.78,111.47 234.83,114.00C235.88,116.54 237.91,118.43 240.31,120.64C242.72,122.84 246.37,124.79 249.25,127.25C252.13,129.71 255.64,132.43 257.60,135.39C259.56,138.35 261.00,141.80 261.00,145.00Z" fill="url(#face-material-9)"/>
+        <g class="plain-feature"><g class="face-features"><path class="stroke" d="M125 138 Q137 146 149 138 M171 138 Q183 146 195 138"/><path class="stroke" d="M150 175 Q160 181 170 175"/></g></g>
+        <g class="math-feature"><g class="face-features"><text class="math-ink" x="137" y="153" font-size="48" >θ</text><text class="math-ink" x="183" y="153" font-size="48" >θ</text><path class="stroke" d="M150 175 Q160 181 170 175"/></g></g>
+      </g>
+    </svg>
+    <span class="mode-label">符号融合</span>
+  </button>
+  <p class="bubble-caption"><span class="bubble-label">气泡文案</span><span data-expression-caption>有一次看到一个长条wait困到半眯</span></p>
+  <div class="concept-meta"><span class="placement">θ · 半闭的双眼</span><span class="tier recommended">优先尝试</span></div>
+  <p class="design-note">θ 的椭圆轮廓是眼睛，中间的横画自然成为半垂的眼皮。</p>
+  <p class="scenario">适合：待机、长时间等待、低活跃状态。</p>
+  <details><summary>符号原义与公式</summary><div class="formula"><math display="block" aria-label="最优参数等于使损失函数最小的参数"><msup><mi>θ</mi><mo>∗</mo></msup><mo>=</mo><munder><mrow><mi mathvariant="normal">arg</mi><mspace width="0.2em"/><mo>min</mo></mrow><mi>θ</mi></munder><mrow><mi mathvariant="script">L</mi><mo>(</mo><mi>θ</mi><mo>)</mo></mrow></math></div><p class="formula-note">θ 表示待学习的参数，θ* 表示优化目标中的最优参数。</p></details>
+</article></section><section class="interlude-record" aria-labelledby="interludeTitle"><h2 id="interludeTitle">衔接段气泡文案</h2><p>每个衔接段随机选一句，整段保持不变；抛回符号后继续低头扫视，寻找下一个符号。</p><ul data-transition-record><li>看了那么久，想打招呼吗？我也叫小算子</li><li>努力学习各种计算中…</li><li>接下来算点啥好呢？</li><li>瞎翻一下，消除现在的尴尬</li><li>随便选一个来装算好了</li></ul></section><footer>建议优先落地 × 算晕、⊙ 惊喜、∇ 大笑、√ 怀疑、θ 困倦和 σ 瞌睡流口水。∑、∂、T、eˣ 的字形感较强，可作为低频彩蛋。实际用于小头像时，每次只替换一处或一对五官，保留符号轮廓与清晰的情绪。</footer></main>
+<script src="catalog/avatar/math-expressions.js"></script>
+<script>
+// Share the live catalog dialogue, so later copy edits stay in sync.
+document.querySelectorAll('[data-expression-caption]').forEach((node,index) => {
+ const expression=window.CATALOG_MATH_EXPRESSIONS?.[index];
+ if(expression) node.textContent=expression.caption;
+});
+if(window.CATALOG_TRANSITION_LINES) {
+ const records=window.CATALOG_TRANSITION_LINES.map(text=>{
+  const item=document.createElement('li');item.textContent=text;return item;
+ });
+ document.querySelector('[data-transition-record]').replaceChildren(...records);
+}
 
-  <section class="grid" aria-label="十个数学符号及示例公式">
-    <article>
-      <div class="heading"><h2>矩阵乘法</h2><span class="english">Matrix multiplication</span></div>
-      <div class="symbol"><math display="block" aria-label="乘号"><mo>×</mo></math></div>
-      <div class="formula"><math display="block" aria-label="Y 等于 X 乘 W 加 b"><mi mathvariant="bold">Y</mi><mo>=</mo><mi mathvariant="bold">X</mi><mi mathvariant="bold">W</mi><mo>+</mo><mi mathvariant="bold">b</mi></math></div>
-      <p class="note">线性层的典型表达；代码中常写作 <code>X @ W + b</code>。</p>
-    </article>
-
-    <article>
-      <div class="heading"><h2>求和与归约</h2><span class="english">Summation</span></div>
-      <div class="symbol"><math display="block" aria-label="求和符号"><mo>∑</mo></math></div>
-      <div class="formula"><math display="block" aria-label="y 等于从 i 等于 1 到 n 的 x i 之和"><mi>y</mi><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>x</mi><mi>i</mi></msub></math></div>
-      <p class="note">用于点积、损失聚合与 ReduceSum。</p>
-    </article>
-
-    <article>
-      <div class="heading"><h2>逐元素乘法</h2><span class="english">Hadamard product</span></div>
-      <div class="symbol"><math display="block" aria-label="逐元素乘号"><mo>⊙</mo></math></div>
-      <div class="formula"><math display="block" aria-label="C 等于 A 与 B 的逐元素乘积"><mi mathvariant="bold">C</mi><mo>=</mo><mi mathvariant="bold">A</mi><mo>⊙</mo><mi mathvariant="bold">B</mi></math></div>
-      <p class="note">用于门控、掩码与特征缩放。与张量积符号 ⊗ 区分。</p>
-    </article>
-
-    <article>
-      <div class="heading"><h2>梯度</h2><span class="english">Gradient</span></div>
-      <div class="symbol"><math display="block" aria-label="梯度算子 nabla"><mo>∇</mo></math></div>
-      <div class="formula"><math display="block" aria-label="下一步参数等于当前参数减去学习率乘损失梯度"><msub><mi>θ</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>θ</mi><mi>t</mi></msub><mo>−</mo><mi>η</mi><msub><mo>∇</mo><mi>θ</mi></msub><mrow><mi mathvariant="script">L</mi><mo>(</mo><msub><mi>θ</mi><mi>t</mi></msub><mo>)</mo></mrow></math></div>
-      <p class="note">梯度下降更新；η 表示学习率。</p>
-    </article>
-
-    <article>
-      <div class="heading"><h2>偏导数</h2><span class="english">Partial derivative</span></div>
-      <div class="symbol"><math display="block" aria-label="偏导符号"><mo>∂</mo></math></div>
-      <div class="formula"><math display="block" aria-label="标量链式法则"><mfrac><mrow><mo>∂</mo><mi mathvariant="script">L</mi></mrow><mrow><mo>∂</mo><mi>x</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mo>∂</mo><mi mathvariant="script">L</mi></mrow><mrow><mo>∂</mo><mi>y</mi></mrow></mfrac><mo>·</mo><mfrac><mrow><mo>∂</mo><mi>y</mi></mrow><mrow><mo>∂</mo><mi>x</mi></mrow></mfrac></math></div>
-      <p class="note">标量链式法则，是反向传播与算子求导的基础。</p>
-    </article>
-
-    <article>
-      <div class="heading"><h2>转置</h2><span class="english">Transpose</span></div>
-      <div class="symbol"><math display="block" aria-label="A 的转置"><msup><mi mathvariant="bold">A</mi><mi mathvariant="normal">T</mi></msup></math></div>
-      <div class="formula"><math display="block" aria-label="S 等于 Q 乘 K 的转置"><mi mathvariant="bold">S</mi><mo>=</mo><mi mathvariant="bold">Q</mi><msup><mi mathvariant="bold">K</mi><mi mathvariant="normal">T</mi></msup></math></div>
-      <p class="note">Attention 的原始打分矩阵；T 位于矩阵符号右上角。</p>
-    </article>
-
-    <article>
-      <div class="heading"><h2>指数运算</h2><span class="english">Exponential</span></div>
-      <div class="symbol"><math display="block" aria-label="e 的 x 次方"><msup><mi mathvariant="normal">e</mi><mi>x</mi></msup></math></div>
-      <div class="formula"><math display="block" aria-label="Softmax 概率等于指数得分除以所有指数得分之和"><msub><mi>p</mi><mi>i</mi></msub><mo>=</mo><mfrac><msup><mi mathvariant="normal">e</mi><msub><mi>z</mi><mi>i</mi></msub></msup><mrow><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msup><mi mathvariant="normal">e</mi><msub><mi>z</mi><mi>j</mi></msub></msup></mrow></mfrac></math></div>
-      <p class="note">Softmax 将得分转换为归一化的概率分布。</p>
-    </article>
-
-    <article>
-      <div class="heading"><h2>平方根</h2><span class="english">Square root</span></div>
-      <div class="symbol"><math display="block" aria-label="x 的平方根"><msqrt><mi>x</mi></msqrt></math></div>
-      <div class="formula"><math display="block" aria-label="归一化后的 x i 等于 x i 减均值，再除以方差加 epsilon 的平方根"><msub><mover><mi>x</mi><mo>^</mo></mover><mi>i</mi></msub><mo>=</mo><mfrac><mrow><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><mi>μ</mi></mrow><msqrt><msup><mi>σ</mi><mn>2</mn></msup><mo>+</mo><mi>ε</mi></msqrt></mfrac></math></div>
-      <p class="note">归一化中的标准化步骤；ε 用于数值稳定。</p>
-    </article>
-
-    <article>
-      <div class="heading"><h2>Sigmoid</h2><span class="english">Activation</span></div>
-      <div class="symbol"><math display="block" aria-label="小写 sigma"><mi>σ</mi></math></div>
-      <div class="formula"><math display="block" aria-label="Sigmoid x 等于一除以一加 e 的负 x 次方"><mrow><mi>σ</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mo>=</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><msup><mi mathvariant="normal">e</mi><mrow><mo>−</mo><mi>x</mi></mrow></msup></mrow></mfrac></math></div>
-      <p class="note">常用于门控；在归一化公式中，σ 也可表示标准差。</p>
-    </article>
-
-    <article>
-      <div class="heading"><h2>模型参数</h2><span class="english">Parameters</span></div>
-      <div class="symbol"><math display="block" aria-label="theta"><mi>θ</mi></math></div>
-      <div class="formula"><math display="block" aria-label="最优参数等于使损失函数最小的参数"><msup><mi>θ</mi><mo>∗</mo></msup><mo>=</mo><munder><mrow><mi mathvariant="normal">arg</mi><mspace width="0.2em"/><mo>min</mo></mrow><mi>θ</mi></munder><mrow><mi mathvariant="script">L</mi><mo>(</mo><mi>θ</mi><mo>)</mo></mrow></math></div>
-      <p class="note">θ 表示待学习的参数，θ* 表示优化目标中的最优参数。</p>
-    </article>
-  </section>
-  <footer>符号按用途整理。求和使用运算符 ∑，转置使用正体上标 T；数学变量、上下标、分式与根式均采用公式排版。</footer>
-</main>
-</body>
-</html>
+document.querySelectorAll('.face-toggle').forEach(button => {
+ button.addEventListener('click', () => {
+  const enabled = button.getAttribute('aria-pressed') !== 'true';
+  button.setAttribute('aria-pressed', String(enabled));
+  button.querySelector('.mode-label').textContent = enabled ? '符号融合' : '普通表情';
+  const card = button.closest('article');
+  const title = card.querySelector('h2').textContent;
+  const placement = card.querySelector('.placement').textContent;
+  button.setAttribute('aria-label', enabled ? title + '：' + placement + '，点击查看普通表情' : title + '：普通表情，点击查看符号融合');
+ });
+});
+</script></body></html>

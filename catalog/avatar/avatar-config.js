@@ -1,17 +1,17 @@
 /* Shape, material and motion can be tuned without changing the controller. */
 window.CATALOG_AVATAR_CONFIG = {
   shape: { petals: 8, radius: 91, depth: 10, contourOffset: 3 },
-  motion: { floatCycle: 3.6, floatDistance: 7, breathScale: 0.025, headRotation: 3, faceLag: 0.12 },
+  motion: { floatCycle: 3.6, floatDistance: 7, breathScale: 0.025, headRotation: 3 },
   rig: {
     centerX: 160, centerY: 145, surfaceRadius: 82, surfaceDepth: 50,
-    eyeSpacing: 40, eyeY: -8, mouthY: 12,
-    maxEyeDrift: 1.2, maxMouthDrift: 0.8
+    facePlaneDepth: 64,
+    eyeSpacing: 40, eyeY: -8, mouthY: 12
   },
   depth: {
-    turnCycle: 6.8, idleYaw: 0.21, idlePitch: 0.10,
-    gazeYaw: 0.28, gazePitch: 0.18, maxYaw: 0.50, maxPitch: 0.30,
-    perspective: 220, eyeLag: 0.85, mouthLag: 1.3,
-    damping: 0.76, squashFollow: 0.65
+    turnCycle: 6.8, idleYaw: 0.32, idlePitch: 0.18,
+    gazeYaw: 0.36, gazePitch: 0.26, maxYaw: 0.62, maxPitch: 0.40,
+    bodyYawFollow: 0.80, bodyPitchFollow: 0.75,
+    perspective: 220
   },
   material: { light: '#b5dcff', middle: '#78a7fa', dark: '#4d71e4', face: '#172b58' },
   behavior: { minInterval: 3.5, maxInterval: 6.5, expressions: ['idle', 'happy', 'curious', 'wink', 'surprised', 'sleepy'] },

@@ -1,0 +1,119 @@
+/* A small stage behind the real category buttons. All artwork is SVG. */
+.catalog-intro.has-symbol-theatre { padding-top: 108px; }
+.side-nav.symbol-theatre {
+  position: relative;
+  isolation: isolate;
+  flex-basis: 560px;
+  max-width: 620px;
+  min-height: 340px;
+  padding: 0 12px;
+}
+.symbol-theatre .side-list {
+  position: relative;
+  z-index: 3;
+  pointer-events: none;
+  gap: 22px 14px;
+  padding: 148px 0 36px;
+}
+.symbol-theatre .side-item {
+  pointer-events: auto;
+  translate: var(--nudge-x, 0px) var(--nudge-y, 0px);
+  rotate: var(--nudge-r, 0deg);
+}
+.theatre-layer, .theatre-arms {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+.theatre-layer--back { z-index: 2; }
+.theatre-layer--front { z-index: 4; }
+/* Whole arms overlap the body while every filter remains in front of them. */
+.theatre-arms { z-index: 2; }
+.theatre-avatar-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  display: block;
+  will-change: transform;
+}
+.theatre-avatar-link:focus-visible { outline-offset: -22px; border-radius: 50%; }
+.symbol-theatre .catalog-avatar {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.symbol-theatre .catalog-avatar::before,
+.symbol-theatre .catalog-avatar::after { display: none; }
+.theatre-arm {
+  fill: none;
+  stroke: #a3c5ff;
+  stroke-width: 10.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.theatre-speech {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 6;
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: #182331;
+  box-shadow: inset 0 1px 14px #68a8ff45, inset 0 -8px 22px #2a64c32e, 0 8px 24px #0003;
+  color: #d7e4fc;
+  font-size: 14px;
+  line-height: 1.5;
+  width: max-content;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.theatre-speech::after {
+  content: "";
+  position: absolute;
+  left: clamp(14px, calc(50% - 36px), calc(100% - 14px));
+  bottom: -7px;
+  transform: translateX(-50%);
+  border-top: 9px solid #1e3047;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+}
+.theatre-glyph {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 56px;
+  height: 56px;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  backface-visibility: visible;
+}
+.theatre-glyph svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.avatar-reference-ink { fill: currentColor; color: inherit; }
+.avatar-reference-ink .stroke {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.avatar-reference-ink .stroke.thin { stroke-width: 4.5; }
+.avatar-reference-ink .math-ink {
+  fill: currentColor;
+  stroke: none;
+  font-family: "Cambria Math", "STIX Two Math", math;
+  font-weight: 400;
+  text-anchor: middle;
+}
+.theatre-glyph-edge { color: #383448; opacity: .8; }
+@media (max-width: 900px) {
+  .side-nav.symbol-theatre { flex: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .theatre-avatar-link, .theatre-glyph { will-change: auto; }
+}
