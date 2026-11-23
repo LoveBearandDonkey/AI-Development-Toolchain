@@ -5,6 +5,8 @@ window.CATALOG_AVATAR_CONFIG = {
   rig: {
     centerX: 160, centerY: 145, surfaceRadius: 82, surfaceDepth: 50,
     facePlaneDepth: 64,
+    // Fixed shoulder offsets from the body center, in the body's own plane.
+    shoulderX: 62, shoulderY: 23,
     eyeSpacing: 40, eyeY: -8, mouthY: 12
   },
   depth: {

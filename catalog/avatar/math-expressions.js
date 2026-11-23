@@ -6,11 +6,11 @@
   const stroke = (d, thin = false) => `<path class="stroke${thin ? ' thin' : ''}" d="${d}"/>`;
   window.CATALOG_MATH_EXPRESSIONS = [
     { symbol: 'times', caption: '算晕了', tilt: -6, parts: [
-      part('leftEye',137,137,ink(137,149,45,'×'),true,'leftEye'),
-      part('rightEye',183,137,ink(183,149,45,'×'),true,'rightEye'),
+      part('leftEye',137,137,ink(137,149,48,'𝑥'),true,'leftEye'),
+      part('rightEye',183,137,ink(183,149,48,'𝑥'),true,'rightEye'),
       part('mouth',160,171,stroke('M140 171 Q150 162 160 171 T180 171'))
     ]},
-    { symbol: 'sum', caption: '努力计算，薅尽你的NPU', tilt: 0, parts: [
+    { symbol: 'sum', caption: '玩命计算，薅尽你的算力', tilt: 0, parts: [
       part('brows',160,118,stroke('M122 115 L143 121 M178 121 L198 115',true)),
       part('leftEye',137,137,ink(137,152,40,'∑'),true,'leftEye'),
       part('rightEye',183,137,ink(183,152,40,'∑','translate(366 0) scale(-1 1)'),true,'rightEye'),
@@ -33,11 +33,11 @@
       part('mouth',160,173,stroke('M146 173 Q160 179 173 169'))
     ]},
     { symbol: 'transpose', caption: '认真审视你的算法', tilt: 0, parts: [
-      part('browBridge',160,132,stroke('M126 119 H194 M160 119 V150',true),true),
+      part('browBridge',160,132,ink(160,150,56,'T'),true),
       part('leftEye',137,137,eye(137,137,6,9)),part('rightEye',183,137,eye(183,137,6,9)),
       part('mouth',160,174,stroke('M148 174 L172 174'))
     ]},
-    { symbol: 'exp', caption: '期待拉满', tilt: -4, parts: [
+    { symbol: 'exp', caption: '刚被你的计算要求痛揍了一顿', tilt: -4, parts: [
       part('leftEye',137,138,eye(137,138,7,10)),
       part('rightEye',181,138,ink(181,152,48,'e<tspan dx="1" dy="-25" font-size="24">x</tspan>'),true,'rightEye'),
       part('mouth',160,172,stroke('M142 166 Q160 186 178 166'))
@@ -48,12 +48,12 @@
       part('leftEye',137,138,eye(137,138,6,8)),part('rightEye',183,138,eye(183,138,6,10)),
       part('mouth',160,173,stroke('M147 174 Q160 169 173 173'))
     ]},
-    { symbol: 'sigma', caption: '瞌睡流口水', tilt: 8, blinkEyes: false, parts: [
+    { symbol: 'sigma', caption: 'Free到瞌睡流口水', tilt: 8, blinkEyes: false, parts: [
       part('leftEye',136,140,stroke('M124 137 Q136 147 148 137')),
       part('rightEye',182,140,stroke('M170 137 Q182 147 194 137')),
-      part('mouth',164,174,'<circle class="stroke thin" cx="164" cy="174" r="10"/>'+stroke('M174 174 V202',true),true,'mouth')
+      { ...part('mouth',164,174,ink(164,190,52,'σ','rotate(90 164 174)'),true,'mouth'), pileRotation: -90 }
     ]},
-    { symbol: 'theta', caption: '有一次看到一个长条wait困到半眯', tilt: 4, parts: [
+    { symbol: 'theta', caption: '有一次等一个长条Wait，困到半眯', tilt: 4, parts: [
       part('leftEye',137,137,ink(137,153,48,'θ'),true,'leftEye'),
       part('rightEye',183,137,ink(183,153,48,'θ'),true,'rightEye'),
       part('mouth',160,175,stroke('M150 175 Q160 181 170 175'))

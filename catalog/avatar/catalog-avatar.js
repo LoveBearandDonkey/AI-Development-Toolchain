@@ -33,16 +33,6 @@
 
   const springState = () => ({ value: 0, velocity: 0 });
 
-  // Project a shoulder on the rounded body, keeping its frontal pose exact.
-  function projectFeature(x, y, z, yaw, pitch, perspective) {
-    const turnedX = x * Math.cos(yaw) + z * Math.sin(yaw);
-    const turnedZ = z * Math.cos(yaw) - x * Math.sin(yaw);
-    const turnedY = y * Math.cos(pitch) + turnedZ * Math.sin(pitch);
-    const depth = turnedZ * Math.cos(pitch) - y * Math.sin(pitch);
-    const scale = perspective / (perspective - (depth - z));
-    return { x: turnedX * scale, y: turnedY * scale, scale };
-  }
-
   class CatalogAvatar {
     constructor(root, config) {
       this.root = root;
@@ -57,6 +47,7 @@
       this.pose = { ...config.states.idle };
       this.gaze = { x: 0, y: 0 };
       this.sceneGazeControlled = false;
+      this.sceneTurn = { yaw: 0, pitch: 0, weight: 0 };
       this.bodyTurn = { yaw: springState(), pitch: springState() };
       this.referenceParts = [];
       this.facePlane = { a: 1, b: 0, c: 0, d: 1, e: 0, f: 0 };
@@ -174,6 +165,14 @@
       if (this.sceneGazeControlled) this.setGaze(x, y);
     }
 
+    // A deliberate head turn blends out idle/gaze motion so it cannot cancel
+    // the requested direction during a short expression presentation.
+    setSceneTurn(yaw = 0, pitch = 0, weight = 0) {
+      this.sceneTurn.yaw = Number.isFinite(yaw) ? yaw : 0;
+      this.sceneTurn.pitch = Number.isFinite(pitch) ? pitch : 0;
+      this.sceneTurn.weight = Math.max(0, Math.min(1, weight || 0));
+    }
+
     setScenePaused(paused) {
       if (this.scenePaused === paused) return;
       this.scenePaused = paused;
@@ -250,22 +249,13 @@
       };
     }
 
-    // Shoulder mounts sit inside the front of the rounded body. Project them
-    // with the body's current turn, then apply its exact breath/roll/float.
-    // The inset keeps a substantial joint overlap through every petal morph.
+    // Fixed points in the silhouette's plane, transformed exactly like the body.
+    // No separate surface projection or moving inset can slide the shoulders.
     getBodyAttachment(side) {
-      const { rig, depth, shape } = this.config;
+      const { rig } = this.config;
       const pose = this.bodyPose;
-      const position = projectFeature(
-        (side < 0 ? -1 : 1) * rig.surfaceRadius * .78,
-        rig.surfaceRadius * .28,
-        rig.surfaceDepth * .76,
-        pose.yaw, pose.pitch, depth.perspective
-      );
-      const safeRadius = Math.max(1, shape.radius - shape.depth - shape.contourOffset - 10);
-      const inset = Math.min(1, safeRadius / Math.hypot(position.x, position.y));
-      const x = position.x * inset * pose.scaleX;
-      const y = position.y * inset * pose.scaleY;
+      const x = (side < 0 ? -1 : 1) * rig.shoulderX * pose.scaleX;
+      const y = rig.shoulderY * pose.scaleY;
       const angle = pose.roll * Math.PI / 180;
       return {
         x: rig.centerX + x * Math.cos(angle) - y * Math.sin(angle),
@@ -320,8 +310,11 @@
       const turn = this.time / d.turnCycle * Math.PI * 2;
       const clamp = (value, limit) => Math.max(-limit, Math.min(limit, value));
       // Autonomous head turns keep the volume readable even without mouse input.
-      const targetYaw = clamp(Math.sin(turn) * d.idleYaw + this.gaze.x * d.gazeYaw + this.pose.lookX * 0.3, d.maxYaw);
-      const targetPitch = clamp(Math.sin(turn * 0.73) * d.idlePitch + this.gaze.y * d.gazePitch + this.pose.lookY * 0.2, d.maxPitch);
+      const idleYaw = Math.sin(turn) * d.idleYaw + this.gaze.x * d.gazeYaw + this.pose.lookX * 0.3;
+      const idlePitch = Math.sin(turn * 0.73) * d.idlePitch + this.gaze.y * d.gazePitch + this.pose.lookY * 0.2;
+      const { yaw: sceneYaw, pitch: scenePitch, weight } = this.sceneTurn;
+      const targetYaw = clamp(idleYaw * (1 - weight) + sceneYaw * weight, d.maxYaw);
+      const targetPitch = clamp(idlePitch * (1 - weight) + scenePitch * weight, d.maxPitch);
       // Critically damped turns carry the body and shoulders together, with no
       // oscillation or separate arm lag that could pull a joint off the body.
       const yaw = spring(this.bodyTurn.yaw, targetYaw, .10, 1, dt);

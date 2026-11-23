@@ -94,7 +94,7 @@
           this.layers.back.append(element);
           const glyph = { kind, color, rgb: color.match(/\w\w/g).map(v => parseInt(v, 16)), element, part, ink: element.querySelector('[data-glyph-ink]'),
             rx, ry, rz, owner: 'pile', nudge: spring(), index, mix: 0, front: false,
-            pileScale: { transpose: .65, partial: 1.35, exp: .8 }[kind] || .95 };
+            pileScale: { partial: 1.35, exp: .8 }[kind] || .95 };
           episode.props.push(glyph); this.glyphs.push(glyph);
         });
         return episode;
@@ -169,7 +169,7 @@
         glyph.owner = 'pile'; glyph.nudge = spring(); glyph.mix = 0;
       });
       this.home = point(this.width * .54, 98);
-      this.actor = { ...this.home, rotation: 0, gazeX: 0, gazeY: .3 };
+      this.actor = { ...this.home, rotation: 0, gazeX: 0, gazeY: .3, headYaw: 0, headPitch: 0, turnWeight: 0 };
       this.left = { x: this.home.x - 85, y: 160 };
       this.right = { x: this.home.x + 85, y: 160 };
       this.hand = this.right;
@@ -181,6 +181,7 @@
       this.handMode = 'free';
       this.root.dataset.phase = 'idle';
       avatar.setReferenceFace(null);
+      avatar.setSceneTurn();
       avatar.setState('idle');
       this.timeline = this.createTimeline();
       this.render();
@@ -329,9 +330,14 @@
         tl.addLabel(episode.symbol + ':pose',s+3.9);
         tl.call(() => this.phase('pose'),[],s+3.95);
         tl.to(this.actor,{rotation:episode.tilt,y:this.home.y-13,gazeX:-.15,duration:.6,ease:'back.out(1.5)'},s+3.9);
+        // Show both directions explicitly; idle turns must not cancel this beat.
+        tl.to(this.actor,{headYaw:-avatar.config.depth.idleYaw,headPitch:-avatar.config.depth.idlePitch,turnWeight:1,duration:.55,ease:'sine.inOut'},s+3.9);
         tl.to(supportHand,{x:this.home.x-sign*107,y:112,duration:.5},s+4.05);
         tl.to(this.actor,{rotation:-episode.tilt*.4,gazeX:.2,duration:.65},s+4.7);
+        tl.to(this.actor,{headYaw:avatar.config.depth.idleYaw,headPitch:avatar.config.depth.idlePitch,duration:.65,ease:'sine.inOut'},s+4.7);
         tl.to(this.actor,{rotation:episode.tilt*.55,gazeX:0,duration:.55},s+5.5);
+        tl.to(this.actor,{headYaw:0,headPitch:0,duration:.55,ease:'sine.inOut'},s+5.5);
+        tl.to(this.actor,{turnWeight:0,duration:.45,ease:'sine.inOut'},s+6.15);
         tl.call(() => { this.phase('remove'); this.startReach(); },[],s+6.15);
         tl.to(this.path,{progress:1,duration:.65},s+6.15);
         tl.call(() => {
@@ -428,6 +434,7 @@
       }
       if (this.active) avatar.setSceneGaze(a.gazeX + this.look.x * .65,a.gazeY + this.look.y * .5);
       else avatar.setSceneGaze();
+      avatar.setSceneTurn(a.headYaw,a.headPitch,a.turnWeight);
       if (this.handMode === 'face') {
         const p = this.path.progress, arc = Math.sin(p * Math.PI);
         this.episode.props.forEach(g => {
@@ -477,7 +484,8 @@
         g.element.style.transform = `translate(${x - 28}px, ${y - 28}px) perspective(650px) rotateZ(${rz}deg) skewX(${skewX}deg) rotateY(${ry}deg) rotateX(${rx}deg) scale(${sx}, ${sy})`;
         g.element.style.opacity = g.owner === 'pile' ? '.84' : '1';
         const blinkingEye = g.owner === 'face' && ['leftEye','rightEye'].includes(g.part.key) && this.episode.blinkEyes !== false;
-        g.ink.setAttribute('transform', `scale(1 ${blinkingEye ? avatar.getEyeBlink() : 1})`);
+        const artRotation = (g.part.pileRotation || 0) * (1 - shade);
+        g.ink.setAttribute('transform', `rotate(${artRotation}) scale(1 ${blinkingEye ? avatar.getEyeBlink() : 1})`);
         g.element.querySelector('.theatre-glyph-edge').style.opacity = (1 - shade) * .8;
         g.position = { x, y, rx, ry, rz, skewX, sx, sy };
         g.element.dataset.owner = g.owner;
@@ -506,6 +514,7 @@
       avatar.root.setAttribute('aria-label', this.originalLabel);
       [...avatar.eyes,avatar.mouth].forEach(element => { element.style.visibility = ''; });
       avatar.setReferenceFace(null); avatar.setSceneGaze();
+      avatar.setSceneTurn();
       avatar.blinkSuppressed = false;
       avatar.setScenePaused(false);
       avatar.setState('idle'); avatar.resumeExpressions();

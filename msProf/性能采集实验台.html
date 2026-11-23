@@ -216,6 +216,15 @@ body[data-page=docs] .toolbar-actions{display:none}
 .controls-header{margin-bottom:0}.config-view-tabs{position:sticky;top:55px;z-index:8;display:flex;gap:12px;flex-wrap:wrap;margin:0 -16px 16px;padding:0 16px 11px;background:var(--surface-1)}.config-view-tabs button{border:0;border-bottom:2px solid transparent;background:transparent;padding:7px 6px;font-size:12px;color:var(--sub);white-space:nowrap}.config-view-tabs button[aria-selected=true]{border-bottom-color:var(--brand-blue);color:var(--brand-blue)}.config-view{min-width:0}.config-view[data-config-panel=scene]>.scene>summary{display:none}.config-view[data-config-panel=scene] .scene-field:first-child{margin-top:0}.scene-workflow-choices{--scene-columns:2}.scene-workflow-dependent{display:block;margin-top:10px;font-size:12px;color:var(--sub)}.scene-workflow-dependent .text-input{margin-top:6px;font-size:12px}.scene-workflow-link{display:inline-block;margin-top:9px;text-decoration:none}.preview .big-number[data-source=reference]{font-variant-numeric:tabular-nums}
 @media(max-width:1050px) and (min-width:761px){.scene-env-grid .scene-choice-grid[data-scene-choice-for=scene-chip]{--scene-columns:2}}
 @media(max-width:420px){.scene-env-grid .scene-choice-grid[data-scene-choice-for=scene-chip]{--scene-columns:2}}
+
+body[data-page=evidence] .lab-page,body[data-page=evidence] .evidence-toolbar-band{background:white}body[data-page=evidence] .toolbar-actions{display:none}
+.ev-ai-map{border:1px solid #dce5f6;background:#f8faff;border-radius:9px;padding:16px;margin:18px 0 8px}.user-evidence .ev-ai-map h3{color:#2563eb;font-size:14px;margin-bottom:10px}.ev-ai-map p{font-size:13px}.ev-ai-map .ev-meta{font-size:11px;margin-bottom:0}.ev-ai-map .ev-jump{margin-top:10px}
+/* User evidence view: scoped to preserve the existing demo layouts. */
+.user-evidence{--ev-ink:#182232;--ev-muted:#59677b;--ev-line:#e1e7ef;--ev-blue:#2563eb;color:var(--ev-ink);width:100%;max-width:1400px;margin:0 auto;padding:34px 30px 60px;font:14px/1.8 Inter,"Segoe UI","Microsoft YaHei",sans-serif}
+.user-evidence *{box-sizing:border-box}.user-evidence h2{font-size:19px;line-height:1.5;margin:0}.user-evidence h3{font-size:12px;letter-spacing:.04em;color:var(--ev-muted);margin:0 0 6px}.user-evidence p{margin:0 0 12px}.ev-stats{display:flex;gap:40px;padding:20px 0;border-top:1px solid var(--ev-line);border-bottom:1px solid var(--ev-line);margin:0 0 24px}.ev-stats strong{font-size:26px;font-weight:600;margin-right:8px}.ev-stats span{font-size:12px;color:var(--ev-muted)}.ev-layout{display:grid;grid-template-columns:210px minmax(0,1fr);gap:36px;align-items:start}.ev-index{position:sticky;top:90px;display:grid;gap:6px}.ev-index a{color:var(--ev-muted);text-decoration:none;padding:9px 10px;border-left:2px solid var(--ev-line);font-size:12px;line-height:1.7}.ev-index a:hover{color:var(--ev-blue);border-color:var(--ev-blue);background:#f0f5ff}.ev-card{background:white;border:1px solid var(--ev-line);border-radius:12px;padding:24px;margin-bottom:22px;scroll-margin-top:90px}.ev-card-head{display:flex;align-items:start;gap:12px;margin-bottom:16px}.ev-number{font-size:12px;color:var(--ev-blue);padding-top:5px}.ev-mapping{display:grid;grid-template-columns:1fr 1fr;gap:24px;border-top:1px solid var(--ev-line);padding-top:18px;margin-top:18px}.ev-mapping p{font-size:13px}.ev-voice{border-left:2px solid #c6d6f2;padding:0 0 0 14px;margin:14px 0 18px}.ev-voice[data-source=interview]{--ev-source:#15803d;--ev-source-bg:#ecfdf3;border-left-color:var(--ev-source)}.ev-voice[data-source=issue]{--ev-source:#db2777;--ev-source-bg:#fdf2f8;border-left-color:var(--ev-source)}.ev-voice[data-source=ux]{--ev-source:#c76a10;--ev-source-bg:#fff4e6;border-left-color:var(--ev-source)}.ev-voice blockquote{margin:0 0 9px;font-size:13px;line-height:1.9;overflow-wrap:anywhere}.ev-meta{font-size:11px;line-height:1.8;color:var(--ev-muted);overflow-wrap:anywhere}.ev-meta code{font:11px Consolas,monospace;color:var(--ev-source);background:var(--ev-source-bg);padding:2px 5px;border-radius:3px}.ev-jump{margin-top:14px;border:1px solid #cbd8ef;border-radius:7px;background:white;color:var(--ev-blue);font:12px/1.6 inherit;padding:7px 12px;cursor:pointer}.ev-highlight{outline:3px solid #93b6ff!important;outline-offset:4px}
+.page-tabs #page-evidence-toggle{border:0;background:none;color:#637083;padding:8px 12px;border-radius:6px;font-size:13px;white-space:nowrap}.page-tabs #page-evidence-toggle[aria-expanded=true]{background:white;color:#2563eb;font-weight:600;box-shadow:0 1px 4px #1e325414}body[data-evidence-open=true] .page-tabs a[aria-current]{background:none;color:#637083;box-shadow:none;font-weight:400}
+@media(max-width:760px){.user-evidence{padding:24px 16px 40px}.ev-stats{gap:16px;flex-wrap:wrap}.ev-stats strong{font-size:22px}.ev-layout{grid-template-columns:1fr;gap:18px}.ev-index{position:static;display:flex;overflow:auto;padding-bottom:8px}.ev-index a{min-width:155px}.ev-card{padding:18px}.ev-mapping{grid-template-columns:1fr;gap:4px}.brand .page-tabs{flex-wrap:wrap}.topbar,.header{height:auto;min-height:66px;flex-wrap:wrap;padding-top:12px;padding-bottom:12px}.brand{flex-wrap:wrap}}
+
 </style>
 <style>
 .config-view-tabs #config-tab-ai{display:inline-flex;align-items:center;gap:6px}.ai-tab-icon{width:16px;height:16px;object-fit:contain;flex:none}
@@ -230,10 +239,13 @@ body[data-page=docs] .toolbar-actions{display:none}
 @media(prefers-reduced-motion:reduce){.command-panel.ai-generating::after{animation:none;box-shadow:inset 0 0 48px color-mix(in srgb,var(--brand-blue) 22%,transparent)}.ai-thinking-dots i{animation:none}}
 @media(max-width:760px){.controls:has(#config-view-ai:not([hidden])){min-height:620px}.ai-scenario{font-size:12px;padding:10px 7px}.ai-chat-messages{max-height:420px}.ai-question{height:150px}}
 </style>
+<style>
+.preview .estimate-head .big-number{font-weight:400}
+</style>
 </head>
 <body data-page="sandbox">
 <main class="workspace lab-page" id="workspace">
- <div class="evidence-toolbar-band"><div class="evidence-toolbar"><div class="toolbar-main"><span class="evidence-brand"><strong>MindStudio Profiler Next</strong></span><div class="page-context" role="tablist" aria-label="页面内容"><button id="page-sandbox" data-page-view="sandbox" role="tab" aria-selected="true" aria-controls="lab-panel">沙箱</button><button id="page-docs" data-page-view="docs" role="tab" aria-selected="false" aria-controls="docs-content" tabindex="-1">文档</button></div></div><div class="toolbar-actions"></div></div></div>
+ <div class="evidence-toolbar-band"><div class="evidence-toolbar"><div class="toolbar-main"><span class="evidence-brand"><strong>MindStudio Profiler Next</strong></span><div class="page-context" role="tablist" aria-label="页面内容"><button id="page-sandbox" data-page-view="sandbox" role="tab" aria-selected="true" aria-controls="lab-panel">沙箱</button><button id="page-docs" data-page-view="docs" role="tab" aria-selected="false" aria-controls="docs-content" tabindex="-1">文档</button><button id="page-evidence" data-page-view="evidence" role="tab" aria-selected="false" aria-controls="user-evidence" tabindex="-1">用户问题</button></div></div><div class="toolbar-actions"></div></div></div>
 <section class="lab-panel" id="lab-panel" role="tabpanel" aria-labelledby="page-sandbox">
  <div class="body-grid">
   <div class="controls" aria-label="采集控制器">
@@ -446,7 +458,7 @@ body[data-page=docs] .toolbar-actions{display:none}
       <div class="field"><div data-label-for="download-content"><label for="download-content">计划下载什么</label></div><select id="download-content" class="metric-select"><option value="all">完整目录：原始 + 解析数据</option><option value="raw">仅原始数据</option><option value="export">仅解析数据</option></select></div>
       <p class="subtle">只影响体量估算，不修改命令。默认 1 Rank；多 Rank 按相同事件密度估算。未扣压缩、文件老化或共享数据。</p>
      </details>
-    </div><div class="stat"><span>采集覆盖</span><strong id="enabled-count">3<small>项数据</small></strong><p id="capture-range">第 10–20 秒</p></div></div>
+    </div><div class="stat"><span>已启用采集项</span><strong id="enabled-count">3 项</strong><p id="enabled-items">算子时间线、AscendCL 接口、Runtime 接口</p><p id="capture-range">第 10–20 秒</p></div></div>
     <section class="volume-breakdown" aria-labelledby="volume-breakdown-title"><h3 id="volume-breakdown-title">原始体量构成 · 模型占比</h3><p class="volume-breakdown-note" id="volume-breakdown-note">按预计体量从大到小排列，不含解析数据；尚未校准。</p><div id="volume-breakdown-list" class="volume-breakdown-list"></div></section>
 
    </section>
@@ -454,6 +466,72 @@ body[data-page=docs] .toolbar-actions{display:none}
   </aside>
  </div>
 </section>
+<section class="user-evidence" id="user-evidence" role="tabpanel" aria-labelledby="page-evidence" hidden><div class="ev-stats"><div><strong>8</strong><span>问题主题</span></div><div><strong>33</strong><span>引用记录（按来源与编号去重）</span></div></div><div class="ev-layout"><nav class="ev-index" aria-label="用户问题主题">
+<a href="#ev-case-1">01 · 新手面对多种工具难上手，42项采集配置认不全、缺少建议上手辅助</a>
+<a href="#ev-case-2">02 · memory、堆栈等深度采集会绕道性能，但配置开关与开销/失真的对应不能及时获知，事前无法权衡采集深度</a>
+<a href="#ev-case-3">03 · 产物清单难核对、落盘后还在手动解析</a>
+<a href="#ev-case-4">04 · 通信、Host，start/end 打点等采集机制不可知，采集内容能支撑何种图表不可预见</a>
+<a href="#ev-case-5">05 · 采集混入空闲片段和 dummy run、统计失真，期望清晰牵引用户定义有效采集窗</a>
+<a href="#ev-case-6">06 · 采集数据过大、缺少落盘产物预期大小做事前权衡；下载本地看繁琐，期望线上传递或打开</a>
+<a href="#ev-case-7">07 · 采集方式多、不同框架入口不一：按任务选择方式并生成配置</a>
+<a href="#ev-case-8">08 · 缺少灵活定义事件自动启动采集的机制，以便捕捉偶现的性能劣化</a>
+</nav><div>
+<article class="ev-card" id="ev-case-1"><div class="ev-card-head"><span class="ev-number">01</span><h2>新手面对多种工具难上手，42项采集配置认不全、缺少建议上手辅助</h2></div><h3>原声与用户（脱敏）</h3>
+<figure class="ev-voice" data-source="interview"><blockquote>“客户实际上客户也是客户，他打开了我们官网之后，他不想看。翻看我们这些文档，然后就像我们给他。就给他讲一下。然而我们就找了那个产品线的一些研发人员，然后把整个训练场景的profiling分析的一些方法，然后profiling采集。然后我们这个Insight工具，然后有哪些功能怎么？他去分析给他讲了一遍。然后他每一些。”</blockquote><figcaption class="ev-meta">用户 <code>刘工</code> · 访谈原声节选（00:19:06） · R005-014<br>原始问题机会点汇聚清单_V1.24.xlsx · 访谈信息整理 · 第 199 行</figcaption></figure>
+
+<figure class="ev-voice" data-source="interview"><blockquote>“发现我们那个Studio那边块有很多文档里边介绍了我们10几种工具。”</blockquote><figcaption class="ev-meta">用户 <code>刘工</code> · 访谈原声节选 · R005-010<br>原始问题机会点汇聚清单_V1.24.xlsx · 访谈信息整理 · 第 195 行</figcaption></figure>
+<figure class="ev-voice" data-source="interview"><blockquote>“第一步做性能数据采集。我推荐用哪个工具要怎么去搞”</blockquote><figcaption class="ev-meta">用户 <code>刘工</code> · 访谈原声节选 · R005-011<br>原始问题机会点汇聚清单_V1.24.xlsx · 访谈信息整理 · 第 196 行</figcaption></figure>
+<figure class="ev-voice" data-source="interview"><blockquote>“那就是我刚刚开始说的那个入门的那个练习里面，如果有介绍的话，就更好。”</blockquote><figcaption class="ev-meta">用户 <code>刘工</code> · 访谈原声节选 · R005-024<br>原始问题机会点汇聚清单_V1.24.xlsx · 访谈信息整理 · 第 209 行</figcaption></figure>
+<figure class="ev-voice" data-source="ux"><blockquote>“（profiler介绍文档中）采集有4中方式，令用户困惑，只需一种就够用的”</blockquote><figcaption class="ev-meta">用户 <code>籍工</code> · UX用户测试 · UX2026-05<br>2026insight可用性测试.md · 第 5 条反馈 · 第 13—14 行</figcaption></figure>
+<figure class="ev-voice" data-source="ux"><blockquote>“他们（msprof）现在好像采集不到，可能大部分场景采不到（tp、pp、dp这些并行参数），需要去（insight）配一下你那个dp是几”</blockquote><figcaption class="ev-meta">用户 <code>籍工</code> · UX用户测试 · UX2026-06<br>2026insight可用性测试.md · 第 6 条反馈 · 第 16—17 行</figcaption></figure>
+<div class="ev-mapping"><div><h3>Demo 如何解决 · 操作</h3><p>在“场景化配置”按任务、框架、分析目标选择采集方式；在“AI 推荐”体验预设推荐，在“手动配置”核对参数；中栏提供模板，“文档”页补充入口与操作说明。</p></div><div><h3>当前可见结果 · 价值</h3><p>让用户按一条可见路径选择采集方式、检查配置并获得可复制的模板；TP/PP/DP 自动提取与随产物交付尚待补齐，现有 Rank 数不能替代并行参数。</p></div></div><button class="ev-jump" data-evidence-target="scene-panel" data-evidence-tab="">在 Demo 中查看对应入口 →</button><section class="ev-ai-map" aria-label="AI帮配对应问题：补齐通信与 Host 证据"><h3>AI帮配 · 补齐通信与 Host 证据</h3><p><strong>解决的问题：</strong>想查 NPU 为什么等待、通信为什么慢，但数据没有通信页、缺 Host 信息，且不清楚别人采回的数据是否完整可用。</p><p><strong>示例如何帮助：</strong>示例按目的补充 L1、Runtime、Host CPU / 内存和进程 CPU / 内存 / OS runtime 项，生成 text 产物，并列出实际 Rank / Step、文件、解析日志与导出内容等采后待核项。</p><p><strong>当前可见结果：</strong>将分析问题对应到采集项、命令和预期检查清单；当前没有读取文件或实际核验。缺页也可能来自解析或导出，应先判断能否复用已有数据处理，再决定是否重采。</p><p class="ev-meta">设计对应：wzh创建-下一代msprof demo设计.html · 第 5.3 节</p><button class="ev-jump" data-evidence-ai="evidence">体验“补齐通信与 Host 证据” →</button></section></article>
+<article class="ev-card" id="ev-case-2"><div class="ev-card-head"><span class="ev-number">02</span><h2>memory、堆栈等深度采集会绕道性能，但配置开关与开销/失真的对应不能及时获知，事前无法权衡采集深度</h2></div><h3>原声与用户（脱敏）</h3>
+<figure class="ev-voice" data-source="ux"><blockquote>“为啥memory数据采集对性能的影响很大？哪些功能不会引起膨胀？开某个功能的时候，我会膨胀多少，我的数据会失真多少（不知道）”</blockquote><figcaption class="ev-meta">用户 <code>籍工</code> · UX用户测试 · UX2026-03<br>2026insight可用性测试.md · 第 3 条反馈 · 第 7—8 行</figcaption></figure>
+
+<figure class="ev-voice" data-source="interview"><blockquote>“因为可能本来有快慢卡，但是因为你每一张卡都往后延了那么久，可能会加重或者减轻。”</blockquote><figcaption class="ev-meta">用户 <code>胡工</code> · 访谈原声节选 · R002-045<br>原始问题机会点汇聚清单_V1.24.xlsx · 访谈信息整理 · 第 181 行</figcaption></figure>
+<figure class="ev-voice" data-source="interview"><blockquote>“我们这个分析需要在不带栈的里面去看free占比高的，因为在带栈里面，那个free会被拉伸，不准确”</blockquote><figcaption class="ev-meta">用户 <code>花工</code> · 访谈原声节选 · R004-004<br>原始问题机会点汇聚清单_V1.24.xlsx · 访谈信息整理 · 第 89 行</figcaption></figure>
+<figure class="ev-voice" data-source="interview"><blockquote>“正常就是会在带栈，还有不带栈的profile,然后就发给msAgent的让他。”</blockquote><figcaption class="ev-meta">用户 <code>花工</code> · 访谈原声节选 · R004-023<br>原始问题机会点汇聚清单_V1.24.xlsx · 访谈信息整理 · 第 108 行</figcaption></figure>
+<figure class="ev-voice" data-source="interview"><blockquote>“就是需要分析代码或者分析内存时，再采堆栈。”</blockquote><figcaption class="ev-meta">用户 <code>胡工</code> · 访谈原声节选 · R002-014<br>原始问题机会点汇聚清单_V1.24.xlsx · 访谈信息整理 · 第 149 行</figcaption></figure>
+<figure class="ev-voice" data-source="interview"><blockquote>“一开始因为带堆栈的话，它会比较大，然后一开始踩的是不带堆栈的，然后后来就是在分析的过程中，然后Agent也会提醒，然后说这个可能需要加堆栈做进一步分析，然后就会把那个堆栈加上之后，采集了之后，让他再分析。”</blockquote><figcaption class="ev-meta">用户 <code>曾工</code> · 访谈原声节选 · R006-016<br>原始问题机会点汇聚清单_V1.24.xlsx · 访谈信息整理 · 第 275 行</figcaption></figure>
+<div class="ev-mapping"><div><h3>Demo 如何解决 · 操作</h3><p>在场景目标与手动采集项中按需开启 memory、堆栈等深度信息，结合右栏性能膨胀与体量预估权衡；使用不同轮次生成模板，先看轻量基线，再补充定位信息。</p></div><div><h3>当前可见结果 · 价值</h3><p>提供可检查的采集深度、轮次和示意开销，支持规划带栈与不带栈、开启与关闭 memory 的对照；真实膨胀及统计失真仍需实测。</p></div></div><button class="ev-jump" data-evidence-target="scene-panel" data-evidence-tab="">在 Demo 中查看对应入口 →</button><section class="ev-ai-map" aria-label="AI帮配对应问题：减少扰动和数据量"><h3>AI帮配 · 减少扰动和数据量</h3><p><strong>解决的问题：</strong>一开 profiling 就变慢、一次产生几个 GB；不知道首轮哪些项可以先关，以及删掉后还能回答哪些问题。</p><p><strong>示例如何帮助：</strong>生成第 10 秒起采 3 秒的轻量配方：保留 L0 与 AscendCL，关闭 Runtime、硬件指标、算子内存和 Host 采样，采用 db 与仅解析数据交付；同时说明缺少哪些深度证据、何时需要补栈。</p><p><strong>当前可见结果：</strong>把“先采轻量基线、再按问题补充深度信息”变成可查看的参数、代码与信息取舍；开销和体量未校准，独立补栈的第二轮任务尚未自动生成。</p><p class="ev-meta">设计对应：wzh创建-下一代msprof demo设计.html · 第 5.2 节</p><button class="ev-jump" data-evidence-ai="lightweight">体验“减少扰动和数据量” →</button></section></article>
+<article class="ev-card" id="ev-case-3"><div class="ev-card-head"><span class="ev-number">03</span><h2>产物清单难核对、落盘后还在手动解析</h2></div><h3>原声与用户（脱敏）</h3>
+<figure class="ev-voice" data-source="ux"><blockquote>“落盘文件还需要手动解析为output再导入insight，缺少自动化解析”</blockquote><figcaption class="ev-meta">用户 <code>籍工</code> · UX用户测试 · UX2026-04<br>2026insight可用性测试.md · 第 4 条反馈 · 第 10—11 行</figcaption></figure>
+
+<figure class="ev-voice" data-source="issue"><blockquote>“torch profiler 开启 level0 + op_attr采集，实际采集的数据是level1 + op_attr”</blockquote><figcaption class="ev-meta">社区账号 <code>li***ya</code> · 社区 issue 标题节选 · <a href="https://gitcode.com/Ascend/msprof/issues/273" target="_blank" rel="noopener noreferrer">msprof #273</a><br>wzh创建-msprof-issue-20261123.csv · CSV 第 7 条记录（不含表头）</figcaption></figure>
+<figure class="ev-voice" data-source="issue"><blockquote>“python脚本新增export all参数命令解析，支持同时导出交付件”</blockquote><figcaption class="ev-meta">社区账号 <code>Se***sm</code> · 社区 issue 正文节选 · <a href="https://gitcode.com/Ascend/msprof/issues/281" target="_blank" rel="noopener noreferrer">msprof #281</a><br>wzh创建-msprof-issue-20261123.csv · CSV 第 3 条记录（不含表头）</figcaption></figure>
+<figure class="ev-voice" data-source="issue"><blockquote>“C化支持指定交付件导出”</blockquote><figcaption class="ev-meta">社区账号 <code>Mr***dd</code> · 社区 issue 正文节选 · <a href="https://gitcode.com/Ascend/msprof/issues/272" target="_blank" rel="noopener noreferrer">msprof #272</a><br>wzh创建-msprof-issue-20261123.csv · CSV 第 8 条记录（不含表头）</figcaption></figure>
+<figure class="ev-voice" data-source="interview"><blockquote>“基本上都是包括预检，包括那个采集，基本上我们手工做完之后，给它在线解析，压缩完之后。”</blockquote><figcaption class="ev-meta">用户 <code>刘工</code> · 访谈原声节选 · R005-019<br>原始问题机会点汇聚清单_V1.24.xlsx · 访谈信息整理 · 第 204 行</figcaption></figure>
+<div class="ev-mapping"><div><h3>Demo 如何解决 · 操作</h3><p>在手动配置中检查等级及关联项，在后处理中选择采集结束后自动解析或已有数据补解析，并选择 timeline、summary 等输出；中栏同步生成相应命令。</p></div><div><h3>当前可见结果 · 价值</h3><p>把采集、自动解析与结果交付串成可审阅的命令路线，减少额外查找解析步骤；实际解析由执行端工具完成。</p></div></div><button class="ev-jump" data-evidence-target="postprocess-section" data-evidence-tab="">在 Demo 中查看对应入口 →</button></article>
+<article class="ev-card" id="ev-case-4"><div class="ev-card-head"><span class="ev-number">04</span><h2>通信、Host，start/end 打点等采集机制不可知，采集内容能支撑何种图表不可预见</h2></div><h3>原声与用户（脱敏）</h3>
+
+<figure class="ev-voice" data-source="issue"><blockquote>“&quot;NPU 空泡等待 Host&quot;类问题难以定位——线程卡在哪、等什么、被谁抢占、核利用率与中断干扰，缺乏主证据；”</blockquote><figcaption class="ev-meta">社区账号 <code>le***20</code> · 社区 issue 正文节选 · <a href="https://gitcode.com/Ascend/msprof/issues/262" target="_blank" rel="noopener noreferrer">msprof #262</a><br>wzh创建-msprof-issue-20261123.csv · CSV 第 14 条记录（不含表头）</figcaption></figure>
+<figure class="ev-voice" data-source="ux"><blockquote>“Profiler 打点是怎么实现的？打在具体哪个流上，如何判断训练各个阶段的？start end标记怎么插入的，forward、backward、recompute 各个阶段怎么划分判断，我希望了解好分别统计backward、recompute总耗时”</blockquote><figcaption class="ev-meta">用户 <code>籍工</code> · UX用户测试 · UX2026-02<br>2026insight可用性测试.md · 第 2 条反馈 · 第 4—5 行</figcaption></figure>
+<figure class="ev-voice" data-source="interview"><blockquote>“你像他这个summary这个页签，我可能采集的里面就没有这个东西。哈哈哈。好像也没有什么意义。还有这个通信页签，我好像也没有。”</blockquote><figcaption class="ev-meta">用户 <code>曾工</code> · 访谈原声节选 · 清单 U92（R006-034）<br>原始问题机会点汇聚清单_V1.24.xlsx · 问题&amp;机会点对齐清单 · 第 92 行</figcaption></figure>
+<figure class="ev-voice" data-source="interview"><blockquote>“有时候因为我们拿到profiling,有时候不是我们自己采的，是其他人帮忙采完，然后扔给我们。有时候它可能中间做解析或者什么会失败，然后认为我们的profiling是一个不全的一个东西，但是可能里边的数据不太准。我们这块有能判断的这个功能。”</blockquote><figcaption class="ev-meta">用户 <code>刘工</code> · 访谈原声节选 · R005-048<br>原始问题机会点汇聚清单_V1.24.xlsx · 访谈信息整理 · 第 233 行</figcaption></figure>
+<div class="ev-mapping"><div><h3>Demo 如何解决 · 操作</h3><p>Host 信息：选择 Host 相关采集项或系统采集工作流，检查对应参数、依赖和命令。</p><p>业务阶段：在中栏选择业务打点方式，填写业务区间名称，查看 MSTX range_start / range_end 或原生打点模板；需要区分 forward、backward、recompute 时，由用户在各段代码分别标记。</p></div><div><h3>当前可见结果 · 价值</h3><p>将 Host 信息需求变成显式采集配置，并展示业务区间标记的插入方式与流参数，为系统侧定位和业务阶段识别准备上下文；当前不自动关联 Host 事件、识别训练阶段或统计各阶段总耗时。</p></div></div><button class="ev-jump" data-evidence-target="host" data-evidence-tab="">查看 Host 采集配置 →</button><button class="ev-jump" data-evidence-target="method-mstx" data-evidence-tab="">查看业务区间打点 →</button></article>
+<article class="ev-card" id="ev-case-5"><div class="ev-card-head"><span class="ev-number">05</span><h2>采集混入空闲片段和 dummy run、统计失真，期望清晰牵引用户定义有效采集窗</h2></div><h3>原声与用户（脱敏）</h3>
+<figure class="ev-voice" data-source="interview"><blockquote>“我发现每一次他都会把一些就是非模型推理过程中的算子执行，什么都拿过来算，平均一算的话，这个数据就比较偏了”</blockquote><figcaption class="ev-meta">用户 <code>颜工</code> · 访谈原声节选 · R001-030<br>原始问题机会点汇聚清单_V1.24.xlsx · 访谈信息整理 · 第 37 行</figcaption></figure>
+<figure class="ev-voice" data-source="interview"><blockquote>“他能采了两分钟，中间只有几秒是在跑数据的。”</blockquote><figcaption class="ev-meta">用户 <code>刘工</code> · 访谈原声节选 · R005-022<br>原始问题机会点汇聚清单_V1.24.xlsx · 访谈信息整理 · 第 207 行</figcaption></figure>
+<figure class="ev-voice" data-source="interview"><blockquote>“主要是要控制什么时候采。”</blockquote><figcaption class="ev-meta">用户 <code>颜工</code> · 访谈原声节选 · R001-031<br>原始问题机会点汇聚清单_V1.24.xlsx · 访谈信息整理 · 第 38 行</figcaption></figure>
+<figure class="ev-voice" data-source="interview"><blockquote>“有时候他们不同的人采到的数据也比较乱，里边有很多假数据，就是陪跑的一些数据。”</blockquote><figcaption class="ev-meta">用户 <code>刘工</code> · 访谈原声节选 · R005-021<br>原始问题机会点汇聚清单_V1.24.xlsx · 访谈信息整理 · 第 206 行</figcaption></figure>
+<div class="ev-mapping"><div><h3>Demo 如何解决 · 操作</h3><p>选择稳定阶段或自定义采集轮次，在时间窗、Step 日程或动态开始/停止模板中限定采集范围；已有数据走后处理配置。</p></div><div><h3>当前可见结果 · 价值</h3><p>让窗口和轮次在执行前可见，减少把无效时段一并纳入采集的风险。</p></div></div><button class="ev-jump" data-evidence-target="scene-panel" data-evidence-tab="">在 Demo 中查看对应入口 →</button></article>
+<article class="ev-card" id="ev-case-6"><div class="ev-card-head"><span class="ev-number">06</span><h2>采集数据过大、缺少落盘产物预期大小做事前权衡；下载本地看繁琐，期望线上传递或打开</h2></div><h3>原声与用户（脱敏）</h3>
+<figure class="ev-voice" data-source="interview"><blockquote>“00:32:04：Profile一般都采集一个都得有几个g还挺大的。这个有什么优化的，也可以优化？就这个其实还挺费事的，因为。<br><br>00:32:29：有时候可能要把现场的profile传给家里的专家，去分析这个传输，其实挺费劲的。<br><br>00:32:49：那肯定越小越好，其他云上模型肯定你数据量大它耗的token也多，它分析上下文也大。”</blockquote><figcaption class="ev-meta">用户 <code>花工</code> · 访谈原声节选（00:32:04—00:32:49） · R004-022<br>原始问题机会点汇聚清单_V1.24.xlsx · 访谈信息整理 · 第 107 行</figcaption></figure>
+<figure class="ev-voice" data-source="interview"><blockquote>“每次可能用起来比较麻烦，要从服务器上，现在profile向下载到本地”</blockquote><figcaption class="ev-meta">用户 <code>李工</code> · 访谈原声节选 · R013-001<br>原始问题机会点汇聚清单_V1.24.xlsx · 访谈信息整理 · 第 395 行</figcaption></figure>
+<figure class="ev-voice" data-source="interview"><blockquote>“因为你比如说那你10000多张卡，你profile全部下载下来，也有200多个g.就是你要下等下载是很久的”<br><br>“就是没必要的东西都关掉，就是这个文件大小确实是要控制一下。”</blockquote><figcaption class="ev-meta">用户 <code>盈工</code> · 访谈原声节选 · R014-018<br>原始问题机会点汇聚清单_V1.24.xlsx · 访谈信息整理 · 第 426 行</figcaption></figure>
+<figure class="ev-voice" data-source="interview"><blockquote>“但是它数据会非常庞大，往往我们这个Insight工具是打不开的。”</blockquote><figcaption class="ev-meta">用户 <code>孙工</code> · 访谈原声节选 · R003-023<br>原始问题机会点汇聚清单_V1.24.xlsx · 访谈信息整理 · 第 71 行</figcaption></figure>
+<div class="ev-mapping"><div><h3>Demo 如何解决 · 操作</h3><p>在右栏查看原始数据、解析数据与下载量的预估，调整采集时长、Rank 范围和采集项，事前权衡体量与成本；在“场景化配置 → 在哪里查看”选择本地或远端浏览器，填写已有 Insight / JupyterLab 服务地址并打开入口。</p></div><div><h3>当前可见结果 · 价值</h3><p>给出预估体量与本地/远端两条查看路线，支持采集前权衡范围、粒度与搬运成本；体量为示意估算，远端入口用于访问已部署的服务。</p></div></div><button class="ev-jump" data-evidence-target="volume-ranks" data-evidence-tab="">查看采集范围与体量预估 →</button><button class="ev-jump" data-evidence-target="scene-view-location" data-evidence-tab="">查看本地与远端交付配置 →</button></article>
+<article class="ev-card" id="ev-case-7"><div class="ev-card-head"><span class="ev-number">07</span><h2>采集方式多、不同框架入口不一：按任务选择方式并生成配置</h2></div><h3>原声与用户（脱敏）</h3>
+
+
+<figure class="ev-voice" data-source="interview"><blockquote>“每一个框架的采集方式都不一样，有些是用环境变量，有些是直接在这个拉服务的命令里面就可以集成”</blockquote><figcaption class="ev-meta">用户 <code>孙工</code> · 访谈原声节选 · OTT复核-ott13<br>原始问题机会点汇聚清单_V1.24.xlsx · 访谈信息整理 · 第 485 行</figcaption></figure>
+<figure class="ev-voice" data-source="interview"><blockquote>“对，我就我们可能大部分时间都就用那个默认的去搞，就是服务化用的少。”</blockquote><figcaption class="ev-meta">用户 <code>刘工</code> · 访谈原声节选 · R005-023<br>原始问题机会点汇聚清单_V1.24.xlsx · 访谈信息整理 · 第 208 行</figcaption></figure>
+<figure class="ev-voice" data-source="interview"><blockquote>“就是我让他做成这种可配置的嘛，就通过环境变量去控制的，这块是让他帮我加进去的，就类似这些。就采集那一步，然后是否启用，然后输出目录，这些都通过环境变量去控制。”</blockquote><figcaption class="ev-meta">用户 <code>曾工</code> · 访谈原声节选 · R006-014<br>原始问题机会点汇聚清单_V1.24.xlsx · 访谈信息整理 · 第 273 行</figcaption></figure>
+<div class="ev-mapping"><div><h3>Demo 如何解决 · 操作</h3><p>在“场景化配置”中选择工作流、框架和分析目标；检查“手动配置”的采集等级与依赖；中栏按启动命令、框架代码或动态采集方式生成模板。</p></div><div><h3>当前可见结果 · 价值</h3><p>把采集意图转成可复制的配置与命令，并在执行前检查覆盖范围。</p></div></div><button class="ev-jump" data-evidence-target="scene-panel" data-evidence-tab="">在 Demo 中查看对应入口 →</button><section class="ev-ai-map" aria-label="AI帮配对应问题：按框架接入采集"><h3>AI帮配 · 按框架接入采集</h3><p><strong>解决的问题：</strong>知道想采稳定阶段，却不知道自己的框架该用什么接入方式、采集代码如何嵌入现有脚本、怎样控制启停与输出。</p><p><strong>示例如何帮助：</strong>用提供启动脚本和代码目录的示例问法，选择 Ascend PyTorch 框架接口；生成跳过 10 Step、预热 1 Step、采集 5 Step 的通用模板，说明如何传入已有单步函数，并同步场景和手动配置。</p><p><strong>当前可见结果：</strong>得到一份可检查的采集接入草案与启动说明；当前未读取示例路径中的真实脚本，MindSpeed / verl 的具体插入点仍需适配。</p><p class="ev-meta">设计对应：wzh创建-下一代msprof demo设计.html · 第 5.1 节</p><button class="ev-jump" data-evidence-ai="framework">体验“按框架接入采集” →</button></section></article>
+<article class="ev-card" id="ev-case-8"><div class="ev-card-head"><span class="ev-number">08</span><h2>缺少灵活定义事件自动启动采集的机制，以便捕捉偶现的性能劣化</h2></div><h3>原声与用户（脱敏）</h3>
+<figure class="ev-voice" data-source="ux"><blockquote>“有没有一些监控用的、轻量的，可以整个训练过程中开启的监控功能，对我定位偶现性能问题有帮助。现在会出现某20个step性能从3000掉到6000+（耗时），但是正好没采集，现在临时做法是手动脚本，发现劣化后自动采集后10个step的性能数据”</blockquote><figcaption class="ev-meta">用户 <code>籍工</code> · UX用户测试 · UX2026-01<br>2026insight可用性测试.md · 第 1 条反馈 · 第 1—2 行</figcaption></figure>
+<div class="ev-mapping"><div><h3>Demo 如何解决 · 操作</h3><p>在采集方式中选择动态采集，准备目标进程与 start / stop 交互命令；或在框架代码中设置少量 active Step，按需采集问题附近的片段。</p></div><div><h3>当前可见结果 · 价值</h3><p>可演示动态采集与有限 Step 窗口的配置；全程轻量监控、自动检测劣化并触发后续 Step 采集仍待实现。</p></div></div><button class="ev-jump" data-evidence-target="method-dynamic" data-evidence-tab="">在 Demo 中查看对应入口 →</button></article>
+</div></div></section>
 <section class="docs-content" id="docs-content" role="tabpanel" aria-labelledby="page-docs" hidden>
  <div class="faq-layout">
   <nav class="faq-nav" aria-label="文档问题目录">
@@ -693,6 +771,21 @@ $('volume-ranks').addEventListener('input',()=>update());$('download-content').a
 const estimateWeights={base:.9,l0:1.8,l1:4.2,ascendcl:1,runtime:1.6,mstx:.4,memory:3.8,aicpu:1.2,hostBase:.6,hostHz:.03,metrics:{PipeUtilization:7.5,ArithmeticUtilization:6.8,Memory:8.6,L2Cache:6.1}};
 // Product design thresholds, not an industry-wide profiling standard.
 function overheadBand(value,unknown=false){const band=value<=5?'low':value<=10?'medium':'high';return unknown&&band==='low'?'medium':band}
+function enabledCaptureItems(s){
+ const labels={task:'算子时间线',ascendcl:'AscendCL 接口',runtime:'Runtime 接口',mstx:'业务打点',core:'AI Core 指标',memory:'算子内存',host:'Host 资源',aicpu:'AI CPU 明细'};
+ const system=s.scope==='system';
+ const names=(system?['core']:switches).filter(key=>s[key]).map(key=>labels[key]);
+ for(const [key,title,,kind] of extraSpecs){
+  const active=system?systemKeys.has(key)&&kind==='off,on'&&s.extra[key]==='on':extraActive(key,s)&&s.extra[key]&&(kind==='off,on'?s.extra[key]==='on':['ge-api','host-sys'].includes(key)?s.extra[key]!=='off':false);
+  if(active)names.push(title);
+ }
+ return names;
+}
+function renderEnabledCaptureItems(s){
+ const names=enabledCaptureItems(s);
+ $('enabled-count').textContent=names.length+' 项';
+ $('enabled-items').textContent=names.length?names.join('、'):'尚未开启采集项';
+}
 function estimate(s){
  const w=estimateWeights,items=[{name:'采集基础',cost:w.base}],unknown=[];
  const add=(name,cost)=>items.push({name,cost});
@@ -701,7 +794,7 @@ function estimate(s){
  if(s.core){if(s.extra['aic-mode']==='task-based'&&Object.hasOwn(w.metrics,s.metric))add('AI Core '+s.metric,w.metrics[s.metric]);else unknown.push('AI Core '+s.extra['aic-mode']+' / '+s.metric)}
  if(s.host){if(s.extra['host-sys-usage']==='cpu,mem')add('Host CPU 与内存',w.hostBase+s.hostFreq*w.hostHz);else unknown.push('Host '+s.extra['host-sys-usage'])}
  for(const [key,title,,, ,dep] of extraSpecs){if(!extraActive(key,s))continue;const value=s.extra[key];if((dep===''&&['model-execution','hccl','ge-api','l2','sys-hardware-mem','sys-cpu-profiling','sys-profiling','sys-pid-profiling','sys-io-profiling','sys-interconnection-profiling','dvpp-profiling'].includes(key)&&value!=='off')||key==='host-sys'&&value||key.startsWith('mstx-domain-')&&value)unknown.push(title)}
- const count=switches.filter(k=>s[k]).length+extraSpecs.filter(([k,,,kind])=>extraActive(k,s)&&s.extra[k]&&(kind==='off,on'?s.extra[k]==='on':['ge-api','host-sys'].includes(k)?s.extra[k]!=='off':false)).length;
+ const count=enabledCaptureItems(s).length;
  return {items,unknown,total:items.reduce((sum,x)=>sum+x.cost,0),count};
 }
 function generateCommand(s,application,output){
@@ -917,7 +1010,7 @@ function update(options={}){
  $('overhead-title').removeAttribute('title');$('overhead').dataset.source='model';
  $('extra-bar').parentElement.hidden=true;
  renderVolume(state);
- $('enabled-count').textContent=e.count+' 项数据';$('capture-range').textContent='第 '+state.delay+'–'+(state.delay+state.duration)+' 秒';
+ renderEnabledCaptureItems(state);$('capture-range').textContent='第 '+state.delay+'–'+(state.delay+state.duration)+' 秒';
  const invalid=valid.errors.length>0;$('validation').hidden=!invalid;$('validation').textContent=valid.errors.join(' ');
  const pending=Boolean(editorIssue);$('copy').disabled=invalid||pending;
  const generated=invalid?'':workflow.mode==='existing'?generateOfflineCommand($('workflow-prof-dir').value.trim(),state.extra.type):generateCurrentCommand(state,valid.app,valid.output);
@@ -1238,7 +1331,7 @@ function renderCaptureScope(){
  if(system&&!existing){
   $('core-detail').hidden=!state.core;$('overhead').textContent='—';$('overhead-unit').hidden=true;$('overhead-title').textContent='系统采集开销';$('risk').textContent='尚未建模';$('risk').dataset.risk='medium';$('risk').closest('.estimate-head').dataset.risk='medium';
   $('data-size-label').textContent='原始数据量';$('data-size').textContent='待采集';$('data-window').textContent=state.extra['sys-devices']+' · '+state.extra['sys-period']+' 秒；体量模型未校准';$('data-size').dataset.source='pending';
-  $('capture-range').textContent=state.extra['sys-period']+' 秒系统采集';$('enabled-count').textContent=(Number(state.core)+extraSpecs.filter(([key,,,kind])=>systemKeys.has(key)&&kind==='off,on'&&state.extra[key]==='on').length)+' 项数据';
+  $('capture-range').textContent=state.extra['sys-period']+' 秒系统采集';renderEnabledCaptureItems(state);
   $('download-size').textContent=workflow.view==='remote'?'无需整包下载':'待采集';$('download-kind').textContent='系统采集未建模';$('download-size').dataset.source='pending';$('download-description').textContent='独立系统采集需按实际设备与采样结果确认文件大小。';$('volume-relation').textContent='不使用应用事件密度和估算 Rank 数外推系统数据量。';$('download-advice').textContent='';
  }
  document.querySelector('.volume-breakdown').hidden=system||existing;
@@ -1640,12 +1733,12 @@ resetScenario();update();
 
 // Page tabs preserve the sandbox inputs, command and each panel's scroll position.
 let pageView='sandbox';
-const pageScrollPositions={sandbox:0,docs:0};
+const pageScrollPositions={sandbox:0,docs:0,evidence:0};
 function setFaqCurrent(id){document.querySelectorAll('[data-faq]').forEach(link=>link.setAttribute('aria-current',String(link.dataset.faq===id)))}
 function setPageView(view){
- if(view===pageView||!['sandbox','docs'].includes(view))return;
+ if(view===pageView||!['sandbox','docs','evidence'].includes(view))return;
  pageScrollPositions[pageView]=window.scrollY;hideHelp();clearParameterSearch();pageView=view;
- document.body.dataset.page=view;$('lab-panel').hidden=view!=='sandbox';$('docs-content').hidden=view!=='docs';
+ document.body.dataset.page=view;$('lab-panel').hidden=view!=='sandbox';$('docs-content').hidden=view!=='docs';$('user-evidence').hidden=view!=='evidence';
  document.querySelectorAll('[data-page-view]').forEach(tab=>{const selected=tab.dataset.pageView===view;tab.setAttribute('aria-selected',String(selected));tab.tabIndex=selected?0:-1});
  window.scrollTo({top:pageScrollPositions[view],behavior:'instant'});
  if(view==='sandbox')renderCommandHighlight();
@@ -1653,7 +1746,7 @@ function setPageView(view){
 document.querySelector('.page-context').addEventListener('click',event=>{const tab=event.target.closest('[data-page-view]');if(tab)setPageView(tab.dataset.pageView)});
 document.querySelector('.page-context').addEventListener('keydown',event=>{
  if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
- event.preventDefault();const view=event.key==='Home'?'sandbox':event.key==='End'?'docs':pageView==='sandbox'?'docs':'sandbox';setPageView(view);$('page-'+view).focus();
+ event.preventDefault();const views=['sandbox','docs','evidence'],index=views.indexOf(pageView);const view=event.key==='Home'?views[0]:event.key==='End'?views.at(-1):views[(index+(event.key==='ArrowRight'?1:views.length-1))%views.length];setPageView(view);$('page-'+view).focus();
 });
 document.querySelector('.faq-nav').addEventListener('click',event=>{
  const link=event.target.closest('[data-faq]');if(!link)return;event.preventDefault();setFaqCurrent(link.dataset.faq);const section=$(link.dataset.faq);section.focus({preventScroll:true});section.scrollIntoView({block:'start',behavior:'instant'});
@@ -1661,6 +1754,16 @@ document.querySelector('.faq-nav').addEventListener('click',event=>{
 window.addEventListener('scroll',()=>{
  if(pageView!=='docs')return;const sections=[...document.querySelectorAll('.faq-section')],current=sections.filter(section=>section.getBoundingClientRect().top<=150).pop()||sections[0];if(current)setFaqCurrent(current.id);
 },{passive:true});
+
+document.getElementById('user-evidence').addEventListener('click',event=>{const button=event.target.closest('[data-evidence-target]');if(!button)return;setPageView('sandbox');setConfigView(['postprocess-section','volume-ranks','host'].includes(button.dataset.evidenceTarget)?'manual':'scene');const target=document.getElementById(button.dataset.evidenceTarget);if(target){target.scrollIntoView({block:'center',behavior:'instant'});target.classList.add('ev-highlight');setTimeout(()=>target.classList.remove('ev-highlight'),2200)}});
+
+// Open the matching AI example without running or applying its configuration.
+document.getElementById('user-evidence').addEventListener('click',event=>{
+ const button=event.target.closest('[data-evidence-ai]');if(!button)return;
+ const key=button.dataset.evidenceAi;if(!Object.hasOwn(aiExamples,key))return;
+ setPageView('sandbox');setConfigView('ai');startAiQuestion(key);
+ document.querySelector('[data-ai-scenario="'+key+'"]').focus({preventScroll:true});
+});
 </script>
 </body>
 </html>

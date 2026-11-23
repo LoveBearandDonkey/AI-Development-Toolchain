@@ -7,7 +7,7 @@ const workspace = path.dirname(root);
 const html = fs.readFileSync(path.join(workspace, 'catalog.html'), 'utf8');
 for (const match of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)) {
   const src = match[1].match(/src="([^"]+)"/);
-  if (src) execFileSync(process.execPath, ['--check', path.join(workspace, src[1])], { stdio: 'inherit' });
+  if (src) execFileSync(process.execPath, ['--check', path.join(workspace, src[1].split(/[?#]/)[0])], { stdio: 'inherit' });
   else new vm.Script(match[2], { filename: 'catalog.html inline script' });
 }
 for (const file of ['serve.cjs', 'vendor-avatar.cjs', 'check-avatar.cjs']) {
