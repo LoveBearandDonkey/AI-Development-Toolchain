@@ -42,7 +42,7 @@
       part('rightEye',181,138,ink(181,152,48,'e<tspan dx="1" dy="-25" font-size="24">x</tspan>'),true,'rightEye'),
       part('mouth',160,172,stroke('M142 166 Q160 186 178 166'))
     ]},
-    { symbol: 'root', caption: '有点怀疑你的算法', tilt: 5, parts: [
+    { symbol: 'root', caption: '有点怀疑你搞的算法', tilt: 5, parts: [
       part('leftBrow',137,117,stroke('M123 120 L148 114',true)),
       part('rightBrow',186,115,stroke('M172 117 L178 124 L185 106 H201',true),true),
       part('leftEye',137,138,eye(137,138,6,8)),part('rightEye',183,138,eye(183,138,6,10)),

@@ -48,6 +48,7 @@ body[data-evidence-open=true] .top-actions{display:none}
 @media(max-width:760px){.user-evidence{padding:24px 16px 40px}.ev-stats{gap:16px;flex-wrap:wrap}.ev-stats strong{font-size:22px}.ev-layout{grid-template-columns:1fr;gap:18px}.ev-index{position:static;display:flex;overflow:auto;padding-bottom:8px}.ev-index a{min-width:155px}.ev-card{padding:18px}.ev-mapping{grid-template-columns:1fr;gap:4px}.brand .page-tabs{flex-wrap:wrap}.topbar,.header{height:auto;min-height:66px;flex-wrap:wrap;padding-top:12px;padding-bottom:12px}.brand{flex-wrap:wrap}}
 
 </style>
+<link rel="stylesheet" href="modeling-explorers.css">
 </head>
 <body>
 <header class="header"><div class="brand"><span class="mark" aria-hidden="true">M</span><strong>msModeling</strong><nav class="page-tabs" aria-label="msModeling 页面"><a href="硬件画像.html">硬件画像管理</a><a href="部署方案评估.html" aria-current="page">部署方案评估</a><button id="page-evidence-toggle" aria-expanded="false" aria-controls="user-evidence">用户问题</button></nav></div></header>
@@ -1505,5 +1506,6 @@ if(typeof ResizeObserver==='function'){const footerObserver=new ResizeObserver(s
  const target=document.getElementById(button.dataset.evidenceTarget);if(target){target.scrollIntoView({block:'center',behavior:'instant'});target.classList.add('ev-highlight');setTimeout(()=>target.classList.remove('ev-highlight'),2200);if(!target.hasAttribute('tabindex'))target.setAttribute('tabindex','-1');target.focus({preventScroll:true})}});
 })();
 </script>
+<script src="modeling-explorers.js"></script>
 </body>
 </html>

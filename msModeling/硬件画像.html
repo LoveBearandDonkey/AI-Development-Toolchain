@@ -30,6 +30,7 @@ body[data-evidence-open=true] .top-actions{display:none}
 @media(max-width:760px){.user-evidence{padding:24px 16px 40px}.ev-stats{gap:16px;flex-wrap:wrap}.ev-stats strong{font-size:22px}.ev-layout{grid-template-columns:1fr;gap:18px}.ev-index{position:static;display:flex;overflow:auto;padding-bottom:8px}.ev-index a{min-width:155px}.ev-card{padding:18px}.ev-mapping{grid-template-columns:1fr;gap:4px}.brand .page-tabs{flex-wrap:wrap}.topbar,.header{height:auto;min-height:66px;flex-wrap:wrap;padding-top:12px;padding-bottom:12px}.brand{flex-wrap:wrap}}
 
 </style>
+<link rel="stylesheet" href="modeling-explorers.css">
 </head>
 <body>
 <header class="topbar"><div class="brand"><span class="brand-icon" aria-hidden="true">M</span><strong>msModeling</strong><nav class="page-tabs" aria-label="msModeling 页面"><a href="硬件画像.html" aria-current="page">硬件画像管理</a><a href="部署方案评估.html">部署方案评估</a><button id="page-evidence-toggle" aria-expanded="false" aria-controls="user-evidence">用户问题</button></nav></div><div class="top-actions"><button id="save-profile">保存画像</button><button id="rules-open">约束说明</button><button id="export-open">导出画像</button><button id="use-assessment" class="primary">用于方案评估</button></div></header>
@@ -1505,6 +1506,7 @@ function renderSummary(){const p=state.profile,validCount=Number.isInteger(state
  $('total-unit-label').textContent=state.grain==='die'?'设备单元 · die':state.grain==='card'?'设备单元 · 卡':'设备单元';$('summary-count').innerHTML=validCount?fmt(n,0)+'<small>'+unitName()+'</small>':'—';$('summary-count-note').textContent=state.base==='TEST_DEVICE'&&sourceLocked()?'合成设备单元':!validCount?'数量需在拓扑容量内':dieKnown?'折算 '+fmt(n/2)+' 张卡':state.grain==='card'?'按整卡单元建模':'物理卡数待确认';
  const mem=p.memory_size_bytes/GiB*n;$('summary-memory').innerHTML=finite(mem)&&p.memory_size_bytes>0?fmt(mem>=1024?mem/1024:mem)+'<small>'+(mem>=1024?'TiB':'GiB')+'</small>':'—';$('summary-compute').innerHTML=p.mma_ops.bfloat16>0?fmt(p.mma_ops.bfloat16/1e12)+'<small>T op/s</small>':'未配置';$('summary-bandwidth').innerHTML=p.memory_bandwidth_bytes_ps>0?fmt(p.memory_bandwidth_bytes_ps/GiB,0)+'<small>GiB/s</small>':'—';
  $('scene-tiers').hidden=state.layer!=='connect';$('scene-tiers').innerHTML=p.topologies.map((t,i)=>'<button data-tier="'+i+'" aria-pressed="'+(state.tier===i)+'">层 '+i+' · '+(i===p.grid.length-1?'内层':i===0?'外层':'中层')+'</button>').join('');
+ document.dispatchEvent(new Event('modeling:hardware-change'));
 }
 function points(pts){return pts.map(p=>p.map(v=>v.toFixed(2)).join(',')).join(' ')}
 // Adapted three-face box projection from rank-intro.html drawBox, rendered as accessible SVG.
@@ -1571,5 +1573,6 @@ restoreAssessmentEnvironment();
  const target=document.getElementById(button.dataset.evidenceTarget);if(target){target.scrollIntoView({block:'center',behavior:'instant'});target.classList.add('ev-highlight');setTimeout(()=>target.classList.remove('ev-highlight'),2200);if(!target.hasAttribute('tabindex'))target.setAttribute('tabindex','-1');target.focus({preventScroll:true})}});
 })();
 </script>
+<script src="modeling-explorers.js"></script>
 </body>
 </html>
