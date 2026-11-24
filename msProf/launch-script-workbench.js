@@ -8,8 +8,16 @@
     source.innerHTML = `<div class="launch-source-head"><strong id="launch-source-title">从已有启动脚本开始</strong><button type="button" class="launch-link" id="launch-exit" hidden>移除脚本</button></div>
       <input type="file" id="launch-file" accept=".sh,.bash,text/plain" hidden>
       <div id="launch-source-error" class="launch-error" role="alert" hidden></div>
-      <div id="launch-source-result" hidden><div class="launch-facts" id="launch-facts"></div></div>`;
+      <div id="launch-source-result" class="launch-source-body" hidden><div class="launch-facts" id="launch-facts"></div>
+        <div class="launch-code-docs" aria-hidden="true">
+          <div class="launch-code-sheet launch-code-sheet-back"><div class="launch-code-paper"><div class="launch-paper-heading"><span class="launch-paper-file-icon"></span><span>sh</span><i></i></div><div class="launch-paper-code" id="launch-mini-source"></div><div class="launch-paper-footer"><span></span><span></span></div></div></div>
+          <div class="launch-code-sheet launch-code-sheet-front"><div class="launch-code-paper"><div class="launch-paper-heading"><span class="launch-paper-file-icon"></span><span>python</span><i></i></div><div class="launch-paper-code" id="launch-mini-profile"></div><div class="launch-paper-footer"><span></span><span></span></div></div></div>
+        </div>
+      </div>`;
     $('controls-header').after(source);
+    function renderMiniCode(id,lines){
+      $(id).replaceChildren(...lines.slice(0,8).map((text,index)=>{const row=document.createElement('div'),number=document.createElement('span'),code=document.createElement('code');row.className='launch-paper-code-line';if(text.trim().startsWith('#'))row.classList.add('launch-paper-comment');number.textContent=index+1;code.textContent=text.trimEnd();row.append(number,code);return row}));
+    }
     const importButton=document.createElement('button');importButton.type='button';importButton.id='launch-choose';importButton.className='button launch-primary';importButton.textContent='导入';$('controls-header').append(importButton);
     const config = document.createElement('section'); config.className = 'launch-window'; config.hidden = true;
     config.innerHTML = `<h2>只采需要的训练区间</h2><p>按 Step 选择稳定阶段，训练保持原规模。</p>
@@ -128,6 +136,8 @@
       $('command-feedback').hidden = true; $('restore-command').hidden = true; $('validation').hidden = true;
       const values = options(); let error = '';
       try { result = window.LaunchScriptImport.build(info, values); } catch (e) { error = e.message; result = null; }
+      renderMiniCode('launch-mini-source',info.command.split('\n').filter(line=>line.trim()));
+      renderMiniCode('launch-mini-profile',result?['import torch_npu','with torch_npu.profiler.profile(','    schedule=torch_npu.profiler.schedule(','        skip_first='+values.start+',','        active='+(values.end-values.start)+')) as prof:','    for step in range('+values.end+'):','        train_one_step()','        prof.step()']:['import torch_npu','# 等待有效配置']);
       $('launch-config-error').hidden = !error; $('launch-config-error').textContent = error;
       const range=currentWindow();
       for(const [boundary,value,min,max]of [['start',stepStart,0,stepEnd-1],['end',stepEnd,stepStart+1,info.trainIters||10000000]]){
@@ -165,7 +175,7 @@
         $('launch-exit').hidden = false; $('launch-source-result').hidden = false;
         $('launch-facts').replaceChildren();
         for (const [label, value] of [['训练规模', info.total ? info.nodes + ' 节点 × ' + info.perNode + ' NPU' : '待确认'], ['并行配置', ['TP', 'PP', 'EP', 'CP'].map(k => k + ' ' + (info[k.toLowerCase()] ?? '?')).join(' / ')]]) {
-          const box = document.createElement('div'), caption = document.createElement('span'), reading = document.createElement('b'); caption.textContent = label; reading.textContent = value; box.append(caption, reading); $('launch-facts').append(box);
+          const box = document.createElement('div'), caption = document.createElement('span'), reading = document.createElement('b'); caption.textContent = label; reading.textContent = value; reading.title=value; box.append(caption, reading); $('launch-facts').append(box);
         }
         stepStart=10;stepEnd=15; $('launch-ranks').value = '0'; $('launch-step-seconds').value='2'; $('output').value = './profiling/' + (sample?.id || 'training');
         host.prepare();
