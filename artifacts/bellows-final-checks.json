@@ -1,0 +1,21 @@
+[
+ ["eval","setConfigView('manual')"],
+ ["click","#memory"],
+ ["wait",1800],
+ ["eval","(()=>{const v=Number(document.getElementById('overhead').textContent.replace(/[^0-9.]/g,''));const stroke=Number(document.getElementById('bellows-stage').dataset.stroke);if(Math.abs(stroke-Math.min(100,v/30*100))>.1)throw Error('Config did not sync');return {overhead:v,stroke}})()"],
+ ["shot","artifacts/bellows-desktop-final.png",".estimate",2],
+ ["eval","document.getElementById('overhead').textContent='≈128'"],
+ ["wait",1800],
+ ["eval","(()=>{const a=document.querySelector('.big-number').getBoundingClientRect();const r=document.createRange();r.selectNodeContents(document.querySelector('.big-number'));const b=r.getBoundingClientRect();if(b.right>a.right+1)throw Error('Number overflow');return {readingWidth:b.width,column:a.width,stroke:document.getElementById('bellows-stage').dataset.stroke}})()"],
+ ["shot","artifacts/bellows-large-number.png",".estimate-head",3],
+ ["key","Home","#bellows-stage"],
+ ["wait",1800],
+ ["shot","artifacts/bellows-compressed.png",".estimate-head",4],
+ ["key","End","#bellows-stage"],
+ ["wait",1800],
+ ["shot","artifacts/bellows-expanded.png",".estimate-head",4],
+ ["key","Escape","#bellows-stage"],
+ ["eval","document.getElementById('overhead').textContent='≈6'"],
+ ["wait",1800],
+ ["eval","(()=>{if(document.getElementById('bellows-stage').dataset.stroke!=='20.00')throw Error('Escape did not restore');return 'all checks passed'})()"]
+]
