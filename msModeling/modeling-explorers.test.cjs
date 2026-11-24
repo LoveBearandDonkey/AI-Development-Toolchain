@@ -1,7 +1,7 @@
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
-const {capacityModel,upgrade,total,bottleneck,scenarios}=require('./modeling-explorers.js');
+const {capacityModel,balanceFullLoad}=require('./modeling-explorers.js');
 const html=fs.readFileSync(__dirname+'/硬件画像.html','utf8');
 const profiles=JSON.parse(html.match(/<script id="profile-snapshot" type="application\/json">([\s\S]*?)<\/script>/)[1]);
 const p=profiles.find(p=>p.name==='ATLAS_800_A3_752T_128G_DIE');
@@ -26,12 +26,29 @@ test('invalid hardware is rejected and missing BF16 is not silently substituted'
  for(const count of [0,NaN,1.5,1e9])assert.ok(capacityModel(p,count,load).error);
  assert.ok(capacityModel({...p,mma_ops:{}},32,load).error);
 });
-test('upgrade obeys Amdahl limit, shifts bottleneck and has diminishing marginal returns',()=>{
- const parts=scenarios.compute.parts;
- assert.deepEqual(upgrade(parts,0,1),parts);
- assert.equal(total(upgrade(parts,0,2)),640);
- assert.equal(bottleneck(upgrade(parts,0,8)),1);
- assert.ok(total(upgrade(parts,0,2))-total(upgrade(parts,0,4))<total(parts)-total(upgrade(parts,0,2)));
- assert.equal(total(upgrade(parts,0,Infinity)),280);
- assert.deepEqual(parts,[720,160,80,40]);
+test('full load remains feasible and the next request exceeds a boundary without relaxing targets',()=>{
+ for(const count of [8,16,32,64])for(const input of [512,2048,32768,65536])for(const pinned of ['input','concurrency']){
+  const requested={...load,input,concurrency:100,output:1024};
+  const balanced=balanceFullLoad(p,count,requested,pinned);assert.ok(!balanced.error);
+  const {load:actual,result:r}=balanced;
+  assert.equal(actual.ttft,requested.ttft);assert.equal(actual.tpot,requested.tpot);
+  assert.equal(actual.concurrency,r.cap);assert.ok(r.pass);
+  const next=r.at(actual.concurrency+1);assert.ok(next.mem>r.unitMemory||next.ttft>actual.ttft||next.tpot>actual.tpot);
+  assert.equal(actual.input%512,0);assert.ok(actual.input>=512&&actual.input<=65536);
+  assert.deepEqual(requested,{...load,input,concurrency:100,output:1024});
+ }
+});
+test('full-load concurrency and context trade off in both directions and settling is idempotent',()=>{
+ const a=balanceFullLoad(p,32,{...load,concurrency:32},'concurrency');
+ const b=balanceFullLoad(p,32,{...a.load,concurrency:128},'concurrency');
+ assert.ok(b.load.input<a.load.input);assert.ok(b.load.concurrency>a.load.concurrency);
+ const c=balanceFullLoad(p,32,{...b.load,input:a.load.input},'input');assert.ok(c.load.concurrency<b.load.concurrency);
+ assert.deepEqual(balanceFullLoad(p,32,b.load,'concurrency').load,b.load);
+});
+test('full-load failures report no feasible solution without changing hardware or targets',()=>{
+ assert.ok(balanceFullLoad({...p,memory_size_bytes:4*2**30},32,load).error);
+ assert.ok(balanceFullLoad(p,0,load).error);
+ assert.ok(balanceFullLoad(p,3,load).error); // TP1 cannot fit these weights plus reserve.
+ const strict={...load,ttft:1,tpot:1};assert.ok(balanceFullLoad(p,32,strict).error);
+ assert.equal(strict.ttft,1);assert.equal(strict.tpot,1);
 });

@@ -260,6 +260,7 @@ body[data-page=evidence] .lab-page,body[data-page=evidence] .evidence-toolbar-ba
 @media(max-width:760px){.bellows-stage{max-width:320px}}
 </style>
 <link rel="stylesheet" href="launch-script-workbench.css">
+<link rel="stylesheet" href="capture-environment.css?v=20261124-2">
 </head>
 <body data-page="sandbox">
 <main class="workspace lab-page" id="workspace">
@@ -434,7 +435,7 @@ body[data-page=evidence] .lab-page,body[data-page=evidence] .evidence-toolbar-ba
   </div>
   <section class="command-panel" aria-label="执行命令">
    <div class="terminal">
-     <div class="terminal-head"><div class="terminal-title">采集代码</div><span id="code-language" class="code-language">Bash</span></div>
+     <div class="terminal-head"><div class="terminal-title">环境准备与采集方案</div><span id="code-language" class="code-language">Bash</span></div>
      <div class="capture-code-toolbar"><div class="capture-method-tabs" role="tablist" aria-label="采集接入方式">
       <button type="button" id="method-launch" data-capture-method="launch" role="tab" aria-selected="true" aria-controls="command-surface">命令启动</button><button type="button" id="method-dynamic" data-capture-method="dynamic" role="tab" aria-selected="false" aria-controls="command-surface" tabindex="-1">动态接入</button><button type="button" id="method-framework" data-capture-method="framework" role="tab" aria-selected="false" aria-controls="command-surface" tabindex="-1">框架接口</button><button type="button" id="method-native" data-capture-method="native" role="tab" aria-selected="false" aria-controls="command-surface" tabindex="-1">原生接口</button><button type="button" id="method-mstx" data-capture-method="mstx" role="tab" aria-selected="false" aria-controls="command-surface" tabindex="-1">业务打点</button>
      </div><span class="code-language capture-method-label">采集方式</span><div class="round-copy-actions"><button class="copy-btn" id="copy-all" hidden>复制全部</button><button class="copy-btn" id="copy"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="5" y="5" width="8" height="9" rx="1.5"/><path d="M10 3V2H2v9h1"/></svg><span id="copy-label">复制</span></button></div></div>
@@ -645,6 +646,7 @@ body[data-page=evidence] .lab-page,body[data-page=evidence] .evidence-toolbar-ba
 <div class="toast" id="toast" role="status" aria-live="polite" hidden><span class="toast-icon" id="toast-icon" aria-hidden="true"></span><span id="toast-message"></span></div>
 <script src="../vendor/prismjs/prism-1.30.0.js"></script>
 <script src="launch-script-import.js"></script>
+<script src="capture-environment.js?v=20261124-2"></script>
 <script src="capture-code-files.js"></script>
 <script src="launch-script-samples.js"></script>
 <script src="launch-script-workbench.js"></script>
@@ -1132,11 +1134,18 @@ $('metric').addEventListener('change',()=>{replaceRoundMetric($('metric').value)
 for(const id of ['application','output'])$(id).addEventListener('input',()=>{if(id==='output')roundOutputOverrides={};update()});
 $('reset').addEventListener('click',()=>{
  window.launchScriptWorkbench?.clear(false);
+ window.captureCodeFiles?.reset();
+ clearTimeout(copyTimer);$('copy').dataset.copied='false';$('manual-wrap').hidden=true;
+ if(dragPointerId!==null&&windowSlider.hasPointerCapture?.(dragPointerId))windowSlider.releasePointerCapture(dragPointerId);
+ draggingBoundary=null;dragPointerId=null;dragOffset=0;delete windowSlider.dataset.dragging;
  state={...defaults,extra:{...defaults.extra}};selectedPreset=defaults.preset;workflow.mode='capture';workflow.view='local';editorIssue='';
- for(const [el,initial] of originalFormState){el.value=initial.value;for(const name of ['min','max','step'])if(initial[name]===null)el.removeAttribute(name);else el.setAttribute(name,initial[name]);el.removeAttribute('aria-invalid')}
+ for(const [el,initial] of originalFormState){el.value=initial.value;if(initial.selected)for(const option of el.options)option.selected=initial.selected.includes(option.value);if(el.type==='checkbox'||el.type==='radio')el.checked=initial.checked;for(const name of ['min','max','step'])if(initial[name]===null)el.removeAttribute(name);else el.setAttribute(name,initial[name]);el.removeAttribute('aria-invalid')}
  for(const [details,open] of originalDetailsState)details.open=open;
   resetScenario();
- hideHelp();clearParameterSearch();$('dependency').hidden=true;update();document.querySelector('.controls').scrollTop=0;document.querySelector('.preview').scrollTop=0;$('command').scrollTop=0;syncCommandScroll();if(window.innerWidth<=760)document.querySelector('.body-grid').scrollTop=0;notify('已复原全部配置');
+ setPageView('sandbox');for(const view of Object.keys(pageScrollPositions))pageScrollPositions[view]=0;setFaqCurrent(document.querySelector('.faq-section').id);
+ hideHelp();clearParameterSearch();$('dependency').hidden=true;update();window.dispatchEvent(new Event('profiler-reset'));
+ for(const scroller of document.querySelectorAll('.controls,.command-panel,.preview,.body-grid,.ai-chat-messages,#command,#capture-file-diff,#launch-diff')){scroller.scrollTop=0;scroller.scrollLeft=0;scroller.classList.remove('is-scrolling')}
+ syncCommandScroll();window.scrollTo({top:0,left:0,behavior:'instant'});notify('已复原整个页面');
 });
 async function copyCommand(all=false){
  if(!currentCommand)return;
@@ -1606,9 +1615,13 @@ function renderCaptureFiles(){
  if(!window.captureCodeFiles)return;
  const rounds=captureRoundStates(state),index=Math.max(0,rounds.findIndex(round=>round.metric===state.metric)),round=rounds[index];
  const files=captureFileSet(round,roundOutput(state,round,$('output').value.trim()),index);
- currentCommand=window.captureCodeFiles.render(files,codeMethod+':'+(codeMethod==='mstx'?$('code-mstx-api').value:codeMethod==='framework'?$('code-framework').value:'')+':'+index);
+ currentCommand=window.captureCodeFiles.render(files,codeMethod+':'+(codeMethod==='mstx'?$('code-mstx-api').value:codeMethod==='framework'?$('code-framework').value:'')+':'+index,captureEnvironmentContext());
  if($('copy').disabled)currentCommand='';
  renderCommandHighlight();
+}
+function captureEnvironmentContext(){
+ const imported=Boolean(window.launchScriptWorkbench?.active);
+ return {method:imported?'framework':codeMethod,framework:imported?'pytorch':$('code-framework').value,api:imported?'pytorch':codeMethod==='mstx'?$('code-mstx-api').value:'',imported,processing:workflow.mode==='existing',output:$('output').value.trim()};
 }
 function methodCode(round,index){
  const output=roundOutput(state,round,$('output').value.trim());
@@ -1660,10 +1673,10 @@ function renderCaptureMethodTabs(){
 }
 function renderCaptureCode(){
  const imported=window.launchScriptWorkbench?.render();
- if(imported){window.captureCodeFiles?.renderImported();currentCommand=imported.command;renderCommandHighlight();return}
+ if(imported){window.captureCodeFiles?.renderImported({...captureEnvironmentContext(),name:imported.name});currentCommand=imported.command;renderCommandHighlight();return}
  syncCodeRangeControls();
  const restricted=workflow.mode==='existing'||state.scope==='system';if(restricted&&codeMethod!=='launch'){codeMethod='launch';launchDraft=null}
- document.querySelector('.terminal-title').textContent=workflow.mode==='existing'?'解析导出命令':'采集代码';
+ document.querySelector('.terminal-title').textContent=workflow.mode==='existing'?'解析导出命令':'环境准备与采集方案';
  document.querySelector('.capture-method-tabs').hidden=workflow.mode==='existing';
  renderCaptureMethodTabs();
  const launch=codeMethod==='launch',python=codeMethod==='framework'||codeMethod==='mstx'&&$('code-mstx-api').value==='pytorch',native=codeMethod==='native'||codeMethod==='mstx'&&!python;
@@ -1811,9 +1824,9 @@ document.querySelector('.config-view-tabs').addEventListener('click',event=>{con
 document.querySelector('.config-view-tabs').addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;const buttons=[...document.querySelectorAll('[data-config-view]')],index=buttons.indexOf(document.activeElement);if(index<0)return;event.preventDefault();const next=event.key==='Home'?0:event.key==='End'?buttons.length-1:(index+(event.key==='ArrowRight'?1:-1)+buttons.length)%buttons.length;setConfigView(buttons[next].dataset.configView);buttons[next].focus()});
 setConfigView(configView);
 
-const originalFormState=new Map([...document.querySelectorAll('.lab-panel input,.lab-panel select')].map(el=>[el,{value:el.tagName==='SELECT'?(el.querySelector('option[selected]')||el.querySelector('option')).value:el.getAttribute('value')||'',min:el.getAttribute('min'),max:el.getAttribute('max'),step:el.getAttribute('step')} ]));
-const originalDetailsState=new Map([...document.querySelectorAll('.lab-panel details')].map(el=>[el,el.hasAttribute('open')]));
-const resetButton=$('reset');resetButton.className='button toolbar-icon';resetButton.innerHTML='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5a5.5 5.5 0 1 1-.4 5M3 1.8V5h3.2"/></svg>';resetButton.title='复原全部初始配置'; resetButton.setAttribute('aria-label','复原全部初始配置');document.querySelector('.toolbar-actions').prepend(resetButton);
+const originalFormState=new Map([...document.querySelectorAll('.lab-panel input,.lab-panel select')].map(el=>[el,{value:el.tagName==='SELECT'?(el.querySelector('option[selected]')||el.querySelector('option')).value:el.getAttribute('value')??(['checkbox','radio'].includes(el.type)?'on':''),selected:el.tagName==='SELECT'?[...(el.querySelector('option[selected]')?el.querySelectorAll('option[selected]'):[el.querySelector('option')])].map(option=>option.value):null,checked:el.defaultChecked,min:el.getAttribute('min'),max:el.getAttribute('max'),step:el.getAttribute('step')} ]));
+const originalDetailsState=new Map([...document.querySelectorAll('details')].map(el=>[el,el.hasAttribute('open')]));
+const resetButton=$('reset');resetButton.className='button toolbar-icon';resetButton.innerHTML='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5a5.5 5.5 0 1 1-.4 5M3 1.8V5h3.2"/></svg>';resetButton.title='复原整个页面'; resetButton.setAttribute('aria-label','复原整个页面');document.querySelector('.toolbar-actions').prepend(resetButton);
 // Keep scrollbar geometry stable while hiding idle scroll thumbs.
 for(const scroller of document.querySelectorAll('.controls,.command-panel,.preview,#command,.body-grid')){
  scroller.classList.add('transient-scrollbar');let scrollIdleTimer;
@@ -2025,6 +2038,10 @@ update();
   if(event.key in steps){event.preventDefault();setStroke(target+steps[event.key]*(event.shiftKey?4:1),true)}
   else if(event.key==='Home'||event.key==='End'){event.preventDefault();setStroke(event.key==='Home'?0:30,true)}
   else if(event.key==='Escape'){event.preventDefault();linked=true;sync()}
+ });
+ window.addEventListener('profiler-reset',()=>{
+  if(drag&&stage.hasPointerCapture(drag.id))stage.releasePointerCapture(drag.id);
+  drag=null;sync();cancelAnimationFrame(frame);frame=0;last=0;current=target;draw();
  });
  draw();sync();
 })();

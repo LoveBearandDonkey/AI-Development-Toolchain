@@ -52,12 +52,13 @@ body[data-evidence-open=true] .top-actions{display:none}
 </head>
 <body>
 <header class="header"><div class="brand"><span class="mark" aria-hidden="true">M</span><strong>msModeling</strong><nav class="page-tabs" aria-label="msModeling 页面"><a href="硬件画像.html">硬件画像管理</a><a href="部署方案评估.html" aria-current="page">部署方案评估</a><button id="page-evidence-toggle" aria-expanded="false" aria-controls="user-evidence">用户问题</button></nav></div></header>
-<section class="user-evidence" id="user-evidence" aria-label="部署方案评估用户问题" hidden><div class="ev-stats"><div><strong>5</strong><span>问题主题</span></div><div><strong>9</strong><span>引用记录（按来源与编号去重）</span></div></div><div class="ev-layout"><nav class="ev-index" aria-label="用户问题主题">
+<section class="user-evidence" id="user-evidence" aria-label="部署方案评估用户问题" hidden><div class="ev-stats"><div><strong>6</strong><span>问题主题</span></div><div><strong>9</strong><span>原有引用记录（按来源与编号去重）</span></div></div><div class="ev-layout"><nav class="ev-index" aria-label="用户问题主题">
 <a href="#ev-case-1">01 · 仿真推荐与真实效果有差距：用实验计划和测量结果逐项验证</a>
 <a href="#ev-case-2">02 · 吞吐高的推荐未必能启动或达标：同时核对延迟、吞吐和内存</a>
 <a href="#ev-case-3">03 · 寻优过程和最终配置分散、难复跑：保留参数、状态和实验记录</a>
 <a href="#ev-case-4">04 · 客户给出机器与目标、调优任务难统一：把业务与硬件条件放到同一评估中</a>
 <a href="#ev-case-5">05 · 并行参数不知道怎么选：比较 TP/DP 候选与淘汰原因</a>
+<a href="#ev-case-6">06 · 想让业务更快：形成具体改动并验证收益</a>
 </nav><div>
 <article class="ev-card" id="ev-case-1"><div class="ev-card-head"><span class="ev-number">01</span><h2>仿真推荐与真实效果有差距：用实验计划和测量结果逐项验证</h2></div><h3>原声与用户（脱敏）</h3>
 <figure class="ev-voice" data-source="issue"><blockquote>“仿真dp32最好，但是实测dp32拉不起来”</blockquote><figcaption class="ev-meta">社区账号 <code>zh***ng</code> · 社区 issue 正文节选 · <a href="https://gitcode.com/Ascend/msmodeling/issues/66" target="_blank" rel="noopener noreferrer">msmodeling #66</a><br>wzh创建-issue-msmodeling-20261123.csv · CSV 第 82 条记录（不含表头）</figcaption></figure>
@@ -81,6 +82,7 @@ body[data-evidence-open=true] .top-actions{display:none}
 <figure class="ev-voice" data-source="interview"><blockquote>“p和d之内的DPTP该如何确定最优的值？”</blockquote><figcaption class="ev-meta">用户 <code>孙工</code> · 访谈原声节选 · OTT复核-ott21<br>原始问题机会点汇聚清单_V1.24.xlsx · 访谈信息整理 · 第 491 行</figcaption></figure>
 <figure class="ev-voice" data-source="interview"><blockquote>“max_num_seqs那个max_num_batched_tokens,就是这些东西该怎么调的，该怎么配？”</blockquote><figcaption class="ev-meta">用户 <code>孙工</code> · 访谈原声节选 · OTT复核-ott21<br>原始问题机会点汇聚清单_V1.24.xlsx · 访谈信息整理 · 第 491 行</figcaption></figure>
 <div class="ev-mapping"><div><h3>Demo 如何解决 · 操作</h3><p>搜索后在同一模型和负载下比较各环境的 TP × DP 候选。查看 QPS、TTFT、TPOT、单元内存和相对目标的综合裕量；优先看全部约束达标的候选，再逐列排序。</p><p>点击未达标候选查看具体原因；若全部不达标，页面保留冲突，不自动放宽目标。选择一个待验证对象，导出该候选的实验计划。</p></div><div><h3>当前可见结果 · 价值</h3><p>把“哪项未达标、为什么淘汰、下一步测哪个”落实到具体候选和参数。覆盖范围为当前 TP/DP 枚举与构造数据，不是完整 PD／EP／PP 或调度参数寻优。</p></div></div><p class="ev-design-ref">设计对应：wzh创建-下一代msModeling Demo设计.html · UX05。</p><button class="ev-jump" data-evidence-target="compare" data-evidence-tab="">在 Demo 中查看对应入口 →</button></article>
+<article class="ev-card" id="ev-case-6"><div class="ev-card-head"><span class="ev-number">06</span><h2>想让业务更快：形成具体改动并验证收益</h2></div><h3>本轮设计需求</h3><figure class="ev-voice" data-source="review"><p class="ev-review-copy">只把算力或带宽倍率拉高，无法说明用户应当做什么。需要落到硬件、启动配置或代码的具体改动，并用同一负载的前后实测核对收益。</p><figcaption class="ev-meta">类型 <code>设计需求</code> · 本轮 Modeling Demo 交互需求归纳，非访谈原声；不计入原有引用记录。</figcaption></figure><div class="ev-mapping"><div><h3>Demo 如何解决 · 操作</h3><p>选择实际候选配置，选择更换硬件环境、调整 TP / DP、热点算子融合、减少重复搬运或绑卡映射动作。查看改动位置、实施前提与证据清单，导出改动和验证计划；执行后录入前后两次测量，核对同一负载与正确性后比较。</p></div><div><h3>当前可见结果 · 价值</h3><p>每个动作对应具体改动位置和验收指标。收益仅依据录入的前后实测；构造候选值不充当实测基线。尚未接入真实源码、启动脚本、设备执行和原始报告核验，导出的是待执行计划，不声称完成自动代码优化或真实部署。</p></div></div><button class="ev-jump" data-evidence-target="ma-base" data-mx-evidence="explore">查看优化行动验证</button></article>
 </div></div></section>
 <nav class="steps" role="tablist" aria-label="部署评估流程"><button class="step" id="step-1" role="tab" aria-selected="true" aria-controls="view-1" data-step="1"><b>1</b><span><strong>模型与环境</strong></span></button><button class="step" id="step-2" role="tab" aria-selected="false" aria-controls="view-2" tabindex="-1" data-step="2"><b>2</b><span><strong>部署和推理仿真寻优</strong></span></button></nav>
 <main class="page">
@@ -1506,6 +1508,7 @@ if(typeof ResizeObserver==='function'){const footerObserver=new ResizeObserver(s
  const target=document.getElementById(button.dataset.evidenceTarget);if(target){target.scrollIntoView({block:'center',behavior:'instant'});target.classList.add('ev-highlight');setTimeout(()=>target.classList.remove('ev-highlight'),2200);if(!target.hasAttribute('tabindex'))target.setAttribute('tabindex','-1');target.focus({preventScroll:true})}});
 })();
 </script>
+<script src="modeling-actions.js"></script>
 <script src="modeling-explorers.js"></script>
 </body>
 </html>

@@ -18,7 +18,7 @@
     function renderMiniCode(id,lines){
       $(id).replaceChildren(...lines.slice(0,8).map((text,index)=>{const row=document.createElement('div'),number=document.createElement('span'),code=document.createElement('code');row.className='launch-paper-code-line';if(text.trim().startsWith('#'))row.classList.add('launch-paper-comment');number.textContent=index+1;code.textContent=text.trimEnd();row.append(number,code);return row}));
     }
-    const importButton=document.createElement('button');importButton.type='button';importButton.id='launch-choose';importButton.className='button launch-primary';importButton.textContent='导入';$('controls-header').append(importButton);
+    const importButton=document.createElement('button');importButton.type='button';importButton.id='launch-choose';importButton.className='button launch-primary';importButton.textContent='导入.sh';$('controls-header').append(importButton);
     const config = document.createElement('section'); config.className = 'launch-window'; config.hidden = true;
     config.innerHTML = `<h2>只采需要的训练区间</h2><p>按 Step 选择稳定阶段，训练保持原规模。</p>
       <label for="launch-ranks">本次采集的全局 Rank<input id="launch-ranks" type="text" value="0" placeholder="例如 0,1" spellcheck="false"></label><p id="launch-rank-note"></p>
@@ -69,7 +69,7 @@
       const context=document.createElement('canvas').getContext('2d'),style=getComputedStyle(filePath);context.font='400 '+style.fontSize+' '+style.fontFamily;
       const measure=text=>context.measureText(text).width;
       const fullFolder=folder||'',shortFolder=folder?folder.slice(0,3)+'…\\':'';
-      const available=filePath.clientWidth-2;
+      const available=filePath.clientWidth-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight)-2;
       directory.textContent=measure(fullFolder+file)<available?fullFolder:shortFolder;
       const nameWidth=available-measure(directory.textContent);context.font='600 '+style.fontSize+' '+style.fontFamily;
       let rendered=file;
@@ -130,7 +130,7 @@
       for(const [id,key]of [['stack','profileStack'],['shapes','recordShapes']]){$('launch-'+id).setAttribute('aria-checked',String(Boolean(shared[key])));$('scene-launch-'+id).checked=Boolean(shared[key])}
       $('code-settings').hidden = true; $('collection-rounds').hidden = true; $('copy-all').hidden = true;
       document.querySelector('.capture-method-tabs').hidden = true;
-      document.querySelector('.terminal-title').textContent = '启动脚本';
+      document.querySelector('.terminal-title').textContent = '环境准备与采集方案';
       $('code-language').textContent = 'Bash'; $('code-reference').href = 'https://gitee.com/ascend/MindSpeed/blob/master/docs/zh/user-guide/profile.md';
       $('command').readOnly = true; $('command').setAttribute('aria-label', '修改后的完整启动脚本');
       $('command-feedback').hidden = true; $('restore-command').hidden = true; $('validation').hidden = true;
@@ -162,7 +162,7 @@
       $('launch-estimate-context').textContent=context.valid?context.steps+' Step × '+context.seconds+' 秒/Step ≈ '+Number(context.duration.toFixed(2))+' 秒；按 '+context.ranks+' 个采集 Rank 估算。':'请修正采集区间、Rank 或每步耗时后查看数据量。';
       $('artifact-path').textContent = values.output; $('artifact-tree').textContent = '所选 Rank 的 Profiler 数据\n  原始记录与解析产物（以实际版本输出为准）';
       $('artifact-path-note').textContent = '目录在训练执行端；当前未运行、未读取产物。'; $('artifact-delivery-note').textContent = '脚本参数识别与修改演示；未验证现场 MindSpeed / CANN 版本。';
-      return { command: error ? '' : text, copyLabel: '复制' };
+      return { command: error ? '' : text, copyLabel: '复制', name:info.name };
     }
     function load(text, name, sample) {
       try {
