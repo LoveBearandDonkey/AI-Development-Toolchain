@@ -28,11 +28,58 @@
     const manualInterval = $('window-slider').closest('.section');
     const windowCard=$('window-slider').closest('.window-card'),windowAnchor=document.createComment('shared collection window');windowCard.before(windowAnchor);
     const windowAxis=[...windowCard.querySelectorAll('.window-axis span')],originalAxis=windowAxis.map(el=>el.textContent);
-    const cliOnly = [$('application').closest('.section'),manualInterval,$('scene-phase-field'),$('scene-environment'),$('scene-workload').closest('.scene-field'),$('scene-metric-field'),document.querySelector('[data-scene-goal="operator"]'),$('scene-mstx').closest('label'),$('host-detail'),$('mstx-detail'),$('core-detail'),$('postprocess-section'),$('workflow-mode-section'),...['ascendcl','runtime','mstx','core','aicpu'].map(id=>$(id).closest('.control-row')),...document.querySelectorAll('#config-details>.advanced,#config-details>.collection-groups,#config-view-manual>details.docs')].filter(Boolean);
-    cliOnly.forEach(el=>el.classList.add('launch-cli-only'));
+    // Keep the normal form in place and explain the adapter's boundaries locally.
+    const restrictions = [], lockedControls = new Map();
+    function restrict(target, message, controls = target, kind = 'unavailable') {
+      const note=document.createElement('p');note.className='launch-adapter-note';note.hidden=true;
+      note.id='launch-adapter-note-'+restrictions.length;note.textContent=message+(kind==='unavailable'?' 不参与本次脚本生成。':'');
+      target.append(note);restrictions.push({target,note,controls,kind});
+    }
+    restrict($('scene-workload').closest('.scene-field'),'沿用脚本 · 当前为模型训练。',$('scene-workload').parentElement,'fixed');
+    restrict($('workflow-mode-section'),'沿用脚本 · 本次采集新数据；移除脚本后可切换分析已有数据。',undefined,'fixed');
+    restrict($('capture-scope-panel'),'沿用脚本 · 由原训练启动命令发起应用采集。',undefined,'fixed');
+    restrict($('task').closest('.control-row'),'沿用脚本 · 时间线采集保持开启，可调整 L0 / L1 / L2。',$('task'),'fixed');
+    for(const id of ['ascendcl','runtime','mstx','core','aicpu'])restrict($(id).closest('.control-row'),'暂未接入 · 当前脚本适配未提供此项的独立配置。');
+    restrict($('host-detail'),'暂未接入 · CPU 活动可在上方开启，此处的系统资源采样参数尚未接入。');
+    restrict($('mstx-detail'),'暂未接入 · 当前脚本适配尚未接入业务打点与域过滤。');
+    restrict($('core-detail'),'暂未接入 · 当前脚本适配尚未接入硬件指标配置。');
+    restrict($('scene-metric-field'),'暂未接入 · 当前脚本适配尚未接入算子硬件指标分析。');
+    const operatorGoal=document.querySelector('[data-scene-goal="operator"]');
+    restrict(operatorGoal.parentElement.parentElement,'暂未接入 · “算子瓶颈在哪里”所需的硬件指标配置尚未接入。',operatorGoal);
+    restrict($('scene-mstx').closest('label'),'暂未接入 · 业务打点',$('scene-mstx'));
+    restrict($('scene-phase-field'),'按 Step 配置 · 使用本节的区间选择采集阶段。',document.querySelector('.scene-phases'),'replaced');
+    restrict($('scene-environment'),'沿用脚本 · 运行范围来自训练规模，采集 Rank 数来自本次 Rank 选择；芯片仍可用于环境参考。',[$('scene-deployment'),$('scene-ranks'),document.querySelector('[data-scene-choice-for="scene-deployment"]')].filter(Boolean),'fixed');
+    restrict($('volume-ranks').closest('.rank-setting'),'沿用采集 Rank · 数量由本次选择的全局 Rank 自动计算。',undefined,'fixed');
+    for(const section of document.querySelectorAll('#config-details>.advanced,#config-details>.collection-groups'))restrict(section,'暂未接入 · 本组为通用 CLI 配置，当前脚本适配尚未接入。');
+    restrict($('workflow-format-slot'),'暂未接入 · 解析格式由训练侧 Profiler 决定，当前不生成格式参数。');
+    const originalValues=new Map();
+    function setScriptValue(id,value){const field=$(id);if(!originalValues.has(field))originalValues.set(field,{value:field.value,readOnly:field.readOnly,title:field.getAttribute('title')});field.value=value;}
+    function applyRestrictions(){
+      for(const {target,note,controls,kind} of restrictions){
+        target.dataset.launchStatus=kind;note.hidden=false;
+        for(const root of Array.isArray(controls)?controls:[controls]){
+          for(const field of [root,...root.querySelectorAll('input,select,button,textarea')]){
+            if(!field.matches('input,select,button,textarea')||field.classList.contains('help'))continue;
+            if(!lockedControls.has(field))lockedControls.set(field,{disabled:field.disabled,describedby:field.getAttribute('aria-describedby')});
+            field.disabled=true;field.setAttribute('aria-describedby',note.id);
+          }
+        }
+      }
+      setScriptValue('scene-workload','training');
+      setScriptValue('scene-deployment',info.nodes>1?'cluster':info.perNode>1?'multi':info.total===1?'single':'unknown');
+      const deployment=$('scene-deployment').value;
+      for(const id of ['scene-workload','scene-deployment'])for(const button of document.querySelectorAll('[data-scene-choice-for="'+id+'"] button'))button.setAttribute('aria-checked',String(button.dataset.sceneValue===$(id).value));
+      $('scene-ranks-field').hidden=!['multi','cluster'].includes(deployment);
+      $('scene-metric-field').hidden=false;$('scene-phase-field').hidden=false;
+      $('scene-window').hidden=true;$('scene-window-summary').textContent='';
+      $('parse-behavior').textContent='沿用训练侧 Profiler 解析流程';$('parse-behavior-badge').textContent='脚本';
+      $('parse-behavior-note').textContent='当前生成器只修改采集参数；解析时机与产物格式需以训练环境实际行为为准。';
+      $('workflow-route').textContent='脚本采集 → 训练侧 Profiler 产物 → '+($('workflow-view').value==='remote'?'服务器 Insight → 浏览器查看':'下载所选产物 → 本地 Insight 导入');
+    }
     const modeText = [];
     function rememberText(node, imported) { if(node) modeText.push({node, original:node.textContent, imported}); }
     rememberText($('window-start-label').firstChild,'开始 Step');rememberText($('window-end-label').firstChild,'结束 Step（不含）');
+    rememberText(manualInterval.querySelector('h2').firstChild,'只采集需要的 Step');
     windowCard.querySelectorAll('.window-reading-input').forEach(el=>rememberText(el.lastChild,'Step'));
     for (const [id,title,description] of [['host','CPU 活动','记录框架 CPU 活动与 NPU 的时间关系。'],['memory','框架内存','记录框架张量内存与生命周期。']]) {
       const row=$(id).closest('.control-row');rememberText(row.querySelector('.control-name').firstChild,title+' ');rememberText(row.querySelector('.control-desc'),description);rememberText(row.querySelector('.cost'),'框架');
@@ -79,9 +126,12 @@
     new ResizeObserver(renderPath).observe(filePath);
     function placeSharedControls() {
       if(!info)return;
-      if(host.getView()==='manual')manualInterval.before(config);else $('scene-phase-field').before(config);
-      config.append(outputField);
-      config.querySelector('label[for="launch-ranks"]').before(windowCard);
+      if(host.getView()==='manual'){
+        manualInterval.append(config);windowAnchor.after(windowCard);outputAnchor.after(outputField);
+      }else{
+        $('scene-phase-field').after(config);config.append(outputField);
+        $('scene-window-summary').before(windowCard);
+      }
     }
     function renderDiff(rows, error) {
       diffView.replaceChildren();
@@ -126,11 +176,10 @@
       $('scene-host').checked=shared.host;$('scene-memory').checked=shared.memory;
       const scenePlan=host.getScenePlan();if(shared.level!==scenePlan.level||shared.host!==scenePlan.host||shared.memory!==scenePlan.memory)$('scene-budget-value').textContent='自定义 · '+shared.level.toUpperCase();
       $('host').setAttribute('aria-label','CPU 活动');$('memory').setAttribute('aria-label','框架内存');$('host').setAttribute('aria-checked',String(shared.host));
-      $('task').disabled=true;
       for(const [id,key]of [['stack','profileStack'],['shapes','recordShapes']]){$('launch-'+id).setAttribute('aria-checked',String(Boolean(shared[key])));$('scene-launch-'+id).checked=Boolean(shared[key])}
       $('code-settings').hidden = true; $('collection-rounds').hidden = true; $('copy-all').hidden = true;
       document.querySelector('.capture-method-tabs').hidden = true;
-      document.querySelector('.terminal-title').textContent = '环境准备与采集方案';
+      document.querySelector('.terminal-title').textContent = '可选采集方案';
       $('code-language').textContent = 'Bash'; $('code-reference').href = 'https://gitee.com/ascend/MindSpeed/blob/master/docs/zh/user-guide/profile.md';
       $('command').readOnly = true; $('command').setAttribute('aria-label', '修改后的完整启动脚本');
       $('command-feedback').hidden = true; $('restore-command').hidden = true; $('validation').hidden = true;
@@ -162,6 +211,8 @@
       $('launch-estimate-context').textContent=context.valid?context.steps+' Step × '+context.seconds+' 秒/Step ≈ '+Number(context.duration.toFixed(2))+' 秒；按 '+context.ranks+' 个采集 Rank 估算。':'请修正采集区间、Rank 或每步耗时后查看数据量。';
       $('artifact-path').textContent = values.output; $('artifact-tree').textContent = '所选 Rank 的 Profiler 数据\n  原始记录与解析产物（以实际版本输出为准）';
       $('artifact-path-note').textContent = '目录在训练执行端；当前未运行、未读取产物。'; $('artifact-delivery-note').textContent = '脚本参数识别与修改演示；未验证现场 MindSpeed / CANN 版本。';
+      applyRestrictions();
+      for(const id of ['scene-ranks','volume-ranks','slider-volume-ranks'])setScriptValue(id,result?.ranks.length||1);
       return { command: error ? '' : text, copyLabel: '复制', name:info.name };
     }
     function load(text, name, sample) {
@@ -185,6 +236,9 @@
     function clear(refresh = true) {
       fileRead++; sampleIndex=0; info = null; result = null; source.hidden=true; document.body.classList.remove('launch-import-mode'); config.hidden = true; filePath.hidden = true; changes.hidden=true; download.hidden = true; diffView.hidden = true; basis.hidden=true; $('command-surface').hidden = false;
       outputAnchor.after(outputField);windowAnchor.after(windowCard);windowAxis.forEach((el,index)=>el.textContent=originalAxis[index]);
+      for(const {target,note} of restrictions){delete target.dataset.launchStatus;note.hidden=true;}
+      for(const [field,previous]of lockedControls){field.disabled=previous.disabled;if(previous.describedby===null)field.removeAttribute('aria-describedby');else field.setAttribute('aria-describedby',previous.describedby)}lockedControls.clear();
+      for(const [field,previous]of originalValues){field.value=previous.value;field.readOnly=previous.readOnly;if(previous.title===null)field.removeAttribute('title');else field.setAttribute('title',previous.title)}originalValues.clear();
       for(const boundary of ['start','end']){$('window-'+boundary+'-number').setAttribute('aria-label',boundary==='start'?'开始时间，秒':'结束时间，秒');$('window-'+boundary).setAttribute('aria-label',boundary==='start'?'采集开始时间':'采集结束时间')}
       $('window-slider').setAttribute('aria-label','采集时间范围，拖动两个滑块选择开始与结束时间');
       modeText.forEach(entry=>entry.node.textContent=entry.original);$('host').setAttribute('aria-label','Host CPU 与内存');$('memory').setAttribute('aria-label','算子内存');$('task').disabled=false;
@@ -220,6 +274,6 @@
         summary:'基于当前 '+info.model+' 脚本，使用 '+choice.level.toUpperCase()+' 时间线'+(choice.host?'和 CPU 活动':'')+'；关闭内存、调用栈和输入 Shape。保留当前采集区间、Rank 与输出目录，改动和右侧预估已同步。',
         limit:'规则示意配置；预估沿用右侧演示依据，尚未执行训练或接入 msModeling 仿真。',state:{level:choice.level,host:choice.host,memory:false,profileStack:false,recordShapes:false,preset:'custom'}};
     }
-    return { render, clear, aiExample, setWindowBoundary, get window(){return info?currentWindow():null}, onViewChange(){if(info)host.refresh()}, get estimation(){return estimation()}, get active() { return Boolean(info); }, get script() { return result?.script || ''; }, get copyLabel() { return '复制'; } };
+    return { render, clear, aiExample, setWindowBoundary, setStartupField(){if(info){setScriptValue('application',info.command.replace(/\\\r?\n/g,' ').trim());$('application').readOnly=true;$('application').title=info.command}}, get window(){return info?currentWindow():null}, onViewChange(){if(info)host.refresh()}, get estimation(){return estimation()}, get active() { return Boolean(info); }, get script() { return result?.script || ''; }, get copyLabel() { return '复制'; } };
   } };
 })();

@@ -33,7 +33,7 @@
     }
     function showEnvironment(context,active){
       toolbar.classList.toggle('capture-show-environment',active);environment.render(context,active);
-      if(active){area.hidden=true;$('command-surface').hidden=true;$('code-settings').hidden=true;const imported=$('launch-diff');if(imported)imported.hidden=true}
+      if(active){area.hidden=true;$('command-surface').hidden=true;$('code-settings').hidden=true;$('validation').hidden=true;const imported=$('launch-diff');if(imported)imported.hidden=true}
     }
     download.addEventListener('click',()=>{if(!current||download.disabled)return;const url=URL.createObjectURL(new Blob([current.content],{type:'text/plain;charset=utf-8'})),link=document.createElement('a');link.href=url;link.download=current.name;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000)});
     tabs.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;const buttons=[...tabs.children],index=buttons.indexOf(document.activeElement);if(index<0)return;event.preventDefault();const next=event.key==='Home'?0:event.key==='End'?buttons.length-1:(index+(event.key==='ArrowRight'?1:-1)+buttons.length)%buttons.length;buttons[next].click();tabs.children[next]?.focus()});
