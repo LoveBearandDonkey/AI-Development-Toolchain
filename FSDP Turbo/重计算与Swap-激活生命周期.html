@@ -42,6 +42,26 @@ main{padding-bottom:calc(var(--dock-height,350px) + 28px)}
 @media(max-width:1000px){.faq-layout{grid-template-columns:225px minmax(0,1fr);gap:26px}.faq-nav a{font-size:14px;padding:8px}.faq-section h2{font-size:21px}}
 @media(max-width:730px){body[data-page=docs] header{position:relative;top:auto}.faq-layout{grid-template-columns:1fr;gap:14px}.faq-nav{position:relative;top:auto;max-height:none;border-right:0;border-bottom:1px solid var(--line);padding:0 0 12px}.faq-nav a{font-size:14px;padding:7px 9px}.faq-section{scroll-margin-top:14px}.faq-section h2{font-size:21px}.faq-section code{font-size:12px}.page-tabs{margin-right:3px}}
 </style>
+<style>
+/* Choice cards follow the profiling workbench: icon, title, explanation. */
+.fine-flow{margin:14px 0 0;color:var(--fg2);font-size:14px;line-height:1.7}
+.fine-choice-field{grid-column:1/-1;margin:0;padding:0;border:0;min-width:0}
+.fine-choice-field legend{padding:0;margin-bottom:8px;font-size:12px;color:var(--fg2)}
+.fine-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.fine-choice-grid[data-count="3"]{grid-template-columns:repeat(3,minmax(0,1fr))}
+.fine-choice{min-width:0;text-align:left;padding:12px;border-radius:8px;background:var(--bg);border:1px solid var(--line);color:var(--fg)}
+.fine-choice svg{display:block;width:24px;height:24px;margin-bottom:9px;color:var(--fg2)}
+.fine-choice strong{display:block;font-size:12px;font-weight:600;line-height:1.5;margin-bottom:5px;overflow-wrap:anywhere}
+.fine-choice small{display:block;font-size:14px;line-height:1.5;color:var(--fg2)}
+.fine-choice[aria-pressed=true]{background:color-mix(in srgb,var(--blue) 9%,var(--bg));border-color:var(--blue);color:var(--blue)}
+.fine-choice[aria-pressed=true] svg{color:var(--blue)}
+.fine-choice[aria-pressed=true] strong::after{content:' ✓'}
+.fine-choice-help{font-size:14px;color:var(--fg2);margin:7px 0 0}
+.fine-section .section-note,.fine-field small{font-size:14px;line-height:1.6}
+.fine-field,.fine-field input:not([type=checkbox]),.fine-field select,.fine-field textarea,.fine-section summary,.fine-layer-list button,.fine-presets button{font-size:12px}
+.fine-field em{font-size:11px}.fine-checks{font-size:14px}.fine-head p{font-size:14px}.fine-actions button,.fine-state{font-size:12px}
+@media(max-width:390px){.fine-choice-grid[data-count="3"]{grid-template-columns:1fr}.fine-choice{padding:10px}}
+</style>
 </head>
 <body data-page="demo">
 <main>
@@ -83,6 +103,7 @@ main{padding-bottom:calc(var(--dock-height,350px) + 28px)}
    <a href="#faq-purpose" data-faq="faq-purpose" aria-current="true">FSDP Turbo具体能干嘛，用与不用有什么区别？</a>
    <a href="#faq-backends" data-faq="faq-backends">FSDP Turbo和Megatron是一起用，还是二选一？</a>
    <a href="#faq-combination" data-faq="faq-combination">重计算和swap可以一起启用吗？</a>
+   <a href="#faq-targets" data-faq="faq-targets">重计算和Swap针对的对象</a>
    <a href="#faq-controls" data-faq="faq-controls">FSDP Turbo现在有多少细粒度控制项？</a>
    <a href="#faq-boundary" data-faq="faq-boundary">为什么swap可以搬运x，但x不是重计算范围选项？</a>
    <a href="#faq-workflow" data-faq="faq-workflow">与MindSpeed-MCP结合后，我训练前会怎样使用？</a>
@@ -131,6 +152,25 @@ main{padding-bottom:calc(var(--dock-height,350px) + 28px)}
     <ul><li>重算需要的输入必须先就绪，不能在取回完成前补算。</li><li>设备源在换出完成前仍占空间；预取会提前把数据搬回，可能抬高设备峰值。</li><li>父子checkpoint嵌套、共享存储、跨层共享状态、随机数和同图多次反向都有额外约束。</li><li>容量节省需要连同主机容量、额外计算、搬运和等待一起评估。</li></ul>
     <p>本仓<code>RecomputePlanConfig.swap_inputs</code>支持输入交换，<code>op_replay_scopes</code>支持算子输出缓存；当前输入交换句柄适用于每张图一次反向。Demo抽屉勾选“交换checkpoint输入x”或“缓存输出＋主机缓存”，即可观察“重算＋交换”组合曲线。</p>
     <p class="faq-source">依据：<a href="../../FSDPTurbo/docs/zh/features/recompute.md">FSDP Turbo重计算与交换说明</a>。Megatron也有可组合的细粒度卸载与重算机制，具体受模块和版本限制，见<a href="https://docs.nvidia.com/megatron-core/developer-guide/latest/user-guide/features/fine_grained_activation_offloading.html" target="_blank" rel="noreferrer">官方卸载说明</a>。</p>
+   </article>
+   <article class="faq-section" id="faq-targets" tabindex="-1">
+    <h2>重计算和Swap针对的对象</h2>
+    <p>以下按当前FSDP Turbo实现列举可选对象。✅️表示有对应配置路径，❌️表示该对象本身不属于该策略的选择对象。模块行中的“重计算”指重新执行模块计算，“Swap”指搬运该模块范围内符合条件的激活张量。</p>
+    <div class="faq-table-wrap"><table aria-label="重计算和Swap可选对象对照表"><thead><tr><th scope="col">可选对象</th><th scope="col">重计算</th><th scope="col">Swap</th></tr></thead><tbody>
+     <tr><th scope="row">Transformer整层（Decoder Layer）</th><td aria-label="重计算可选">✅️</td><td aria-label="Swap可选">✅️</td></tr>
+     <tr><th scope="row">Attention模块（attn / self_attn）</th><td aria-label="重计算可选">✅️</td><td aria-label="Swap可选">✅️</td></tr>
+     <tr><th scope="row">稠密前馈模块（MLP / FFN）</th><td aria-label="重计算可选">✅️</td><td aria-label="Swap可选">✅️</td></tr>
+     <tr><th scope="row">混合专家模块（MoE / block_sparse_moe）</th><td aria-label="重计算可选">✅️</td><td aria-label="Swap可选">✅️</td></tr>
+     <tr><th scope="row">归一化模块（RMSNorm / LayerNorm）</th><td aria-label="重计算可选">✅️</td><td aria-label="Swap可选">✅️</td></tr>
+     <tr><th scope="row">视觉编码器Block（visual.blocks / vision_tower.encoder.blocks）</th><td aria-label="重计算可选">✅️</td><td aria-label="Swap可选">✅️</td></tr>
+     <tr><th scope="row">Checkpoint边界输入张量（如x）</th><td aria-label="重计算不可选">❌️</td><td aria-label="Swap可选">✅️</td></tr>
+     <tr><th scope="row">指定算子的缓存输出（如融合Attention、MatMul、GMM输出）</th><td aria-label="重计算不可选">❌️</td><td aria-label="Swap可选">✅️</td></tr>
+     <tr><th scope="row">优化器状态（如exp_avg、exp_avg_sq）</th><td aria-label="重计算不可选">❌️</td><td aria-label="Swap可选">✅️</td></tr>
+    </tbody></table></div>
+    <p><strong>模块范围怎么选：</strong>重计算通过<code>memory.recompute_plan.apply_modules</code>指定模块路径，也支持方法级条目；普通激活Swap通过<code>memory.swap_activation_plan.apply_modules</code>指定模块路径。表中的名称是常见模型结构示例，实际以模型的<code>named_modules()</code>路径为准，并非固定枚举。</p>
+    <p class="faq-callout"><strong>模块可选，不代表内部所有张量都会被Swap。</strong>普通激活Swap默认仅筛选autograd保存且与模块输入<code>hidden_states</code>同址的合格张量，并排除参数及其直接视图。具体模块还需满足输入形式、张量保存和重算语义等条件；表中✅️表示可配置范围，不承诺任意模型、融合实现都能释放同样多的显存。</p>
+    <p><strong>张量与状态怎么选：</strong>checkpoint边界输入使用<code>recompute_plan.swap_inputs</code>；算子缓存输出使用<code>op_replay_scopes[].cache_ops</code>，需位于checkpoint覆盖范围内，再由<code>memory.swap_plan</code>按容量换出。这两类张量被保存和取回，本身不是独立的重计算范围；缓存命中的算子输出会直接复用。优化器状态则使用<code>AdamWSwap</code>与<code>optimizer.state_keys</code>，属于单独的状态交换路径。</p>
+    <p class="faq-source">依据：<a href="../../FSDPTurbo/docs/zh/features/recompute.md">激活重计算与算子重放</a>、<a href="../../FSDPTurbo/docs/zh/features/swap_activation.md">激活值交换</a>、<a href="../../FSDPTurbo/fsdp_turbo/memory/swap_activation/swap_activation.py">模块输入筛选实现</a>、<a href="../../FSDPTurbo/fsdp_turbo/memory/swap_activation/tensor_swap_manager.py">张量交换条件</a>、<a href="../../FSDPTurbo/docs/zh/features/swap_optimizer.md">优化器状态交换</a>。示例路径参考<a href="../../FSDPTurbo/examples/kimi_k3/config.yaml">Kimi配置</a>与<a href="../../FSDPTurbo/examples/qwen3_8/config.yaml">Qwen配置</a>。</p>
    </article>
    <article class="faq-section" id="faq-controls" tabindex="-1">
     <h2>FSDP Turbo现在有多少细粒度控制项？</h2>
@@ -277,9 +317,40 @@ function capacityAssessment(mode){const limit=state.advanced.deviceCapacity-stat
 }
 function renderCapacityEvents(){if(!$('capacity-events'))return;let rows=[];try{rows=JSON.parse(fineDraft.transientEvents);}catch{}$('capacity-events').innerHTML=rows.map((e,i)=>`<div class="capacity-event-row"><input aria-label="事件${i+1}名称" data-event-index="${i}" data-event-field="name" value="${escapeMarkup(e.name)}">${['start','end','amount'].map((k,j)=>`<input aria-label="事件${i+1}${['起点百分比','终点百分比','占用u'][j]}" type="number" data-event-index="${i}" data-event-field="${k}" value="${e[k]}" min="0" max="${k==='amount'?512:100}" step="0.1">`).join('')}<select aria-label="事件${i+1}候选" data-event-index="${i}" data-event-field="mode">${[['all','全部方案'],['base','保留'],['rc','重计算'],['sw','Swap']].map(([v,n])=>`<option value="${v}" ${e.mode===v?'selected':''}>${n}</option>`).join('')}</select><button data-event-remove="${i}" aria-label="移除事件${i+1}">×</button></div>`).join('');}
 function renderCapacityResults(){if(!$('capacity-results'))return;$('capacity-results').innerHTML=['base','rc','sw'].map(mode=>{const r=assessments[mode],name={base:'全部保留',rc:'重计算',sw:'Swap'}[mode];return `<div class="capacity-result"><b class="${r.remaining<0?'over':r.status==='信息不足'?'unknown':'ok'}">${name}：${r.status}</b><p>总峰值${fmt(r.peak)}u @ ${fmt(r.at)}% · 最小余量${fmt(r.remaining)}u · 主机激活峰值${fmt(schedules[mode].hostPeak)}u</p><p>超预算区间：${r.intervals.length?r.intervals.map(x=>`${fmt(x.start)}–${fmt(x.end)}%`).join('、'):'无'}</p>${r.first!==null?`<button data-cap-seek="${r.first}">定位首个超预算时刻 ${fmt(r.first)}%</button>`:''}</div>`;}).join('');}
+// Configure targets before policy; the capacity account is evaluated afterward.
+const fineSectionOrder=['作用范围','作用对象','保存策略','容量叠加','容量与比例','执行时机','组合约束'];
+FINE_SECTIONS.sort((a,b)=>fineSectionOrder.indexOf(a.title)-fineSectionOrder.indexOf(b.title));
+FINE_SECTIONS.find(s=>s.title==='作用范围').note='先选目标，再决定如何保存。范围可以覆盖全模型、多层或层内对象；这里用6层演示，作用层与主画面实时同步。Stage预设仅将6层分成两组，不代表当前后端支持PP；实例与分组仅记录接口意图。';
+FINE_SECTIONS.find(s=>s.title==='作用对象').note='不限于Attention或MoE：模块路径可描述整层、子模块及嵌套对象，也可细化到方法与算子输出。MLP与MoE不是同一对象；本图的m仅表示MLP教学输出。路径、方法、算子名单只记录接口意图，不执行模型匹配；动画仍只模拟x/a/m保存点。';
+FINE_SECTIONS.find(s=>s.title==='保存策略').note='对上面选定的目标决定如何保存；不处理的对象保持保留。保留、重算、缓存与交换可以组合；勾选缓存后，对应输出在重算时复用。';
+const FINE_CHOICE_COPY={
+ capacityCoverage:{assumed:'按已列出的教学假设评估',partial:'标出缺项，提示信息不足'},
+ granularity:{full:'按整层设置重算边界',selective:'按子模块设置重算边界'},
+ method:{uniform:'每N层组成一个重算组',block:'每个PP Stage的前N层'},
+ objectKind:{module:'整层、Attention、MLP或MoE等子模块',method:'模块路径下的指定方法',op:'checkpoint内指定算子的输出'},
+ cacheStore:{device:'保留在设备，减少重算',host:'暂存主机，需要时取回'},
+ eviction:{fifo:'先进入缓存的先换出',belady:'优先换出下次使用最晚的对象'},
+ poolPolicy:{all:'保留所有已分配块',standard:'仅保留标准容量块',none:'用完立即释放'},
+ trigger:{boundary:'到达本层边界后再处理',immediate:'张量保存后即进入缓存'},
+ precision:{bf16:'记录BF16计算意图',fp16:'记录FP16计算意图',mxfp8:'记录MXFP8计算意图'},
+ quantizer:{none:'保存原始精度数值',int8_pertoken:'按token量化缓存',fp8_blockwise:'按块量化缓存'},
+ offloadBackend:{local:'暂存在本机CPU内存',bigmemory:'远端内存池，尚未接入'}
+};
+function fineChoiceIcon(key){
+ const paths={objectKind:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><path d="M10 6h8v8M6 10v8h8"/>',cacheStore:'<rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><path d="M7 7h1m-1 10h1"/>',method:'<path d="M4 5h16M4 12h16M4 19h16M8 3v18"/>',trigger:'<circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 3"/>'};
+ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(paths[key]||'<rect x="3" y="3" width="18" height="18" rx="3"/><path d="m7 12 3 3 7-7"/>')+'</svg>';
+}
+function renderFineChoices(f,val,kind){
+ const id='fine-'+f.key;
+ return `<fieldset class="fine-choice-field"><legend id="${id}-label">${f.label}${kind}</legend><input type="hidden" id="${id}" data-adv="${f.key}" value="${escapeMarkup(val)}"><div class="fine-choice-grid" data-count="${f.choices.length}" role="group" aria-labelledby="${id}-label" aria-describedby="${id}-help">${f.choices.map(([v,t])=>`<button type="button" class="fine-choice" data-fine-choice="${f.key}" data-value="${v}" aria-pressed="${v===val}">${fineChoiceIcon(f.key)}<strong>${t}</strong><small>${FINE_CHOICE_COPY[f.key]?.[v]||t}</small></button>`).join('')}</div><p class="fine-choice-help" id="${id}-help">${f.help}</p></fieldset>`;
+}
+function syncFineChoices(key){
+ document.querySelectorAll('[data-fine-choice]').forEach(b=>{if(b.dataset.fineChoice===key)b.setAttribute('aria-pressed',String(b.dataset.value===fineDraft[key]));});
+}
 function renderFineForm(){
  $('fine-form').innerHTML=FINE_SECTIONS.map((s,i)=>`<details class="fine-section" ${i<3?'open':''}><summary>${s.title}</summary><p class="section-note">${s.note}</p>${s.title==='作用范围'?'<div class="fine-layer-list" id="fine-layers"></div><div class="fine-presets"><button data-layer-preset="all">全部6层</button><button data-layer-preset="front">教学Stage0 · L0–2</button><button data-layer-preset="back">教学Stage1 · L3–5</button><button data-layer-preset="even">偶数层</button><button data-layer-preset="odd">奇数层</button></div>':''}<div class="fine-fields">${s.fields.map(f=>{
  const val=fineDraft[f.key],id='fine-'+f.key,attrs=`id="${id}" data-adv="${f.key}"`,kind=`<em class="${f.linked?'':'plan'}">${f.linked?'教学联动':'接口规划'}</em>`,bounds=`${f.min!==null?` min="${f.min}"`:''}${f.max!==null?` max="${f.max}"`:''}${f.step!==null?` step="${f.step}"`:''}`;
+ if(f.type==='select'&&f.choices.length<=4)return renderFineChoices(f,val,kind);
  const control=f.type==='checkbox'?`<div class="fine-check"><input type="checkbox" ${attrs} ${val?'checked':''}><span>${f.label}${kind}</span></div>`:`<span>${f.label}${kind}</span>`+(f.type==='select'?`<select ${attrs}>${f.choices.map(([v,t])=>`<option value="${v}" ${v===val?'selected':''}>${t}</option>`).join('')}</select>`:`<input type="${f.type}" ${attrs} value="${escapeMarkup(val)}" ${bounds}>`);
  return `<label class="fine-field ${f.type==='text'?'wide':''}" for="${id}">${control}<small>${f.help}</small></label>`;
  }).join('')}</div>${s.events?'<div class="fine-presets"><button data-cap-preset="room">基础占用</button><button data-cap-preset="backward">反向临时峰值</button><button data-cap-preset="update">更新时才超限</button></div><p class="section-note">临时事件可重叠，同一时刻累加；起点计入，终点释放。预设仅为人工教学样例。事件不含本图已统计的激活。</p><div class="capacity-event-head"><span>名称</span><span>起点%</span><span>终点%</span><span>占用u</span><span>方案</span><span></span></div><div id="capacity-events"></div><button class="capacity-event-add" id="capacity-event-add">＋ 临时占用事件</button><div class="capacity-results" id="capacity-results"></div>':''}</details>`).join('');renderLayers();renderCapacityEvents();renderCapacityResults();updateFineChecks();
@@ -431,6 +502,7 @@ function render(){
 function seek(t){state.t=Math.max(0,Math.min(100,t));state.playing=false;render();}
 function togglePlayback(){if(!state.playing&&state.t>=100)state.t=0;state.playing=!state.playing;lastFrame=0;render();}
 document.addEventListener('click',e=>{
+ const choice=e.target.closest('[data-fine-choice]');if(choice){const key=choice.dataset.fineChoice;fineDraft[key]=choice.dataset.value;$('fine-'+key).value=fineDraft[key];syncFineChoices(key);updateFineChecks();return;}
  const memoryView=e.target.closest('[data-memory-view]');if(memoryView){state.memoryView=memoryView.dataset.memoryView;document.querySelectorAll('[data-memory-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.memoryView===state.memoryView)));rebuild();return;}
  const capacitySeek=e.target.closest('[data-cap-seek]');if(capacitySeek){seek(Number(capacitySeek.dataset.capSeek));return;}
  const removeEvent=e.target.closest('[data-event-remove]');if(removeEvent){const rows=JSON.parse(fineDraft.transientEvents);rows.splice(Number(removeEvent.dataset.eventRemove),1);fineDraft.transientEvents=JSON.stringify(rows);renderCapacityEvents();updateFineChecks();return;}
