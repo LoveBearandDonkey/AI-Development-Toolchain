@@ -26,7 +26,7 @@ html{scrollbar-width:none}html::-webkit-scrollbar{display:none;width:0;height:0}
 button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid color-mix(in srgb,var(--brand-blue) 36%,transparent);outline-offset:3px}
 [hidden]{display:none!important}
 .workspace{padding:26px 40px;min-height:100vh;color:var(--foreground-secondary)}.workbrand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:650}.workbrand svg{width:26px;height:26px}.worknav{display:flex;gap:32px;border-bottom:1px solid var(--divider-strong);padding:32px 0 16px}.workspace>h2{font-size:22px;font-weight:500;margin:36px 0 12px}.workgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:30px}.ghost{height:130px;border:1px solid var(--divider-strong);border-radius:12px;background:var(--surface-1);padding:22px}.ghost span{display:block;height:9px;background:var(--divider-weak);width:70%;border-radius:3px;margin:16px 0}
-.lab-panel{width:100%;max-width:1680px;margin:0 auto;flex:1;display:flex;flex-direction:column;min-height:0}
+.lab-panel{width:100%;max-width:var(--lab-panel-max);margin:0 auto;flex:1;display:flex;flex-direction:column;min-height:0}
 .lab-panel:focus,.lab-panel:focus-visible{outline:none}.heading{display:flex;align-items:center}h1{font-size:21px;letter-spacing:-.5px;margin:0;font-weight:650}.head-actions{display:flex;align-items:center}.icon-button{width:30px;height:30px;border:0;background:transparent;font-size:24px;line-height:1;color:var(--foreground-secondary);border-radius:6px}.icon-button:hover{background:var(--button-secondary-bg-press)}
 .body-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,2fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr);min-height:0;flex:1;padding:0;gap:0}
 .controls,.command-panel,.preview{min-width:0;min-height:0;overflow-y:auto;overscroll-behavior-y:contain;scrollbar-width:thin;scrollbar-color:var(--divider-strong) transparent}
@@ -59,7 +59,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible,su
 .command-editor[aria-invalid=true]{background:color-mix(in srgb,var(--warning) 4%,var(--surface-1))}
 .command-feedback{font-size:10px;line-height:1.85;color:var(--sub);margin:10px 0 0}.command-feedback[data-error=true]{color:#805008}
 .editor-recovery{margin-top:9px}.preview[data-command-pending=true] .estimate-label:after{content:'命令待同步';display:block;font-size:9px;font-weight:400;color:#805008;margin-top:7px}
-.body-grid{gap:8px;padding-top:0}
+.body-grid{gap:var(--lab-column-gap);padding-top:0}
 .controls{padding:19px 16px 22px;background:var(--surface-1);border:1px solid var(--divider-strong);border-radius:12px}
 .command-panel{padding:0;background:transparent;border-radius:12px;overflow:hidden;gap:0}
 .command-panel>.terminal{display:flex;flex-direction:column;flex:1;height:100%;min-height:0;border-radius:12px}
@@ -91,7 +91,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible,su
 .command-surface .command-editor[aria-invalid=true]{background:transparent}
 .command-editor::selection{background:color-mix(in srgb,var(--brand-blue) 18%,transparent)}
 @media(forced-colors:active){.command-highlight{display:none}.command-surface .command-editor{color:CanvasText;-webkit-text-fill-color:CanvasText;caret-color:CanvasText}}
-.lab-page{--page-gutter:28px;padding:0 var(--page-gutter) 40px;background:#F6F7FB;color:var(--foreground)}
+.lab-page{--page-gutter:28px;--lab-panel-max:1680px;--lab-column-gap:8px;--lab-controls-width:calc((100% - 2 * var(--lab-column-gap)) * .4);padding:0 var(--page-gutter) 40px;background:#F6F7FB;color:var(--foreground)}
 /* The sandbox owns the viewport; documentation keeps normal page scrolling. */
 body[data-page=sandbox]{height:100dvh;overflow:hidden}
 body[data-page=sandbox] .lab-page{display:flex;flex-direction:column;height:100dvh;min-height:0;padding-bottom:8px;overflow:hidden}
@@ -172,6 +172,21 @@ body[data-page=docs] .toolbar-actions{display:none}
 .faq-section table{width:100%;border-collapse:collapse;min-width:580px;font-size:14px;line-height:1.8;color:#414b5b}
 .faq-section td,.faq-section th{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
 .faq-section th{font-weight:600;background:#f7f8fb;color:var(--ink)}
+.faq-collection-table{table-layout:fixed}
+.faq-section .faq-collection-table th[scope=rowgroup]{padding:7px 12px}
+.faq-table-wrap[tabindex]:focus-visible,.faq-collection-diagram-scroll:focus-visible{outline:2px solid #3154c8;outline-offset:2px}
+.faq-collection-diagram{margin:16px 0 20px}
+.faq-section .faq-collection-legend{display:flex;flex-wrap:wrap;gap:6px 20px;margin:0 0 9px;padding:0;list-style:none}
+.faq-section .faq-collection-legend li{display:flex;align-items:center;gap:6px;margin:0;font-size:13px;line-height:1.5}
+.faq-collection-legend li::before{content:"";width:12px;height:12px;box-sizing:border-box;flex:none;border:1px solid var(--legend-stroke);border-radius:3px;background:var(--legend-fill)}
+.faq-collection-legend [data-tool=pytorch]{--legend-fill:#e9f2ff;--legend-stroke:#4b79b8}
+.faq-collection-legend [data-tool=msprof]{--legend-fill:#e6f5ee;--legend-stroke:#398469}
+.faq-collection-legend [data-tool=mspti]{--legend-fill:#f1ebfc;--legend-stroke:#804dae}
+.faq-collection-diagram-scroll{overflow:auto;padding:12px;background:#f7f9ff;border:1px solid var(--line);border-radius:8px}
+.faq-collection-diagram svg{display:block;width:100%;min-width:680px;height:auto;margin:0 auto}
+.faq-collection-diagram #profiler-collector-task{min-width:750px}
+.faq-collection-diagram #profiler-collector-workflow .edgeLabel rect{opacity:1}
+.faq-collection-diagram figcaption{margin-top:7px;color:var(--sub);font-size:13px;line-height:1.7}
 .faq-callout{padding:13px 16px;border-left:3px solid #b9c8fa;background:#f7f9ff}
 .faq-section .faq-source{font-size:13px;color:var(--sub);line-height:1.8}
 @media(max-width:760px){.evidence-toolbar{height:auto;min-height:56px;padding:8px 0}.toolbar-main{flex-wrap:wrap;gap:8px 12px}.page-context button{padding:5px 10px}.docs-content{margin-top:18px}.faq-layout{grid-template-columns:1fr;gap:14px}.faq-nav{position:relative;top:auto;max-height:none;border-right:0;border-bottom:1px solid var(--line);padding:0 0 12px}.faq-nav a{padding:7px 9px}.faq-section{scroll-margin-top:128px}.faq-section h2{font-size:21px}}
@@ -267,10 +282,11 @@ body[data-page=evidence] .lab-page,body[data-page=evidence] .evidence-toolbar-ba
 </style>
 <link rel="stylesheet" href="launch-script-workbench.css">
 <link rel="stylesheet" href="capture-environment.css?v=20261124-2">
+<link rel="stylesheet" href="advanced-capture.css">
 </head>
 <body data-page="sandbox">
 <main class="workspace lab-page" id="workspace">
- <div class="evidence-toolbar-band"><div class="evidence-toolbar"><div class="toolbar-main"><span class="evidence-brand"><strong>MindStudio Profiler Next</strong></span><div class="page-context" role="tablist" aria-label="页面内容"><button id="page-sandbox" data-page-view="sandbox" role="tab" aria-selected="true" aria-controls="lab-panel">沙箱</button><button id="page-docs" data-page-view="docs" role="tab" aria-selected="false" aria-controls="docs-content" tabindex="-1">文档</button><button id="page-evidence" data-page-view="evidence" role="tab" aria-selected="false" aria-controls="user-evidence" tabindex="-1">用户问题</button></div></div><div class="toolbar-actions"><a class="button toolbar-icon" id="gitcode-source" href="MindStudio-Profiler-AtomGit-20261124.html" aria-label="GitCode 源码" title="GitCode 源码"><img src="../pic/gitcode-logo.png" alt="" aria-hidden="true"></a></div></div></div>
+ <div class="evidence-toolbar-band"><div class="evidence-toolbar"><div class="toolbar-main"><span class="evidence-brand"><strong>MindStudio Profiler Next</strong></span><div class="page-context" role="tablist" aria-label="页面内容"><button id="page-sandbox" data-page-view="sandbox" role="tab" aria-selected="true" aria-controls="lab-panel">沙箱</button><button id="page-advanced" data-page-view="advanced" role="tab" aria-selected="false" aria-controls="advanced-content" tabindex="-1">高阶</button><button id="page-docs" data-page-view="docs" role="tab" aria-selected="false" aria-controls="docs-content" tabindex="-1">文档</button><button id="page-evidence" data-page-view="evidence" role="tab" aria-selected="false" aria-controls="user-evidence" tabindex="-1">用户问题</button></div></div><div class="toolbar-actions"><a class="button toolbar-icon" id="gitcode-source" href="MindStudio-Profiler-AtomGit-20261124.html" aria-label="GitCode 源码" title="GitCode 源码"><img src="../pic/gitcode-logo.png" alt="" aria-hidden="true"></a></div></div></div>
 <section class="lab-panel" id="lab-panel" role="tabpanel" aria-labelledby="page-sandbox">
  <div class="body-grid">
   <div class="controls" aria-label="采集控制器">
@@ -480,8 +496,8 @@ body[data-page=evidence] .lab-page,body[data-page=evidence] .evidence-toolbar-ba
   <aside class="preview" aria-label="成本与产物大小预估">
    <header class="preview-header"><div class="controls-title">成本与产物大小预估</div></header>
    <section class="estimate">
-    <div class="estimate-label"><span id="overhead-title">性能膨胀预估</span><span class="risk" id="risk" data-risk="low">预估 · 未校准</span></div>
-    <div class="estimate-head"><div class="big-number"><span id="overhead">≈4</span><span class="unit" id="overhead-unit">%</span></div>
+    <div class="estimate-label"><span id="overhead-title">性能膨胀示意</span><span class="risk" id="risk" data-risk="medium">需关注</span></div>
+    <div class="estimate-head" data-risk="medium"><div class="big-number"><span id="overhead">≈3.2</span><span class="unit" id="overhead-unit">%</span></div>
      <div class="bellows-stage" id="bellows-stage" role="slider" tabindex="0" aria-label="风琴压缩泵，拖动或方向键试压，Escape 恢复预估联动；0% 完全压扁，30% 完全展开" aria-valuemin="0" aria-valuemax="30" aria-valuenow="0">
       <svg id="bellows-svg" viewBox="0 85 168 155" role="img" aria-label="由四组圆环和折叠面组成的立体伸缩泵，0% 压扁至底座和压面，30% 达到最高高度">
        <defs>
@@ -502,7 +518,7 @@ body[data-page=evidence] .lab-page,body[data-page=evidence] .evidence-toolbar-ba
       </svg>
      </div>
     </div>
-    <div class="comparison" aria-hidden="true"><span class="baseline" id="base-bar" style="flex:100"></span><span class="extra" id="extra-bar" style="flex:4.1"></span></div>
+     <div class="comparison" aria-hidden="true"><span class="baseline" id="base-bar" style="flex:100"></span><span class="extra" id="extra-bar" style="flex:3.2"></span></div>
     <div class="stats"><div class="stat"><span id="data-size-label">原始数据量 · 预估</span><strong id="data-size">≈133 MB</strong><p id="data-window">1 Rank · 10 秒窗口</p></div>    <div class="stat download-estimate">
      <span class="download-heading">预计下载量 <span id="download-help-slot"></span></span>
      <strong id="download-size" class="download-value">≈346 MB</strong>
@@ -526,6 +542,155 @@ body[data-page=evidence] .lab-page,body[data-page=evidence] .evidence-toolbar-ba
    <section class="artifact-preview" id="artifact-preview" aria-labelledby="artifact-title"><div class="artifact-heading"><h3 id="artifact-title">格式与目录预览</h3><span id="artifact-help-slot"></span></div><code class="artifact-path" id="artifact-path"></code><pre class="artifact-tree" id="artifact-tree" aria-label="预期产物目录树"></pre><p class="artifact-note" id="artifact-path-note"></p><p class="artifact-note" id="artifact-delivery-note"></p></section>
   </aside>
  </div>
+</section>
+<section class="advanced-capture" id="advanced-content" role="tabpanel" aria-labelledby="page-advanced" hidden>
+ <div class="advanced-tabs config-view-tabs" role="tablist" aria-label="高阶采集方式">
+  <button type="button" id="advanced-attach-tab" role="tab" aria-selected="true" aria-controls="advanced-attach">Dynamic Attach</button>
+  <button type="button" id="advanced-torch-tab" role="tab" aria-selected="false" aria-controls="advanced-torch" tabindex="-1">PyTorch NPU Profiler</button>
+ </div>
+ <section id="advanced-attach" role="tabpanel" aria-labelledby="advanced-attach-tab">
+  <header class="advanced-intro">
+   <h1>任务已在运行，现在采哪一个进程？</h1>
+   <p>任务启动前启用 <code>PROFILING_MODE=dynamic</code>。训练或推理跑起来以后，可以临时决定采哪个用卡进程、采哪一段。Linux 分配的 PID 是定位这个进程的编号。</p>
+  </header>
+  <div class="advanced-grid advanced-attach-grid">
+   <div class="advanced-card advanced-target">
+    <h2>选择采集对象</h2>
+    <div class="advanced-choice-settings">
+     <fieldset class="advanced-choice-field" data-advanced-choices>
+      <legend>任务场景</legend>
+      <select id="advanced-attach-scenario" aria-label="任务场景"><option value="train">多卡训练</option><option value="infer">在线推理</option></select>
+     </fieldset>
+     <fieldset class="advanced-choice-field" data-advanced-choices>
+      <legend>PID 命名空间</legend>
+      <select id="advanced-attach-env" aria-label="PID 命名空间"><option value="host">宿主机</option><option value="container">任务容器</option></select>
+     </fieldset>
+    </div>
+    <fieldset class="advanced-choice-field advanced-goals" data-advanced-choices>
+     <legend>这次想观察什么？</legend>
+     <select id="advanced-goal" aria-label="这次想观察什么？"><option value="baseline">采稳态基线</option><option value="hotspot">排查慢 Rank</option></select>
+    </fieldset>
+    <fieldset class="advanced-processes">
+     <legend>进程清单 <small>样例</small></legend>
+     <p class="advanced-muted" id="advanced-process-count"></p>
+     <p class="advanced-muted" id="advanced-process-guide"></p>
+     <div id="advanced-process-list"></div>
+    </fieldset>
+    <div class="advanced-selection" id="advanced-selection" role="status"></div>
+    <details class="advanced-discovery">
+     <summary>到现场怎么核对 PID？</summary>
+     <p>在任务启动前执行 <code>export PROFILING_MODE=dynamic</code>，让用卡进程继承该变量。已经启动但未开启动态采集的任务，需要重新启动后获取新 PID。</p>
+     <p id="advanced-discovery-note"></p>
+     <pre><code id="advanced-discovery-code"></code></pre>
+     <p>将 <code>ps</code> 的命令和父 PID 与任务日志里的 Rank、worker 或请求路由对照。动态采集 socket 提供候选 PID，仍需确认进程在运行。</p>
+    </details>
+    <div class="advanced-fields">
+     <label>目标 PID<input id="advanced-pid" type="text" inputmode="numeric" maxlength="10" placeholder="点选清单，或输入 PID 匹配" autocomplete="off" aria-describedby="advanced-pid-origin advanced-pid-match"></label>
+     <div><p class="advanced-muted" id="advanced-pid-origin">点选清单会自动填入 PID。手填后会按当前运行环境匹配清单。</p><p id="advanced-pid-match" class="advanced-pid-match" role="status" hidden></p></div>
+     <label>结果目录<input id="advanced-attach-output" type="text" value="./prof_attach" autocomplete="off" spellcheck="false" aria-describedby="advanced-attach-error"></label>
+    </div>
+    <p class="advanced-error" id="advanced-attach-error" role="status" hidden></p>
+   </div>
+   <div class="advanced-card advanced-run">
+    <div class="advanced-card-head"><h2 id="advanced-task-title">训练运行进度</h2><span class="advanced-tag">浏览器演练</span></div>
+    <div class="advanced-task">
+     <div class="advanced-task-metrics">
+      <div><span id="advanced-task-work-label">全局 Step</span><strong id="advanced-task-work"></strong></div>
+      <div><span id="advanced-task-stage-label">当前 Epoch</span><strong id="advanced-task-stage"></strong></div>
+      <div><span>已运行</span><strong id="advanced-task-time"></strong></div>
+     </div>
+     <div class="advanced-task-track">
+      <progress id="advanced-task-progress" aria-label="任务运行进度"></progress>
+      <i id="advanced-task-capture-band" hidden></i>
+     </div>
+     <div class="advanced-task-caption"><span id="advanced-task-note"></span><span id="advanced-task-progress-label"></span></div>
+    </div>
+    <div class="advanced-session">
+     <h2>采集窗口</h2>
+     <fieldset class="advanced-choice-field advanced-window-choice" data-advanced-choices>
+      <legend>演练时长</legend>
+      <select id="advanced-duration" aria-label="演练时长"><option value="5">5 秒</option><option value="10" selected>10 秒</option><option value="20">20 秒</option></select>
+     </fieldset>
+     <p class="advanced-session-hint" id="advanced-session-hint"></p>
+     <div class="advanced-session-actions" aria-label="模拟交互命令">
+      <button type="button" id="advanced-attach-button" disabled>模拟连接</button>
+      <button type="button" id="advanced-start-button" disabled><code>start</code> 开始采集</button>
+      <button type="button" id="advanced-stop-button" disabled><code>stop</code> 提前停止</button>
+      <button type="button" id="advanced-quit-button" disabled><code>quit</code> 断开</button>
+     </div>
+     <div class="advanced-window" id="advanced-window">
+      <div class="advanced-card-head"><p class="advanced-state" id="advanced-session-state" role="status"></p><code id="advanced-capture-clock">00:00</code></div>
+      <progress id="advanced-window-bar" aria-label="模拟采集窗口"></progress>
+      <p class="advanced-muted" id="advanced-capture-range" hidden></p>
+     </div>
+    </div>
+    <div class="advanced-result" id="advanced-attach-result">
+     <div class="advanced-card-head"><h3>输出与分片摘要</h3><span id="advanced-round-count" class="advanced-muted"></span></div>
+     <ol class="advanced-output-log" id="advanced-output-log" aria-label="模拟采集输出"></ol>
+     <div class="advanced-shard-summary" id="advanced-shard-summary" hidden>
+      <p id="advanced-shard-totals"></p>
+      <ul id="advanced-shard-list" aria-label="示意分片列表"></ul>
+     </div>
+     <code id="advanced-attach-artifact" hidden></code>
+    </div>
+    <details class="advanced-discovery advanced-terminal">
+     <summary>在现场终端运行</summary>
+     <p id="advanced-execution-note"></p>
+     <div class="advanced-code">
+      <div><span>进入 msprof 交互模式</span><button type="button" data-advanced-copy="advanced-attach-command">复制命令</button></div>
+      <pre><code id="advanced-attach-command" class="language-bash"></code></pre>
+     </div>
+     <p>连接后先观察业务。在 <code>(msprof)</code> 输入 <code>start</code> 才开始采集，采够后输入 <code>stop</code>，用 <code>quit</code> 退出会话。将实际的 <code>PROF_*</code> 目录传给解析命令。</p>
+     <pre><code id="advanced-export-command"></code></pre>
+    </details>
+   </div>
+  </div>
+  <p class="advanced-reference"><a href="https://www.hiascend.com/doc_center/source/zh/CANNCommunityEdition/920beta1/devaids/Profiling/atlasprofiling_16_0016.html" target="_blank" rel="noopener noreferrer">msprof 动态采集文档 ↗</a></p>
+ </section>
+ <section id="advanced-torch" role="tabpanel" aria-labelledby="advanced-torch-tab" hidden>
+  <header class="advanced-intro">
+   <h1>按 PyTorch 步采集框架与 NPU 数据</h1>
+   <p>把 <code>torch_npu.profiler.profile</code> 放到实际执行 NPU 算子的 Python 进程里，选定需要记录的迭代。每完成一步调用 <code>prof.step()</code>，让 Profiler 按步推进采集计划。</p>
+  </header>
+  <div class="advanced-grid">
+   <div class="advanced-card">
+    <h2>选择接入点与采集窗口</h2>
+    <div class="advanced-choice-settings">
+     <fieldset class="advanced-choice-field" data-advanced-choices>
+      <legend>任务场景</legend>
+      <select id="advanced-torch-scenario" aria-label="任务场景"><option value="train">训练 Rank</option><option value="infer">推理 worker</option></select>
+     </fieldset>
+     <fieldset class="advanced-choice-field" data-advanced-choices>
+      <legend>输出格式</legend>
+      <select id="advanced-torch-format" aria-label="输出格式"><option value="Text">Text</option><option value="Db">DB</option></select>
+     </fieldset>
+    </div>
+    <div class="advanced-note"><strong id="advanced-torch-entry"></strong><p id="advanced-torch-entry-note"></p></div>
+    <div class="advanced-fields advanced-step-fields">
+     <label>跳过步数<input id="advanced-torch-skip" type="number" min="0" max="10000" step="1" value="5"></label>
+     <label>预热步数<input id="advanced-torch-warmup" type="number" min="0" max="100" step="1" value="1"></label>
+     <label>记录步数<input id="advanced-torch-active" type="number" min="1" max="1000" step="1" value="3"></label>
+    </div>
+    <div class="advanced-step-window" id="advanced-step-window" aria-label="采集计划"></div>
+    <p class="advanced-muted" id="advanced-torch-steps"></p>
+    <label class="advanced-field">结果目录<input id="advanced-torch-output" type="text" value="./prof_pytorch" autocomplete="off" spellcheck="false"></label>
+    <p class="advanced-error" id="advanced-torch-error" role="status" hidden></p>
+    <div class="advanced-result">
+     <h3>预期产物</h3>
+     <pre id="advanced-torch-artifact"></pre>
+    </div>
+   </div>
+   <div class="advanced-card">
+    <div class="advanced-card-head"><h2>接入模板</h2><span class="advanced-tag">CPU + NPU · Level0</span></div>
+    <p class="advanced-muted">把现有循环使用的迭代器和单步函数传入模板。每个参与采集的进程各自接入一次。</p>
+    <div class="advanced-code advanced-python">
+     <div><span>Python</span><button type="button" data-advanced-copy="advanced-torch-code">复制代码</button></div>
+     <pre><code id="advanced-torch-code" class="language-python"></code></pre>
+    </div>
+   </div>
+  </div>
+  <p class="advanced-reference">如果业务需要在运行期间按配置触发框架采集，可使用 PyTorch 自己的 <code>dynamic_profile</code> 接口。<a href="https://www.hiascend.com/en-sg/document/detail/en/mindstudio/2620/TITools/ascend_pytorch_profiler/docs/en/developer_notes/ascend_pytorch_profiler_user_guide.md" target="_blank" rel="noopener noreferrer">Ascend PyTorch Profiler 指南 ↗</a></p>
+ </section>
 </section>
 <section class="user-evidence" id="user-evidence" role="tabpanel" aria-labelledby="page-evidence" hidden><div class="ev-stats"><div><strong>8</strong><span>问题主题</span></div><div><strong>31</strong><span>引用记录（按来源与编号去重）</span></div></div><div class="ev-layout"><nav class="ev-index" aria-label="用户问题主题">
 <a href="#ev-case-1">01 · 难上手：42项开关认不全，不知如何把想法写成采集命令，不愿耐心读文档</a>
@@ -599,6 +764,7 @@ body[data-page=evidence] .lab-page,body[data-page=evidence] .evidence-toolbar-ba
    <a id="code-reference" class="code-reference" href="https://www.hiascend.com/doc_center/source/en/CANNCommunityEdition/910/devaids/Profiling/atlasprofiling_16_0011.html" target="_blank" rel="noopener" title="查看当前采集方式的官方参数和接入示例">官方用法</a>
    <a href="#faq-estimation" data-faq="faq-estimation" aria-current="true">msmodeling 能辅助膨胀预估吗？耗时多久？</a>
    <a href="#faq-profiler" data-faq="faq-profiler" aria-current="false">围绕 msprof，msmodeling 还能做什么？</a>
+   <a href="#faq-collector-comparison" data-faq="faq-collector-comparison" aria-current="false">三种昇腾性能采集工具怎么选？</a>
   </nav>
   <div class="faq-body">
    <article class="faq-section" id="faq-estimation" tabindex="-1">
@@ -660,6 +826,211 @@ body[data-page=evidence] .lab-page,body[data-page=evidence] .evidence-toolbar-ba
     <p>数据量估算帮助规划磁盘与下载，采集项推荐帮助选择诊断证据。膨胀百分比则应由配对实测验证，不能只把当前权重换成另一组未经验证的系数；在覆盖不足时，应继续显示未知项和可信度边界。</p>
     <p class="faq-source">依据：<a href="../../msmodeling/tools/perf_data_collection/README_microbench_replay.md" target="_blank" rel="noopener">NPU replay、msprof 采集与回填工具链</a>、<a href="../../msmodeling/tools/model_diagnostics/README.md" target="_blank" rel="noopener">模型语义诊断工具</a>、<a href="../../msmodeling/tests/npu_layer_analyzer/npu_layer_compare.py" target="_blank" rel="noopener">NPU 分层对账原型</a>。本页文档整理自本次讨论，描述当前基础与接入建议，不表示沙箱已具备这些自动化能力。</p>
    </article>
+   <article class="faq-section" id="faq-collector-comparison" tabindex="-1">
+    <h2 id="collector-comparison-title">3、三种昇腾性能采集工具怎么选？</h2>
+    <p class="faq-callout"><strong>要把慢点定位到 PyTorch 的 Step、模块或代码行，选 Ascend PyTorch Profiler。要从命令行查看 Host、CANN 与 NPU 的整段运行，选 msprof。要把事件、回调或硬件采样嵌入自己的工具，选 msPTI。</strong></p>
+    <div class="faq-table-wrap" role="region" aria-labelledby="collector-comparison-title" tabindex="0">
+     <table class="faq-collection-table" aria-label="三种昇腾性能采集工具的功能与选型对比">
+      <thead>
+       <tr><th scope="col" id="collector-pytorch">Ascend PyTorch Profiler<br><code>pytorch</code></th><th scope="col" id="collector-msprof">MindStudio Profiler CLI<br><code>msprof</code></th><th scope="col" id="collector-mspti">MindStudio Profiler Tools Interface<br><code>mspti</code></th></tr>
+      </thead>
+      <tbody>
+       <tr><th scope="rowgroup" colspan="3" id="collector-role">定位与仓库分工</th></tr>
+       <tr>
+        <td headers="collector-pytorch collector-role"><strong>框架级归因。</strong>面向昇腾上的 PyTorch 训练和推理，将框架算子与 CANN API、NPU 任务关联，便于追到业务代码。</td>
+        <td headers="collector-msprof collector-role"><strong>系统级采集与离线分析。</strong>适用于 PyTorch 及其他 CANN 应用。CLI 的底层采集器在 <code>cann/runtime</code>，<code>Ascend/msprof</code> 主要维护解析、导出和辅助工具。</td>
+        <td headers="collector-mspti collector-role"><strong>可嵌入的采集 SDK。</strong>性能工具、框架和服务可在进程内订阅事件、配置采样并消费记录，也可接入 Python Monitor。</td>
+       </tr>
+      </tbody>
+      <tbody>
+       <tr><th scope="rowgroup" colspan="3" id="collector-entry">采集入口与接入成本</th></tr>
+       <tr>
+        <td headers="collector-pytorch collector-entry"><strong>通常在训练或推理脚本中接入。</strong><code>torch_npu.profiler.profile</code> 配合 <code>schedule</code> 和 <code>prof.step()</code> 使用。<code>dynamic_profile</code> 支持配置触发，训练场景另有环境变量免改业务代码方式。兼容版本支持原生 <code>torch.profiler</code> 的 NPU 入口。</td>
+        <td headers="collector-msprof collector-entry"><strong>从命令行启动，通常免改业务代码。</strong>通过 <code>msprof --application="…"</code> 拉起任务。动态 launch 或 attach 取决于 CANN 版本、任务启动方式和进程条件。</td>
+        <td headers="collector-mspti collector-entry"><strong>在进程内接入 API。</strong>C/C++ 提供 Activity、Callback 和 PM Sampling。Python 的 <code>KernelMonitor</code>、<code>CommunicationMonitor</code>、<code>MstxMonitor</code> 封装了启停和数据交付。</td>
+       </tr>
+      </tbody>
+      <tbody>
+       <tr><th scope="rowgroup" colspan="3" id="collector-framework">采集丰富度 · 框架与业务语义</th></tr>
+       <tr>
+        <td headers="collector-pytorch collector-framework"><strong>框架语义最丰富。</strong>可按 Step 查看框架算子、输入 Shape 与类型、调用栈、模块层级、算子显存与 MSTX 标记，具体取决于活动类型和采集开关。</td>
+        <td headers="collector-msprof collector-framework"><strong>普通 CLI 看到的是 CANN API、任务和 MSTX 标记。</strong>PyTorch 模块层级、Python 调用栈和框架算子的输入 Shape 由框架侧采集。</td>
+        <td headers="collector-mspti collector-framework"><strong>业务语义由接入方关联。</strong>SDK 提供 Marker 和外部关联 ID，可用它们将记录关联到请求、Step 或框架算子。</td>
+       </tr>
+      </tbody>
+      <tbody>
+       <tr><th scope="rowgroup" colspan="3" id="collector-system">采集丰富度 · Host、CANN 与 NPU</th></tr>
+       <tr>
+        <td headers="collector-pytorch collector-system"><strong>在同一时间线关联框架、CANN 和 NPU。</strong><code>torch_npu.profiler</code> 可按 Level 和扩展配置追加 Runtime、HCCL 通信、AI Core 指标、CANN 显存等。这里的 CPU activity 主要指框架侧事件。</td>
+        <td headers="collector-msprof collector-system"><strong>通用系统指标覆盖最广。</strong>按配置可采 Host CPU、内存、磁盘、网络等，结合 CANN/Runtime、NPU 任务、HCCL、显存及设备指标。AI Core 指标可按任务或周期采集，具体依版本和芯片。</td>
+        <td headers="collector-mspti collector-system"><strong>按需订阅底层事件或周期采样。</strong>Activity 提供 Kernel、内存、通信、API 和 Marker 记录。Callback 提供 Runtime/HCCL API 进出回调。PM Sampling 支持 HBM 带宽利用率、链路带宽、功耗、温度和核心利用率等设备指标，具体依芯片而定。</td>
+       </tr>
+      </tbody>
+      <tbody>
+       <tr><th scope="rowgroup" colspan="3" id="collector-control">窗口控制、采集开销与数据量</th></tr>
+       <tr>
+        <td headers="collector-pytorch collector-control"><strong>按 Step 取短窗口。</strong>动态采集可按配置选择 Rank。调用栈、模块和显存明细会增加成本，按待定位的问题启用。</td>
+        <td headers="collector-msprof collector-control"><strong>按时间窗口和采集项控制数据量。</strong>可设延迟、时长或动态会话，并调节 Level、Host 选项和设备采样频率。系统级或高频数据会增加采集和落盘负担。</td>
+        <td headers="collector-mspti collector-control"><strong>由调用方控制事件、频率和缓冲。</strong>异步 Activity 适合批量消费，Callback 成本取决于调用频率和回调逻辑，高频采样要关注缓冲溢出或丢样。</td>
+       </tr>
+      </tbody>
+      <tbody>
+       <tr><th scope="rowgroup" colspan="3" id="collector-output">输出与后续分析</th></tr>
+       <tr>
+        <td headers="collector-pytorch collector-output"><strong>输出带框架语义的 Trace 和统计。</strong><code>torch_npu.profiler</code> 按配置生成 <code>trace_view.json</code>、算子/显存 CSV 或按 Rank 的 <code>ascend_pytorch_profiler_*.db</code>，可用 MindStudio Insight 查看。原生接口可用 <code>key_averages()</code> 或导出 Chrome Trace。</td>
+        <td headers="collector-msprof collector-output"><strong>保留原始采集目录，支持离线重导。</strong>原始记录落在 <code>PROF_*</code>。<code>--type=db</code> 导出汇总 DB，<code>--type=text</code> 还导出 Timeline/Summary 文件，可用 MindStudio Insight 查看。</td>
+        <td headers="collector-mspti collector-output"><strong>交付可编程消费的记录。</strong>输出事件结构体、回调数据或采样条目，持久化、聚合、可视化和跨 Rank 归因由接入方实现。</td>
+       </tr>
+      </tbody>
+      <tbody>
+       <tr><th scope="rowgroup" colspan="3" id="collector-example">典型选型</th></tr>
+       <tr>
+        <td headers="collector-pytorch collector-example"><strong>训练 Step 变慢。</strong>要确认耗时来自数据加载、某一层、算子下发还是通信，并定位到具体代码位置。</td>
+        <td headers="collector-msprof collector-example"><strong>服务 NPU 利用率偏低。</strong>希望从命令行先看 CPU 调度、CANN 下发间隔、NPU 空闲和通信重叠，再决定排查方向。</td>
+        <td headers="collector-mspti collector-example"><strong>研发自定义观测能力。</strong>要把 Kernel 或 HCCL 事件接进自研追踪管道，或将周期硬件指标送到监控系统。</td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <h3 id="collector-workflow-title">三种工具可以分工使用</h3>
+    <p>从当前缺的证据出发。用 PyTorch Profiler 找到慢 Step 后，可以用 msprof 补查 Host 调度或设备指标。用 msPTI 持续监控时，也可以在发现异常后用 msprof 短时采集。</p>
+    <figure class="faq-collection-diagram" aria-labelledby="collector-workflow-title">
+     <ul class="faq-collection-legend" aria-label="两张图的工具颜色图例">
+      <li data-tool="pytorch">Ascend PyTorch Profiler</li>
+      <li data-tool="msprof">msprof CLI</li>
+      <li data-tool="mspti">msPTI SDK</li>
+     </ul>
+     <div class="faq-collection-diagram-scroll" role="region" aria-labelledby="collector-workflow-title" tabindex="0">
+      <!-- Rendered from the Mermaid source below for offline viewing. -->
+      <svg id="profiler-collector-workflow" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flowchart" style="max-width: 752.83px; background-color: transparent;" viewBox="4 4 752.830078125 374" role="graphics-document document" aria-roledescription="flowchart-v2" aria-describedby="chart-desc-profiler-collector-workflow" aria-labelledby="chart-title-profiler-collector-workflow"><title id="chart-title-profiler-collector-workflow">三种昇腾性能采集工具的分工</title><desc id="chart-desc-profiler-collector-workflow">定位框架代码用 PyTorch Profiler，排查整个系统用 msprof，持续监控特定指标用 msPTI。框架采集或持续监控发现异常后，可用 msprof 短时补采。</desc><style>#profiler-collector-workflow{font-size:15px;fill:#333;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#profiler-collector-workflow .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#profiler-collector-workflow .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#profiler-collector-workflow .error-icon{fill:hsl(220.5882352941, 100%, 98.3333333333%);}#profiler-collector-workflow .error-text{fill:rgb(8.5000000002, 5.7500000001, 0);stroke:rgb(8.5000000002, 5.7500000001, 0);}#profiler-collector-workflow .edge-thickness-normal{stroke-width:1px;}#profiler-collector-workflow .edge-thickness-thick{stroke-width:3.5px;}#profiler-collector-workflow .edge-pattern-solid{stroke-dasharray:0;}#profiler-collector-workflow .edge-thickness-invisible{stroke-width:0;fill:none;}#profiler-collector-workflow .edge-pattern-dashed{stroke-dasharray:3;}#profiler-collector-workflow .edge-pattern-dotted{stroke-dasharray:2;}#profiler-collector-workflow .marker{fill:#546b94;stroke:#546b94;}#profiler-collector-workflow .marker.cross{stroke:#546b94;}#profiler-collector-workflow svg{font-size:15px;}#profiler-collector-workflow p{margin:0;}#profiler-collector-workflow .label{color:#333;}#profiler-collector-workflow .cluster-label text{fill:rgb(8.5000000002, 5.7500000001, 0);}#profiler-collector-workflow .cluster-label span{color:rgb(8.5000000002, 5.7500000001, 0);}#profiler-collector-workflow .cluster-label span p{background-color:transparent;}#profiler-collector-workflow .label text,#profiler-collector-workflow span{fill:#333;color:#333;}#profiler-collector-workflow .node rect,#profiler-collector-workflow .node circle,#profiler-collector-workflow .node ellipse,#profiler-collector-workflow .node polygon,#profiler-collector-workflow .node path{fill:#fff4dd;stroke:hsl(40.5882352941, 60%, 83.3333333333%);stroke-width:1px;}#profiler-collector-workflow .rough-node .label text,#profiler-collector-workflow .node .label text,#profiler-collector-workflow .image-shape .label,#profiler-collector-workflow .icon-shape .label{text-anchor:middle;}#profiler-collector-workflow .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#profiler-collector-workflow .rough-node .label,#profiler-collector-workflow .node .label,#profiler-collector-workflow .image-shape .label,#profiler-collector-workflow .icon-shape .label{text-align:center;}#profiler-collector-workflow .node.clickable{cursor:pointer;}#profiler-collector-workflow .root .anchor path{fill:#546b94!important;stroke-width:0;stroke:#546b94;}#profiler-collector-workflow .arrowheadPath{fill:#0b0b0b;}#profiler-collector-workflow .edgePaths .path{stroke:#546b94;stroke-width:1px;}#profiler-collector-workflow .flowchart-link{stroke:#546b94;fill:none;}#profiler-collector-workflow .edgeLabel{background-color:#f7f9ff;text-align:center;}#profiler-collector-workflow .edgeLabel p{background-color:#f7f9ff;}#profiler-collector-workflow .edgeLabel rect{opacity:0.5;background-color:#f7f9ff;fill:#f7f9ff;}#profiler-collector-workflow .labelBkg{background-color:rgba(247, 249, 255, 0.5);}#profiler-collector-workflow .cluster rect{fill:hsl(220.5882352941, 100%, 98.3333333333%);stroke:hsl(220.5882352941, 60%, 88.3333333333%);stroke-width:1px;}#profiler-collector-workflow .cluster text{fill:rgb(8.5000000002, 5.7500000001, 0);}#profiler-collector-workflow .cluster span{color:rgb(8.5000000002, 5.7500000001, 0);}#profiler-collector-workflow .node .collapsed-indicator{fill:hsl(220.5882352941, 60%, 88.3333333333%);stroke:none;opacity:0.6;}#profiler-collector-workflow .node .collapsed-separator{stroke:hsl(220.5882352941, 60%, 88.3333333333%);stroke-width:0.75px;}#profiler-collector-workflow div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-size:12px;background:hsl(220.5882352941, 100%, 98.3333333333%);border:1px solid hsl(220.5882352941, 60%, 88.3333333333%);border-radius:2px;pointer-events:none;z-index:100;}#profiler-collector-workflow .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#333;}#profiler-collector-workflow rect.text{fill:none;stroke-width:0;}#profiler-collector-workflow .icon-shape,#profiler-collector-workflow .image-shape{background-color:#f7f9ff;text-align:center;}#profiler-collector-workflow .icon-shape p,#profiler-collector-workflow .image-shape p{background-color:#f7f9ff;padding:2px;}#profiler-collector-workflow .icon-shape .label rect,#profiler-collector-workflow .image-shape .label rect{opacity:0.5;background-color:#f7f9ff;fill:#f7f9ff;}#profiler-collector-workflow .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#profiler-collector-workflow .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#profiler-collector-workflow .node .neo-node{stroke:hsl(40.5882352941, 60%, 83.3333333333%);}#profiler-collector-workflow [data-look="neo"].node rect,#profiler-collector-workflow [data-look="neo"].cluster rect,#profiler-collector-workflow [data-look="neo"].node polygon{stroke:url(#profiler-collector-workflow-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#profiler-collector-workflow [data-look="neo"].swimlane.cluster rect{filter:none;}#profiler-collector-workflow [data-look="neo"].node path{stroke:url(#profiler-collector-workflow-gradient);stroke-width:1px;}#profiler-collector-workflow [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#profiler-collector-workflow [data-look="neo"].node .neo-line path{stroke:hsl(40.5882352941, 60%, 83.3333333333%);filter:none;}#profiler-collector-workflow [data-look="neo"].node circle{stroke:url(#profiler-collector-workflow-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#profiler-collector-workflow [data-look="neo"].node circle .state-start{fill:#000000;}#profiler-collector-workflow [data-look="neo"].icon-shape .icon{fill:url(#profiler-collector-workflow-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#profiler-collector-workflow [data-look="neo"].icon-shape .icon-neo path{stroke:url(#profiler-collector-workflow-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#profiler-collector-workflow :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}#profiler-collector-workflow .start rect{fill:rgb(241, 244, 249)!important;stroke:rgb(166, 179, 199)!important;color:rgb(38, 57, 81)!important;font-weight:600!important;}#profiler-collector-workflow .start polygon{fill:rgb(241, 244, 249)!important;stroke:rgb(166, 179, 199)!important;color:rgb(38, 57, 81)!important;font-weight:600!important;}#profiler-collector-workflow .start ellipse{fill:rgb(241, 244, 249)!important;stroke:rgb(166, 179, 199)!important;color:rgb(38, 57, 81)!important;font-weight:600!important;}#profiler-collector-workflow .start circle{fill:rgb(241, 244, 249)!important;stroke:rgb(166, 179, 199)!important;color:rgb(38, 57, 81)!important;font-weight:600!important;}#profiler-collector-workflow .start path{fill:rgb(241, 244, 249)!important;stroke:rgb(166, 179, 199)!important;color:rgb(38, 57, 81)!important;font-weight:600!important;}#profiler-collector-workflow .start tspan{fill:rgb(38, 57, 81)!important;}#profiler-collector-workflow .framework rect{fill:rgb(233, 242, 255)!important;stroke:rgb(75, 121, 184)!important;color:rgb(23, 67, 117)!important;}#profiler-collector-workflow .framework polygon{fill:rgb(233, 242, 255)!important;stroke:rgb(75, 121, 184)!important;color:rgb(23, 67, 117)!important;}#profiler-collector-workflow .framework ellipse{fill:rgb(233, 242, 255)!important;stroke:rgb(75, 121, 184)!important;color:rgb(23, 67, 117)!important;}#profiler-collector-workflow .framework circle{fill:rgb(233, 242, 255)!important;stroke:rgb(75, 121, 184)!important;color:rgb(23, 67, 117)!important;}#profiler-collector-workflow .framework path{fill:rgb(233, 242, 255)!important;stroke:rgb(75, 121, 184)!important;color:rgb(23, 67, 117)!important;}#profiler-collector-workflow .framework tspan{fill:rgb(23, 67, 117)!important;}#profiler-collector-workflow .system rect{fill:rgb(230, 245, 238)!important;stroke:rgb(57, 132, 105)!important;color:rgb(24, 88, 63)!important;}#profiler-collector-workflow .system polygon{fill:rgb(230, 245, 238)!important;stroke:rgb(57, 132, 105)!important;color:rgb(24, 88, 63)!important;}#profiler-collector-workflow .system ellipse{fill:rgb(230, 245, 238)!important;stroke:rgb(57, 132, 105)!important;color:rgb(24, 88, 63)!important;}#profiler-collector-workflow .system circle{fill:rgb(230, 245, 238)!important;stroke:rgb(57, 132, 105)!important;color:rgb(24, 88, 63)!important;}#profiler-collector-workflow .system path{fill:rgb(230, 245, 238)!important;stroke:rgb(57, 132, 105)!important;color:rgb(24, 88, 63)!important;}#profiler-collector-workflow .system tspan{fill:rgb(24, 88, 63)!important;}#profiler-collector-workflow .sdk rect{fill:rgb(241, 235, 252)!important;stroke:rgb(128, 77, 174)!important;color:rgb(80, 50, 116)!important;}#profiler-collector-workflow .sdk polygon{fill:rgb(241, 235, 252)!important;stroke:rgb(128, 77, 174)!important;color:rgb(80, 50, 116)!important;}#profiler-collector-workflow .sdk ellipse{fill:rgb(241, 235, 252)!important;stroke:rgb(128, 77, 174)!important;color:rgb(80, 50, 116)!important;}#profiler-collector-workflow .sdk circle{fill:rgb(241, 235, 252)!important;stroke:rgb(128, 77, 174)!important;color:rgb(80, 50, 116)!important;}#profiler-collector-workflow .sdk path{fill:rgb(241, 235, 252)!important;stroke:rgb(128, 77, 174)!important;color:rgb(80, 50, 116)!important;}#profiler-collector-workflow .sdk tspan{fill:rgb(80, 50, 116)!important;}#profiler-collector-workflow .followup rect{fill:rgb(230, 245, 238)!important;stroke:rgb(57, 132, 105)!important;color:rgb(24, 88, 63)!important;stroke-dasharray:4,3!important;}#profiler-collector-workflow .followup polygon{fill:rgb(230, 245, 238)!important;stroke:rgb(57, 132, 105)!important;color:rgb(24, 88, 63)!important;stroke-dasharray:4,3!important;}#profiler-collector-workflow .followup ellipse{fill:rgb(230, 245, 238)!important;stroke:rgb(57, 132, 105)!important;color:rgb(24, 88, 63)!important;stroke-dasharray:4,3!important;}#profiler-collector-workflow .followup circle{fill:rgb(230, 245, 238)!important;stroke:rgb(57, 132, 105)!important;color:rgb(24, 88, 63)!important;stroke-dasharray:4,3!important;}#profiler-collector-workflow .followup path{fill:rgb(230, 245, 238)!important;stroke:rgb(57, 132, 105)!important;color:rgb(24, 88, 63)!important;stroke-dasharray:4,3!important;}#profiler-collector-workflow .followup tspan{fill:rgb(24, 88, 63)!important;}</style><g><marker id="profiler-collector-workflow_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="profiler-collector-workflow_flowchart-v2-pointStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="profiler-collector-workflow_flowchart-v2-pointEnd-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="11.5" refY="7" markerUnits="userSpaceOnUse" markerWidth="10.5" markerHeight="14" orient="auto"><path d="M 0 0 L 11.5 7 L 0 14 z" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="profiler-collector-workflow_flowchart-v2-pointStart-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="1" refY="7" markerUnits="userSpaceOnUse" markerWidth="11.5" markerHeight="14" orient="auto"><polygon points="0,7 11.5,14 11.5,0" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="profiler-collector-workflow_flowchart-v2-circleEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="profiler-collector-workflow_flowchart-v2-circleStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="profiler-collector-workflow_flowchart-v2-circleEnd-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refY="5" refX="12.25" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="profiler-collector-workflow_flowchart-v2-circleStart-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-2" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="profiler-collector-workflow_flowchart-v2-crossEnd" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="profiler-collector-workflow_flowchart-v2-crossStart" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="profiler-collector-workflow_flowchart-v2-crossEnd-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="17.7" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5;"/></marker><marker id="profiler-collector-workflow_flowchart-v2-crossStart-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="-3.5" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5; stroke-dasharray: 1, 0;"/></marker><g class="root"><g class="clusters"/><g class="edges edgePaths"><path d="M358.267578125,53L358.267578125,65.92893218813452Q358.267578125,73 351.1965103131345,73L123.17360687436548,73Q116.1025390625,73 116.1025390625,80.07106781186548L116.1025390625,150" id="profiler-collector-workflow-L_start_pytorch_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" data-edge="true" data-et="edge" data-id="L_start_pytorch_0" data-points="W3sieCI6MzU4LjI2NzU3ODEyNSwieSI6NTN9LHsieCI6MzU4LjI2NzU3ODEyNSwieSI6NzN9LHsieCI6MTE2LjEwMjUzOTA2MjUsInkiOjczfSx7IngiOjExNi4xMDI1MzkwNjI1LCJ5IjoxNTR9XQ==" data-look="classic" marker-end="url(#profiler-collector-workflow_flowchart-v2-pointEnd)"/><path d="M393.017578125,53L393.017578125,150" id="profiler-collector-workflow-L_start_msprof_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" data-edge="true" data-et="edge" data-id="L_start_msprof_0" data-points="W3sieCI6MzkzLjAxNzU3ODEyNSwieSI6NTN9LHsieCI6MzkzLjAxNzU3ODEyNSwieSI6MTU0fV0=" data-look="classic" marker-end="url(#profiler-collector-workflow_flowchart-v2-pointEnd)"/><path d="M427.767578125,53L427.767578125,65.92893218813452Q427.767578125,73 434.8386459368655,73L650.2590103131345,73Q657.330078125,73 657.330078125,80.07106781186548L657.330078125,150" id="profiler-collector-workflow-L_start_mspti_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" data-edge="true" data-et="edge" data-id="L_start_mspti_0" data-points="W3sieCI6NDI3Ljc2NzU3ODEyNSwieSI6NTN9LHsieCI6NDI3Ljc2NzU3ODEyNSwieSI6NzN9LHsieCI6NjU3LjMzMDA3ODEyNSwieSI6NzN9LHsieCI6NjU3LjMzMDA3ODEyNSwieSI6MTU0fV0=" data-look="classic" marker-end="url(#profiler-collector-workflow_flowchart-v2-pointEnd)"/><path d="M116.1025390625,211.5L116.1025390625,285.4289321881345Q116.1025390625,292.5 123.17360687436548,292.5L333.4889907818845,292.5Q340.56005859375,292.5 340.56005859375,299.5710678118655L340.56005859375,308.5" id="profiler-collector-workflow-L_pytorch_followup_0" class="edge-thickness-normal edge-pattern-dotted edge-thickness-normal edge-pattern-solid flowchart-link" data-edge="true" data-et="edge" data-id="L_pytorch_followup_0" data-points="W3sieCI6MTE2LjEwMjUzOTA2MjUsInkiOjIxMS41fSx7IngiOjExNi4xMDI1MzkwNjI1LCJ5IjoyOTIuNX0seyJ4IjozNDAuNTYwMDU4NTkzNzUsInkiOjI5Mi41fSx7IngiOjM0MC41NjAwNTg1OTM3NSwieSI6MzEyLjV9XQ==" data-look="classic" marker-end="url(#profiler-collector-workflow_flowchart-v2-pointEnd)"/><path d="M657.330078125,211.5L657.330078125,285.4289321881345Q657.330078125,292.5 650.2590103131345,292.5L439.9436264056155,292.5Q432.87255859375,292.5 432.87255859375,299.5710678118655L432.87255859375,308.5" id="profiler-collector-workflow-L_mspti_followup_0" class="edge-thickness-normal edge-pattern-dotted edge-thickness-normal edge-pattern-solid flowchart-link" data-edge="true" data-et="edge" data-id="L_mspti_followup_0" data-points="W3sieCI6NjU3LjMzMDA3ODEyNSwieSI6MjExLjV9LHsieCI6NjU3LjMzMDA3ODEyNSwieSI6MjkyLjV9LHsieCI6NDMyLjg3MjU1ODU5Mzc1LCJ5IjoyOTIuNX0seyJ4Ijo0MzIuODcyNTU4NTkzNzUsInkiOjMxMi41fV0=" data-look="classic" marker-end="url(#profiler-collector-workflow_flowchart-v2-pointEnd)"/></g><g class="edgeLabels"><g class="edgeLabel" transform="translate(116.1025390625, 103.5)"><g class="label" data-id="L_start_pytorch_0" transform="translate(0, -9.5)"><g><rect class="background" x="-47" y="-1" width="94" height="21"/><text y="-10.1" text-anchor="middle"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">定位模型代码</tspan></tspan></text></g></g></g><g class="edgeLabel" transform="translate(393.017578125, 103.5)"><g class="label" data-id="L_start_msprof_0" transform="translate(0, -9.5)"><g><rect class="background" x="-47" y="-1" width="94" height="21"/><text y="-10.1" text-anchor="middle"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">排查整体运行</tspan></tspan></text></g></g></g><g class="edgeLabel" transform="translate(657.330078125, 103.5)"><g class="label" data-id="L_start_mspti_0" transform="translate(0, -9.5)"><g><rect class="background" x="-47" y="-1" width="94" height="21"/><text y="-10.1" text-anchor="middle"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">接入持续监控</tspan></tspan></text></g></g></g><g class="edgeLabel" transform="translate(115.9775390625, 262)"><g class="label" data-id="L_pytorch_followup_0" transform="translate(0, -9.5)"><g><rect class="background" x="-51.375" y="-1" width="102.75" height="21"/><text y="-10.1" text-anchor="middle"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">发现慢</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> Step</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 后</tspan></tspan></text></g></g></g><g class="edgeLabel" transform="translate(657.330078125, 262)"><g class="label" data-id="L_mspti_followup_0" transform="translate(0, -9.5)"><g><rect class="background" x="-54.5" y="-1" width="109" height="21"/><text y="-10.1" text-anchor="middle"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">监控发现异常后</tspan></tspan></text></g></g></g></g><g class="nodes"><g class="node default start" id="profiler-collector-workflow-flowchart-start-0" data-look="classic" transform="translate(393.017578125, 32.5)"><rect class="basic label-container" style="fill:#f1f4f9 !important;stroke:#a6b3c7 !important" rx="5" ry="5" x="-79.5" y="-20.5" width="159" height="41"/><g class="label" style="color:#263951 !important;font-weight:600 !important" transform="translate(0, -8.5)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#263951 !important;font-weight:600 !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">当前需要哪类证据？</tspan></tspan></text></g></g></g><g class="node default framework" id="profiler-collector-workflow-flowchart-pytorch-1" data-look="classic" transform="translate(116.1025390625, 182.75)"><rect class="basic label-container" style="fill:#e9f2ff !important;stroke:#4b79b8 !important" x="-104.1025390625" y="-28.75" width="208.205078125" height="57.5"/><g class="label" style="color:#174375 !important" transform="translate(0, -16.75)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#174375 !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">Ascend</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> PyTorch</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> Profiler</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">按</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> Step</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 定位模块和算子</tspan></tspan></text></g></g></g><g class="node default system" id="profiler-collector-workflow-flowchart-msprof-2" data-look="classic" transform="translate(393.017578125, 182.75)"><rect class="basic label-container" style="fill:#e6f5ee !important;stroke:#398469 !important" x="-132.8125" y="-28.75" width="265.625" height="57.5"/><g class="label" style="color:#18583f !important" transform="translate(0, -16.75)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#18583f !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">msprof</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> CLI</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">查看</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> Host、CANN</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 和</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> NPU</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 时间线</tspan></tspan></text></g></g></g><g class="node default sdk" id="profiler-collector-workflow-flowchart-mspti-3" data-look="classic" transform="translate(657.330078125, 182.75)"><rect class="basic label-container" style="fill:#f1ebfc !important;stroke:#804dae !important" x="-91.5" y="-28.75" width="183" height="57.5"/><g class="label" style="color:#503274 !important" transform="translate(0, -16.75)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#503274 !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">msPTI</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> SDK</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">订阅事件、周期采样</tspan></tspan></text></g></g></g><g class="node default followup" id="profiler-collector-workflow-flowchart-followup-4" data-look="classic" transform="translate(386.71630859375, 341.25)"><rect class="basic label-container" style="fill:#e6f5ee !important;stroke:#398469 !important;stroke-dasharray:4 3 !important" x="-148.46875" y="-28.75" width="296.9375" height="57.5"/><g class="label" style="color:#18583f !important" transform="translate(0, -16.75)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#18583f !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">msprof</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 短时补采</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">核对</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> Host</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 调度、算子下发或设备指标</tspan></tspan></text></g></g></g></g></g></g><defs><filter id="profiler-collector-workflow-drop-shadow" height="130%" width="130%"><feDropShadow dx="4" dy="4" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"/></filter></defs><defs><filter id="profiler-collector-workflow-drop-shadow-small" height="150%" width="150%"><feDropShadow dx="2" dy="2" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"/></filter></defs><linearGradient id="profiler-collector-workflow-gradient" gradientUnits="objectBoundingBox" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="hsl(40.5882352941, 60%, 83.3333333333%)" stop-opacity="1"/><stop offset="100%" stop-color="hsl(-79.4117647059, 60%, 83.3333333333%)" stop-opacity="1"/></linearGradient></svg>
+      <script type="text/plain" id="collector-workflow-mermaid">
+---
+config:
+  theme: base
+  htmlLabels: false
+  look: classic
+  themeVariables:
+    fontFamily: 'Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif'
+    fontSize: '15px'
+    lineColor: '#546b94'
+    edgeLabelBackground: '#f7f9ff'
+  flowchart:
+    curve: linear
+    nodeSpacing: 24
+    rankSpacing: 38
+    padding: 12
+    wrappingWidth: 260
+---
+flowchart TD
+    accTitle: 三种昇腾性能采集工具的分工
+    accDescr: 定位框架代码用 PyTorch Profiler，排查整个系统用 msprof，持续监控特定指标用 msPTI。框架采集或持续监控发现异常后，可用 msprof 短时补采。
+    start("当前需要哪类证据？")
+    pytorch["Ascend PyTorch Profiler<br/>按 Step 定位模块和算子"]
+    msprof["msprof CLI<br/>查看 Host、CANN 和 NPU 时间线"]
+    mspti["msPTI SDK<br/>订阅事件、周期采样"]
+    followup["msprof 短时补采<br/>核对 Host 调度、算子下发或设备指标"]
+
+    start -->|定位模型代码| pytorch
+    start -->|排查整体运行| msprof
+    start -->|接入持续监控| mspti
+    pytorch -.->|发现慢 Step 后| followup
+    mspti -.->|监控发现异常后| followup
+
+    classDef start fill:#f1f4f9,stroke:#a6b3c7,color:#263951,font-weight:600
+    classDef framework fill:#e9f2ff,stroke:#4b79b8,color:#174375
+    classDef system fill:#e6f5ee,stroke:#398469,color:#18583f
+    classDef sdk fill:#f1ebfc,stroke:#804dae,color:#503274
+    classDef followup fill:#e6f5ee,stroke:#398469,color:#18583f,stroke-dasharray:4 3
+    class start start
+    class pytorch framework
+    class msprof system
+    class mspti sdk
+    class followup followup
+      </script>
+     </div>
+     <figcaption>实线表示按需求选择入口，虚线表示发现线索后按需补采。</figcaption>
+    </figure>
+    <p>工具分工也体现在实现层。当前 PyTorch 仓库的原生 NPU profiler 路径已有 msPTI 和 ACL Profiling 两种后端，框架入口可以复用底层采集库。</p>
+    <h3 id="collector-task-title">正常任务流程中，各工具能采什么？</h3>
+    <p>以昇腾 PyTorch 多卡训练的一轮 Step 为例。沿左列看流程，横向看三个工具在每个阶段能提供的证据。</p>
+    <figure class="faq-collection-diagram" aria-labelledby="collector-task-title">
+     <div class="faq-collection-diagram-scroll" role="region" aria-labelledby="collector-task-title" tabindex="0">
+      <!-- Rendered from the Mermaid source below for offline viewing. -->
+      <svg id="profiler-collector-task" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="max-width: 742.152px; background-color: transparent;" viewBox="-5 -184.1999969482422 742.15234375 368.3999938964844" role="img" aria-labelledby="collector-task-title" aria-describedby="collector-task-caption"><style>#profiler-collector-task{font-size:14px;fill:#333;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#profiler-collector-task .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#profiler-collector-task .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#profiler-collector-task .error-icon{fill:hsl(220.5882352941, 100%, 98.3333333333%);}#profiler-collector-task .error-text{fill:rgb(8.5000000002, 5.7500000001, 0);stroke:rgb(8.5000000002, 5.7500000001, 0);}#profiler-collector-task .edge-thickness-normal{stroke-width:1px;}#profiler-collector-task .edge-thickness-thick{stroke-width:3.5px;}#profiler-collector-task .edge-pattern-solid{stroke-dasharray:0;}#profiler-collector-task .edge-thickness-invisible{stroke-width:0;fill:none;}#profiler-collector-task .edge-pattern-dashed{stroke-dasharray:3;}#profiler-collector-task .edge-pattern-dotted{stroke-dasharray:2;}#profiler-collector-task .marker{fill:#62748f;stroke:#62748f;}#profiler-collector-task .marker.cross{stroke:#62748f;}#profiler-collector-task svg{font-size:14px;}#profiler-collector-task p{margin:0;}#profiler-collector-task .label{color:#333;}#profiler-collector-task .cluster-label text{fill:rgb(8.5000000002, 5.7500000001, 0);}#profiler-collector-task .cluster-label span{color:rgb(8.5000000002, 5.7500000001, 0);}#profiler-collector-task .label text,#profiler-collector-task span{fill:#333;color:#333;}#profiler-collector-task .node rect,#profiler-collector-task .node circle,#profiler-collector-task .node ellipse,#profiler-collector-task .node polygon,#profiler-collector-task .node path{fill:#fff4dd;stroke:hsl(40.5882352941, 60%, 83.3333333333%);stroke-width:1px;}#profiler-collector-task .flowchart-label text{text-anchor:middle;}#profiler-collector-task .node .label{text-align:center;}#profiler-collector-task .node.clickable{cursor:pointer;}#profiler-collector-task .arrowheadPath{fill:#0b0b0b;}#profiler-collector-task .edgePaths .path{stroke:#62748f;stroke-width:2.0px;}#profiler-collector-task .flowchart-link{stroke:#62748f;fill:none;}#profiler-collector-task .edgeLabel{background-color:hsl(-79.4117647059, 100%, 93.3333333333%);text-align:center;}#profiler-collector-task .edgeLabel p{margin:0;padding:0;display:inline;}#profiler-collector-task .edgeLabel rect{opacity:0.5;background-color:hsl(-79.4117647059, 100%, 93.3333333333%);fill:hsl(-79.4117647059, 100%, 93.3333333333%);}#profiler-collector-task .labelBkg{background-color:hsl(-79.4117647059, 100%, 93.3333333333%);}#profiler-collector-task .node .cluster{fill:rgba(246.4999999998, 249.2499999999, 255, 0.5);stroke:rgba(207.3999999999, 218.9499999999, 243.1, 0.2);box-shadow:rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;stroke-width:1px;}#profiler-collector-task .cluster text{fill:rgb(8.5000000002, 5.7500000001, 0);}#profiler-collector-task .cluster span{color:rgb(8.5000000002, 5.7500000001, 0);}#profiler-collector-task div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-size:12px;background:hsl(220.5882352941, 100%, 98.3333333333%);border:1px solid hsl(220.5882352941, 60%, 88.3333333333%);border-radius:2px;pointer-events:none;z-index:100;}#profiler-collector-task .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#333;}#profiler-collector-task .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#profiler-collector-task .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#profiler-collector-task .node .neo-node{stroke:hsl(40.5882352941, 60%, 83.3333333333%);}#profiler-collector-task [data-look="neo"].node rect,#profiler-collector-task [data-look="neo"].cluster rect,#profiler-collector-task [data-look="neo"].node polygon{stroke:url(#profiler-collector-task-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#profiler-collector-task [data-look="neo"].swimlane.cluster rect{filter:none;}#profiler-collector-task [data-look="neo"].node path{stroke:url(#profiler-collector-task-gradient);stroke-width:1px;}#profiler-collector-task [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#profiler-collector-task [data-look="neo"].node .neo-line path{stroke:hsl(40.5882352941, 60%, 83.3333333333%);filter:none;}#profiler-collector-task [data-look="neo"].node circle{stroke:url(#profiler-collector-task-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#profiler-collector-task [data-look="neo"].node circle .state-start{fill:#000000;}#profiler-collector-task [data-look="neo"].icon-shape .icon{fill:url(#profiler-collector-task-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#profiler-collector-task [data-look="neo"].icon-shape .icon-neo path{stroke:url(#profiler-collector-task-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#profiler-collector-task :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}#profiler-collector-task .stage rect{fill:rgb(241, 244, 249)!important;stroke:rgb(166, 179, 199)!important;color:rgb(38, 57, 81)!important;}#profiler-collector-task .stage polygon{fill:rgb(241, 244, 249)!important;stroke:rgb(166, 179, 199)!important;color:rgb(38, 57, 81)!important;}#profiler-collector-task .stage ellipse{fill:rgb(241, 244, 249)!important;stroke:rgb(166, 179, 199)!important;color:rgb(38, 57, 81)!important;}#profiler-collector-task .stage circle{fill:rgb(241, 244, 249)!important;stroke:rgb(166, 179, 199)!important;color:rgb(38, 57, 81)!important;}#profiler-collector-task .stage path{fill:rgb(241, 244, 249)!important;stroke:rgb(166, 179, 199)!important;color:rgb(38, 57, 81)!important;}#profiler-collector-task .stage tspan{fill:rgb(38, 57, 81)!important;}#profiler-collector-task .framework rect{fill:rgb(233, 242, 255)!important;stroke:rgb(75, 121, 184)!important;color:rgb(23, 67, 117)!important;}#profiler-collector-task .framework polygon{fill:rgb(233, 242, 255)!important;stroke:rgb(75, 121, 184)!important;color:rgb(23, 67, 117)!important;}#profiler-collector-task .framework ellipse{fill:rgb(233, 242, 255)!important;stroke:rgb(75, 121, 184)!important;color:rgb(23, 67, 117)!important;}#profiler-collector-task .framework circle{fill:rgb(233, 242, 255)!important;stroke:rgb(75, 121, 184)!important;color:rgb(23, 67, 117)!important;}#profiler-collector-task .framework path{fill:rgb(233, 242, 255)!important;stroke:rgb(75, 121, 184)!important;color:rgb(23, 67, 117)!important;}#profiler-collector-task .framework tspan{fill:rgb(23, 67, 117)!important;}#profiler-collector-task .system rect{fill:rgb(230, 245, 238)!important;stroke:rgb(57, 132, 105)!important;color:rgb(24, 88, 63)!important;}#profiler-collector-task .system polygon{fill:rgb(230, 245, 238)!important;stroke:rgb(57, 132, 105)!important;color:rgb(24, 88, 63)!important;}#profiler-collector-task .system ellipse{fill:rgb(230, 245, 238)!important;stroke:rgb(57, 132, 105)!important;color:rgb(24, 88, 63)!important;}#profiler-collector-task .system circle{fill:rgb(230, 245, 238)!important;stroke:rgb(57, 132, 105)!important;color:rgb(24, 88, 63)!important;}#profiler-collector-task .system path{fill:rgb(230, 245, 238)!important;stroke:rgb(57, 132, 105)!important;color:rgb(24, 88, 63)!important;}#profiler-collector-task .system tspan{fill:rgb(24, 88, 63)!important;}#profiler-collector-task .sdk rect{fill:rgb(241, 235, 252)!important;stroke:rgb(128, 77, 174)!important;color:rgb(80, 50, 116)!important;}#profiler-collector-task .sdk polygon{fill:rgb(241, 235, 252)!important;stroke:rgb(128, 77, 174)!important;color:rgb(80, 50, 116)!important;}#profiler-collector-task .sdk ellipse{fill:rgb(241, 235, 252)!important;stroke:rgb(128, 77, 174)!important;color:rgb(80, 50, 116)!important;}#profiler-collector-task .sdk circle{fill:rgb(241, 235, 252)!important;stroke:rgb(128, 77, 174)!important;color:rgb(80, 50, 116)!important;}#profiler-collector-task .sdk path{fill:rgb(241, 235, 252)!important;stroke:rgb(128, 77, 174)!important;color:rgb(80, 50, 116)!important;}#profiler-collector-task .sdk tspan{fill:rgb(80, 50, 116)!important;}</style><g/><defs><filter id="profiler-collector-task-drop-shadow" height="130%" width="130%"><feDropShadow dx="4" dy="4" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"/></filter></defs><defs><filter id="profiler-collector-task-drop-shadow-small" height="150%" width="150%"><feDropShadow dx="2" dy="2" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"/></filter></defs><linearGradient id="profiler-collector-task-gradient" gradientUnits="objectBoundingBox" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="hsl(40.5882352941, 60%, 83.3333333333%)" stop-opacity="1"/><stop offset="100%" stop-color="hsl(-79.4117647059, 60%, 83.3333333333%)" stop-opacity="1"/></linearGradient><marker id="profiler-collector-task_block-pointEnd" class="marker block" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="profiler-collector-task_block-pointStart" class="marker block" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="profiler-collector-task_block-pointEnd-margin" class="marker block" viewBox="0 0 11.5 14" refX="11.5" refY="7" markerUnits="userSpaceOnUse" markerWidth="10.5" markerHeight="14" orient="auto"><path d="M 0 0 L 11.5 7 L 0 14 z" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="profiler-collector-task_block-pointStart-margin" class="marker block" viewBox="0 0 11.5 14" refX="1" refY="7" markerUnits="userSpaceOnUse" markerWidth="11.5" markerHeight="14" orient="auto"><polygon points="0,7 11.5,14 11.5,0" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="profiler-collector-task_block-circleEnd" class="marker block" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="profiler-collector-task_block-circleStart" class="marker block" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="profiler-collector-task_block-circleEnd-margin" class="marker block" viewBox="0 0 10 10" refY="5" refX="12.25" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="profiler-collector-task_block-circleStart-margin" class="marker block" viewBox="0 0 10 10" refX="-2" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="profiler-collector-task_block-crossEnd" class="marker cross block" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="profiler-collector-task_block-crossStart" class="marker cross block" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="profiler-collector-task_block-crossEnd-margin" class="marker cross block" viewBox="0 0 15 15" refX="17.7" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5;"/></marker><marker id="profiler-collector-task_block-crossStart-margin" class="marker cross block" viewBox="0 0 15 15" refX="-3.5" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5; stroke-dasharray: 1, 0;"/></marker><g class="block"><g class="node stage flowchart-label" id="profiler-collector-task-stage" data-look="classic" transform="translate(87.76904296875, -153.50000381469727)"><rect class="basic label-container" style="fill:#f1f4f9 !important;stroke:#a6b3c7 !important" rx="0" ry="0" x="-87.76904296875" y="-25.700000762939453" width="175.5380859375" height="51.400001525878906"/><g class="label" style="color:#263951 !important;font-weight:700 !important" transform="translate(0, -7.999999523162842)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#263951 !important;font-weight:700 !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">训练</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> Step</tspan></tspan></text></g></g></g><g class="node framework flowchart-label" id="profiler-collector-task-framework" data-look="classic" transform="translate(273.30712890625, -153.50000381469727)"><rect class="basic label-container" style="fill:#e9f2ff !important;stroke:#4b79b8 !important" rx="0" ry="0" x="-87.76904296875" y="-25.700000762939453" width="175.5380859375" height="51.400001525878906"/><g class="label" style="color:#174375 !important;font-weight:700 !important" transform="translate(0, -7.999999523162842)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#174375 !important;font-weight:700 !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">PyTorch</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> Profiler</tspan></tspan></text></g></g></g><g class="node system flowchart-label" id="profiler-collector-task-system" data-look="classic" transform="translate(458.84521484375, -153.50000381469727)"><rect class="basic label-container" style="fill:#e6f5ee !important;stroke:#398469 !important" rx="0" ry="0" x="-87.76904296875" y="-25.700000762939453" width="175.5380859375" height="51.400001525878906"/><g class="label" style="color:#18583f !important;font-weight:700 !important" transform="translate(0, -7.999999523162842)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#18583f !important;font-weight:700 !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">msprof</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> CLI</tspan></tspan></text></g></g></g><g class="node sdk flowchart-label" id="profiler-collector-task-sdk" data-look="classic" transform="translate(644.38330078125, -153.50000381469727)"><rect class="basic label-container" style="fill:#f1ebfc !important;stroke:#804dae !important" rx="0" ry="0" x="-87.76904296875" y="-25.700000762939453" width="175.5380859375" height="51.400001525878906"/><g class="label" style="color:#503274 !important;font-weight:700 !important" transform="translate(0, -7.999999523162842)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#503274 !important;font-weight:700 !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">msPTI</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> SDK</tspan></tspan></text></g></g></g><g class="node stage flowchart-label" id="profiler-collector-task-prepare" data-look="classic" transform="translate(87.76904296875, -92.10000228881836)"><rect class="basic label-container" style="fill:#f1f4f9 !important;stroke:#a6b3c7 !important" rx="0" ry="0" x="-87.76904296875" y="-25.700000762939453" width="175.5380859375" height="51.400001525878906"/><g class="label" style="color:#263951 !important" transform="translate(0, -7.999999523162842)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#263951 !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">Host</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 准备输入</tspan></tspan></text></g></g></g><g class="node framework flowchart-label" id="profiler-collector-task-prepareTorch" data-look="classic" transform="translate(273.30712890625, -92.10000228881836)"><rect class="basic label-container" style="fill:#e9f2ff !important;stroke:#4b79b8 !important" rx="0" ry="0" x="-87.76904296875" y="-25.700000762939453" width="175.5380859375" height="51.400001525878906"/><g class="label" style="color:#174375 !important" transform="translate(0, -15.700000762939453)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#174375 !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">DataLoader</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 耗时</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">框架</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> CPU</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 事件</tspan></tspan></text></g></g></g><g class="node system flowchart-label" id="profiler-collector-task-prepareCli" data-look="classic" transform="translate(458.84521484375, -92.10000228881836)"><rect class="basic label-container" style="fill:#e6f5ee !important;stroke:#398469 !important" rx="0" ry="0" x="-87.76904296875" y="-25.700000762939453" width="175.5380859375" height="51.400001525878906"/><g class="label" style="color:#18583f !important" transform="translate(0, -15.700000762939453)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#18583f !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">Host</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> CPU</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> /</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 内存</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">进程</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> /</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> OS</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 调度</tspan></tspan></text></g></g></g><g class="node sdk flowchart-label" id="profiler-collector-task-prepareSdk" data-look="classic" transform="translate(644.38330078125, -92.10000228881836)"><rect class="basic label-container" style="fill:#f1ebfc !important;stroke:#804dae !important" rx="0" ry="0" x="-87.76904296875" y="-25.700000762939453" width="175.5380859375" height="51.400001525878906"/><g class="label" style="color:#503274 !important" transform="translate(0, -15.700000762939453)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#503274 !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">已埋的</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> MSTX</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">输入准备标记</tspan></tspan></text></g></g></g><g class="node stage flowchart-label" id="profiler-collector-task-dispatch" data-look="classic" transform="translate(87.76904296875, -30.700000762939453)"><rect class="basic label-container" style="fill:#f1f4f9 !important;stroke:#a6b3c7 !important" rx="0" ry="0" x="-87.76904296875" y="-25.700000762939453" width="175.5380859375" height="51.400001525878906"/><g class="label" style="color:#263951 !important" transform="translate(0, -15.700000762939453)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#263951 !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">框架执行与下发</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">共有</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> ·</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> CANN</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> API</tspan></tspan></text></g></g></g><g class="node framework flowchart-label" id="profiler-collector-task-dispatchTorch" data-look="classic" transform="translate(273.30712890625, -30.700000762939453)"><rect class="basic label-container" style="fill:#e9f2ff !important;stroke:#4b79b8 !important" rx="0" ry="0" x="-87.76904296875" y="-25.700000762939453" width="175.5380859375" height="51.400001525878906"/><g class="label" style="color:#174375 !important" transform="translate(0, -15.700000762939453)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#174375 !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">模块、调用栈、Shape</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">关联</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> CANN</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> API</tspan></tspan></text></g></g></g><g class="node system flowchart-label" id="profiler-collector-task-dispatchCli" data-look="classic" transform="translate(458.84521484375, -30.700000762939453)"><rect class="basic label-container" style="fill:#e6f5ee !important;stroke:#398469 !important" rx="0" ry="0" x="-87.76904296875" y="-25.700000762939453" width="175.5380859375" height="51.400001525878906"/><g class="label" style="color:#18583f !important" transform="translate(0, -15.700000762939453)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#18583f !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">CANN</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> /</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> Runtime</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> API</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">API</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 耗时与下发间隔</tspan></tspan></text></g></g></g><g class="node sdk flowchart-label" id="profiler-collector-task-dispatchSdk" data-look="classic" transform="translate(644.38330078125, -30.700000762939453)"><rect class="basic label-container" style="fill:#f1ebfc !important;stroke:#804dae !important" rx="0" ry="0" x="-87.76904296875" y="-25.700000762939453" width="175.5380859375" height="51.400001525878906"/><g class="label" style="color:#503274 !important" transform="translate(0, -15.700000762939453)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#503274 !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">CANN</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> /</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> Runtime</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 活动</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">Runtime</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> API</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 进出回调</tspan></tspan></text></g></g></g><g class="node stage flowchart-label" id="profiler-collector-task-compute" data-look="classic" transform="translate(87.76904296875, 30.700000762939453)"><rect class="basic label-container" style="fill:#f1f4f9 !important;stroke:#a6b3c7 !important" rx="0" ry="0" x="-87.76904296875" y="-25.700000762939453" width="175.5380859375" height="51.400001525878906"/><g class="label" style="color:#263951 !important" transform="translate(0, -15.700000762939453)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#263951 !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">NPU</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 计算与搬运</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">共有</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> ·</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> Kernel</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 耗时</tspan></tspan></text></g></g></g><g class="node framework flowchart-label" id="profiler-collector-task-computeTorch" data-look="classic" transform="translate(273.30712890625, 30.700000762939453)"><rect class="basic label-container" style="fill:#e9f2ff !important;stroke:#4b79b8 !important" rx="0" ry="0" x="-87.76904296875" y="-25.700000762939453" width="175.5380859375" height="51.400001525878906"/><g class="label" style="color:#174375 !important" transform="translate(0, -15.700000762939453)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#174375 !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">Kernel</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 耗时</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">可关联框架算子</tspan></tspan></text></g></g></g><g class="node system flowchart-label" id="profiler-collector-task-computeCli" data-look="classic" transform="translate(458.84521484375, 30.700000762939453)"><rect class="basic label-container" style="fill:#e6f5ee !important;stroke:#398469 !important" rx="0" ry="0" x="-87.76904296875" y="-25.700000762939453" width="175.5380859375" height="51.400001525878906"/><g class="label" style="color:#18583f !important" transform="translate(0, -15.700000762939453)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#18583f !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">NPU</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 任务与搬运</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">任务</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> /</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 周期硬件指标</tspan></tspan></text></g></g></g><g class="node sdk flowchart-label" id="profiler-collector-task-computeSdk" data-look="classic" transform="translate(644.38330078125, 30.700000762939453)"><rect class="basic label-container" style="fill:#f1ebfc !important;stroke:#804dae !important" rx="0" ry="0" x="-87.76904296875" y="-25.700000762939453" width="175.5380859375" height="51.400001525878906"/><g class="label" style="color:#503274 !important" transform="translate(0, -15.700000762939453)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#503274 !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">Kernel</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> /</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 搬运活动</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">设备级</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> PM</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 周期指标</tspan></tspan></text></g></g></g><g class="node stage flowchart-label" id="profiler-collector-task-communication" data-look="classic" transform="translate(87.76904296875, 92.10000228881836)"><rect class="basic label-container" style="fill:#f1f4f9 !important;stroke:#a6b3c7 !important" rx="0" ry="0" x="-87.76904296875" y="-25.700000762939453" width="175.5380859375" height="51.400001525878906"/><g class="label" style="color:#263951 !important" transform="translate(0, -15.700000762939453)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#263951 !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">多卡集合通信</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">共有</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> ·</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 通信活动</tspan></tspan></text></g></g></g><g class="node framework flowchart-label" id="profiler-collector-task-communicationTorch" data-look="classic" transform="translate(273.30712890625, 92.10000228881836)"><rect class="basic label-container" style="fill:#e9f2ff !important;stroke:#4b79b8 !important" rx="0" ry="0" x="-87.76904296875" y="-25.700000762939453" width="175.5380859375" height="51.400001525878906"/><g class="label" style="color:#174375 !important" transform="translate(0, -15.700000762939453)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#174375 !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">HCCL</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 耗时</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">与框架事件关联查看</tspan></tspan></text></g></g></g><g class="node system flowchart-label" id="profiler-collector-task-communicationCli" data-look="classic" transform="translate(458.84521484375, 92.10000228881836)"><rect class="basic label-container" style="fill:#e6f5ee !important;stroke:#398469 !important" rx="0" ry="0" x="-87.76904296875" y="-25.700000762939453" width="175.5380859375" height="51.400001525878906"/><g class="label" style="color:#18583f !important" transform="translate(0, -15.700000762939453)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#18583f !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">HCCL</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 算子与任务</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">耗时、带宽</tspan></tspan></text></g></g></g><g class="node sdk flowchart-label" id="profiler-collector-task-communicationSdk" data-look="classic" transform="translate(644.38330078125, 92.10000228881836)"><rect class="basic label-container" style="fill:#f1ebfc !important;stroke:#804dae !important" rx="0" ry="0" x="-87.76904296875" y="-25.700000762939453" width="175.5380859375" height="51.400001525878906"/><g class="label" style="color:#503274 !important" transform="translate(0, -15.700000762939453)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#503274 !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">通信算子</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> Activity</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">HCCL</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> API</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 进出回调</tspan></tspan></text></g></g></g><g class="node stage flowchart-label" id="profiler-collector-task-complete" data-look="classic" transform="translate(87.76904296875, 153.50000381469727)"><rect class="basic label-container" style="fill:#f1f4f9 !important;stroke:#a6b3c7 !important" rx="0" ry="0" x="-87.76904296875" y="-25.700000762939453" width="175.5380859375" height="51.400001525878906"/><g class="label" style="color:#263951 !important" transform="translate(0, -15.700000762939453)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#263951 !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">完成本轮</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> Step</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">共有</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> ·</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 已埋</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> MSTX</tspan></tspan></text></g></g></g><g class="node framework flowchart-label" id="profiler-collector-task-completeTorch" data-look="classic" transform="translate(273.30712890625, 153.50000381469727)"><rect class="basic label-container" style="fill:#e9f2ff !important;stroke:#4b79b8 !important" rx="0" ry="0" x="-87.76904296875" y="-25.700000762939453" width="175.5380859375" height="51.400001525878906"/><g class="label" style="color:#174375 !important" transform="translate(0, -15.700000762939453)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#174375 !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">Step</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 边界</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">可记录</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> MSTX</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 标记</tspan></tspan></text></g></g></g><g class="node system flowchart-label" id="profiler-collector-task-completeCli" data-look="classic" transform="translate(458.84521484375, 153.50000381469727)"><rect class="basic label-container" style="fill:#e6f5ee !important;stroke:#398469 !important" rx="0" ry="0" x="-87.76904296875" y="-25.700000762939453" width="175.5380859375" height="51.400001525878906"/><g class="label" style="color:#18583f !important" transform="translate(0, -15.700000762939453)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#18583f !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">已埋的</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> MSTX</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">阶段结束标记</tspan></tspan></text></g></g></g><g class="node sdk flowchart-label" id="profiler-collector-task-completeSdk" data-look="classic" transform="translate(644.38330078125, 153.50000381469727)"><rect class="basic label-container" style="fill:#f1ebfc !important;stroke:#804dae !important" rx="0" ry="0" x="-87.76904296875" y="-25.700000762939453" width="175.5380859375" height="51.400001525878906"/><g class="label" style="color:#503274 !important" transform="translate(0, -15.700000762939453)"><rect/><g><rect class="background" style="stroke: none"/><text y="-10.1" style="fill:#503274 !important"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">已埋的</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> MSTX</tspan></tspan><tspan class="text-outer-tspan row" x="0" y="1em" dy="1.1em"><tspan font-style="normal" class="text-inner-tspan" font-weight="normal">Marker</tspan><tspan font-style="normal" class="text-inner-tspan" font-weight="normal"> 事件</tspan></tspan></text></g></g></g><path d="M87.769,-66.4L87.769,-65.567C87.769,-64.733,87.769,-63.067,87.769,-62.067C87.769,-61.067,87.769,-60.733,87.769,-60.567L87.769,-60.4" id="profiler-collector-task-profiler-collector-task-1-prepare-dispatch" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link LS-a1 LE-b1" data-edge="true" data-et="edge" data-id="profiler-collector-task-1-prepare-dispatch" data-points="W3sieCI6ODcuNzY5MDQyOTY4NzUsInkiOi02Ni40MDAwMDE1MjU4Nzg5fSx7IngiOjg3Ljc2OTA0Mjk2ODc1LCJ5IjotNjEuNDAwMDAxNTI1ODc4OTA2fSx7IngiOjg3Ljc2OTA0Mjk2ODc1LCJ5IjotNTYuNDAwMDAxNTI1ODc4OTA2fV0=" marker-end="url(#profiler-collector-task_block-pointEnd)"/><path d="M87.769,-5L87.769,-4.167C87.769,-3.333,87.769,-1.667,87.769,-0.667C87.769,0.333,87.769,0.667,87.769,0.833L87.769,1" id="profiler-collector-task-profiler-collector-task-1-dispatch-compute" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link LS-a1 LE-b1" data-edge="true" data-et="edge" data-id="profiler-collector-task-1-dispatch-compute" data-points="W3sieCI6ODcuNzY5MDQyOTY4NzUsInkiOi01fSx7IngiOjg3Ljc2OTA0Mjk2ODc1LCJ5IjowfSx7IngiOjg3Ljc2OTA0Mjk2ODc1LCJ5Ijo1fV0=" marker-end="url(#profiler-collector-task_block-pointEnd)"/><path d="M87.769,56.4L87.769,57.233C87.769,58.067,87.769,59.733,87.769,60.733C87.769,61.733,87.769,62.067,87.769,62.233L87.769,62.4" id="profiler-collector-task-profiler-collector-task-1-compute-communication" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link LS-a1 LE-b1" data-edge="true" data-et="edge" data-id="profiler-collector-task-1-compute-communication" data-points="W3sieCI6ODcuNzY5MDQyOTY4NzUsInkiOjU2LjQwMDAwMTUyNTg3ODkwNn0seyJ4Ijo4Ny43NjkwNDI5Njg3NSwieSI6NjEuNDAwMDAxNTI1ODc4OTA2fSx7IngiOjg3Ljc2OTA0Mjk2ODc1LCJ5Ijo2Ni40MDAwMDE1MjU4Nzg5fV0=" marker-end="url(#profiler-collector-task_block-pointEnd)"/><path d="M87.769,117.8L87.769,118.633C87.769,119.467,87.769,121.133,87.769,122.133C87.769,123.133,87.769,123.467,87.769,123.633L87.769,123.8" id="profiler-collector-task-profiler-collector-task-1-communication-complete" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link LS-a1 LE-b1" data-edge="true" data-et="edge" data-id="profiler-collector-task-1-communication-complete" data-points="W3sieCI6ODcuNzY5MDQyOTY4NzUsInkiOjExNy44MDAwMDMwNTE3NTc4MX0seyJ4Ijo4Ny43NjkwNDI5Njg3NSwieSI6MTIyLjgwMDAwMzA1MTc1NzgxfSx7IngiOjg3Ljc2OTA0Mjk2ODc1LCJ5IjoxMjcuODAwMDAzMDUxNzU3ODF9XQ==" marker-end="url(#profiler-collector-task_block-pointEnd)"/></g></svg>
+      <script type="text/plain" id="collector-task-mermaid">
+---
+config:
+  theme: base
+  htmlLabels: false
+  look: classic
+  themeVariables:
+    fontFamily: 'Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif'
+    fontSize: '14px'
+    lineColor: '#62748f'
+  block:
+    padding: 10
+---
+block
+    columns 4
+    stage["训练 Step"]
+    framework["PyTorch Profiler"]
+    system["msprof CLI"]
+    sdk["msPTI SDK"]
+
+    prepare["Host 准备输入"]
+    prepareTorch["DataLoader 耗时<br/>框架 CPU 事件"]
+    prepareCli["Host CPU / 内存<br/>进程 / OS 调度"]
+    prepareSdk["已埋的 MSTX<br/>输入准备标记"]
+
+    dispatch["框架执行与下发<br/>共有 · CANN API"]
+    dispatchTorch["模块、调用栈、Shape<br/>关联 CANN API"]
+    dispatchCli["CANN / Runtime API<br/>API 耗时与下发间隔"]
+    dispatchSdk["CANN / Runtime 活动<br/>Runtime API 进出回调"]
+
+    compute["NPU 计算与搬运<br/>共有 · Kernel 耗时"]
+    computeTorch["Kernel 耗时<br/>可关联框架算子"]
+    computeCli["NPU 任务与搬运<br/>任务 / 周期硬件指标"]
+    computeSdk["Kernel / 搬运活动<br/>设备级 PM 周期指标"]
+
+    communication["多卡集合通信<br/>共有 · 通信活动"]
+    communicationTorch["HCCL 耗时<br/>与框架事件关联查看"]
+    communicationCli["HCCL 算子与任务<br/>耗时、带宽"]
+    communicationSdk["通信算子 Activity<br/>HCCL API 进出回调"]
+
+    complete["完成本轮 Step<br/>共有 · 已埋 MSTX"]
+    completeTorch["Step 边界<br/>可记录 MSTX 标记"]
+    completeCli["已埋的 MSTX<br/>阶段结束标记"]
+    completeSdk["已埋的 MSTX<br/>Marker 事件"]
+
+    prepare --> dispatch
+    dispatch --> compute
+    compute --> communication
+    communication --> complete
+
+    classDef stage fill:#f1f4f9,stroke:#a6b3c7,color:#263951
+    classDef framework fill:#e9f2ff,stroke:#4b79b8,color:#174375
+    classDef system fill:#e6f5ee,stroke:#398469,color:#18583f
+    classDef sdk fill:#f1ebfc,stroke:#804dae,color:#503274
+    class stage,prepare,dispatch,compute,communication,complete stage
+    class framework,prepareTorch,dispatchTorch,computeTorch,communicationTorch,completeTorch framework
+    class system,prepareCli,dispatchCli,computeCli,communicationCli,completeCli system
+    class sdk,prepareSdk,dispatchSdk,computeSdk,communicationSdk,completeSdk sdk
+    style stage font-weight:700
+    style framework font-weight:700
+    style system font-weight:700
+    style sdk font-weight:700
+      </script>
+     </div>
+     <figcaption id="collector-task-caption">「共有」表示三种工具在相应配置下均可记录该类信息。NPU 计算与通信可重叠，周期采样也可跨阶段运行。</figcaption>
+    </figure>
+    <p><strong>共有数据的粒度和关联方式有差别。</strong>以 Kernel 耗时为例，PyTorch Profiler 可把它关联到框架算子，msprof 将它放进整段任务时间线，msPTI 交付活动记录供自定义关联。MSTX 可用于三个工具的已打点阶段，需要业务或框架先埋点。</p>
+    <p class="faq-source">对比基于本地提交 <code>pytorch 7002c83d1a</code>、<code>msprof 2238b62b1</code>、<code>mspti c303ce2</code>。数据项以当前芯片、CANN 和工具版本及实际开关为准。采集开销和数据量需在相同负载与窗口下实测。</p>
+    <ul class="faq-source">
+     <li><a href="../../pytorch/docs/zh/developer_notes/ascend_pytorch_profiler_user_guide.md" target="_blank" rel="noopener">PyTorch 采集与产物指南</a> · <a href="../../pytorch/torch_npu/csrc/profiler/npu_activity_profiler.cpp" target="_blank" rel="noopener">原生 NPU 后端选择源码</a></li>
+     <li><a href="../../msprof/README.md" target="_blank" rel="noopener">msprof 仓库分工</a> · <a href="../../msprof/docs/zh/user_guide/msprof_parsing_instruct.md" target="_blank" rel="noopener">解析与导出</a> · <a href="https://www.hiascend.com/doc_center/source/en/CANNCommunityEdition/910/devaids/Profiling/atlasprofiling_16_0011.html" target="_blank" rel="noopener">CANN 9.1 命令行采集</a> · <a href="https://www.hiascend.com/doc_center/source/zh/CANNCommunityEdition/920beta1/devaids/Profiling/atlasprofiling_16_0016.html" target="_blank" rel="noopener">CANN 9.2 Beta1 动态采集</a></li>
+     <li><a href="../../mspti/docs/zh/user_guide/mspti_user_guide.md" target="_blank" rel="noopener">msPTI 接口选型</a> · <a href="../../mspti/docs/zh/user_guide/pm_sampling_api.md" target="_blank" rel="noopener">PM Sampling 指标与缓冲</a></li>
+    </ul>
+   </article>
   </div>
  </div>
 </section>
@@ -673,6 +1044,7 @@ body[data-page=evidence] .lab-page,body[data-page=evidence] .evidence-toolbar-ba
 <script src="capture-code-files.js"></script>
 <script src="launch-script-samples.js"></script>
 <script src="launch-script-workbench.js"></script>
+<script src="advanced-capture.js" defer></script>
 <script>
 'use strict';
 
@@ -694,7 +1066,7 @@ let state={...defaults},currentCommand='',editorIssue='',toastTimer,copyTimer;
 const presetDefinitions={
  quick:{...defaults,note:'保留基础耗时和业务打点，用更少的数据找到方向。'},
  timeline:{...defaults,preset:'timeline',level:'l1',runtime:true,host:true,note:'补充算子信息与 Runtime 调用；多卡任务可查看集合通信与等待。'},
- deep:{...defaults,preset:'deep',level:'l1',runtime:true,core:true,memory:true,aicpu:true,duration:5,note:'开启硬件指标与算子内存，缩短窗口，集中分析可疑算子。'}
+ deep:{...defaults,preset:'deep',level:'l1',runtime:true,core:true,memory:true,aicpu:true,duration:5,note:'开启硬件指标与算子内存，仅在独立短跑任务中使用。'}
 };
 const metricLabels={MemoryL0:'L0 带宽',MemoryUB:'UB 带宽',ResourceConflictRatio:'资源冲突',PipelineExecuteUtilization:'流水执行',MemoryAccess:'内存访问',PipeUtilization:'流水线利用率',ArithmeticUtilization:'计算利用率',Memory:'内存带宽',L2Cache:'L2 缓存命中'};
 function notify(message,type='success'){
@@ -760,9 +1132,11 @@ function renderCollectionRounds(){
   button.textContent=(index+1)+' · '+(roundMetricLabels[round.metric]||round.metric);button.addEventListener('click',()=>{state.metric=round.metric;update()});tabs.append(button);
  }
  if(multiple){
-  const estimates=rounds.map(round=>({metric:round.metric,...estimate(round)})),max=Math.max(...estimates.map(e=>e.total)),unknown=estimates.some(e=>e.unknown.length);
-  $('overhead-title').textContent='性能膨胀预估';$('overhead-title').title='按当前完整配置中模型开销最高的一轮估算，各轮百分比不相加。';$('overhead').textContent='≈'+Math.round(max);
-  const risk=overheadBand(Math.round(max),unknown);$('risk').dataset.risk=risk;document.querySelector('.estimate-head').dataset.risk=risk;$('risk').textContent=unknown?'部分预估':{low:'低扰动',medium:'需关注',high:'高扰动'}[risk];
+  const estimates=rounds.map(estimate);
+  renderOverhead(Math.max(...estimates.map(e=>e.total)),{
+   unknown:estimates.some(e=>e.unknown.length),
+   description:'展示各轮中最高的示意开销，各轮百分比不相加。'
+  });
 
   const roots=rounds.map(round=>roundOutput(state,round,$('output').value.trim()));$('artifact-path').textContent=$('output').value.trim();
   $('artifact-tree').textContent=roots.map((path,index)=>(index===roots.length-1?'└─ ':'├─ ')+path+'/\n'+(index===roots.length-1?'   ':'│  ')+'└─ PROF_<运行时生成>/').join('\n');
@@ -840,10 +1214,27 @@ function renderVolume(s){
 }
 $('volume-ranks').addEventListener('input',()=>update());$('download-content').addEventListener('change',()=>update());
 for(const id of ['volume-step-seconds','volume-capture-seconds'])$(id).addEventListener('input',()=>update());
-// Planning coefficients, not benchmarks. Unknown contributions remain explicit.
-const estimateWeights={base:.9,l0:1.8,l1:4.2,ascendcl:1,runtime:1.6,mstx:.4,memory:3.8,aicpu:1.2,hostBase:.6,hostHz:.03,metrics:{PipeUtilization:7.5,ArithmeticUtilization:6.8,Memory:8.6,L2Cache:6.1}};
-// Product design thresholds, not an industry-wide profiling standard.
-function overheadBand(value,unknown=false){const band=value<=5?'low':value<=10?'medium':'high';return unknown&&band==='low'?'medium':band}
+// Demo weights in percentage points. Keep the lightweight preset near 0.5%
+// and the combination of memory tracing and AI Core metrics near full travel.
+const estimateWeights={
+ base:.2,l0:.2,l1:1.8,ascendcl:.1,runtime:1.1,mstx:.3,
+ memory:10.5,aicpu:3.8,hostBase:.8,hostHz:.03,frameworkCpu:.5,
+ metrics:{PipeUtilization:10.5,ArithmeticUtilization:9.4,Memory:11,L2Cache:8.8}
+};
+function renderOverhead(total,{unknown=false,reference=false,description=''}={}){
+ const displayed=total.toFixed(1);
+ const value=Number(displayed);
+ const risk=value>5?'high':value>1||unknown||reference?'medium':'low';
+ const title=$('overhead-title'),reading=$('overhead'),badge=$('risk');
+ title.textContent=reference?'同配置开销示意':'性能膨胀示意';
+ title.title=description;
+ reading.textContent='≈'+displayed;
+ reading.dataset.source=reference?'reference':'model';
+ $('overhead-unit').hidden=false;
+ badge.dataset.risk=risk;
+ badge.textContent=reference?'未校准':unknown?'开销未定 · 部分估算':{low:'低扰动',medium:'需关注',high:'高扰动'}[risk];
+ document.querySelector('.estimate-head').dataset.risk=risk;
+}
 function enabledCaptureItems(s){
  const labels={task:'算子时间线',ascendcl:'AscendCL 接口',runtime:'Runtime 接口',mstx:'业务打点',core:'AI Core 指标',memory:'算子内存',host:'Host 资源',aicpu:'AI CPU 明细'};
  const system=s.scope==='system';
@@ -859,7 +1250,7 @@ function estimate(s){
  const add=(name,cost)=>items.push({name,cost});
  if(window.launchScriptWorkbench?.active){
   add('算子时间线 '+s.level.toUpperCase(),s.level==='l0'?w.l0:s.level==='l1'?w.l1:w.l1+2.4);
-  if(s.host)add('CPU 活动',.9);if(s.memory)add('框架内存',w.memory);if(s.profileStack)add('调用栈',6);if(s.recordShapes)add('输入 Shape',1.5);
+  if(s.host)add('CPU 活动',w.frameworkCpu);if(s.memory)add('框架内存',w.memory);if(s.profileStack)add('调用栈',6);if(s.recordShapes)add('输入 Shape',1.5);
   return {items,unknown,total:items.reduce((sum,x)=>sum+x.cost,0),count:items.length-1};
  }
  if(s.task){add('算子时间线 '+s.level.toUpperCase(),s.level==='l0'?w.l0:w.l1);if(s.level==='l2')unknown.push('L2 属性增量')}
@@ -1078,12 +1469,7 @@ function update(options={}){
  $('window-duration').textContent=`采集 ${state.duration} s`;
  $('window-summary').textContent=(state.delay?`等待 ${state.delay} 秒后开始`:'立即开始')+`，持续采集 ${state.duration} 秒。`;
  const e=estimate(state),valid=validate();
- $('overhead').textContent='≈'+Math.round(e.total);$('overhead-unit').hidden=false;
- const displayedOverhead=Math.round(e.total),unknown=e.unknown.length>0;
- const risk=overheadBand(displayedOverhead,unknown);$('risk').dataset.risk=risk;document.querySelector('.estimate-head').dataset.risk=risk;
- $('risk').textContent=unknown?(risk==='high'?'高扰动 · 部分预估':'开销未定 · 部分预估'):{low:'低扰动',medium:'需关注',high:'高扰动'}[risk];
- $('overhead-title').textContent='性能膨胀预估';
- $('overhead-title').removeAttribute('title');$('overhead').dataset.source='model';
+ renderOverhead(e.total,{unknown:e.unknown.length>0});
  $('extra-bar').parentElement.hidden=true;
  renderVolume(state);
 
@@ -1241,10 +1627,10 @@ helpDefinitions['extra-storage-limit'].text+=' 范围 200–4294967295 MB；命�
 helpDefinitions['extra-host-sys'].text+=' Kylin V10 SP1 aarch64 不支持 osrt；EulerOS 2.9 虚拟化环境不支持 network。';
 helpDefinitions.host.text='映射 --host-sys-usage，CPU 与内存在更多采集项独立选择；该参数覆盖系统与进程，进程 I/O 与系统调用另用 host-sys。';
 helpDefinitions.metric.text+=' L2Cache 不适用于 Atlas 推理系列；PipelineExecuteUtilization 与 MemoryAccess 仅部分产品支持，需先按官方芯片表核对。';
-helpDefinitions.estimate={title:'膨胀预估是怎么算的？',design:true,text:()=>{
+helpDefinitions.estimate={title:'性能膨胀示意怎么算？',design:true,text:()=>{
  if(state.scope==='system')return '独立系统采集没有应用基准耗时；尚未建立系统采集的开销与体量模型，不显示应用膨胀百分数。';
  const e=estimate(state);
- return '模型预估 = 采集基础权重 + 当前开启采集项的权重，按整数百分比展示。多轮显示各轮预估范围，膨胀率不相加；以下分项对应当前轮。\n当前已建模部分：'+e.items.map(x=>x.name+' '+x.cost.toFixed(1)).join(' + ')+' = '+e.total.toFixed(1)+' 个百分点。\n这些权重是页面设计假设，未经硬件实测校准；不是官方性能指标。假设事件密度和工作负载固定、开销近似相加，不模拟交互效应。采集延迟和时长不直接改变采集期间的膨胀比例。\n'+(e.unknown.length?'额外开销未知：'+e.unknown.join('、')+'。当前数值只覆盖已建模部分，未建模项没有按零计算。':'开启未建模采集项时，将提示额外开销未知。')+'\n颜色按当前展示值分级：≤5% 绿色低扰动，>5% 且 ≤10% 橙色需关注，>10% 红色高扰动。这是页面设计阈值，不是通用行业标准；存在未知开销时不显示绿色总开销结论。\n当前 demo 没有内置或自动获得的实测数据，显示值用于配置比较。';
+ return '示意值由基础权重和已开启采集项的权重相加，保留一位小数。多轮展示其中的最高值，以下分项对应当前轮。\n当前轮已建模部分：'+e.items.map(x=>x.name+' '+x.cost.toFixed(1)).join(' + ')+' = '+e.total.toFixed(1)+' 个百分点。\n权重未经硬件实测校准，仅供比较配置。采集窗口缩短后，受扰动时段会变短，窗口内的膨胀比例仍需实测。\n'+(e.unknown.length?'额外开销未知：'+e.unknown.join('、')+'。':'开启未建模采集项时会提示额外开销未知。')+'\n示意分级为 1% 以内低扰动，超过 1% 到 5% 需关注，超过 5% 高扰动。存在未知开销时会标为部分估算。\n专家经验建议日常采集以 0.5% 左右为目标并控制在 1% 以内。深度采集只在独立短跑任务中使用，实测开销控制在 5% 以内。';
 }};
 const helpTooltip=$('help-tooltip');let activeHelp=null,helpTimer;
 function hideHelp(){clearTimeout(helpTimer);helpTooltip.hidden=true;if(activeHelp){activeHelp.removeAttribute('aria-describedby');activeHelp.setAttribute('aria-expanded','false')}activeHelp=null}
@@ -1392,7 +1778,7 @@ const choiceLabels={
  'download-content':{all:'完整目录',raw:'仅原始',export:'仅解析数据'}
 };
 function syncChoicePills(){for(const {select,group,buttons} of choicePills){group.setAttribute('aria-disabled',String(select.disabled));for(const button of buttons){const chosen=button.dataset.choiceValue===select.value;button.setAttribute('aria-checked',String(chosen));button.tabIndex=chosen&&!select.disabled?0:-1;button.disabled=select.disabled||Boolean(select.querySelector('option[value="'+button.dataset.choiceValue+'"]')?.disabled)}}}
-for(const select of document.querySelectorAll('select')){
+for(const select of document.querySelectorAll('#lab-panel select')){
  if(select.closest('.scene'))continue;
  const options=[...select.querySelectorAll('option')];if(options.length>4||!options.length)continue;
  const group=document.createElement('div');group.className='pills choice-pills';group.dataset.choiceFor=select.id;group.setAttribute('role','radiogroup');group.style.setProperty('--choice-count',options.length);
@@ -1771,8 +2157,7 @@ function renderCaptureCode(){
  $('command-feedback').hidden=true;$('restore-command').hidden=true;$('command').setAttribute('aria-invalid','false');
  $('collection-round-summary').textContent='需采集 '+rounds.length+' 轮 · '+(codeMethod==='dynamic'?'分别交互采集':'各轮独立运行相同负载');
  const reference=rounds.map(round=>estimate({...round,mstx:round.mstx||codeMethod==='mstx'})),max=Math.max(...reference.map(e=>e.total));
- $('overhead-title').textContent='同配置开销参考';$('overhead-title').title='基于命令行采集项模型，显示完整配置中模型开销最高的一轮；不代表当前接入方式的实测或完整开销。';$('overhead').textContent='≈'+Math.round(max);$('overhead-unit').hidden=false;$('overhead').dataset.source='reference';
- const referenceRisk=overheadBand(Math.round(max),true);$('risk').textContent='未校准';$('risk').dataset.risk=referenceRisk;document.querySelector('.estimate-head').dataset.risk=referenceRisk;
+ renderOverhead(max,{reference:true,description:'按相同采集项的命令行模型展示最高一轮的开销示意。'});
  renderVolume(state);
  renderCaptureFiles();renderCommandHighlight();
 }
@@ -1917,20 +2302,23 @@ resetScenario();update();
 
 // Page tabs preserve the sandbox inputs, command and each panel's scroll position.
 let pageView='sandbox';
-const pageScrollPositions={sandbox:0,docs:0,evidence:0};
+const pagePanels={sandbox:'lab-panel',advanced:'advanced-content',docs:'docs-content',evidence:'user-evidence'};
+const pageViews=Object.keys(pagePanels);
+const pageScrollPositions=Object.fromEntries(pageViews.map(view=>[view,0]));
 function setFaqCurrent(id){document.querySelectorAll('[data-faq]').forEach(link=>link.setAttribute('aria-current',String(link.dataset.faq===id)))}
 function setPageView(view){
- if(view===pageView||!['sandbox','docs','evidence'].includes(view))return;
+ if(view===pageView||!pageViews.includes(view))return;
  pageScrollPositions[pageView]=window.scrollY;hideHelp();clearParameterSearch();pageView=view;
- document.body.dataset.page=view;$('lab-panel').hidden=view!=='sandbox';$('docs-content').hidden=view!=='docs';$('user-evidence').hidden=view!=='evidence';
+ document.body.dataset.page=view;for(const name of pageViews)$(pagePanels[name]).hidden=name!==view;
  document.querySelectorAll('[data-page-view]').forEach(tab=>{const selected=tab.dataset.pageView===view;tab.setAttribute('aria-selected',String(selected));tab.tabIndex=selected?0:-1});
  window.scrollTo({top:pageScrollPositions[view],behavior:'instant'});
  if(view==='sandbox')renderCommandHighlight();
+ window.dispatchEvent(new CustomEvent('profiler-page-change',{detail:view}));
 }
 document.querySelector('.page-context').addEventListener('click',event=>{const tab=event.target.closest('[data-page-view]');if(tab)setPageView(tab.dataset.pageView)});
 document.querySelector('.page-context').addEventListener('keydown',event=>{
  if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
- event.preventDefault();const views=['sandbox','docs','evidence'],index=views.indexOf(pageView);const view=event.key==='Home'?views[0]:event.key==='End'?views.at(-1):views[(index+(event.key==='ArrowRight'?1:views.length-1))%views.length];setPageView(view);$('page-'+view).focus();
+ event.preventDefault();const index=pageViews.indexOf(pageView);const view=event.key==='Home'?pageViews[0]:event.key==='End'?pageViews.at(-1):pageViews[(index+(event.key==='ArrowRight'?1:pageViews.length-1))%pageViews.length];setPageView(view);$('page-'+view).focus();
 });
 document.querySelector('.faq-nav').addEventListener('click',event=>{
  const link=event.target.closest('[data-faq]');if(!link)return;event.preventDefault();setFaqCurrent(link.dataset.faq);const section=$(link.dataset.faq);section.focus({preventScroll:true});section.scrollIntoView({block:'start',behavior:'instant'});

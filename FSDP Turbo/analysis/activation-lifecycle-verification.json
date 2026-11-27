@@ -1,8 +1,10 @@
 {
   "file": "重计算与Swap-激活生命周期.html",
-  "checks": 35,
+  "checks": 37,
   "passed": [
+    "Documentation map highlights scope and saved objects without changing teaching strategies",
     "Standalone document, local source links and unique identifiers",
+    "Internal breakdowns show distinct recompute and Swap objects in the same scope",
     "Minimal headings, consolidated descriptions and explicit teaching-symbol definitions",
     "Both sides default to a+m: baseline 36u, recompute 6u, swap device 6u and host 30u",
     "Both swap endpoints stay allocated during D2H/H2D; device release waits for transfer",
@@ -30,7 +32,7 @@
     "Temporary events overlap additively and apply to the intended candidate only",
     "Safety-margin and coverage statuses are distinct; invalid capacity/events do not reach live state",
     "Demo/document tabs precede backend tabs; switching pauses animation and preserves configuration",
-    "Six FAQ questions navigate to matching answers with visible selection",
+    "Seven FAQ questions navigate to matching answers with visible selection",
     "Page tabs support keyboard navigation and maintain their focus order",
     "FAQ inventory maps all 54 rows to current repository fields without duplicates",
     "Business FAQ separates current demo from target MCP experience and explains scope boundaries",

@@ -1,0 +1,61 @@
+/* Shared site header. Source copied to the business catalog by scripts/build.mjs. */
+.cann-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  color: var(--cann-header-ink, #f2f2f2);
+  background: var(--cann-header-surface, #0a0a0a);
+}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .cann-topbar {
+    background: color-mix(in srgb, var(--cann-header-surface, #0a0a0a) 86%, transparent);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    backdrop-filter: blur(20px) saturate(140%);
+  }
+}
+.cann-primary {
+  width: 100%;
+  max-width: 1680px;
+  min-height: 96px;
+  margin: 0 auto;
+  padding: 24px 48px;
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 2.5vw, 32px);
+}
+.cann-brand { flex: 0 0 auto; }
+.cann-name {
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -.03em;
+}
+@supports ((background-clip: text) or (-webkit-background-clip: text)) {
+  .cann-name, .cann-gradient-text {
+    background-image: var(--cann-header-gradient, linear-gradient(90deg, #5227ff, #ff9ffc, #b497cf, #5227ff));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+  .cann-name {
+    background-size: 300% 100%;
+    background-position: 0% 50%;
+    /* Extend the gradient glyph mask when the font synthesizes bold weights. */
+    -webkit-text-stroke: .4px transparent;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .cann-name { animation: cann-name-gradient 8s ease-in-out infinite alternate; }
+  }
+}
+@keyframes cann-name-gradient {
+  from { background-position: 0% 50%; }
+  to { background-position: 100% 50%; }
+}
+.cann-actions { display: flex; align-items: center; gap: 16px; margin-inline-start: auto; min-width: 0; }
+
+@media (max-width: 700px) {
+  .cann-primary { min-height: 80px; padding: 20px 24px; gap: 12px; flex-wrap: wrap; }
+  .cann-name { font-size: 16px; }
+  .cann-actions { flex: 1 1 100%; gap: 12px; }
+}

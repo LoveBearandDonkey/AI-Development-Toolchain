@@ -62,6 +62,64 @@ main{padding-bottom:calc(var(--dock-height,350px) + 28px)}
 .fine-field em{font-size:11px}.fine-checks{font-size:14px}.fine-head p{font-size:14px}.fine-actions button,.fine-state{font-size:12px}
 @media(max-width:390px){.fine-choice-grid[data-count="3"]{grid-template-columns:1fr}.fine-choice{padding:10px}}
 </style>
+<style>
+.target-map{--tm-accent:var(--blue);--tm-fill:#eef2ff;--tm-stroke:#9fb3f5;margin:22px 0 28px}
+.target-map[data-mode=swap]{--tm-accent:var(--teal);--tm-fill:#e9f7f4;--tm-stroke:#80bfb4}
+.target-map-head{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:10px}
+.faq-section .target-map-head h3{margin:0}
+.target-map-toggle{display:flex;gap:6px}
+.target-map-toggle button{font-size:14px;padding:7px 14px}
+.target-map-toggle button[aria-pressed=true]{background:var(--tm-accent);border-color:var(--tm-accent);color:#fff}
+.faq-section .target-map-note{font-size:14px;color:var(--fg2);margin:8px 0 12px}
+.target-map-canvas{overflow-x:auto;border:1px solid var(--line);border-radius:9px;background:#fff;scrollbar-width:thin}
+.target-map-canvas:focus-visible{outline:3px solid #b9c8ff;outline-offset:3px}
+.target-map-canvas svg{width:100%;height:auto;display:block;font-family:var(--sans)}
+.tm-node{cursor:pointer;outline:none}
+.tm-box{fill:#f7f8fa;stroke:#cdd4df;stroke-width:1.2}
+.tm-node[data-eligible=false]{opacity:.48}
+.tm-node[data-eligible=true]>.tm-box{fill:var(--tm-fill);stroke:var(--tm-stroke)}
+.tm-node[data-eligible=true]>.tm-container{fill:var(--tm-fill);fill-opacity:.28}
+.tm-node[data-eligible=true]:hover>.tm-box,.tm-node[data-eligible=true].is-selected>.tm-box,.tm-node:focus-visible>.tm-box{stroke:var(--tm-accent);stroke-width:2.4}
+.tm-name{font-size:16px;font-weight:600;fill:var(--fg)}
+.tm-subtitle{font-size:14px;fill:var(--fg2)}
+.tm-caption{font-size:13px;fill:var(--fg2)}
+.tm-context-box{fill:#f7f8fa;stroke:#d3dae4;stroke-width:1}
+.tm-flow{fill:none;stroke:#9ca9ba;stroke-width:1.5}
+.tm-storage{fill:none;stroke:var(--tm-accent);stroke-width:1.4;stroke-dasharray:5 5;opacity:.18}
+.target-map[data-mode=swap] .tm-storage{opacity:.85}
+.target-map-legend{display:flex;flex-wrap:wrap;gap:10px 22px;margin:12px 0;font-size:12px;color:var(--fg2)}
+.target-map-legend span{display:flex;align-items:center;gap:7px}
+.target-map-legend i{width:23px;height:0;border-top:2px solid #9ca9ba}
+.target-map-legend i.storage{border-top-style:dashed;border-top-color:var(--tm-accent)}
+.target-map-detail{padding:14px 16px;background:var(--surface);border-radius:7px;min-height:120px;font-size:14px;line-height:1.8}
+.target-map-detail strong{color:var(--tm-accent)}
+.faq-section .target-map-detail p{margin:5px 0 0;font-size:14px}
+.target-breakdown{margin-top:24px;padding-top:20px;border-top:1px solid var(--line);scroll-margin-top:110px}
+.faq-section .target-breakdown h4{margin:0 0 10px;font-size:16px}
+.target-breakdown-controls{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin:14px 0}
+.target-breakdown-tabs{display:flex;gap:5px;flex-wrap:wrap}
+.target-breakdown-tabs button{font-size:12px;padding:6px 9px}
+.target-breakdown-tabs button[aria-pressed=true]{background:#eef2ff;border-color:#9fb3f5;color:var(--blue)}
+.target-breakdown-modes button[data-breakdown-mode=swap][aria-pressed=true]{background:#e9f7f4;border-color:#80bfb4;color:var(--teal)}
+.target-breakdown-modes button[data-breakdown-mode=combined][aria-pressed=true]{background:#f0f3f8;border-color:#aebbd0;color:var(--fg)}
+.tb-node{cursor:pointer;outline:none}
+.tb-box{fill:#f7f8fa;stroke:#cdd4df;stroke-width:1.2}
+.tb-node[data-policy=none]{opacity:.5}
+.tb-node[data-policy=recompute]>.tb-box{fill:#eef2ff;stroke:#8aa5f1}
+.tb-node[data-policy=swap]>.tb-box{fill:#e9f7f4;stroke:#63b6a7}
+.tb-node:focus-visible>.tb-box,.tb-node.is-selected>.tb-box{stroke:#63738a;stroke-width:2.4}
+.tb-node .tm-name{font-size:16px}
+.tb-policy{font-size:13px;font-weight:600;fill:var(--fg2)}
+.tb-node[data-policy=recompute] .tb-policy{fill:var(--blue)}
+.tb-node[data-policy=swap] .tb-policy{fill:var(--teal)}
+.tb-summary{font-size:14px;color:var(--fg2);margin:10px 0}
+.target-map-legend i.tb-swatch{display:inline-block;width:9px;height:9px;border:0;border-radius:2px;margin-right:5px;background:var(--blue)}
+.target-map-legend i.tb-swatch.swap{background:var(--teal)}
+.target-breakdown .target-map-detail{margin-top:12px}
+.target-breakdown .target-map-detail strong{color:var(--fg)}
+@media(max-width:1350px){.target-map-canvas svg{min-width:900px}}
+@media(max-width:730px){.target-map-head{gap:10px}.target-map-detail{padding:12px}.target-map-canvas{margin-right:0}}
+</style>
 </head>
 <body data-page="demo">
 <main>
@@ -156,6 +214,28 @@ main{padding-bottom:calc(var(--dock-height,350px) + 28px)}
    <article class="faq-section" id="faq-targets" tabindex="-1">
     <h2>重计算和Swap针对的对象</h2>
     <p>以下按当前FSDP Turbo实现列举可选对象。✅️表示有对应配置路径，❌️表示该对象本身不属于该策略的选择对象。模块行中的“重计算”指重新执行模块计算，“Swap”指搬运该模块范围内符合条件的激活张量。</p>
+    <section class="target-map" id="target-map" data-mode="recompute" aria-label="重计算与Swap可控对象关系图">
+     <div class="target-map-head"><h3>可控对象的包含关系与上下游</h3><div class="target-map-toggle" role="group" aria-label="查看策略可控范围"><button type="button" data-target-map-mode="recompute" aria-pressed="true">重计算</button><button type="button" data-target-map-mode="swap" aria-pressed="false">Swap</button></div></div>
+     <p class="target-map-note">点策略按钮高亮可控内容，点节点查看配置边界。大框表示包含关系；模块框是可配置范围，虚线框是具体保存对象。图按本页FSDP Turbo接口解释，模型路径仍需实际匹配。</p>
+     <div class="target-map-canvas" tabindex="0" role="region" aria-label="关系图，窄屏可左右滚动"><svg id="target-map-svg" viewBox="0 0 1000 845" role="group" aria-label="Layer、子模块、保存对象与卸载存储之间的关系"></svg></div>
+     <div class="target-map-legend"><span><i></i>简化前向流向／计算依赖</span><span><i class="storage"></i>保存对象的换出关系，反向按需取回</span><span>浅灰：非当前策略的直接控制对象</span></div>
+     <div class="target-map-detail" id="target-map-detail" aria-live="polite"></div>
+     <section class="target-breakdown" id="target-breakdown" data-part="moe" data-strategy="combined" aria-label="模块内部的策略分工">
+      <h4>展开模块内部：哪些计算重跑，哪些保存对象Swap？</h4>
+      <p class="target-map-note">下面把计算步骤与保存对象拆开。选择“组合示例”，同一模块内会同时出现两种颜色，分别表示重计算与Swap；灰色内容保留作上下游参照。点上图的Attention、MLP、MoE等节点，也会切换到对应拆分。</p>
+      <div class="target-breakdown-controls">
+       <div class="target-breakdown-tabs" role="group" aria-label="选择展开对象"><button type="button" data-breakdown-part="attention" aria-pressed="false">Attention</button><button type="button" data-breakdown-part="mlp" aria-pressed="false">MLP／FFN</button><button type="button" data-breakdown-part="moe" aria-pressed="true">MoE</button><button type="button" data-breakdown-part="vision" aria-pressed="false">视觉Block</button><button type="button" data-breakdown-part="optimizer" aria-pressed="false">优化器状态</button></div>
+       <div class="target-breakdown-tabs target-breakdown-modes" role="group" aria-label="查看模块内部策略"><button type="button" data-breakdown-mode="recompute" aria-pressed="false">重计算</button><button type="button" data-breakdown-mode="swap" aria-pressed="false">Swap</button><button type="button" data-breakdown-mode="combined" aria-pressed="true">组合示例</button></div>
+      </div>
+      <p class="target-map-note" id="target-breakdown-context"></p>
+      <div class="target-map-canvas" tabindex="0" role="region" aria-label="内部策略关系图，窄屏可左右滚动"><svg id="target-breakdown-svg" viewBox="0 0 1000 520" role="group" aria-label="模块内部计算与保存对象的策略分工"></svg></div>
+      <div class="target-map-legend"><span><i class="tb-swatch"></i>蓝色：重计算覆盖的计算</span><span><i class="tb-swatch swap"></i>绿色：保留并换出的对象</span><span>实线框：计算；虚线框：保存对象</span></div>
+      <p class="tb-summary" id="target-breakdown-summary" aria-live="polite"></p>
+      <div class="target-map-detail" id="target-breakdown-detail" aria-live="polite"></div>
+      <p class="faq-source">MoE与Attention示例依据<a href="https://docs.nvidia.com/megatron-core/developer-guide/latest/user-guide/features/fine_grained_activation_offloading.html#combining-with-fine-grained-recomputation" target="_blank" rel="noreferrer">Megatron Core的卸载与重算组合</a>及<a href="https://docs.nvidia.com/megatron-core/developer-guide/latest/apidocs/core/core.transformer.transformer_config.html" target="_blank" rel="noreferrer">selective重计算范围</a>；MLP与视觉Block示例依据本仓<a href="../../FSDPTurbo/docs/zh/features/recompute.md">checkpoint、边界输入交换与算子缓存</a>。每个示例单独标明后端，不表示这些入口可在任意框架之间直接互换。</p>
+     </section>
+     <p class="target-map-note">MLP与MoE是不同模型的前馈分支，图中不表示两者必然串联执行；省略残差连接等细节。视觉Block与优化器状态属于独立范围，不包含在该Decoder Layer内。此图用于解释能力，不会修改Demo策略。</p>
+    </section>
     <div class="faq-table-wrap"><table aria-label="重计算和Swap可选对象对照表"><thead><tr><th scope="col">可选对象</th><th scope="col">重计算</th><th scope="col">Swap</th></tr></thead><tbody>
      <tr><th scope="row">Transformer整层（Decoder Layer）</th><td aria-label="重计算可选">✅️</td><td aria-label="Swap可选">✅️</td></tr>
      <tr><th scope="row">Attention模块（attn / self_attn）</th><td aria-label="重计算可选">✅️</td><td aria-label="Swap可选">✅️</td></tr>
@@ -171,6 +251,19 @@ main{padding-bottom:calc(var(--dock-height,350px) + 28px)}
     <p class="faq-callout"><strong>模块可选，不代表内部所有张量都会被Swap。</strong>普通激活Swap默认仅筛选autograd保存且与模块输入<code>hidden_states</code>同址的合格张量，并排除参数及其直接视图。具体模块还需满足输入形式、张量保存和重算语义等条件；表中✅️表示可配置范围，不承诺任意模型、融合实现都能释放同样多的显存。</p>
     <p><strong>张量与状态怎么选：</strong>checkpoint边界输入使用<code>recompute_plan.swap_inputs</code>；算子缓存输出使用<code>op_replay_scopes[].cache_ops</code>，需位于checkpoint覆盖范围内，再由<code>memory.swap_plan</code>按容量换出。这两类张量被保存和取回，本身不是独立的重计算范围；缓存命中的算子输出会直接复用。优化器状态则使用<code>AdamWSwap</code>与<code>optimizer.state_keys</code>，属于单独的状态交换路径。</p>
     <p class="faq-source">依据：<a href="../../FSDPTurbo/docs/zh/features/recompute.md">激活重计算与算子重放</a>、<a href="../../FSDPTurbo/docs/zh/features/swap_activation.md">激活值交换</a>、<a href="../../FSDPTurbo/fsdp_turbo/memory/swap_activation/swap_activation.py">模块输入筛选实现</a>、<a href="../../FSDPTurbo/fsdp_turbo/memory/swap_activation/tensor_swap_manager.py">张量交换条件</a>、<a href="../../FSDPTurbo/docs/zh/features/swap_optimizer.md">优化器状态交换</a>。示例路径参考<a href="../../FSDPTurbo/examples/kimi_k3/config.yaml">Kimi配置</a>与<a href="../../FSDPTurbo/examples/qwen3_8/config.yaml">Qwen配置</a>。</p>
+    <h3>组合策略要细分到什么粒度？</h3>
+    <p><strong>表中同一模块的“重计算”和“Swap”都可选，不代表对它内部的同一份激活直接叠加两种策略。</strong>判断能否组合，还要继续区分模块、子模块与具体保存对象。</p>
+    <div class="faq-table-wrap"><table aria-label="重计算与Swap组合粒度对照表"><thead><tr><th scope="col">组合粒度</th><th scope="col">场景</th><th scope="col">能否组合与边界</th></tr></thead><tbody>
+     <tr><th scope="row">同一层的不同模块</th><td>Attention重计算，MoE的合格激活Swap。</td><td>可以分别选择模块范围；需确认后端支持对应模块与激活保存边界。</td></tr>
+     <tr><th scope="row">同一模块内部的不同对象</th><td>同一个MoE中，激活函数部分重计算，专家FC1的输入Swap。</td><td>可以组合，但必须明确哪些子模块执行重算、哪些保存对象保留并换出，且后端提供相应边界。</td></tr>
+     <tr><th scope="row">同一份激活的同一使用区间</th><td>既把该激活丢弃等待重算，又把它保留并换出。</td><td>通常应互斥，不能当成两份独立显存收益直接相加。若分阶段重建、保存或换出，需由后端显式管理其生命周期。</td></tr>
+    </tbody></table></div>
+    <p>例如，重算模块内部的计算，同时Swap补算需要的边界输入，是<strong>不同保存对象之间的组合</strong>；不能据此理解为同一份激活既被彻底丢弃，又被完整保留到主机。</p>
+    <p><strong>MoE内部组合示例（Megatron Core）：</strong>官方示例用<code>--recompute-granularity selective</code>与<code>--recompute-modules layernorm moe_act</code>选择细粒度重算，同时开启<code>--fine-grained-activation-offloading</code>，以<code>--offload-modules core_attn attn_proj expert_fc1</code>选择卸载对象。其中，<code>moe_act</code>对应MoE专家的激活函数，<code>expert_fc1</code>卸载专家第一层全连接的输入激活。这说明一个MoE可以包含两种策略，而不要求同一保存对象同时采用两种相冲突的处理方式。</p>
+    <p class="faq-source">依据：<a href="https://docs.nvidia.com/megatron-core/developer-guide/latest/user-guide/features/fine_grained_activation_offloading.html#combining-with-fine-grained-recomputation" target="_blank" rel="noreferrer">Megatron Core：细粒度卸载与重计算组合</a>及同页的可卸载模块说明。该例是Megatron能力示例，不代表本页所列FSDP Turbo配置可直接照搬；可用范围需绑定框架版本、模型与融合实现核对。</p>
+    <h3>面板需要表达什么，当前原型支持到哪一步？</h3>
+    <ul><li><strong>不同方块分别设置：</strong>为每个层／模块保存独立策略，例如同层Attention重计算、MoE Swap。</li><li><strong>同一方块内部组合：</strong>选择组合策略后，继续指定重算的子模块，以及保留、缓存或Swap的具体保存对象，并核对冲突与取回依赖。</li></ul>
+    <p class="faq-callout"><strong>以上是面板需要补齐的表达能力。</strong>当前原型用同一组作用层驱动重计算与Swap两套教学对比；每套方案内部，所有选中层共用该方案的全局策略。细粒度抽屉已能演示边界输入交换、算子缓存等简化组合，但尚未实现逐方块独立策略，也未实现真实MoE内部子模块与保存对象的组合配置。模块路径和Megatron模块名单仍仅记录接口意图，不执行真实模型匹配。</p>
    </article>
    <article class="faq-section" id="faq-controls" tabindex="-1">
     <h2>FSDP Turbo现在有多少细粒度控制项？</h2>
@@ -536,6 +629,143 @@ $('fine-form').addEventListener('input',readFineInput);$('fine-form').addEventLi
 backendCopy();rebuild();reserveDockSpace();
 if(typeof ResizeObserver!=='undefined')new ResizeObserver(reserveDockSpace).observe(document.querySelector('.bottom'));
 window.addEventListener('resize',reserveDockSpace);requestAnimationFrame(tick);
+</script>
+<script>
+/* Interactive documentation map: independent of the teaching strategy state. */
+(()=>{
+ 'use strict';
+ const root=document.getElementById('target-map'),svg=document.getElementById('target-map-svg'),detail=document.getElementById('target-map-detail');
+ const breakdown=document.getElementById('target-breakdown'),breakSvg=document.getElementById('target-breakdown-svg');
+ const encode=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ let mode='recompute',selected=null;
+ let part='moe',partMode='combined',partSelected=null;
+ const nodes=[
+  {id:'vision',x:40,y:48,w:250,h:74,name:'视觉编码器 Block',sub:'可选视觉分支 · 模块范围',recompute:true,swap:true,kind:'module',path:'model.visual.blocks.{*} / vision_tower.encoder.blocks',rc:'可按实际模块路径设置视觉Block重计算。',sw:'可在匹配的视觉Block范围安装激活Swap；只处理满足保存与输入筛选条件的张量。'},
+  {id:'input',x:350,y:48,w:220,h:74,name:'Checkpoint边界输入 x',sub:'张量 · 补算前必须就绪',recompute:false,swap:true,kind:'tensor',path:'memory.recompute_plan.swap_inputs',rc:'x是重算所需的边界输入，本身不是独立的重计算范围。',sw:'通过swap_inputs交换checkpoint覆盖范围的边界输入；需先启用重计算并配置作用范围。容器／关键字输入还涉及flatten_inputs。'},
+  {id:'layer',x:40,y:155,w:920,h:490,name:'Transformer Layer / Decoder Layer',sub:'包含下方Norm、Attention与一种前馈分支；可选择整层，也可选择内部模块',recompute:true,swap:true,kind:'module',container:true,path:'model.layers.{*}',rc:'可用recompute_plan.apply_modules匹配整层。整层与子模块是不同选择粒度，不表示要同时嵌套启用；与输入交换或算子缓存组合时需核对嵌套限制。',sw:'可用swap_activation_plan.apply_modules匹配整层；这表示交换包装的模块范围，不表示该层全部中间激活都会被交换。'},
+  {id:'norm1',x:75,y:213,w:180,h:74,name:'RMSNorm / LayerNorm',display:'Norm（Attention前）',sub:'RMSNorm / LayerNorm',recompute:true,swap:true,kind:'module',path:'实际层路径.input_layernorm 等',rc:'可按真实模型的Norm子模块路径重计算。',sw:'模块路径可作为Swap作用范围；仍需满足输入形式、autograd保存和hidden_states同址等筛选条件。'},
+  {id:'attn',x:300,y:213,w:220,h:74,name:'Attention / self_attn',sub:'模块作用范围',recompute:true,swap:true,kind:'module',path:'实际层路径.self_attn / attn',rc:'按模块或受支持的方法边界重跑Attention计算，丢弃的内部激活在反向补算；缓存命中的算子输出会被复用。',sw:'在Attention模块范围筛选合格的已保存激活。模块中的参数及其直接视图不属于普通激活Swap对象。'},
+  {id:'attn-output',x:565,y:213,w:160,h:74,name:'缓存输出 a',sub:'匹配指定Attention算子',recompute:false,swap:true,kind:'tensor',path:'memory.op_replay_scopes[].cache_ops + memory.swap_plan',rc:'已缓存的算子输出在反向重放时直接复用，本身不是独立的重计算范围。',sw:'仅当输出命中指定缓存算子且位于checkpoint覆盖范围内，才进入算子缓存路径，再由swap_plan按容量换出；不是任意Attention输出都会被交换。'},
+  {id:'norm2',x:765,y:213,w:160,h:74,name:'RMSNorm / LayerNorm',display:'Norm（前馈前）',sub:'RMSNorm / LayerNorm',recompute:true,swap:true,kind:'module',path:'实际层路径.post_attention_layernorm 等',rc:'与前一个Norm属于独立模块，可按模型路径单独匹配。',sw:'可配置模块范围；可交换张量仍以真实forward与保存行为满足筛选条件为前提。'},
+  {id:'mlp',x:190,y:355,w:240,h:80,name:'MLP / FFN',sub:'稠密前馈模块',recompute:true,swap:true,kind:'module',path:'实际层路径.mlp',rc:'可选择稠密前馈模块重计算；与Attention可使用不同模块范围。',sw:'可在MLP范围交换合格激活。此图的高亮表示接口可选择的范围，不承诺任意融合实现都能交换全部内部张量。'},
+  {id:'moe',x:540,y:335,w:350,h:180,name:'MoE / block_sparse_moe',sub:'稀疏前馈模块',recompute:true,swap:true,kind:'module',container:true,path:'实际层路径.block_sparse_moe / mlp / experts',rc:'可按真实MoE模块、专家子模块或受支持的方法匹配重计算。图中的Router／专家／Combine仅解释内部结构，不代表每个融合内部步骤都有可直接选择的接口。',sw:'可对真实匹配模块安装Swap，交换其中合格的保存对象。若要与内部重算组合，必须进一步区分子模块与保存对象，并核对具体后端边界。'},
+  {id:'mlp-output',x:415,y:550,w:200,h:64,name:'缓存输出 m',sub:'指定MatMul / GMM等输出',recompute:false,swap:true,kind:'tensor',path:'memory.op_replay_scopes[].cache_ops + memory.swap_plan',rc:'与a一样，保存并复用的缓存输出本身不是独立重计算范围。',sw:'命中指定MatMul、GMM等缓存算子的输出才可进入该路径；需checkpoint覆盖，交换时机与驻留量由共享swap_plan管理。'},
+  {id:'optimizer',x:695,y:705,w:265,h:80,name:'优化器状态',sub:'exp_avg / exp_avg_sq',recompute:false,swap:true,kind:'state',path:'AdamWSwap + optimizer.state_keys',rc:'优化器状态不属于激活重计算范围。',sw:'通过AdamWSwap与optimizer.state_keys选择状态交换，属于独立优化器路径，不是Decoder Layer内部的激活Swap。'}
+ ];
+ const item=(id,name,sub,kind,rc,sw,combo,path,note)=>({id,name,sub,kind,rc,sw,combo,path,note});
+ const parts={
+  moe:{title:'同一个MoE：专家路径内部拆分',context:'Megatron Core示例：激活函数重计算，专家FC1输入Swap。Router、FC1、FC2与Combine保留作上下游参照；不需要把整个MoE重跑。',nodes:[
+   item('router','Router / Dispatch','路由与分发','compute',false,false,null,'模型MoE路由路径','本组合没有为路由与分发设置独立重计算或Swap策略。'),
+   item('fc1-input','FC1 输入','反向所需的保存张量','tensor',false,true,'swap','--offload-modules expert_fc1','换出的是专家FC1的输入激活，反向需要时取回；不是搬运FC1计算，也不是丢弃激活函数的同一份输出。'),
+   item('fc1','FC1 / GEMM1','专家第一层全连接','compute',false,false,null,'专家FC1计算','本组合保留FC1计算路径；它的输入激活可独立Swap。'),
+   item('act-input','激活函数输入','FC1输出的保存对象','tensor',false,true,null,'--offload-modules moe_act','单独选择Swap时，可查看moe_act对应的输入卸载边界。本组合没有选择这份输入Swap，避免与所示方案混为一个开关。'),
+   item('activation','激活函数 / moe_act','轻量计算部分','compute',true,false,'recompute','--recompute-granularity selective + --recompute-modules moe_act','反向补算的是专家激活函数部分；所需输入仍须就绪。与FC1输入Swap作用于不同边界，可在同一个MoE内组合。'),
+   item('fc2','FC2 / GEMM2','专家第二层全连接','compute',false,false,null,'专家FC2计算','保留作上下游参照；本例未为FC2单独选择策略。'),
+   item('combine','Combine','合并专家结果','compute',false,false,null,'MoE输出合并','合并输出继续送往后续计算；本例未给Combine设置独立策略。')
+  ]},
+  attention:{title:'Attention分支：输入Norm与注意力内部',context:'Megatron Core官方组合的Attention分支：输入Norm重计算，core_attn与attn_proj的输入Swap。输入Norm位于self_attn之前，属于同一Layer的邻接模块；图中保留这个真实边界。',nodes:[
+   item('norm-input','Norm 输入','输入归一化的保存对象','tensor',false,true,null,'--offload-modules attn_norm','Norm输入卸载是单独能力；IdentityOp及CUDA Graph等情形存在额外限制。本组合未选择此对象。'),
+   item('norm','输入 Norm','RMSNorm / LayerNorm','compute',true,false,'recompute','--recompute-modules layernorm','示例重算输入归一化。它与后面的Attention输入卸载属于同一Layer内不同边界。'),
+   item('qkv-input','QKV 输入','线性投影的输入激活','tensor',false,true,null,'--offload-modules qkv_linear','可按版本与实现选择QKV投影输入卸载；本组合沿用官方示例，未额外选择该对象。'),
+   item('qkv','Q / K / V 投影','线性计算','compute',false,false,null,'Attention的QKV投影','计算步骤与保存对象分开表达；本例未对这段计算设置独立重算。'),
+   item('core-input','core_attn 输入','Q、K、V等合格输入','tensor',false,true,'swap','--offload-modules core_attn','卸载核心注意力的输入激活，反向前取回。图中绿色标的是保存对象，不是把softmax计算换出。'),
+   item('core','Core Attention','softmax + matmul','compute',true,false,null,'--recompute-modules core_attn','可单独查看core_attn重计算能力；当前组合示例选择保留这段计算并卸载其输入，不把两种选择混为一个对象。'),
+   item('proj-input','attn_proj 输入','输出投影的输入激活','tensor',false,true,'swap','--offload-modules core_attn attn_proj','官方要求attn_proj卸载与core_attn一起使用；组合示例同时高亮这两个输入边界。'),
+   item('projection','输出投影','Attention输出线性层','compute',false,false,null,'Attention输出投影计算','输出投影本身保留作上下游参照；Swap作用于它的保存输入。'),
+   item('output','Attention 输出','进入残差与后续模块','tensor',false,false,null,'后续计算输入','本图省略残差等细节；此处仅展示前向输出，不将任意输出自动视为可交换对象。')
+  ]},
+  mlp:{title:'同一个MLP：checkpoint覆盖与算子输出缓存',context:'FSDP Turbo机制示例：checkpoint覆盖MLP；在可匹配的FC1子模块范围缓存指定MatMul输出并换出，其余激活与FC2计算在反向补算。蓝色计算属于checkpoint覆盖，不代表新增了同名独立开关。',nodes:[
+   item('input','MLP 边界输入','checkpoint保留对象','tensor',false,true,'swap','recompute_plan.swap_inputs','checkpoint边界输入可同时交换，补算前必须先取回。'),
+   item('fc1','FC1 / MatMul','可匹配的FC1子模块','compute',true,false,null,'recompute_plan.apply_modules：MLP范围','普通MLP重算会执行这段计算；本组合用已缓存的FC1输出复用结果，因此不再将它标成补算部分。'),
+   item('fc1-cache','FC1 缓存输出','命中指定缓存算子的结果','tensor',false,true,'swap','op_replay_scopes[].apply_modules + cache_ops + swap_plan','需要把缓存范围限定到真实FC1子模块／方法，再匹配具体MatMul。仅给整个MLP写同名算子白名单，不能保证只缓存FC1而不命中FC2。'),
+   item('activation','激活／门控计算','checkpoint内其余计算','compute',true,false,'recompute','MLP checkpoint覆盖范围','本例未缓存这部分内部结果，反向按checkpoint语义补算；不是借用仅适用于MoE的moe_act开关。'),
+   item('fc2','FC2 / MatMul','checkpoint内后续计算','compute',true,false,'recompute','MLP checkpoint覆盖范围','本例没有在FC2区域启用算子输出缓存，反向需要时补算该部分。'),
+   item('output','MLP 输出','流向残差与后续Layer','tensor',false,false,null,'后续计算输入','作为上下游参照；是否额外缓存／交换该输出，必须再定义对应算子和边界。')
+  ]},
+  vision:{title:'同一个视觉Block：边界输入Swap与内部重算',context:'FSDP Turbo示例：对真实匹配的视觉Block开启checkpoint与swap_inputs，保留的Block边界输入换出，Block内部激活丢弃后补算。Norm、Attention、MLP在这里是同一个checkpoint覆盖的计算步骤。',nodes:[
+   item('input','视觉Block输入','checkpoint边界张量','tensor',false,true,'swap','recompute_plan.swap_inputs；按需flatten_inputs','需先选中真实视觉Block路径。位置参数与容器／关键字参数的覆盖范围不同，应按输入形式配置。'),
+   item('norm1','Block 内 Norm 1','归一化计算','compute',true,false,'recompute','recompute_plan.apply_modules：视觉Block','作为Block checkpoint覆盖的计算随内部重算；不意味着要额外嵌套一个子checkpoint。'),
+   item('attn','Block 内 Attention','视觉注意力计算','compute',true,false,'recompute','视觉Block checkpoint覆盖范围','随该Block在反向补算；若改为独立配置子模块，须重新核对路径和父子嵌套约束。'),
+   item('norm2','Block 内 Norm 2','前馈前归一化','compute',true,false,'recompute','视觉Block checkpoint覆盖范围','属于所选Block的内部计算；所需输入必须在补算前就绪。'),
+   item('mlp','Block 内 MLP','视觉前馈计算','compute',true,false,'recompute','视觉Block checkpoint覆盖范围','此组合重算内部计算、交换边界输入；可继续按实际模块边界扩展算子缓存策略。'),
+   item('output','视觉Block输出','送往后续Block／模型','tensor',false,false,null,'后续计算输入','后续使用的输出不因本例的swap_inputs开关就自动成为独立交换对象。')
+  ]},
+  optimizer:{title:'优化器内部：两类状态可分别选择',context:'FSDP Turbo优化器状态路径：exp_avg与exp_avg_sq可通过state_keys选择交换。它们是由梯度分别更新的状态，不是激活，也不存在对应的激活重计算组合。',nodes:[
+   item('gradient','参数与梯度','优化器更新的输入','tensor',false,false,null,'优化器更新输入','此处只展示依赖，不把参数／梯度等同于本例选择的动量状态。'),
+   item('moment1','一阶状态 exp_avg','由梯度更新','tensor',false,true,'swap','AdamWSwap + optimizer.state_keys：exp_avg','一阶状态可作为独立状态键选择交换；不要将它计为激活重计算收益。'),
+   item('moment2','二阶状态 exp_avg_sq','由梯度平方更新','tensor',false,true,'swap','AdamWSwap + optimizer.state_keys：exp_avg_sq','二阶状态是另一份对象，可与一阶状态分别选择。两者没有先后依赖。'),
+   item('update','AdamW 更新计算','消费状态与梯度','compute',false,false,null,'优化器更新计算','这段状态更新不属于activation checkpoint的重计算范围。'),
+   item('weights','更新后的参数','用于下一次前向','tensor',false,false,null,'下一次前向','作为更新结果与后续依赖示意，不是此处高亮的状态交换对象。')
+  ]}
+ };
+ function partPolicy(n){return partMode==='combined'?(n.combo||'none'):partMode==='recompute'?(n.rc?'recompute':'none'):(n.sw?'swap':'none');}
+ function drawBreakdown(){
+  const data=parts[part],rows=Math.ceil(data.nodes.length/4),height=110+rows*170;
+  const positioned=data.nodes.map((n,i)=>({...n,x:45+(Math.floor(i/4)%2?3-i%4:i%4)*240,y:100+Math.floor(i/4)*170,w:195,h:100}));
+  const edge=(a,b)=>{let d;if(a.y===b.y)d=a.x<b.x?'M'+(a.x+a.w)+' '+(a.y+50)+'H'+b.x:'M'+a.x+' '+(a.y+50)+'H'+(b.x+b.w);else d='M'+(a.x+a.w/2)+' '+(a.y+a.h)+'V'+b.y;return '<path class="tm-flow" d="'+d+'" marker-end="url(#tb-flow-arrow)"/>';};
+  let edges='';
+  if(part==='optimizer'){
+   const [g,m,v,u,w]=positioned;
+   edges=edge(g,m)+'<path class="tm-flow" d="M142.5 200V230H622.5V200 M382.5 100V90H862.5V100" marker-end="url(#tb-flow-arrow)"/>'+edge(v,u)+edge(u,w);
+  }else for(let i=1;i<positioned.length;i++)edges+=edge(positioned[i-1],positioned[i]);
+  const label={recompute:'重计算覆盖',swap:'Swap保存对象',none:'上下游参照'};
+  const markup=positioned.map(n=>{const policy=partPolicy(n);return '<g class="tb-node'+(partSelected===n.id?' is-selected':'')+'" data-breakdown-node="'+n.id+'" data-policy="'+policy+'" role="button" tabindex="0" aria-pressed="'+(partSelected===n.id)+'" aria-label="'+encode(n.name+'：'+label[policy])+'"><rect class="tb-box" x="'+n.x+'" y="'+n.y+'" width="'+n.w+'" height="'+n.h+'" rx="7"'+(n.kind==='tensor'?' stroke-dasharray="5 4"':'')+'/>'+text(n.x+n.w/2,n.y+28,n.name,'tm-name','middle')+text(n.x+n.w/2,n.y+53,n.sub,'tm-subtitle','middle')+text(n.x+n.w/2,n.y+80,label[policy],'tb-policy','middle')+'</g>';}).join('');
+  breakSvg.setAttribute('viewBox','0 0 1000 '+height);
+  breakSvg.innerHTML='<title>'+encode(data.title)+'</title><defs><marker id="tb-flow-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#9ca9ba"/></marker></defs><rect class="tm-context-box" x="24" y="25" width="952" height="'+(rows*170+50)+'" rx="9"/>'+text(45,55,data.title,'tm-name')+text(45,80,'沿箭头阅读：计算步骤与被保存的张量分别标记。')+edges+markup+text(45,height-10,'Swap对象前向换出、反向按需取回；本图展示不同对象的策略分工，不执行配置。');
+  breakdown.dataset.part=part;breakdown.dataset.strategy=partMode;
+  root.querySelectorAll('[data-breakdown-part]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.breakdownPart===part)));
+  root.querySelectorAll('[data-breakdown-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.breakdownMode===partMode)));
+  document.getElementById('target-breakdown-context').textContent=data.context;
+  const rc=data.nodes.filter(n=>partPolicy(n)==='recompute').map(n=>n.name),sw=data.nodes.filter(n=>partPolicy(n)==='swap').map(n=>n.name);
+  document.getElementById('target-breakdown-summary').textContent='重计算：'+(rc.join('、')||'本视图无选中对象')+'；Swap：'+(sw.join('、')||'本视图无选中对象')+'。';
+  const n=data.nodes.find(n=>n.id===partSelected);
+  document.getElementById('target-breakdown-detail').innerHTML=n?'<strong>'+encode(n.name)+' · '+label[partPolicy(n)]+'</strong><p>'+encode(n.note)+'</p><p>对应入口／边界：<code>'+encode(n.path)+'</code></p>':'<strong>'+(part==='optimizer'?'优化器状态单独选择交换。':partMode==='combined'?'同一范围内，计算与保存对象分别选策略。':'点击内部节点查看具体边界。')+'</strong><p>灰色步骤作为上下游参照保留，前向仍按依赖执行。点击节点可查看当前示例的配置入口、适用边界与限制。</p>';
+ }
+ const text=(x,y,value,cls='tm-caption',anchor='start')=>'<text x="'+x+'" y="'+y+'" class="'+cls+'" text-anchor="'+anchor+'">'+encode(value)+'</text>';
+ function nodeMarkup(n){
+  const enabled=n[mode],chosen=selected===n.id;
+  let ink='<rect class="tm-box'+(n.container?' tm-container':'')+'" x="'+n.x+'" y="'+n.y+'" width="'+n.w+'" height="'+n.h+'" rx="8"'+(n.kind==='tensor'||n.kind==='state'?' stroke-dasharray="5 4"':'')+'/>';
+  ink+=text(n.container?n.x+16:n.x+n.w/2,n.y+27,n.display||n.name,'tm-name',n.container?'start':'middle');
+  ink+=text(n.container?n.x+16:n.x+n.w/2,n.y+50,n.sub,'tm-subtitle',n.container?'start':'middle');
+  if(n.id==='moe'){
+   for(const [x,w,label] of [[557,86,'Router'],[667,97,'Experts'],[788,86,'Combine']])ink+='<rect class="tm-context-box" x="'+x+'" y="398" width="'+w+'" height="40" rx="5"/>'+text(x+w/2,423,label,'tm-subtitle','middle');
+   ink+='<path class="tm-flow" d="M643 418H667 M764 418H788" marker-end="url(#tm-flow-arrow)"/>';
+   ink+=text(557,470,'专家内部：FC1 → 激活函数 → FC2');
+   ink+=text(557,493,'内部选择边界以实际后端为准');
+  }
+  return '<g class="tm-node'+(chosen?' is-selected':'')+'" data-target-node="'+n.id+'" data-eligible="'+enabled+'" role="button" tabindex="0" aria-pressed="'+chosen+'" aria-label="'+encode(n.name+'：'+(enabled?'当前策略可配置':'非当前策略的直接控制对象')+'，点击查看边界')+'"><title>'+encode(n.name+' · '+(mode==='recompute'?n.rc:n.sw))+'</title>'+ink+'</g>';
+ }
+ function updateDetail(){
+  const n=nodes.find(n=>n.id===selected);
+  if(!n){detail.innerHTML=mode==='recompute'?'<strong>重计算：亮起可选择的模块作用范围。</strong><p>可按整层、子模块或受支持的方法边界配置；边界输入、算子缓存输出和优化器状态不作为独立的重计算对象。点节点可查看配置与约束。</p>':'<strong>Swap：亮起模块范围，以及可交换的保存对象和状态。</strong><p>模块高亮表示可配置的包装范围，不代表内部所有张量都被交换。边界输入、算子缓存输出与优化器状态走不同路径；交换条件与配置入口可点节点查看。</p>';return;}
+  detail.innerHTML='<strong>'+encode(n.name)+' · '+(n[mode]?'当前策略可配置':'非当前策略的直接控制对象')+'</strong><p>'+encode(mode==='recompute'?n.rc:n.sw)+'</p><p>配置／路径：<code>'+encode(n.path)+'</code></p>';
+ }
+ function draw(){
+  const definitions='<defs><marker id="tm-flow-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#9ca9ba"/></marker><marker id="tm-storage-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10Z" fill="var(--tm-accent)"/></marker></defs>';
+  const flow=d=>'<path class="tm-flow" d="'+d+'" marker-end="url(#tm-flow-arrow)"/>';
+  const storage=d=>'<path class="tm-storage" d="'+d+'" marker-end="url(#tm-storage-arrow)"/>';
+  let edges=flow('M290 85H350')+flow('M460 122V140H28V250H75')+flow('M255 250H300')+flow('M520 250H565')+flow('M725 250H765');
+  edges+=flow('M845 287V315H310V355')+flow('M845 315H715V335');
+  edges+=flow('M310 435V582H415')+flow('M715 515V582H615')+flow('M515 614V705');
+  edges+=storage('M460 48V14H16V745H40')+storage('M645 287V302H975V675H165V705')+storage('M515 614V675H165V705')+storage('M960 745H985V815H165V785');
+  edges+='<path class="tm-flow" d="M915 645V681H827V705" stroke-dasharray="3 4" marker-end="url(#tm-flow-arrow)"/>';
+  const contexts='<rect class="tm-context-box" x="40" y="705" width="250" height="80" rx="8"/>'+text(165,735,'主机／卸载存储','tm-name','middle')+text(165,760,'保存副本，反向前按需取回','tm-subtitle','middle')+'<rect class="tm-context-box" x="415" y="705" width="200" height="80" rx="8"/>'+text(515,735,'后续Layer','tm-name','middle')+text(515,760,'继续前向计算','tm-subtitle','middle');
+  const captions=text(320,71,'可选','tm-caption','middle')+text(86,323,'按模型选择一种前馈分支')+text(535,655,'前向')+text(757,669,'反向梯度 → 更新')+text(430,806,'优化器状态交换：独立路径')+text(40,834,'模块名与路径为示意；具体可用范围以模型实现及后端版本为准。');
+  svg.innerHTML='<title>可控对象的包含关系与上下游</title><desc>Layer包含归一化、Attention及MLP或MoE；保存对象、视觉Block与优化器状态按各自边界选择。</desc>'+definitions+nodeMarkup(nodes.find(n=>n.id==='layer'))+edges+contexts+nodes.filter(n=>n.id!=='layer').map(nodeMarkup).join('')+captions;
+  updateDetail();drawBreakdown();
+ }
+ root.addEventListener('click',e=>{
+  const button=e.target.closest('[data-target-map-mode]');
+  if(button){mode=button.dataset.targetMapMode;partMode=mode;selected=null;partSelected=null;root.dataset.mode=mode;root.querySelectorAll('[data-target-map-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));draw();return;}
+  const partButton=e.target.closest('[data-breakdown-part]');if(partButton){part=partButton.dataset.breakdownPart;partSelected=null;drawBreakdown();return;}
+  const partModeButton=e.target.closest('[data-breakdown-mode]');if(partModeButton){partMode=partModeButton.dataset.breakdownMode;partSelected=null;drawBreakdown();return;}
+  const inner=e.target.closest('[data-breakdown-node]');if(inner){partSelected=partSelected===inner.dataset.breakdownNode?null:inner.dataset.breakdownNode;drawBreakdown();return;}
+  const node=e.target.closest('[data-target-node]');if(node){selected=selected===node.dataset.targetNode?null:node.dataset.targetNode;const mapped={attn:'attention','attn-output':'attention',mlp:'mlp','mlp-output':'mlp',moe:'moe',vision:'vision',optimizer:'optimizer'}[node.dataset.targetNode];if(mapped){part=mapped;partSelected=null;}draw();if(mapped&&typeof breakdown.scrollIntoView==='function')breakdown.scrollIntoView({block:'start',behavior:'smooth'});}
+ });
+ svg.addEventListener('keydown',e=>{const node=e.target.closest('[data-target-node]');if(!node||!['Enter',' '].includes(e.key))return;e.preventDefault();e.stopPropagation();const id=node.dataset.targetNode;selected=selected===id?null:id;const mapped={attn:'attention','mlp':'mlp',moe:'moe',vision:'vision',optimizer:'optimizer'}[id];if(mapped){part=mapped;partSelected=null;}draw();svg.querySelector('[data-target-node="'+id+'"]')?.focus();});
+ breakSvg.addEventListener('keydown',e=>{const node=e.target.closest('[data-breakdown-node]');if(!node||!['Enter',' '].includes(e.key))return;e.preventDefault();e.stopPropagation();const id=node.dataset.breakdownNode;partSelected=partSelected===id?null:id;drawBreakdown();breakSvg.querySelector('[data-breakdown-node="'+id+'"]')?.focus();});
+ draw();
+})();
 </script>
 </body>
 </html>

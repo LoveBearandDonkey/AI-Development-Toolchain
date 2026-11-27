@@ -1,0 +1,90 @@
+/* 新无限是 token 基线。各应用通过 data-ms-theme 声明主题范围。 */
+:where([data-ms-theme]) {
+  color-scheme: light;
+  --brand-blue: #0a59f7;
+  --brand-blue-disabled: #9dbdfc;
+  --brand-green: #09aa71;
+  --brand-accent: var(--brand-blue);
+  --brand-purple: #8a21bc;
+  --brand-tint: 8%;
+  --brand-tint-border: 20%;
+  --brand-tint-strong: 12%;
+  --foreground: #191919;
+  --foreground-secondary: #777;
+  --foreground-muted: var(--foreground-secondary);
+  --foreground-placeholder: #aeaeae;
+  --foreground-disabled: var(--foreground-placeholder);
+  --text-primary: var(--foreground);
+  --text-secondary: var(--foreground-secondary);
+  --text-label: var(--foreground-secondary);
+  --surface-1: #fff;
+  --surface-2: #f2f2f2;
+  --divider-weak: #f3f3f3;
+  --divider-strong: #dfdfdf;
+  --border-line: #c9c9c9;
+  --card-neutral-bg: rgb(0 0 0 / 3%);
+  --card-neutral-border: rgb(0 0 0 / 4%);
+  --card-neutral-press: rgb(0 0 0 / 5%);
+  --primary: #4369ef;
+  --success: #04d793;
+  --accent: #7c8db8;
+  --warning: #ffaa3b;
+  --danger: #ff4b7b;
+  --font-sans: system-ui, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: "Cascadia Mono", "SFMono-Regular", "SF Mono", Menlo,
+    Consolas, Monaco, "PingFang SC", "Microsoft YaHei", monospace;
+
+  --ide-frame-icon-stroke: var(--foreground);
+  --icon-outline-filter: none;
+  --brand-fill: color-mix(in srgb, var(--brand-blue) var(--brand-tint), transparent);
+  --brand-fill-strong: color-mix(in srgb, var(--brand-blue) var(--brand-tint-strong), transparent);
+  --brand-outline: color-mix(in srgb, var(--brand-blue) var(--brand-tint-border), transparent);
+  --guide-hover-bg: linear-gradient(100deg,
+    color-mix(in srgb, var(--brand-purple) var(--brand-tint-strong), transparent),
+    var(--brand-fill-strong));
+  --question-base: var(--surface-1);
+  --question-bg: color-mix(in srgb, var(--brand-blue) var(--brand-tint), var(--question-base));
+  --composer-border-width: 1.5px;
+  --composer-gradient-stop: 100%;
+  --composer-gradient: linear-gradient(90deg,
+    color-mix(in srgb, var(--brand-blue) var(--composer-gradient-stop), var(--surface-1)),
+    color-mix(in srgb, var(--brand-purple) var(--composer-gradient-stop), var(--surface-1)));
+  --composer-focus-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-blue) 8%, transparent);
+  --button-radius: 12px;
+  --button-disabled-opacity: .42;
+  --button-secondary-bg: color-mix(in srgb, var(--surface-1) 92%, var(--surface-2));
+  --button-secondary-bg-press: var(--button-secondary-bg);
+  --button-secondary-border: var(--divider-strong);
+  --button-secondary-fg: var(--foreground);
+  --button-secondary-shadow: none;
+  --capability-gradient: linear-gradient(115deg, #ff9275, #c477e9 28%, #6268f3 52%, #35bce9 76%, #64dbd3);
+  --ide-shell-opacity: 92%;
+  --ide-bg-start: #f6f7fb;
+  --ide-bg-mid: #f6f7fb;
+  --ide-bg-end: #eceff6;
+  --ide-mid-stop: 42%;
+  --ide-glow-left: 155 96 170 / .07;
+  --ide-glow-right: 24 99 220 / .08;
+  --ide-glow-center: 20 184 166 / .04;
+  --ide-glow-lower: 24 99 220 / .08;
+  --ide-gradient-bg:
+    radial-gradient(circle at top left, rgb(var(--ide-glow-left)), transparent 28%),
+    radial-gradient(circle at top right, rgb(var(--ide-glow-right)), transparent 30%),
+    radial-gradient(circle at 48% 6%, rgb(var(--ide-glow-center)), transparent 34%),
+    radial-gradient(circle at 18% 86%, rgb(var(--ide-glow-lower)), transparent 34%),
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--ide-bg-start) var(--ide-shell-opacity), transparent),
+      color-mix(in srgb, var(--ide-bg-mid) var(--ide-shell-opacity), transparent) var(--ide-mid-stop),
+      color-mix(in srgb, var(--ide-bg-end) var(--ide-shell-opacity), transparent));
+  --ide-frame-bg: var(--ide-gradient-bg);
+  --ide-frame-backdrop-filter: blur(8px);
+  --document-paper: linear-gradient(150deg, #fff, #f8fafc);
+  --document-paper-border: #e1e6ec;
+  --document-code-ink: #536076;
+  --document-line-number: #8a97ae;
+  --msds-ink-secondary: #666;
+  --msds-accent-ink: #084bcf;
+  --msds-brand-on-fill: #fff;
+  --msds-danger-ink: #ab194a;
+  --msds-danger-on-fill: #231016;
+}

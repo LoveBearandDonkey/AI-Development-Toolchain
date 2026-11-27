@@ -29,52 +29,6 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .svg-icon { width: 20px; height: 20px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 .cann-app { min-height: 100vh; }
 
-.cann-topbar {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: rgb(10 10 10 / 72%);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
-  backdrop-filter: blur(20px) saturate(140%);
-}
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .cann-topbar { background: rgb(10 10 10 / 96%); }
-}
-.cann-primary {
-  width: 100%;
-  max-width: 1680px;
-  margin: 0 auto;
-  min-height: 96px;
-  padding: 24px 48px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 32px;
-}
-.cann-brand { flex: 0 0 auto; }
-.cann-name {
-  display: inline-block;
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: -.03em;
-}
-@supports ((background-clip: text) or (-webkit-background-clip: text)) {
-  .cann-name {
-    background-image: linear-gradient(90deg, #5227ff, #ff9ffc, #b497cf, #5227ff);
-    background-size: 300% 100%;
-    background-position: 0% 50%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-    animation: cann-name-gradient 8s ease-in-out infinite alternate;
-  }
-}
-@keyframes cann-name-gradient {
-  from { background-position: 0% 50%; }
-  to { background-position: 100% 50%; }
-}
-.cann-actions { display: flex; align-items: center; gap: 16px; margin-left: auto; min-width: 0; }
 .global-search {
   width: 320px;
   min-width: 0;
@@ -257,9 +211,6 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   .side-list { justify-content: flex-start; }
 }
 @media (max-width: 700px) {
-  .cann-primary { min-height: 80px; padding: 20px 24px; gap: 20px; flex-wrap: wrap; }
-  .cann-name { font-size: 16px; }
-  .cann-actions { flex: 1 1 100%; gap: 12px; }
   .global-search { flex: 1; width: auto; height: 44px; }
   .catalog-avatar { width: 52px; height: 48px; }
   .page-shell { padding: 0 24px 56px; }

@@ -11,15 +11,47 @@ const sandbox={document,window,console,requestAnimationFrame(fn){frame=fn;return
 Object.defineProperty(sandbox,'location',{get(){return {href:'file:///activation-lifecycle.html'}},set(){throw Error('Unexpected navigation')},configurable:false});
 const ctx=vm.createContext(sandbox);
 vm.runInContext(code,ctx,{filename:htmlPath});
+for(const [,extra] of [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].slice(1))vm.runInContext(extra,ctx,{filename:htmlPath});
 const evaluate=js=>vm.runInContext(js,ctx),q=s=>document.querySelector(s),checks=[];
 function check(name,fn){fn();checks.push(name)}
 function click(selector){assert.ok(q(selector),selector);q(selector).click()}
 function input(selector,value,event='change'){const el=q(selector);try{el.value=String(value)}catch{}if(el.value!==String(value))Object.defineProperty(el,'value',{value:String(value),writable:true,configurable:true});el.dispatchEvent(new window.Event(event,{bubbles:true}))}
 function dispatch(selector,type,props){const ev=new window.Event(type,{bubbles:true,cancelable:true});Object.assign(ev,props);q(selector).dispatchEvent(ev)}
+check('Documentation map highlights scope and saved objects without changing teaching strategies',()=>{
+ const before=evaluate('JSON.stringify({rc:state.rc,sw:state.sw,layers:[...state.layers]})');
+ assert.equal(document.querySelectorAll('#target-map [data-eligible="true"]').length,7);
+ assert.equal(q('[data-target-node="input"]').getAttribute('data-eligible'),'false');
+ assert.equal(q('[data-target-node="optimizer"]').getAttribute('data-eligible'),'false');
+ click('[data-target-map-mode="swap"]');
+ assert.equal(document.querySelectorAll('#target-map [data-eligible="true"]').length,11);
+ click('[data-target-node="input"]');assert.ok(q('#target-map-detail').textContent.includes('swap_inputs'));
+ click('[data-target-node="optimizer"]');assert.ok(q('#target-map-detail').textContent.includes('AdamWSwap'));
+ click('[data-target-map-mode="recompute"]');
+ assert.equal(document.querySelectorAll('#target-map [data-eligible="true"]').length,7);
+ assert.equal(q('[data-target-map-mode="recompute"]').getAttribute('aria-pressed'),'true');
+ assert.equal(evaluate('JSON.stringify({rc:state.rc,sw:state.sw,layers:[...state.layers]})'),before);
+});
 check('Standalone document, local source links and unique identifiers',()=>{
  assert.ok(!/<(?:script|link)[^>]+(?:src|href)=/i.test(html));
  const ids=[...document.querySelectorAll('[id]')].map(el=>el.id);assert.equal(ids.length,new Set(ids).size);
  for(const el of document.querySelectorAll('a[href]'))if(!/^(https?:|#)/.test(el.getAttribute('href')))assert.ok(fs.existsSync(path.resolve(path.dirname(htmlPath),el.getAttribute('href'))),el.getAttribute('href'));
+});
+check('Internal breakdowns show distinct recompute and Swap objects in the same scope',()=>{
+ const before=evaluate('JSON.stringify({rc:state.rc,sw:state.sw,layers:[...state.layers]})');
+ const policy=id=>q('[data-breakdown-node="'+id+'"]').getAttribute('data-policy');
+ click('[data-breakdown-part="moe"]');click('[data-breakdown-mode="combined"]');
+ assert.equal(policy('activation'),'recompute');assert.equal(policy('fc1-input'),'swap');assert.equal(policy('act-input'),'none');
+ click('[data-breakdown-node="fc1-input"]');assert.ok(q('#target-breakdown-detail').textContent.includes('expert_fc1'));
+ click('[data-breakdown-part="attention"]');assert.equal(policy('norm'),'recompute');assert.equal(policy('core-input'),'swap');assert.equal(policy('proj-input'),'swap');assert.equal(policy('core'),'none');
+ click('[data-breakdown-mode="recompute"]');assert.equal(policy('core'),'recompute');assert.equal(policy('core-input'),'none');
+ click('[data-breakdown-part="mlp"]');click('[data-breakdown-mode="combined"]');
+ assert.equal(policy('fc1-cache'),'swap');assert.equal(policy('activation'),'recompute');assert.equal(policy('fc2'),'recompute');assert.equal(policy('fc1'),'none');
+ click('[data-breakdown-node="fc1-cache"]');assert.ok(q('#target-breakdown-detail').textContent.includes('不能保证只缓存FC1'));
+ click('[data-breakdown-part="vision"]');assert.equal(policy('input'),'swap');assert.equal(policy('attn'),'recompute');assert.equal(policy('mlp'),'recompute');
+ click('[data-breakdown-part="optimizer"]');assert.equal(policy('moment1'),'swap');assert.equal(policy('moment2'),'swap');assert.equal(document.querySelectorAll('#target-breakdown [data-policy="recompute"]').length,0);
+ click('[data-target-node="attn"]');assert.equal(q('#target-breakdown').dataset.part,'attention');
+ assert.equal(evaluate('JSON.stringify({rc:state.rc,sw:state.sw,layers:[...state.layers]})'),before);
+ click('[data-breakdown-part="moe"]');click('[data-breakdown-mode="combined"]');
 });
 check('Minimal headings, consolidated descriptions and explicit teaching-symbol definitions',()=>{
  for(const selector of ['.kicker','.relation','.interpretation','.eyebrow','.badge','.intro'])assert.equal(q(selector),null);
@@ -193,8 +225,8 @@ check('Demo/document tabs precede backend tabs; switching pauses animation and p
  assert.equal(document.body.dataset.page,'docs');assert.equal(q('#demo-content').hidden,true);assert.equal(q('#docs-content').hidden,false);assert.equal(q('#fine-drawer').hidden,true);assert.equal(evaluate('state.playing'),false);assert.equal(q('#page-docs').getAttribute('aria-selected'),'true');
  click('#page-demo');assert.equal(q('#demo-content').hidden,false);assert.equal(evaluate('state.t'),t);assert.equal(evaluate('JSON.stringify(state.advanced)'),advanced);assert.equal(evaluate('JSON.stringify([...state.layers])'),layers);assert.equal(q('h1').textContent,'激活不留在卡上，反向怎么算？');
 });
-check('Six FAQ questions navigate to matching answers with visible selection',()=>{
- click('#page-docs');assert.equal(q('.faq-nav').querySelectorAll('[data-faq]').length,6);assert.equal(q('.faq-body').querySelectorAll('article').length,6);
+check('Seven FAQ questions navigate to matching answers with visible selection',()=>{
+ click('#page-docs');assert.equal(q('.faq-nav').querySelectorAll('[data-faq]').length,7);assert.equal(q('.faq-body').querySelectorAll('article').length,7);
  let scrolled='';for(const article of document.querySelectorAll('.faq-section'))article.scrollIntoView=function(){scrolled=this.id};
  for(const link of document.querySelectorAll('[data-faq]')){assert.ok(q('#'+link.dataset.faq+' h2'));link.click();assert.equal(scrolled,link.dataset.faq);assert.equal(link.getAttribute('aria-current'),'true');assert.equal(q('.faq-nav').querySelectorAll('[aria-current=true]').length,1);}
  click('#page-demo');

@@ -6,6 +6,10 @@
 <title>AI 开发工具链 · 陈列馆</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23ffffff'/%3E%3Cpath d='M17 40V24h8c4 0 7 3 7 8s-3 8-7 8h-8Zm20 0V24h10v4h-6v3h5v4h-5v5h-4Z' fill='%230f172a'/%3E%3Cpath d='M14 18h20l-5 7H14z' fill='%23e5484d'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="catalog/catalog.css">
+<link rel="stylesheet" href="catalog/site-header.css">
+<link rel="stylesheet" href="vendor/msds/themes/tokens.css">
+<link rel="stylesheet" href="vendor/msds/themes/chase.css">
+<link rel="stylesheet" href="vendor/msds/components/underline-tabs/styles.css">
 <link rel="stylesheet" href="catalog/avatar/symbol-theatre.css?v=20261123-rig3">
 </head>
 <body>
@@ -32,13 +36,19 @@
   </defs>
 </svg>
 <div class="cann-app">
+  <!-- Shared site header: start -->
   <header class="cann-topbar">
     <div class="cann-primary">
       <div class="cann-brand">
         <strong class="cann-name">AI 开发工具链</strong>
       </div>
-
+      <nav class="msds-underline-tabs" aria-label="站点导航" data-ms-theme="chase">
+        <a class="msds-underline-tabs__tab" href="catalog.html" aria-current="page">业务案例</a>
+        <a class="msds-underline-tabs__tab" href="https://lovebearanddonkey.github.io/MS-Tools-DesignSystem/">设计系统</a>
+        <a class="msds-underline-tabs__tab" href="https://lovebearanddonkey.github.io/MS-Tools-DesignSystem/preview/symbol.html">symbol</a>
+      </nav>
       <div class="cann-actions">
+        <!-- Catalog actions: start -->
         <label class="global-search" aria-label="全局搜索">
           <svg class="svg-icon search-icon" aria-hidden="true"><use href="#icon-search"></use></svg>
           <input id="globalSearch" type="search" placeholder="搜索工具" autocomplete="off">
@@ -70,10 +80,11 @@
             </svg>
           </div>
         </div>
+        <!-- Catalog actions: end -->
       </div>
-
     </div>
   </header>
+  <!-- Shared site header: end -->
 
   <main class="page-shell">
     <section class="catalog-intro" aria-labelledby="catalogTitle">
