@@ -1,6 +1,13 @@
-/* Facial artwork from math-symbols.html, retaining its original SVG coordinates. */
+/* Facial artwork shared by the catalog and mascot lab in the original SVG coordinates. */
 (() => {
-  const part = (key, x, y, art, prop = false, replaces = null) => ({ key, x, y, art, prop, replaces });
+  // The source artwork predates the wider eye rig. Move each side and its attachment together.
+  const eyeShift = (window.CATALOG_AVATAR_CONFIG.rig.eyeSpacing - 40) / 2;
+  const part = (key, x, y, art, prop = false, replaces = null) => {
+    const side = key.startsWith('left') ? -1 : key.startsWith('right') ? 1 : 0;
+    const offset = side * eyeShift;
+    if (offset) art = `<g transform="translate(${offset} 0)">${art}</g>`;
+    return { key, x: x + offset, y, art, prop, replaces };
+  };
   const eye = (x, y, r) => `<circle cx="${x}" cy="${y}" r="${r}"/>`;
   const ink = (x, y, size, text, transform = '') => `<text class="math-ink" x="${x}" y="${y}" font-size="${size}"${transform ? ` transform="${transform}"` : ''}>${text}</text>`;
   const stroke = (d, thin = false) => `<path class="stroke${thin ? ' thin' : ''}" d="${d}"/>`;
@@ -11,7 +18,8 @@
       part('mouth',160,171,stroke('M140 171 Q150 162 160 171 T180 171'))
     ]},
     { symbol: 'sum', caption: '玩命计算，薅尽你的算力', tilt: 0, parts: [
-      part('brows',160,118,stroke('M122 115 L143 121 M178 121 L198 115',true)),
+      part('leftBrow',137,118,stroke('M122 115 L143 121',true)),
+      part('rightBrow',183,118,stroke('M178 121 L198 115',true)),
       part('leftEye',137,137,ink(137,152,40,'∑'),true,'leftEye'),
       part('rightEye',183,137,ink(183,152,40,'∑','translate(366 0) scale(-1 1)'),true,'rightEye'),
       part('mouth',160,178,stroke('M149 178 L171 178'))

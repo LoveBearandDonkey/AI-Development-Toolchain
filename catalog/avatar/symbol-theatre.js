@@ -9,6 +9,8 @@
   const NS = 'http://www.w3.org/2000/svg';
   const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
   const mix = (a, b, t) => a + (b - a) * t;
+  const rgb = hex => hex.match(/[\da-f]{2}/gi).map(value => parseInt(value, 16));
+  const faceRgb = rgb(avatar.config.material.face);
   const radians = n => n * Math.PI / 180;
   const point = (x, y) => ({ x, y });
   const transitionLines = window.CATALOG_TRANSITION_LINES;
@@ -43,10 +45,10 @@
       avatar.root.setAttribute('aria-label', '在分类间翻找数学符号、变换表情的时间线方块吉祥物');
       this.avatarLink = document.createElement('a');
       this.avatarLink.className = 'theatre-avatar-link';
-      this.avatarLink.href = 'math-symbols.html';
+      this.avatarLink.href = 'experiments/rounded-block/mascot-lab.html';
       this.avatarLink.target = '_blank';
       this.avatarLink.rel = 'noreferrer';
-      this.avatarLink.setAttribute('aria-label', '小算子的数学符号表情，在新标签页打开');
+      this.avatarLink.setAttribute('aria-label', '小算子实验室，在新标签页打开');
       this.avatarLink.append(avatar.root);
       this.root.prepend(this.avatarLink);
       this.speech = document.createElement('p');
@@ -90,7 +92,7 @@
           const artwork = `<g class="avatar-reference-ink" transform="translate(${-part.x} ${-part.y})">${part.art}</g>`;
           element.innerHTML = `<svg viewBox="-28 -28 56 56"><g data-glyph-ink><g class="theatre-glyph-edge" transform="translate(1.6 2.2)">${artwork}</g>${artwork}</g></svg>`;
           this.layers.back.append(element);
-          const glyph = { kind, color, rgb: color.match(/\w\w/g).map(v => parseInt(v, 16)), element, part, ink: element.querySelector('[data-glyph-ink]'),
+          const glyph = { kind, color, rgb: rgb(color), element, part, ink: element.querySelector('[data-glyph-ink]'),
             rx, ry, rz, owner: 'pile', nudge: spring(), index, mix: 0, front: false,
             pileScale: { partial: 1.35, exp: .8 }[kind] || .95 };
           episode.props.push(glyph); this.glyphs.push(glyph);
@@ -102,11 +104,10 @@
       this.visible = true;
       this.elapsed = 0;
       this.tick = this.tick.bind(this);
-      this.measure = this.measure.bind(this);
       this.refresh = this.refresh.bind(this);
       const options = { signal: this.events.signal };
       document.addEventListener('visibilitychange', this.refresh, options);
-      this.media.addEventListener('change', () => { this.measure(); }, options);
+      this.media.addEventListener('change', () => { this.measure(true); }, options);
       this.observer = new IntersectionObserver(([entry]) => {
         this.visible = entry.isIntersecting; this.refresh();
       });
@@ -119,31 +120,48 @@
     }
 
     queueMeasure() {
-      cancelAnimationFrame(this.measureFrame);
-      this.measureFrame = requestAnimationFrame(this.measure);
+      this.measureFrame ??= requestAnimationFrame(() => {
+        this.measureFrame = undefined;
+        this.measure();
+      });
     }
 
-    measure() {
+    measure(reset = false) {
       if (this.destroyed) return;
+      const { width } = this.root.getBoundingClientRect();
+      const layout = [...list.querySelectorAll('button')].map(element => ({
+        element,
+        // Offset metrics ignore entry, hover and pressure transforms.
+        x: list.offsetLeft + element.offsetLeft,
+        y: list.offsetTop + element.offsetTop,
+        width: element.offsetWidth,
+        height: element.offsetHeight,
+      }));
+      if (layout.length !== 5 || !width) return;
+
+      const sameLayout = this.timeline && this.width === width && layout.every((button, index) => {
+        const previous = this.buttons[index];
+        return previous.x === button.x && previous.y === button.y
+          && previous.width === button.width && previous.height === button.height
+          && previous.element.dataset.category === button.element.dataset.category;
+      });
+      if (!reset && sameLayout) {
+        // Keep the running choreography when the filters replace identical buttons.
+        layout.forEach(({ element }, index) => { this.buttons[index].element = element; });
+        return;
+      }
+
       this.timeline?.kill();
       this.buttons?.forEach(({ element }) => {
         for (const p of ['--nudge-x', '--nudge-y', '--nudge-r']) element.style.removeProperty(p);
       });
-      const rect = this.root.getBoundingClientRect();
-      this.width = rect.width;
-      this.height = rect.height;
+      this.width = width;
       this.unit = Math.min(1, this.width / 560);
       this.scale = .74 * this.unit;
       this.avatarLink.style.width = `${320 * this.scale}px`;
       this.avatarLink.style.height = `${300 * this.scale}px`;
       this.avatarLink.style.transformOrigin = `${160 * this.scale}px ${145 * this.scale}px`;
-      this.buttons = [...list.querySelectorAll('button')].map(element => {
-        // offset metrics are unaffected by the entry/hover/pressure transforms.
-        const x = list.offsetLeft + element.offsetLeft;
-        const y = list.offsetTop + element.offsetTop;
-        return { element, x, y, width: element.offsetWidth, height: element.offsetHeight, spring: spring() };
-      });
-      if (this.buttons.length !== 5 || !this.width) return;
+      this.buttons = layout.map(button => ({ ...button, spring: spring() }));
       const row1 = this.buttons[0];
       const row2 = this.buttons.find(b => b.y > row1.y + 20) || this.buttons[3];
       const topRow = this.buttons.filter(b => Math.abs(b.y - row1.y) < 10);
@@ -263,6 +281,8 @@
 
     createTimeline() {
       const tl = gsap.timeline({ paused: true, repeat: -1, repeatRefresh: true, defaults: { ease: 'power2.inOut' } });
+      const { headTurn } = avatar.config;
+      const wearAt = 3.3;
       let start = 0;
       this.episodes.forEach(episode => {
         const props = episode.props, g = props[0];
@@ -323,20 +343,22 @@
           props.forEach(prop => { prop.owner='face'; prop.mix=1; this.setDepth(prop,false); });
           this.phase('wear'); avatar.setState('idle');
           avatar.startColorSweep();
-        },[],s+3.3);
+        },[],s+wearAt);
         tl.to(this.left,{x:this.home.x-100,y:144,front:0,duration:.55},s+3.4);
         tl.to(this.right,{x:this.home.x+100,y:144,front:0,duration:.55},s+3.4);
         tl.addLabel(episode.symbol + ':pose',s+3.9);
         tl.call(() => this.phase('pose'),[],s+3.95);
         tl.to(this.actor,{rotation:episode.tilt,y:this.home.y-13,gazeX:-.15,duration:.6,ease:'back.out(1.5)'},s+3.9);
-        // Show both directions explicitly; idle turns must not cancel this beat.
-        tl.to(this.actor,{headYaw:-avatar.config.depth.idleYaw,headPitch:-avatar.config.depth.idlePitch,turnWeight:1,duration:.55,ease:'sine.inOut'},s+3.9);
+        headTurn.steps.forEach(({ start, duration, direction }, index) => {
+          const turn = { headYaw: headTurn.yaw * direction, headPitch: headTurn.pitch * direction,
+            duration, ease: headTurn.ease };
+          if (index === 0) turn.turnWeight = 1;
+          tl.to(this.actor, turn, s + wearAt + start);
+        });
         tl.to(supportHand,{x:this.home.x-sign*107,y:112,duration:.5},s+4.05);
         tl.to(this.actor,{rotation:-episode.tilt*.4,gazeX:.2,duration:.65},s+4.7);
-        tl.to(this.actor,{headYaw:avatar.config.depth.idleYaw,headPitch:avatar.config.depth.idlePitch,duration:.65,ease:'sine.inOut'},s+4.7);
         tl.to(this.actor,{rotation:episode.tilt*.55,gazeX:0,duration:.55},s+5.5);
-        tl.to(this.actor,{headYaw:0,headPitch:0,duration:.55,ease:'sine.inOut'},s+5.5);
-        tl.to(this.actor,{turnWeight:0,duration:.45,ease:'sine.inOut'},s+6.15);
+        tl.to(this.actor, { turnWeight: 0, duration: headTurn.release.duration, ease: headTurn.ease }, s + wearAt + headTurn.release.start);
         tl.call(() => { this.phase('remove'); this.startReach(); },[],s+6.15);
         tl.to(this.path,{progress:1,duration:.65},s+6.15);
         tl.call(() => {
@@ -472,7 +494,7 @@
           front = p < .72;
         }
         this.setDepth(g, front);
-        const color = g.rgb.map((c, i) => Math.round(mix(c, [23, 43, 88][i], shade)));
+        const color = g.rgb.map((c, i) => Math.round(mix(c, faceRgb[i], shade)));
         g.element.style.color = `rgb(${color.join(',')})`;
         g.element.style.transform = `translate(${x - 28}px, ${y - 28}px) perspective(650px) rotateZ(${rz}deg) skewX(${skewX}deg) rotateY(${ry}deg) rotateX(${rx}deg) scale(${sx}, ${sy})`;
         g.element.style.opacity = g.owner === 'pile' ? '.84' : '1';
@@ -507,7 +529,7 @@
       avatar.setReferenceFace(null); avatar.setSceneGaze();
       avatar.setSceneTurn();
       avatar.blinkSuppressed = false;
-      avatar.setScenePaused(false);
+      avatar.setScenePaused();
       avatar.setState('idle'); avatar.resumeExpressions();
     }
   }

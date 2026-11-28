@@ -1,11 +1,124 @@
-<!DOCTYPE html>
-<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>计算符号 · 表情实验室</title><style>
-:root{color-scheme:dark;color:#f0eef4;background:#0a0a0c;font-family:"Segoe UI","Microsoft YaHei",sans-serif}
-*{box-sizing:border-box}body{margin:0}main{max-width:1200px;margin:0 auto;padding:56px 32px 80px}.eyebrow{margin:0 0 20px;color:#b9a6da;font:13px Consolas,monospace;letter-spacing:.08em}h1{margin:0 0 20px;font-size:clamp(30px,4vw,48px);font-weight:500;letter-spacing:-.04em}.intro{max-width:780px;margin:0;color:#aaa8b0;font-size:16px;line-height:1.9}.interaction-hint{margin:16px 0 0;color:#8e8a98;font-size:14px}header{margin-bottom:36px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}article{min-width:0;padding:26px 28px;background:#151518;border-radius:20px;box-shadow:inset 0 0 0 1px #ffffff0c}.heading{display:flex;justify-content:space-between;align-items:center;gap:16px}h2{margin:0;font-size:20px;font-weight:500}.symbol-key{color:#ccb6ef;font:32px "Cambria Math",math}.face-toggle{display:flex;align-items:center;flex-direction:column;width:100%;border:0;background:transparent;padding:0;margin:0 0 26px;color:inherit;font:inherit;cursor:pointer;border-radius:12px}.face-toggle:focus-visible{outline:2px solid #cbb2f4;outline-offset:4px}.face-toggle svg{display:block;width:min(100%,290px);height:auto}.face-features{fill:#172b58;color:#172b58}.stroke{fill:none;stroke:currentColor;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}.stroke.thin{stroke-width:4.5}.math-ink{font-family:"Cambria Math","STIX Two Math",math;text-anchor:middle;fill:currentColor;font-weight:400}.plain-feature{display:none}.face-toggle[aria-pressed=false] .plain-feature{display:inline}.face-toggle[aria-pressed=false] .math-feature{display:none}.mode-label{margin-top:-6px;color:#a8a0b7;font-size:12px}.concept-meta{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}.placement{color:#decef4;font-size:14px}.tier{font-size:12px;color:#96929d}.tier.recommended{color:#9acbb1}.design-note{margin:16px 0 10px;color:#c5c2cb;font-size:15px;line-height:1.9}.scenario{margin:0;color:#99949f;font-size:13px;line-height:1.9}details{margin-top:22px}summary{cursor:pointer;color:#a499b5;font-size:13px}summary:focus-visible{outline:2px solid #cbb2f4;outline-offset:4px}.formula{display:flex;justify-content:center;align-items:center;min-height:100px;overflow-x:auto;padding:18px 0}math{font-family:"Cambria Math","STIX Two Math",math;font-size:23px;flex:0 0 auto}.formula-note{color:#99949f;font-size:13px;line-height:1.8}code{color:#ccbae8;font-family:Consolas,monospace}footer{margin-top:28px;max-width:900px;color:#aaa5b2;font-size:14px;line-height:1.9}@media(max-width:720px){main{padding:36px 20px 48px}.grid{grid-template-columns:1fr;gap:16px}article{padding:24px}.face-toggle svg{width:260px}math{font-size:20px}}@media print{:root{color-scheme:light;background:white;color:#111}article{break-inside:avoid;background:#f4f4f4;box-shadow:none}.heading h2,.design-note,.intro,.scenario,footer{color:#333}.mode-label{display:none}summary{color:#555}}
-.bubble-caption{margin:0 0 18px;padding:11px 14px;border-radius:10px;background:#192331;color:#d7e4fc;font-size:15px;line-height:1.7}.bubble-label{display:block;margin-bottom:3px;color:#8ea8cc;font-size:12px}.interlude-record{margin-top:28px;padding:26px 28px;border-radius:20px;background:#151518}.interlude-record h2{font-size:22px}.interlude-record p{color:#aaa5b2;font-size:14px;line-height:1.8}.interlude-record ul{margin:18px 0 0;padding-left:22px;color:#d7e4fc;font-size:16px;line-height:1.9}.interlude-record li+li{margin-top:8px}
-</style></head>
-<body><main><header><p class="eyebrow">MATH SYMBOLS / EXPRESSION STUDIES</p><h1>让计算符号成为表情</h1><p class="intro">把眼睛、嘴巴和眉毛变成计算符号。在会变色、变宽的算子时间段上比较 10 种情绪。</p><p class="interaction-hint">点选头像，对比普通表情与符号表情。原始公式保留在每张卡片的折叠区。</p></header><section class="grid" aria-label="十种计算符号表情示意"><article data-concept="1">
-  <div class="heading"><h2>算晕了</h2><span class="symbol-key">×</span></div>
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>小算子实验室</title>
+  <script>
+    (() => {
+      const key = 'mascot-lab-theme';
+      const page = document.documentElement;
+      try {
+        const saved = localStorage.getItem(key);
+        if (saved === 'light' || saved === 'dark') page.dataset.theme = saved;
+      } catch {
+        // The theme can still be switched when storage is unavailable.
+      }
+      document.addEventListener('DOMContentLoaded', () => {
+        const buttons = [...document.querySelectorAll('[data-theme-option]')];
+        const select = theme => {
+          page.dataset.theme = theme;
+          buttons.forEach(button => button.setAttribute('aria-pressed', button.dataset.themeOption === theme));
+        };
+        select(page.dataset.theme);
+        buttons.forEach(button => button.addEventListener('click', () => {
+          const theme = button.dataset.themeOption;
+          select(theme);
+          try {
+            localStorage.setItem(key, theme);
+          } catch {
+            // Storage does not affect the current theme.
+          }
+        }));
+      });
+    })();
+  </script>
+  <link rel="stylesheet" href="../../catalog/avatar/expression-gallery.css?v=20261128-black-face">
+  <link rel="stylesheet" href="rounded-block.css">
+  <link rel="stylesheet" href="mascot-lab.css">
+</head>
+<body>
+  <main>
+    <section aria-labelledby="block-controls-title">
+      <header class="lab-header">
+        <a class="lab-back" href="https://lovebearanddonkey.github.io/AI-Development-Toolchain/catalog.html" aria-label="返回陈列馆">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5m7-7-7 7 7 7"/>
+          </svg>
+        </a>
+        <h1 id="block-controls-title">圆角方块控制器</h1>
+        <div class="lab-actions">
+          <button class="lab-reset" id="reset" type="button">恢复默认</button>
+          <div class="lab-themes" role="group" aria-label="页面主题">
+            <button type="button" data-theme-option="light" aria-pressed="false">浅色</button>
+            <button type="button" data-theme-option="dark" aria-pressed="true">深色</button>
+          </div>
+        </div>
+      </header>
+      <div class="rounded-block-editor">
+        <div class="block-preview">
+          <div class="palette-panel">
+            <fieldset>
+              <legend>配色</legend>
+              <div class="presets" id="presets">
+                <button class="preset" data-palette="violet" style="--swatch: #aeb0fa" aria-pressed="false" type="button">雾紫</button>
+                <button class="preset" data-palette="cyan" style="--swatch: #79dbda" aria-pressed="false" type="button">青绿</button>
+                <button class="preset" data-palette="lime" style="--swatch: #bce891" aria-pressed="false" type="button">嫩绿蜜桃</button>
+                <button class="preset" data-palette="amber" style="--swatch: #fab95f" aria-pressed="false" type="button">暖橙</button>
+                <button class="preset" data-palette="ice" style="--swatch: #6ca9ee" aria-pressed="false" type="button">冷蓝</button>
+                <button class="preset" data-palette="mint" style="--swatch: #78d48d" aria-pressed="false" type="button">薄荷</button>
+                <button class="preset" data-palette="rose" style="--swatch: #ee92b0" aria-pressed="false" type="button">雾粉</button>
+                <button class="preset" data-palette="copper" style="--swatch: #bf9173" aria-pressed="false" type="button">暖铜</button>
+                <div class="mix-preset">
+                  <button class="preset" data-palette="mixed" style="--swatch: linear-gradient(120deg, #6ca9ee, #78d48d, #ee92b0)" aria-controls="mix-options" aria-pressed="false" type="button">随机色</button>
+                  <button class="reroll-mix" id="reroll-mix" type="button" aria-label="重新随机" title="重新随机" hidden>⟳</button>
+                </div>
+                <button class="preset" data-palette="dynamic" style="--swatch: conic-gradient(#ee92b0, #fab95f, #78d48d, #6ca9ee, #ee92b0)" aria-pressed="true" type="button">动态</button>
+              </div>
+              <div class="mix-options" id="mix-options" hidden>
+                <span class="visually-hidden" id="mix-hint">颜色从近端到远端排列。</span>
+                <div class="mix-colors" id="mix-colors" role="group" aria-label="混色颜色" aria-describedby="mix-hint"></div>
+              </div>
+            </fieldset>
+          </div>
+          <figure>
+            <div class="stage"><canvas id="preview" width="720" height="450" aria-label="圆角长方体预览">浏览器需要支持 Canvas 才能显示图形。</canvas></div>
+            <figcaption>
+              <span id="render-status" role="status">PNG · 1440 × 900 · 透明底</span>
+              <button id="download" type="button">下载 PNG</button>
+            </figcaption>
+          </figure>
+        </div>
+        <aside aria-label="绘制参数">
+          <fieldset>
+            <legend>形体与材质</legend>
+            <div class="pose-control" role="group" aria-labelledby="pose-label">
+              <span id="pose-label">姿态</span>
+              <div class="pose-switch">
+                <label><input name="pose" type="radio" value="long" checked><span>长</span></label>
+                <label><input name="pose" type="radio" value="high"><span>高</span></label>
+              </div>
+            </div>
+            <div class="control"><label for="length">长度</label><output for="length"></output><input id="length" type="range" min="1" max="5" step="0.01" value="1.54" data-precision="2"></div>
+            <div class="control"><label for="width">宽度</label><output for="width"></output><input id="width" type="range" min="1" max="5" step="0.01" value="1.50" data-precision="2"></div>
+            <div class="control"><label for="height">厚度</label><output for="height"></output><input id="height" type="range" min="1" max="2" step="0.02" value="1.54" data-precision="2"></div>
+            <div class="control"><label for="rounding">圆角</label><output for="rounding"></output><input id="rounding" type="range" min="0.16" max="0.95" step="0.01" value="0.40" data-unit="%"></div>
+            <div class="control"><label for="yaw">水平转角</label><output for="yaw"></output><input id="yaw" type="range" min="-60" max="60" step="0.1" value="10.3" data-unit="°" data-precision="1"></div>
+            <div class="control"><label for="pitch">俯仰转角</label><output for="pitch"></output><input id="pitch" type="range" min="-60" max="60" step="0.1" value="16.0" data-unit="°" data-precision="1"></div>
+            <div class="control"><label for="softness">色域扩散</label><output for="softness"></output><input id="softness" type="range" min="0" max="1" step="0.01" value="0.50" data-unit="%"></div>
+            <div class="control"><label for="rim">轮廓着色强度</label><output for="rim"></output><input id="rim" type="range" min="0" max="1" step="0.01" value="0.56" data-unit="%"></div>
+            <div class="control"><label for="rimDepth">轮廓着色厚度</label><output for="rimDepth"></output><input id="rimDepth" type="range" min="0" max="64" step="1" value="32" data-unit=" px"></div>
+          </fieldset>
+        </aside>
+      </div>
+    </section>
+    <section class="expression-section" aria-labelledby="expression-gallery-title">
+      <header>
+        <h2 id="expression-gallery-title">表情陈列</h2>
+        <p class="interaction-hint">点选头像，对比普通表情和符号表情。</p>
+      </header>
+<section class="grid" aria-label="十种计算符号表情示意"><article data-concept="1">
+  <div class="heading"><h3>算晕了</h3><span class="symbol-key">×</span></div>
   <button class="face-toggle" type="button" aria-pressed="true" aria-label="算晕了：× 融入双眼，点击查看普通表情">
     <svg viewBox="0 0 320 300" aria-hidden="true">
       <defs><radialGradient id="face-shadow-0"><stop stop-color="#7598f4" stop-opacity=".2"/><stop offset="1" stop-color="#7598f4" stop-opacity="0"/></radialGradient></defs>
@@ -13,8 +126,8 @@
       <g transform="rotate(-6 160 145)">
         <g data-timeline-preview-body><rect x="85" y="68" width="150" height="154" rx="21" fill="#aeb0fa"/></g>
         <g data-timeline-preview-face>
-          <g class="plain-feature"><g class="face-features"><path class="stroke" d="M127 133 L147 141 M173 141 L193 133"/><path class="stroke" d="M140 171 Q150 162 160 171 T180 171"/></g></g>
-          <g class="math-feature"><g class="face-features"><text class="math-ink" x="137" y="149" font-size="48">𝑥</text><text class="math-ink" x="183" y="149" font-size="48">𝑥</text><path class="stroke" d="M140 171 Q150 162 160 171 T180 171"/></g></g>
+          <g class="plain-feature"><g class="face-features"><path class="stroke" d="M121 133 L141 141 M179 141 L199 133"/><path class="stroke" d="M140 171 Q150 162 160 171 T180 171"/></g></g>
+          <g class="math-feature"><g class="face-features"><text class="math-ink" x="131" y="149" font-size="48">𝑥</text><text class="math-ink" x="189" y="149" font-size="48">𝑥</text><path class="stroke" d="M140 171 Q150 162 160 171 T180 171"/></g></g>
         </g>
       </g>
     </svg>
@@ -27,7 +140,7 @@
   <details><summary>符号原义与公式</summary><div class="formula"><math display="block" aria-label="Y 等于 X 乘 W 加 b"><mi mathvariant="bold">Y</mi><mo>=</mo><mi mathvariant="bold">X</mi><mi mathvariant="bold">W</mi><mo>+</mo><mi mathvariant="bold">b</mi></math></div><p class="formula-note">线性层的典型表达；代码中常写作 <code>X @ W + b</code>。</p></details>
 </article>
 <article data-concept="2">
-  <div class="heading"><h2>努力计算</h2><span class="symbol-key">∑</span></div>
+  <div class="heading"><h3>努力计算</h3><span class="symbol-key">∑</span></div>
   <button class="face-toggle" type="button" aria-pressed="true" aria-label="努力计算：∑ 融入紧眯的双眼，点击查看普通表情">
     <svg viewBox="0 0 320 300" aria-hidden="true">
       <defs><radialGradient id="face-shadow-1"><stop stop-color="#7598f4" stop-opacity=".2"/><stop offset="1" stop-color="#7598f4" stop-opacity="0"/></radialGradient></defs>
@@ -35,8 +148,8 @@
       <g transform="rotate(0 160 145)">
         <g data-timeline-preview-body><rect x="85" y="68" width="150" height="154" rx="21" fill="#aeb0fa"/></g>
         <g data-timeline-preview-face>
-          <g class="plain-feature"><g class="face-features"><path class="stroke" d="M127 131 L143 140 L127 149 M193 131 L177 140 L193 149 M149 178 L171 178"/></g></g>
-          <g class="math-feature"><g class="face-features"><path class="stroke thin" d="M122 115 L143 121 M178 121 L198 115"/><text class="math-ink" x="137" y="152" font-size="40" >∑</text><text class="math-ink" x="183" y="152" font-size="40" transform="translate(366 0) scale(-1 1)">∑</text><path class="stroke" d="M149 178 L171 178"/></g></g>
+          <g class="plain-feature"><g class="face-features"><path class="stroke" d="M121 131 L137 140 L121 149 M199 131 L183 140 L199 149 M149 178 L171 178"/></g></g>
+          <g class="math-feature"><g class="face-features"><path class="stroke thin" d="M116 115 L137 121 M184 121 L204 115"/><text class="math-ink" x="131" y="152" font-size="40" >∑</text><text class="math-ink" x="189" y="152" font-size="40" transform="translate(378 0) scale(-1 1)">∑</text><path class="stroke" d="M149 178 L171 178"/></g></g>
         </g>
       </g>
     </svg>
@@ -49,7 +162,7 @@
   <details><summary>符号原义与公式</summary><div class="formula"><math display="block" aria-label="y 等于从 i 等于 1 到 n 的 x i 之和"><mi>y</mi><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>x</mi><mi>i</mi></msub></math></div><p class="formula-note">用于点积、损失聚合与 ReduceSum。</p></details>
 </article>
 <article data-concept="3">
-  <div class="heading"><h2>灵光一现</h2><span class="symbol-key">⊙</span></div>
+  <div class="heading"><h3>灵光一现</h3><span class="symbol-key">⊙</span></div>
   <button class="face-toggle" type="button" aria-pressed="true" aria-label="灵光一现：⊙ 融入圆眼与瞳孔，点击查看普通表情">
     <svg viewBox="0 0 320 300" aria-hidden="true">
       <defs><radialGradient id="face-shadow-2"><stop stop-color="#7598f4" stop-opacity=".2"/><stop offset="1" stop-color="#7598f4" stop-opacity="0"/></radialGradient></defs>
@@ -57,8 +170,8 @@
       <g transform="rotate(3 160 145)">
         <g data-timeline-preview-body><rect x="85" y="68" width="150" height="154" rx="21" fill="#aeb0fa"/></g>
         <g data-timeline-preview-face>
-          <g class="plain-feature"><g class="face-features"><circle cx="137" cy="138" r="15"/><circle cx="183" cy="138" r="15"/><ellipse cx="160" cy="178" rx="8" ry="11"/></g></g>
-          <g class="math-feature"><g class="face-features"><text class="math-ink" x="137" y="154" font-size="52" >⊙</text><text class="math-ink" x="183" y="154" font-size="52" >⊙</text><ellipse cx="160" cy="178" rx="8" ry="11"/></g></g>
+          <g class="plain-feature"><g class="face-features"><circle cx="131" cy="138" r="15"/><circle cx="189" cy="138" r="15"/><ellipse cx="160" cy="178" rx="8" ry="11"/></g></g>
+          <g class="math-feature"><g class="face-features"><text class="math-ink" x="131" y="154" font-size="52" >⊙</text><text class="math-ink" x="189" y="154" font-size="52" >⊙</text><ellipse cx="160" cy="178" rx="8" ry="11"/></g></g>
         </g>
       </g>
     </svg>
@@ -71,7 +184,7 @@
   <details><summary>符号原义与公式</summary><div class="formula"><math display="block" aria-label="C 等于 A 与 B 的逐元素乘积"><mi mathvariant="bold">C</mi><mo>=</mo><mi mathvariant="bold">A</mi><mo>⊙</mo><mi mathvariant="bold">B</mi></math></div><p class="formula-note">用于门控、掩码与特征缩放。与张量积符号 ⊗ 区分。</p></details>
 </article>
 <article data-concept="4">
-  <div class="heading"><h2>开心大笑</h2><span class="symbol-key">∇</span></div>
+  <div class="heading"><h3>开心大笑</h3><span class="symbol-key">∇</span></div>
   <button class="face-toggle" type="button" aria-pressed="true" aria-label="开心大笑：∇ 融入张开的嘴巴，点击查看普通表情">
     <svg viewBox="0 0 320 300" aria-hidden="true">
       <defs><radialGradient id="face-shadow-3"><stop stop-color="#7598f4" stop-opacity=".2"/><stop offset="1" stop-color="#7598f4" stop-opacity="0"/></radialGradient></defs>
@@ -79,8 +192,8 @@
       <g transform="rotate(-5 160 145)">
         <g data-timeline-preview-body><rect x="85" y="68" width="150" height="154" rx="21" fill="#aeb0fa"/></g>
         <g data-timeline-preview-face>
-          <g class="plain-feature"><g class="face-features"><path class="stroke" d="M125 140 Q137 125 149 140 M171 140 Q183 125 195 140"/><path d="M140 163 A20.0263 20.0263 0 0 0 180 163 Z"/></g></g>
-          <g class="math-feature"><g class="face-features"><path class="stroke" d="M125 140 Q137 125 149 140 M171 140 Q183 125 195 140"/><text class="math-ink" x="160" y="195" font-size="49" >∇</text></g></g>
+          <g class="plain-feature"><g class="face-features"><path class="stroke" d="M119 140 Q131 125 143 140 M177 140 Q189 125 201 140"/><path d="M140 163 A20.0263 20.0263 0 0 0 180 163 Z"/></g></g>
+          <g class="math-feature"><g class="face-features"><path class="stroke" d="M119 140 Q131 125 143 140 M177 140 Q189 125 201 140"/><text class="math-ink" x="160" y="195" font-size="49" >∇</text></g></g>
         </g>
       </g>
     </svg>
@@ -93,7 +206,7 @@
   <details><summary>符号原义与公式</summary><div class="formula"><math display="block" aria-label="下一步参数等于当前参数减去学习率乘损失梯度"><msub><mi>θ</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>θ</mi><mi>t</mi></msub><mo>−</mo><mi>η</mi><msub><mo>∇</mo><mi>θ</mi></msub><mrow><mi mathvariant="script">L</mi><mo>(</mo><msub><mi>θ</mi><mi>t</mi></msub><mo>)</mo></mrow></math></div><p class="formula-note">梯度下降更新；η 表示学习率。</p></details>
 </article>
 <article data-concept="5">
-  <div class="heading"><h2>好奇探头</h2><span class="symbol-key">∂</span></div>
+  <div class="heading"><h3>好奇探头</h3><span class="symbol-key">∂</span></div>
   <button class="face-toggle" type="button" aria-pressed="true" aria-label="好奇探头：∂ 融入卷起的单侧眉梢，点击查看普通表情">
     <svg viewBox="0 0 320 300" aria-hidden="true">
       <defs><radialGradient id="face-shadow-4"><stop stop-color="#7598f4" stop-opacity=".2"/><stop offset="1" stop-color="#7598f4" stop-opacity="0"/></radialGradient></defs>
@@ -101,8 +214,8 @@
       <g transform="rotate(9 160 145)">
         <g data-timeline-preview-body><rect x="85" y="68" width="150" height="154" rx="21" fill="#aeb0fa"/></g>
         <g data-timeline-preview-face>
-          <g class="plain-feature"><g class="face-features"><path class="stroke thin" d="M126 117 Q137 112 147 119 M174 113 Q184 99 197 109"/><circle cx="137" cy="137" r="9"/><circle cx="183" cy="137" r="9"/><path class="stroke" d="M146 173 A25.28125 25.28125 0 0 0 173 169"/></g></g>
-          <g class="math-feature"><g class="face-features"><path class="stroke thin" d="M126 117 Q137 112 147 119"/><text class="math-ink" x="185" y="116" font-size="39" transform="translate(0 55) scale(1 .5)">∂</text><circle cx="137" cy="137" r="9"/><circle cx="183" cy="137" r="9"/><path class="stroke" d="M146 173 A25.28125 25.28125 0 0 0 173 169"/></g></g>
+          <g class="plain-feature"><g class="face-features"><path class="stroke thin" d="M120 117 Q131 112 141 119 M180 113 Q190 99 203 109"/><circle cx="131" cy="137" r="9"/><circle cx="189" cy="137" r="9"/><path class="stroke" d="M146 173 A25.28125 25.28125 0 0 0 173 169"/></g></g>
+          <g class="math-feature"><g class="face-features"><path class="stroke thin" d="M120 117 Q131 112 141 119"/><text class="math-ink" x="191" y="116" font-size="39" transform="translate(0 55) scale(1 .5)">∂</text><circle cx="131" cy="137" r="9"/><circle cx="189" cy="137" r="9"/><path class="stroke" d="M146 173 A25.28125 25.28125 0 0 0 173 169"/></g></g>
         </g>
       </g>
     </svg>
@@ -115,7 +228,7 @@
   <details><summary>符号原义与公式</summary><div class="formula"><math display="block" aria-label="标量链式法则"><mfrac><mrow><mo>∂</mo><mi mathvariant="script">L</mi></mrow><mrow><mo>∂</mo><mi>x</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mo>∂</mo><mi mathvariant="script">L</mi></mrow><mrow><mo>∂</mo><mi>y</mi></mrow></mfrac><mo>·</mo><mfrac><mrow><mo>∂</mo><mi>y</mi></mrow><mrow><mo>∂</mo><mi>x</mi></mrow></mfrac></math></div><p class="formula-note">标量链式法则，是反向传播与算子求导的基础。</p></details>
 </article>
 <article data-concept="6">
-  <div class="heading"><h2>认真审视</h2><span class="symbol-key">T</span></div>
+  <div class="heading"><h3>认真审视</h3><span class="symbol-key">T</span></div>
   <button class="face-toggle" type="button" aria-pressed="true" aria-label="认真审视：T 融入眉梁与鼻梁，点击查看普通表情">
     <svg viewBox="0 0 320 300" aria-hidden="true">
       <defs><radialGradient id="face-shadow-5"><stop stop-color="#7598f4" stop-opacity=".2"/><stop offset="1" stop-color="#7598f4" stop-opacity="0"/></radialGradient></defs>
@@ -123,8 +236,8 @@
       <g transform="rotate(0 160 145)">
         <g data-timeline-preview-body><rect x="85" y="68" width="150" height="154" rx="21" fill="#aeb0fa"/></g>
         <g data-timeline-preview-face>
-          <g class="plain-feature"><g class="face-features"><path class="stroke thin" d="M123 118 L147 123 M173 123 L197 118 M160 127 L160 146"/><circle cx="137" cy="137" r="9"/><circle cx="183" cy="137" r="9"/><path class="stroke" d="M148 174 L172 174"/></g></g>
-          <g class="math-feature"><g class="face-features"><text class="math-ink" x="160" y="150" font-size="56">T</text><circle cx="137" cy="137" r="9"/><circle cx="183" cy="137" r="9"/><path class="stroke" d="M148 174 L172 174"/></g></g>
+          <g class="plain-feature"><g class="face-features"><path class="stroke thin" d="M117 118 L141 123 M179 123 L203 118 M160 127 L160 146"/><circle cx="131" cy="137" r="9"/><circle cx="189" cy="137" r="9"/><path class="stroke" d="M148 174 L172 174"/></g></g>
+          <g class="math-feature"><g class="face-features"><text class="math-ink" x="160" y="150" font-size="56">T</text><circle cx="131" cy="137" r="9"/><circle cx="189" cy="137" r="9"/><path class="stroke" d="M148 174 L172 174"/></g></g>
         </g>
       </g>
     </svg>
@@ -137,7 +250,7 @@
   <details><summary>符号原义与公式</summary><div class="formula"><math display="block" aria-label="S 等于 Q 乘 K 的转置"><mi mathvariant="bold">S</mi><mo>=</mo><mi mathvariant="bold">Q</mi><msup><mi mathvariant="bold">K</mi><mi mathvariant="normal">T</mi></msup></math></div><p class="formula-note">Attention 的原始打分矩阵；T 位于矩阵符号右上角。</p></details>
 </article>
 <article data-concept="7">
-  <div class="heading"><h2>刚被你的计算要求痛揍了一顿</h2><span class="symbol-key">eˣ</span></div>
+  <div class="heading"><h3>刚被你的计算要求痛揍了一顿</h3><span class="symbol-key">eˣ</span></div>
   <button class="face-toggle" type="button" aria-pressed="true" aria-label="刚被你的计算要求痛揍了一顿：eˣ 融入卷曲眼睛与眉梢，点击查看普通表情">
     <svg viewBox="0 0 320 300" aria-hidden="true">
       <defs><radialGradient id="face-shadow-6"><stop stop-color="#7598f4" stop-opacity=".2"/><stop offset="1" stop-color="#7598f4" stop-opacity="0"/></radialGradient></defs>
@@ -145,8 +258,8 @@
       <g transform="rotate(-4 160 145)">
         <g data-timeline-preview-body><rect x="85" y="68" width="150" height="154" rx="21" fill="#aeb0fa"/></g>
         <g data-timeline-preview-face>
-          <g class="plain-feature"><g class="face-features"><circle cx="137" cy="137" r="9"/><circle cx="183" cy="137" r="9"/><path class="stroke thin" d="M172 113 Q184 103 196 112"/><path class="stroke" d="M142 166 A21.2 21.2 0 0 0 178 166"/></g></g>
-          <g class="math-feature"><g class="face-features"><circle cx="137" cy="138" r="10"/><text class="math-ink" x="181" y="152" font-size="48">e<tspan dx="1" dy="-25" font-size="24">x</tspan></text><path class="stroke" d="M142 166 A21.2 21.2 0 0 0 178 166"/></g></g>
+          <g class="plain-feature"><g class="face-features"><circle cx="131" cy="137" r="9"/><circle cx="189" cy="137" r="9"/><path class="stroke thin" d="M178 113 Q190 103 202 112"/><path class="stroke" d="M142 166 A21.2 21.2 0 0 0 178 166"/></g></g>
+          <g class="math-feature"><g class="face-features"><circle cx="131" cy="138" r="10"/><text class="math-ink" x="187" y="152" font-size="48">e<tspan dx="1" dy="-25" font-size="24">x</tspan></text><path class="stroke" d="M142 166 A21.2 21.2 0 0 0 178 166"/></g></g>
         </g>
       </g>
     </svg>
@@ -159,7 +272,7 @@
   <details><summary>符号原义与公式</summary><div class="formula"><math display="block" aria-label="Softmax 概率等于指数得分除以所有指数得分之和"><msub><mi>p</mi><mi>i</mi></msub><mo>=</mo><mfrac><msup><mi mathvariant="normal">e</mi><msub><mi>z</mi><mi>i</mi></msub></msup><mrow><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msup><mi mathvariant="normal">e</mi><msub><mi>z</mi><mi>j</mi></msub></msup></mrow></mfrac></math></div><p class="formula-note">Softmax 将得分转换为归一化的概率分布。</p></details>
 </article>
 <article data-concept="8">
-  <div class="heading"><h2>有点怀疑</h2><span class="symbol-key">√</span></div>
+  <div class="heading"><h3>有点怀疑</h3><span class="symbol-key">√</span></div>
   <button class="face-toggle" type="button" aria-pressed="true" aria-label="有点怀疑：√ 融入单侧挑起的眉毛，点击查看普通表情">
     <svg viewBox="0 0 320 300" aria-hidden="true">
       <defs><radialGradient id="face-shadow-7"><stop stop-color="#7598f4" stop-opacity=".2"/><stop offset="1" stop-color="#7598f4" stop-opacity="0"/></radialGradient></defs>
@@ -167,8 +280,8 @@
       <g transform="rotate(5 160 145)">
         <g data-timeline-preview-body><rect x="85" y="68" width="150" height="154" rx="21" fill="#aeb0fa"/></g>
         <g data-timeline-preview-face>
-          <g class="plain-feature"><g class="face-features"><path class="stroke thin" d="M123 120 L148 114 M173 113 L196 107"/><circle cx="137" cy="138" r="8"/><circle cx="183" cy="138" r="10"/><path class="stroke" d="M147 174 Q160 169 173 173"/></g></g>
-          <g class="math-feature"><g class="face-features"><path class="stroke thin" d="M123 120 L148 114"/><path class="stroke thin" d="M172 117 L178 124 L185 106 H201"/><circle cx="137" cy="138" r="8"/><circle cx="183" cy="138" r="10"/><path class="stroke" d="M147 174 Q160 169 173 173"/></g></g>
+          <g class="plain-feature"><g class="face-features"><path class="stroke thin" d="M117 120 L142 114 M179 113 L202 107"/><circle cx="131" cy="138" r="8"/><circle cx="189" cy="138" r="10"/><path class="stroke" d="M147 174 Q160 169 173 173"/></g></g>
+          <g class="math-feature"><g class="face-features"><path class="stroke thin" d="M117 120 L142 114"/><path class="stroke thin" d="M178 117 L184 124 L191 106 H207"/><circle cx="131" cy="138" r="8"/><circle cx="189" cy="138" r="10"/><path class="stroke" d="M147 174 Q160 169 173 173"/></g></g>
         </g>
       </g>
     </svg>
@@ -181,7 +294,7 @@
   <details><summary>符号原义与公式</summary><div class="formula"><math display="block" aria-label="归一化后的 x i 等于 x i 减均值，再除以方差加 epsilon 的平方根"><msub><mover><mi>x</mi><mo>^</mo></mover><mi>i</mi></msub><mo>=</mo><mfrac><mrow><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><mi>μ</mi></mrow><msqrt><msup><mi>σ</mi><mn>2</mn></msup><mo>+</mo><mi>ε</mi></msqrt></mfrac></math></div><p class="formula-note">归一化中的标准化步骤；ε 用于数值稳定。</p></details>
 </article>
 <article data-concept="9">
-  <div class="heading"><h2>Free到瞌睡流口水</h2><span class="symbol-key">σ</span></div>
+  <div class="heading"><h3>Free到瞌睡流口水</h3><span class="symbol-key">σ</span></div>
   <button class="face-toggle" type="button" aria-pressed="true" aria-label="Free到瞌睡流口水：σ 融入困倦小嘴与下垂口水，点击查看普通表情">
     <svg viewBox="0 0 320 300" aria-hidden="true">
       <defs><radialGradient id="face-shadow-8"><stop stop-color="#7598f4" stop-opacity=".2"/><stop offset="1" stop-color="#7598f4" stop-opacity="0"/></radialGradient></defs>
@@ -189,8 +302,8 @@
       <g transform="rotate(8 160 145)">
         <g data-timeline-preview-body><rect x="85" y="68" width="150" height="154" rx="21" fill="#aeb0fa"/></g>
         <g data-timeline-preview-face>
-          <g class="plain-feature"><g class="face-features"><path class="stroke" d="M124 137 Q136 147 148 137 M170 137 Q182 147 194 137"/><ellipse cx="164" cy="176" rx="8" ry="10"/></g></g>
-          <g class="math-feature"><g class="face-features"><path class="stroke" d="M124 137 Q136 147 148 137 M170 137 Q182 147 194 137"/><g data-sigma-mouth><text class="math-ink" x="164" y="190" font-size="52" transform="rotate(90 164 174)">σ</text></g></g></g>
+          <g class="plain-feature"><g class="face-features"><path class="stroke" d="M118 137 Q130 147 142 137 M176 137 Q188 147 200 137"/><ellipse cx="164" cy="176" rx="8" ry="10"/></g></g>
+          <g class="math-feature"><g class="face-features"><path class="stroke" d="M118 137 Q130 147 142 137 M176 137 Q188 147 200 137"/><g data-sigma-mouth><text class="math-ink" x="164" y="190" font-size="52" transform="rotate(90 164 174)">σ</text></g></g></g>
         </g>
       </g>
     </svg>
@@ -203,7 +316,7 @@
   <details><summary>符号原义与公式</summary><div class="formula"><math display="block" aria-label="Sigmoid x 等于一除以一加 e 的负 x 次方"><mrow><mi>σ</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mo>=</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><msup><mi mathvariant="normal">e</mi><mrow><mo>−</mo><mi>x</mi></mrow></msup></mrow></mfrac></math></div><p class="formula-note">常用于门控；在归一化公式中，σ 也可表示标准差。</p></details>
 </article>
 <article data-concept="10">
-  <div class="heading"><h2>有一次等一个长条Wait，困到半眯</h2><span class="symbol-key">θ</span></div>
+  <div class="heading"><h3>有一次等一个长条Wait，困到半眯</h3><span class="symbol-key">θ</span></div>
   <button class="face-toggle" type="button" aria-pressed="true" aria-label="有一次等一个长条Wait，困到半眯：θ 融入半闭的双眼，点击查看普通表情">
     <svg viewBox="0 0 320 300" aria-hidden="true">
       <defs><radialGradient id="face-shadow-9"><stop stop-color="#7598f4" stop-opacity=".2"/><stop offset="1" stop-color="#7598f4" stop-opacity="0"/></radialGradient></defs>
@@ -211,8 +324,8 @@
       <g transform="rotate(4 160 145)">
         <g data-timeline-preview-body><rect x="85" y="68" width="150" height="154" rx="21" fill="#aeb0fa"/></g>
         <g data-timeline-preview-face>
-          <g class="plain-feature"><g class="face-features"><path class="stroke" d="M125 138 Q137 146 149 138 M171 138 Q183 146 195 138"/><path class="stroke" d="M150 175 A18.1667 18.1667 0 0 0 170 175"/></g></g>
-          <g class="math-feature"><g class="face-features"><text class="math-ink" x="137" y="153" font-size="48" >θ</text><text class="math-ink" x="183" y="153" font-size="48" >θ</text><path class="stroke" d="M150 175 A18.1667 18.1667 0 0 0 170 175"/></g></g>
+          <g class="plain-feature"><g class="face-features"><path class="stroke" d="M119 138 Q131 146 143 138 M177 138 Q189 146 201 138"/><path class="stroke" d="M150 175 A18.1667 18.1667 0 0 0 170 175"/></g></g>
+          <g class="math-feature"><g class="face-features"><text class="math-ink" x="131" y="153" font-size="48" >θ</text><text class="math-ink" x="189" y="153" font-size="48" >θ</text><path class="stroke" d="M150 175 A18.1667 18.1667 0 0 0 170 175"/></g></g>
         </g>
       </g>
     </svg>
@@ -223,34 +336,35 @@
   <p class="design-note">θ 的椭圆轮廓是眼睛，中间的横画自然成为半垂的眼皮。</p>
   <p class="scenario">适合：待机、长时间等待、低活跃状态。</p>
   <details><summary>符号原义与公式</summary><div class="formula"><math display="block" aria-label="最优参数等于使损失函数最小的参数"><msup><mi>θ</mi><mo>∗</mo></msup><mo>=</mo><munder><mrow><mi mathvariant="normal">arg</mi><mspace width="0.2em"/><mo>min</mo></mrow><mi>θ</mi></munder><mrow><mi mathvariant="script">L</mi><mo>(</mo><mi>θ</mi><mo>)</mo></mrow></math></div><p class="formula-note">θ 表示待学习的参数，θ* 表示优化目标中的最优参数。</p></details>
-</article></section><section class="interlude-record" aria-labelledby="interludeTitle"><h2 id="interludeTitle">衔接段气泡文案</h2><p>每个衔接段随机选一句，整段保持不变；抛回符号后继续低头扫视，寻找下一个符号。</p><ul data-transition-record><li>看了那么久，想打招呼吗？我也叫小算子</li><li>努力学习各种计算中…</li><li>接下来算点啥好呢？</li><li>瞎翻一下，消除现在的尴尬</li><li>随便选一个来装算好了</li></ul></section><footer>建议优先落地 × 算晕、⊙ 惊喜、∇ 大笑、√ 怀疑、θ 困倦和 σ Free到瞌睡流口水。∑、∂、T、eˣ 的字形感较强，可作为低频彩蛋。实际用于小头像时，每次只替换一处或一对五官，保留符号轮廓与清晰的情绪。</footer></main>
-<script src="assets/rounded-block-renderer.js?v=20261128-hidpi"></script>
-<script src="catalog/avatar/avatar-config.js?v=20261128-hidpi"></script>
-<script src="catalog/avatar/timeline-body.js?v=20261128-hidpi"></script>
-<script src="catalog/avatar/math-expressions.js?v=20261128-arc"></script>
-<script src="catalog/avatar/timeline-previews.js?v=20261128-hidpi"></script>
-<script>
-// Share the live catalog dialogue, so later copy edits stay in sync.
-document.querySelectorAll('[data-expression-caption]').forEach((node,index) => {
- const expression=window.CATALOG_MATH_EXPRESSIONS?.[index];
- if(expression) node.textContent=expression.caption;
-});
-if(window.CATALOG_TRANSITION_LINES) {
- const records=window.CATALOG_TRANSITION_LINES.map(text=>{
-  const item=document.createElement('li');item.textContent=text;return item;
- });
- document.querySelector('[data-transition-record]').replaceChildren(...records);
-}
-
-document.querySelectorAll('.face-toggle').forEach(button => {
- button.addEventListener('click', () => {
-  const enabled = button.getAttribute('aria-pressed') !== 'true';
-  button.setAttribute('aria-pressed', String(enabled));
-  button.querySelector('.mode-label').textContent = enabled ? '符号融合' : '普通表情';
-  const card = button.closest('article');
-  const title = card.querySelector('h2').textContent;
-  const placement = card.querySelector('.placement').textContent;
-  button.setAttribute('aria-label', enabled ? title + '：' + placement + '，点击查看普通表情' : title + '：普通表情，点击查看符号融合');
- });
-});
-</script></body></html>
+</article>
+      </section>
+      <section class="motion-record" aria-labelledby="head-turn-title">
+        <h3 id="head-turn-title">摇头参数</h3>
+        <p>以戴上计算符号为 0 秒。左右摆动和回正采用正弦缓入缓出（<code>sine.inOut</code>），时序沿用 <code>119c902</code>。</p>
+        <div class="motion-table-wrap">
+          <table aria-labelledby="head-turn-title">
+            <thead>
+              <tr><th scope="col">动作</th><th scope="col">开始</th><th scope="col">时长</th><th scope="col">水平 / 俯仰目标</th></tr>
+            </thead>
+            <tbody>
+              <tr data-head-turn-step><th scope="row">转向一侧</th><td>0.60 秒</td><td>0.55 秒</td><td>−15° / −10.3°</td></tr>
+              <tr data-head-turn-step><th scope="row">转向另一侧</th><td>1.40 秒</td><td>0.65 秒</td><td>+15° / +10.3°</td></tr>
+              <tr data-head-turn-step><th scope="row">回正</th><td>2.20 秒</td><td>0.55 秒</td><td>0° / 0°</td></tr>
+              <tr data-head-turn-step><th scope="row">恢复自然摆动</th><td>2.85 秒</td><td>0.45 秒</td><td>逐步恢复跟随视线</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section class="interlude-record" aria-labelledby="interludeTitle"><h2 id="interludeTitle">衔接段气泡文案</h2><p>每个衔接段随机选一句，整段保持不变；抛回符号后继续低头扫视，寻找下一个符号。</p><ul data-transition-record><li>看了那么久，想打招呼吗？我也叫小算子</li><li>努力学习各种计算中…</li><li>接下来算点啥好呢？</li><li>瞎翻一下，消除现在的尴尬</li><li>随便选一个来装算好了</li></ul></section>
+      <footer>建议优先落地 × 算晕、⊙ 惊喜、∇ 大笑、√ 怀疑、θ 困倦和 σ Free到瞌睡流口水。∑、∂、T、eˣ 的字形感较强，可作为低频彩蛋。实际用于小头像时，每次只替换一处或一对五官，保留符号轮廓与清晰的情绪。</footer>
+    </section>
+  </main>
+<script src="../../assets/rounded-block-renderer.js?v=20261129-face-shadow"></script>
+<script src="../../catalog/avatar/avatar-config.js?v=20261129-expression"></script>
+<script src="../../catalog/avatar/timeline-body.js?v=20261129-face-shadow"></script>
+<script src="../../catalog/avatar/math-expressions.js?v=20261129-eye-spacing"></script>
+<script src="../../catalog/avatar/timeline-previews.js?v=20261128-turn15"></script>
+<script src="rounded-block.js?v=20261128-preview-zoom"></script>
+<script src="../../catalog/avatar/expression-gallery.js?v=20261128-turn15"></script>
+</body>
+</html>

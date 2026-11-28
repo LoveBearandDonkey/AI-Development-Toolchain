@@ -161,6 +161,7 @@
       this.sceneTurn.weight = Math.max(0, Math.min(1, weight || 0));
     }
 
+    // Leaving the scene restores the standalone avatar's visibility observer.
     setScenePaused(paused) {
       if (this.scenePaused === paused) return;
       this.scenePaused = paused;
@@ -228,9 +229,10 @@
 
     refresh() {
       if (!this.blinkTimeline || this.destroyed) return;
-      const visible = this.visible && !document.hidden;
+      // The stage owns visibility while the avatar is mounted into its animated link.
+      const visible = this.scenePaused === undefined ? this.visible : !this.scenePaused;
       const reduced = this.media.matches;
-      const running = visible && !reduced && !this.scenePaused;
+      const running = visible && !document.hidden && !reduced;
       if (this.running === running && this.reduced === reduced) return;
 
       this.running = running;

@@ -2,6 +2,7 @@
   'use strict';
 
   const config = window.CATALOG_AVATAR_CONFIG;
+  const { headTurn } = config;
   const { TimelineAvatarBody, mountBodyCanvas, mountAvatarArms, setFacePlane, createAvatarFacePart } = window.TimelineAvatarBody;
   const body = new TimelineAvatarBody(config);
   const hands = [-1, 1].map(side => ({ side, x: config.rig.centerX + side * 108, y: config.rig.centerY + 60 }));
@@ -38,17 +39,27 @@
     }
   }
 
+  function headTurnDirection(time) {
+    let direction = 0;
+    for (const step of headTurn.steps) {
+      if (time < step.start) break;
+      const progress = Math.min(1, (time - step.start) / step.duration);
+      const eased = (1 - Math.cos(progress * Math.PI)) / 2;
+      direction += (step.direction - direction) * eased;
+    }
+    return direction;
+  }
+
   function tick(timestamp) {
     lastFrame ??= timestamp;
     const delta = timestamp - lastFrame;
     if (delta >= frameInterval) {
       const step = Math.min(delta, 50);
       lastFrame = timestamp;
-      motionTime += step;
-      const turn = motionTime / (config.depth.turnCycle * 1000) * Math.PI * 2;
+      motionTime += delta;
+      const turn = headTurnDirection(motionTime / 1000 % config.depth.turnCycle);
       body.advance(step);
-      body.render(config.shape.restYaw + Math.sin(turn) * config.depth.idleYaw,
-        config.shape.restPitch + Math.sin(turn * 0.73) * config.depth.idlePitch);
+      body.render(headTurn.yaw * turn, headTurn.pitch * turn);
       paint(visible);
     }
     pendingFrame = requestAnimationFrame(tick);
@@ -68,7 +79,8 @@
     }
   }
 
-  body.render();
+  if (media.matches) body.render();
+  else body.render(0, 0);
   paint(cards.keys());
   const observer = new IntersectionObserver(entries => {
     for (const { target, isIntersecting } of entries) {

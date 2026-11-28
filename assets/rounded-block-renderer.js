@@ -216,8 +216,10 @@
 
   function getBlockGeometry(canvas, settings) {
     const { width, height } = canvas;
+    const { faceShadow } = settings;
     const key = [width, height, settings.pose, settings.length, settings.width, settings.height,
-      settings.rounding, settings.yaw, settings.pitch, settings.pixelSize, settings.maskPadding].join('|');
+      settings.rounding, settings.yaw, settings.pitch, settings.pixelSize, settings.maskPadding, settings.viewZoom,
+      faceShadow?.radiusX, faceShadow?.radiusY, faceShadow?.opacity].join('|');
     const previous = geometryCache.get(canvas);
     if (previous?.key === key) return previous;
 
@@ -227,7 +229,11 @@
       eyeAxis: [eyeX, eyeY, eyeZ], lightAxis: [lightX, lightY, lightZ] } = projection;
     // Keep the ordinary framing until a shape would run into the canvas margins.
     const viewHeight = settings.pose === 'high' ? 6.8 : 4.65;
-    const pixel = settings.pixelSize ?? Math.max(7.25 / width, viewHeight / height, 2 * extentX / (0.94 * width), 2 * extentY / (0.94 * height));
+    const zoom = settings.viewZoom ?? 1;
+    const pixel = settings.pixelSize ?? Math.max(
+      7.25 / (width * zoom), viewHeight / (height * zoom),
+      2 * extentX / (0.94 * width), 2 * extentY / (0.94 * height),
+    );
     const hitDistance = pixel * 0.06;
     const reach = Math.hypot(halfLength, halfHeight, halfDepth) + pixel;
     const maskPadding = settings.maskPadding ?? 0;
@@ -300,11 +306,17 @@
         const diffuse = clamp(lightX * nx + lightY * ny + lightZ * nz, -1, 1);
         const lowerBounce = smoothstep(0.0, 0.93, -y / halfHeight) * smoothstep(0.45, 0.95, v);
         const edgeLight = 0.55 * grazing * smoothstep(-0.22, 0.82, u) + 0.38 * lowerBounce;
+        let shadow = 0;
+        if (faceShadow && nz > 0.55) {
+          // Shade the real front surface under the origin of the raised expression plane.
+          const distanceSquared = (x / faceShadow.radiusX) ** 2 + (y / faceShadow.radiusY) ** 2;
+          shadow = faceShadow.opacity * (1 - clamp(distanceSquared)) ** 2 * smoothstep(0.55, 1, nz);
+        }
         surface.u[point] = u;
         surface.cross[point] = cross;
         surface.cap[point] = 0.43 + 0.57 * smoothstep(0.07, 0.78, Math.abs(nx));
         surface.highlight[point] = 0.07 + 0.18 * smoothstep(-0.55, 0.82, diffuse) + edgeLight;
-        surface.shade[point] = 0.955 + 0.045 * diffuse;
+        surface.shade[point] = (0.955 + 0.045 * diffuse) * (1 - shadow);
         surface.axis[point] = (u + 1) / 2 + 0.05 * cross * (1 - u * u);
         indices[point] = row * width + column;
         alpha[point] = coverage;

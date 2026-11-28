@@ -114,8 +114,8 @@
       this.shape = config.shape;
       this.rig = config.rig;
       this.perspective = config.depth.perspective;
-      const { softness, rim, rimDepth } = config.material;
-      this.material = { softness, rim, rimDepth };
+      const { softness, rim, rimDepth, faceShadow } = config.material;
+      this.material = { softness, rim, rimDepth, faceShadow };
       this.canvas = canvas;
       this.outline = outline;
       this.context = canvas.getContext('2d');

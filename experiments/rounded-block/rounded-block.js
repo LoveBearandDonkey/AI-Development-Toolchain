@@ -1,7 +1,22 @@
 const { palettes, clamp, renderBlock, createSweepCache, getSweepColor, getSweepFrame,
   holdDuration, sweepDuration, shufflePalettes, createPaletteSweep, advancePaletteSweep } = window.RoundedBlock;
+const { shape: avatarShape, material: avatarMaterial } = window.CATALOG_AVATAR_CONFIG;
+const modelScale = 0.01;
+const defaultPalette = 'dynamic';
+const defaultSettings = {
+  length: avatarShape.height * (avatarShape.minWidthRatio + avatarShape.maxWidthRatio) / 2 * modelScale,
+  width: avatarShape.depth * modelScale,
+  height: avatarShape.height * modelScale,
+  rounding: avatarShape.rounding,
+  yaw: avatarShape.restYaw * 180 / Math.PI,
+  pitch: avatarShape.restPitch * 180 / Math.PI,
+  softness: avatarMaterial.softness,
+  rim: avatarMaterial.rim,
+  rimDepth: avatarMaterial.rimDepth,
+};
 
 const preview = document.querySelector('#preview');
+const previewZoom = 1.7;
 const referenceWidth = preview.width;
 const referenceHeight = preview.height;
 const exportWidth = referenceWidth * 2;
@@ -32,7 +47,7 @@ const controls = [...document.querySelectorAll('input[type="range"]')];
 const download = document.querySelector('#download');
 const status = document.querySelector('#render-status');
 const defaultStatus = status.textContent;
-let selectedPalette = 'violet';
+let selectedPalette;
 let selectedMixColors = new Set();
 let mixOrder = [...paletteChoices.keys()];
 let swatchDrag;
@@ -41,6 +56,7 @@ let pendingFrame;
 let playback;
 let displayPixelWidth = referenceWidth;
 let refinementTimer;
+let previewVisible = true;
 
 function readSettings() {
   const settings = {
@@ -68,7 +84,7 @@ function selectPalette(id) {
 }
 
 function queuePreview() {
-  pendingFrame ??= requestAnimationFrame(drawPreview);
+  if (previewVisible) pendingFrame ??= requestAnimationFrame(drawPreview);
 }
 
 function measurePreview() {
@@ -112,7 +128,7 @@ function holdCurrentColor(state) {
 function drawPreview(timestamp) {
   pendingFrame = undefined;
   const resolutionScale = updatePreviewResolution();
-  const settings = readSettings();
+  const settings = { ...readSettings(), viewZoom: previewZoom };
   if (!playback) {
     renderBlock(preview, settings, resolutionScale);
     return;
@@ -283,6 +299,9 @@ rerollMix.addEventListener('click', () => {
 });
 
 for (const control of controls) {
+  const precision = Number(control.dataset.precision ?? (control.dataset.unit === '%' ? 2 : 0));
+  control.defaultValue = defaultSettings[control.id].toFixed(precision);
+  control.value = control.defaultValue;
   control.addEventListener('input', () => {
     clearTimeout(refinementTimer);
     refinementTimer = setTimeout(() => {
@@ -295,7 +314,7 @@ for (const control of controls) {
 for (const pose of poses) pose.addEventListener('change', updatePreview);
 
 document.querySelector('#reset').addEventListener('click', () => {
-  selectPalette('violet');
+  selectPalette(defaultPalette);
   setMixedPalettes([]);
   for (const control of controls) control.value = control.defaultValue;
   for (const pose of poses) pose.checked = pose.defaultChecked;
@@ -338,6 +357,15 @@ download.addEventListener('click', () => {
 });
 
 new ResizeObserver(measurePreview).observe(preview, { box: 'device-pixel-content-box' });
+new IntersectionObserver(([entry]) => {
+  previewVisible = entry.isIntersecting;
+  if (previewVisible) queuePreview();
+  else {
+    cancelAnimationFrame(pendingFrame);
+    pendingFrame = undefined;
+  }
+}).observe(preview);
 window.addEventListener('resize', measurePreview);
 watchPixelRatio();
+selectPalette(defaultPalette);
 updatePreview();

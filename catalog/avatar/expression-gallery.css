@@ -1,0 +1,92 @@
+:root {
+  --lab-scheme: dark;
+  --lab-page: #0a0a0c;
+  --lab-text: #f0eef4;
+  --lab-panel: #151518;
+  --lab-border: #2c2a32;
+  --lab-secondary: #c5c2cb;
+  --lab-muted: #a8a0b7;
+  --lab-accent: #decef4;
+  --lab-focus: #cbb2f4;
+  --lab-recommended: #9acbb1;
+  --lab-caption: #192331;
+  --lab-caption-text: #d7e4fc;
+  --lab-caption-label: #8ea8cc;
+  color-scheme: var(--lab-scheme);
+  color: var(--lab-text);
+  background: var(--lab-page);
+  font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+}
+
+:root[data-theme="light"] {
+  --lab-scheme: light;
+  --lab-page: #fff;
+  --lab-text: #252330;
+  --lab-panel: #fff;
+  --lab-border: #e0dce6;
+  --lab-secondary: #494455;
+  --lab-muted: #615970;
+  --lab-accent: #563a78;
+  --lab-focus: #6b4a95;
+  --lab-recommended: #2b6750;
+  --lab-caption: #ebf1fa;
+  --lab-caption-text: #243a58;
+  --lab-caption-label: #466484;
+}
+* { box-sizing:border-box }
+body { margin:0 }
+main { max-width:1200px; margin:0 auto; padding:56px 32px 80px }
+h1 { margin:0 0 20px; font-size:clamp(30px,4vw,48px); font-weight:500; letter-spacing:-.04em }
+.interaction-hint { margin:16px 0 0; color:var(--lab-muted); font-size:14px }
+header { margin-bottom:36px }
+.grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px }
+article { min-width:0; padding:26px 28px; background:var(--lab-panel); border-radius:20px; box-shadow:inset 0 0 0 1px var(--lab-border) }
+.heading { display:flex; justify-content:space-between; align-items:center; gap:16px }
+h2, .heading h3 { margin:0; font-size:20px; font-weight:500 }
+.symbol-key { color:var(--lab-accent); font:32px "Cambria Math",math }
+.face-toggle { display:flex; align-items:center; flex-direction:column; width:100%; border:0; background:transparent; padding:0; margin:0 0 26px; color:inherit; font:inherit; cursor:pointer; border-radius:12px }
+.face-toggle:focus-visible { outline:2px solid var(--lab-focus); outline-offset:4px }
+.face-toggle svg { display:block; width:min(100%,290px); height:auto }
+.face-features { fill:currentColor; color:#000 }
+.stroke { fill:none; stroke:currentColor; stroke-width:6; stroke-linecap:round; stroke-linejoin:round }
+.stroke.thin { stroke-width:4.5 }
+.math-ink { font-family:"Cambria Math","STIX Two Math",math; text-anchor:middle; fill:currentColor; font-weight:400 }
+.plain-feature { display:none }
+.face-toggle[aria-pressed=false] .plain-feature { display:inline }
+.face-toggle[aria-pressed=false] .math-feature { display:none }
+.mode-label { margin-top:-6px; color:var(--lab-muted); font-size:12px }
+.concept-meta { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap }
+.placement { color:var(--lab-accent); font-size:14px }
+.tier { font-size:12px; color:var(--lab-muted) }
+.tier.recommended { color:var(--lab-recommended) }
+.design-note { margin:16px 0 10px; color:var(--lab-secondary); font-size:15px; line-height:1.9 }
+.scenario { margin:0; color:var(--lab-muted); font-size:13px; line-height:1.9 }
+details { margin-top:22px }
+summary { cursor:pointer; color:var(--lab-accent); font-size:13px }
+summary:focus-visible { outline:2px solid var(--lab-focus); outline-offset:4px }
+.formula { display:flex; justify-content:center; align-items:center; min-height:100px; overflow-x:auto; padding:18px 0 }
+math { font-family:"Cambria Math","STIX Two Math",math; font-size:23px; flex:0 0 auto }
+.formula-note { color:var(--lab-muted); font-size:13px; line-height:1.8 }
+code { color:var(--lab-accent); font-family:Consolas,monospace }
+footer { margin-top:28px; max-width:900px; color:var(--lab-muted); font-size:14px; line-height:1.9 }
+@media(max-width:720px){
+  main { padding:36px 20px 48px }
+  .grid { grid-template-columns:1fr; gap:16px }
+  article { padding:24px }
+  .face-toggle svg { width:min(100%,260px) }
+  math { font-size:20px }
+}
+@media print{
+  :root { color-scheme:light; background:white; color:#111 }
+  article { break-inside:avoid; background:#f4f4f4; box-shadow:none }
+  .heading :is(h2, h3),.design-note,.scenario,footer { color:#333 }
+  .mode-label { display:none }
+  summary { color:#555 }
+}
+.bubble-caption { margin:0 0 18px; padding:11px 14px; border-radius:10px; background:var(--lab-caption); color:var(--lab-caption-text); font-size:15px; line-height:1.7 }
+.bubble-label { display:block; margin-bottom:3px; color:var(--lab-caption-label); font-size:12px }
+.interlude-record { margin-top:28px; padding:26px 28px; border-radius:20px; background:var(--lab-panel) }
+.interlude-record h2 { font-size:22px }
+.interlude-record p { color:var(--lab-muted); font-size:14px; line-height:1.8 }
+.interlude-record ul { margin:18px 0 0; padding-left:22px; color:var(--lab-caption-text); font-size:16px; line-height:1.9 }
+.interlude-record li+li { margin-top:8px }
