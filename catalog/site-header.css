@@ -1,4 +1,13 @@
 /* Shared site header. Source copied to the business catalog by scripts/build.mjs. */
+@font-face {
+  font-family: "HarmonyOS Sans Header";
+  src: local("HarmonyOS Sans SC Bold"), local("HarmonyOS_Sans_SC_Bold"),
+    url("./fonts/HarmonyOS_Sans_SC_Bold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
 .cann-topbar {
   position: sticky;
   top: 0;
@@ -26,31 +35,18 @@
 .cann-brand { flex: 0 0 auto; }
 .cann-name {
   display: inline-block;
+  font-family: "HarmonyOS Sans Header", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
   font-size: 18px;
-  font-weight: 800;
-  letter-spacing: -.03em;
+  font-weight: 700;
 }
 @supports ((background-clip: text) or (-webkit-background-clip: text)) {
-  .cann-name, .cann-gradient-text {
+  .cann-gradient-text {
     background-image: var(--cann-header-gradient, linear-gradient(90deg, #5227ff, #ff9ffc, #b497cf, #5227ff));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     -webkit-text-fill-color: transparent;
   }
-  .cann-name {
-    background-size: 300% 100%;
-    background-position: 0% 50%;
-    /* Extend the gradient glyph mask when the font synthesizes bold weights. */
-    -webkit-text-stroke: .4px transparent;
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    .cann-name { animation: cann-name-gradient 8s ease-in-out infinite alternate; }
-  }
-}
-@keyframes cann-name-gradient {
-  from { background-position: 0% 50%; }
-  to { background-position: 100% 50%; }
 }
 .cann-actions { display: flex; align-items: center; gap: 16px; margin-inline-start: auto; min-width: 0; }
 

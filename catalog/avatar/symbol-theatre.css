@@ -30,8 +30,8 @@
 }
 .theatre-layer--back { z-index: 2; }
 .theatre-layer--front { z-index: 4; }
-/* Whole arms overlap the body while every filter remains in front of them. */
-.theatre-arms { z-index: 2; }
+.theatre-arms--back { z-index: 0; }
+.theatre-arms--front { z-index: 2; }
 .theatre-avatar-link {
   position: absolute;
   top: 0;
@@ -49,13 +49,6 @@
 }
 .symbol-theatre .catalog-avatar::before,
 .symbol-theatre .catalog-avatar::after { display: none; }
-.theatre-arm {
-  fill: none;
-  stroke: #a3c5ff;
-  stroke-width: 10.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
 .theatre-speech {
   position: absolute;
   top: 0;

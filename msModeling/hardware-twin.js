@@ -54,11 +54,16 @@
   const pt=v=>v.map(n=>n.toFixed(2)).join(','),poly=(vertices,fill,stroke='#bfcbd9',width=.6)=>'<polygon points="'+vertices.map(pt).join(' ')+'" fill="'+fill+'" stroke="'+stroke+'" stroke-width="'+width+'"/>';
   // Match the device/memory Rank view: front, right and top faces, then outline.
   const neutral=['#e4eaf2','#cdd8e5','#f9fbfe'],peerTone=['#dae6fa','#b9cce8','#f0f5ff'];
-  // Only cap top faces darken; their side faces retain the corresponding body palette.
   const activeTone=['#c9dbfa','#aac4ed','#e4eeff'];
-  const deepen=(face,ink)=>'#'+[1,3,5].map(i=>Math.round(parseInt(face.slice(i,i+2),16)*.82+parseInt(ink.slice(i,i+2),16)*.18).toString(16).padStart(2,'0')).join('');
+  const deepen=(face,ink,amount=.18)=>'#'+[1,3,5].map(i=>Math.round(parseInt(face.slice(i,i+2),16)*(1-amount)+parseInt(ink.slice(i,i+2),16)*amount).toString(16).padStart(2,'0')).join('');
   const capTop=deepen(peerTone[2],'#637083');
-  const tones={base:neutral,metal:neutral,board:neutral,dark:[neutral[0],neutral[1],capTop],peerCap:[peerTone[0],peerTone[1],capTop],chip:peerTone,active:activeTone,activeCap:[activeTone[0],activeTone[1],deepen(activeTone[2],'#3975df')]};
+  const activeCapTop=deepen(activeTone[2],'#3975df');
+  const rankTop=deepen(capTop,'#637083',.36);
+  const tones={
+   base:neutral,metal:neutral,board:neutral,chip:peerTone,active:activeTone,
+   dark:[neutral[0],neutral[1],capTop],peerCap:[peerTone[0],peerTone[1],capTop],activeCap:[activeTone[0],activeTone[1],activeCapTop],
+   rankCap:[neutral[0],neutral[1],rankTop],peerRankCap:[peerTone[0],peerTone[1],rankTop],activeRankCap:[activeTone[0],activeTone[1],deepen(activeCapTop,'#3975df',.36)]
+  };
   function solid(x,y,z,w,h,d,tone='metal',stroke){const t=tones[tone],edge=stroke||(tone==='active'||tone==='activeCap'?'#3975df':tone==='chip'||tone==='peerCap'?'#a2b8db':'#bfcbd9'),A=P(x,y,z),B=P(x+w,y,z),C=P(x+w,y+h,z),D=P(x,y+h,z),E=P(x,y,z+d),F=P(x+w,y,z+d),G=P(x+w,y+h,z+d),H=P(x,y+h,z+d);return '<g data-solid="'+tone+'">'+(flat?'':poly(cyaw>=0?[E,F,G,H]:[A,B,C,D],t[0],edge)+poly(sy>=0?[B,F,G,C]:[A,E,H,D],t[1],edge))+poly([D,C,G,H],t[2],edge)+'</g>'}
   const text=(x,y,z,value,size=7,color='#6b7f99')=>{const p=P(x,y,z);return '<text x="'+p[0]+'" y="'+p[1]+'" font-size="'+size+'" font-family="Segoe UI,Microsoft YaHei,sans-serif" fill="'+color+'">'+esc(value)+'</text>'};
   function engraving(x,y,z,value,type,size=6,color='#6b7f99',center=false,maxWidth=Infinity){
@@ -80,11 +85,10 @@
   function assembly(n){
    const {x,y,z,w,d,h,type}=n,highlight=picked(n),peer=related(n)&&n.tier>=tier,tone=highlight?'active':peer?'chip':'metal',stroke=highlight?'#3975df':peer?'#a2b8db':undefined;let back='',front='';
    if(type==='unit'){
-    const selected=picked(n),lit=selected;
-    let ink=solid(x,y,z,w,h,d,lit?'active':peer?'chip':'metal');
-    ink+=solid(x+2,y+h,z+2,w-4,.7,d-4,lit?'activeCap':peer?'peerCap':'dark');
-    ink+=engraving(x+w/2,y+h+.7,z+d/2,'R'+n.start,'rank',7,selected?'#2159b6':'#6b7f99',true,w-6);
-    return '<g class="rank-unit twin-rank" role="button" tabindex="0" data-rank="'+n.start+'" data-relation="'+relation(n)+'" opacity="'+(cleared||highlighted(n)?1:.5)+'" aria-label="选择 Rank '+n.start+'" aria-pressed="'+(selection?n===selection:selected)+'"><title>R'+n.start+' · '+m.unit+'</title>'+ink+'</g>';
+    let ink=solid(x,y,z,w,h,d,tone,stroke);
+    ink+=solid(x+2,y+h,z+2,w-4,.7,d-4,highlight?'activeRankCap':peer?'peerRankCap':'rankCap',stroke);
+    ink+=engraving(x+w/2,y+h+.7,z+d/2,'R'+n.start,'rank',7,highlight?'#2159b6':'#6b7f99',true,w-6);
+    return '<g class="rank-unit twin-rank" role="button" tabindex="0" data-rank="'+n.start+'" data-relation="'+relation(n)+'" opacity="'+(cleared||highlighted(n)?1:.5)+'" aria-label="选择 Rank '+n.start+'" aria-pressed="'+highlight+'"><title>R'+n.start+' · '+m.unit+'</title>'+ink+'</g>';
    }
    if(type==='cluster'){
     back+=solid(x,y,z,w,2,d,highlight?'active':peer?'chip':'base',stroke);

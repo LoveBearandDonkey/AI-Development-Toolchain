@@ -6,13 +6,10 @@
  scene.before(workspace);
  workspace.append(scene,document.getElementById('twin-panel'));
  const toolbar=document.querySelector('.stage-toolbar');
- scene.prepend(toolbar);
  const maximize=document.createElement('button');maximize.id='scene-maximize';
  maximize.type='button';maximize.textContent='最大化';maximize.setAttribute('aria-pressed','false');
  maximize.setAttribute('aria-label','最大化硬件视图');
  toolbar.append(maximize);
- // Keep selection details below the floating controls when they wrap.
- new ResizeObserver(()=>scene.style.setProperty('--scene-toolbar-height',toolbar.offsetHeight+'px')).observe(toolbar);
  const canvas=document.getElementById('rank-scene');
  let drag=null,orbitFrame=0,suppressClick=false;
  const orbitEnabled=()=>state.layer==='connect'&&state.view!=='flat';
@@ -20,9 +17,7 @@
  syncOrbit();
  document.addEventListener('modeling:hardware-change',syncOrbit);
  document.addEventListener('click',e=>{
-  const layer=e.target.closest('[data-layer]');
-  if(layer?.dataset.layer==='connect')setTab('connect');
-  if(layer||e.target.closest('[data-view]'))syncOrbit();
+  if(e.target.closest('[data-view]'))syncOrbit();
  });
  canvas.addEventListener('pointerdown',e=>{
   if(!orbitEnabled()||e.button!==0||!e.isPrimary)return;
@@ -72,7 +67,7 @@
  });
  // A view change must never leave an inaccessible maximized canvas behind it.
  document.addEventListener('click',e=>{
-  if(e.target.closest('[data-mx-mode], [data-evidence-target], #nav-evidence'))setMaximized(false);
+  if(e.target.closest('#capacity-toggle, [data-evidence-target], #nav-evidence')&&stage.classList.contains('is-maximized'))setMaximized(false);
  });
  new MutationObserver(()=>{if(document.body.dataset.evidenceOpen==='true')setMaximized(false);})
   .observe(document.body,{attributes:true,attributeFilter:['data-evidence-open']});

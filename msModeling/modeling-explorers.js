@@ -23,6 +23,30 @@ function capacityModel(profile,count,load){
  return {tp,dp,reserve,weights,kv,memoryCap,latencyCap,cap,current,at,searchLimit:1000000,first:memoryCap<=latencyCap?'内存':'时延',pass:load.concurrency<=cap,unitMemory:profile.memory_size_bytes/GiB};
 }
 function totalGrid(grid){return grid.reduce((a,b)=>a*b,1)}
+function capacityScan(result,load,metric){
+ const metrics={ttft:['TTFT','ms',load.ttft],tpot:['TPOT','ms/token',load.tpot],mem:['显存','GiB',result.unitMemory]};
+ const [label,unit,target]=metrics[metric];
+ const max=Math.min(result.searchLimit,Math.ceil(Math.max(4,load.concurrency*1.3,result.cap*1.3)));
+ const points=[...new Set([1,load.concurrency,...(result.cap?[result.cap]:[]),
+  ...Array.from({length:10},(_,i)=>Math.max(1,Math.round(max*i/9)))])].sort((a,b)=>a-b);
+ const yMax=Math.max(target,...points.map(n=>result.at(n)[metric]))*1.12;
+ const x=n=>54+(n-1)/(max-1)*522,y=v=>146-v/yMax*120;
+ const line=points.map(n=>x(n)+','+y(result.at(n)[metric])).join(' ');
+ return `<section class="demo-capacity"><div class="demo-card-head"><strong>并发扫描</strong><div class="demo-segmented" role="group" aria-label="扫描指标">${Object.entries(metrics).map(([k,[v]])=>
+  `<button type="button" data-cap-metric="${k}" aria-pressed="${k===metric}">${v}</button>`).join('')}</div></div>
+  <svg class="demo-scan" viewBox="0 0 601 176" aria-label="${label} 随并发变化">
+  <text x="54" y="16">${label} / ${unit}</text>
+  <path d="M54 26V146H576" class="demo-gridline"/>
+  <path d="M54 ${y(target)}H576" class="demo-threshold"/>
+  <text x="51" y="${y(target)+4}" text-anchor="end">${f(target,1)}</text>
+  ${result.cap ? `<path d="M${x(result.cap)} 26V146" class="demo-threshold demo-cap-limit"/>` : ''}
+  <polyline points="${line}" fill="none" stroke="#467ac3" stroke-width="2"/>
+  ${points.map(n=>{const value=result.at(n)[metric],current=n===load.concurrency,desc=f(n)+' 并发 · '+label+' '+f(value,1)+' '+unit;
+  return `<g data-cap-point="${n}" tabindex="0" role="button" aria-label="${desc}" aria-pressed="${current}" transform="translate(${x(n)} ${y(value)})"><title>${desc}</title><circle r="9" fill="transparent"/><circle r="${current?6:3.5}" fill="${n<=result.cap?'#467ac3':'#fff'}" stroke="#467ac3" stroke-width="1.5"/></g>`;}).join('')}
+  <text x="54" y="163">1</text><text x="576" y="163" text-anchor="end">${f(max)} 并发</text></svg>
+  <div class="demo-card-head"><div class="demo-legend"><span>横虚线 · ${label==='显存'?'设备容量':'时延目标'}</span><span>承载边界 ${f(result.cap)} 并发</span><span>实心点 · 全部约束达标</span></div>
+  <button type="button" class="secondary demo-carry" data-cap-handoff>带当前负载去评估</button></div></section>`;
+}
 // Keep workload on the first capacity boundary without relaxing either latency target.
 // Requests are batched per replica, so concurrency snaps to the last complete batch.
 function balanceFullLoad(profile,count,requested,pinned='input'){
@@ -64,25 +88,35 @@ const $=id=>document.getElementById(id),f=(n,d=0)=>Number(n).toLocaleString('zh-
 const hardware=!!document.querySelector('main.workbench');
 let mode=hardware&&location.hash!=='#capacity'?'legacy':'explore';
 let actionController=null;
-const bar=document.createElement('nav');bar.className='mx-switch';bar.setAttribute('aria-label',hardware?'硬件工作视图':'评估工作视图');
-bar.innerHTML=hardware
- ?'<button data-mx-mode="legacy" aria-pressed="true">硬件画像</button><button data-mx-mode="explore" aria-pressed="false">承载边界测试</button>'
- :'<button data-mx-mode="explore" aria-pressed="true">优化行动验证</button><button data-mx-mode="legacy" aria-pressed="false">候选方案与验证</button>';
-const viewTabs=document.createElement('div');viewTabs.className='page-tabs mx-view-tabs';
-while(bar.firstChild)viewTabs.append(bar.firstChild);
-bar.append(viewTabs);
+const capacityToggle=$('capacity-toggle');
+const bar=hardware?null:document.createElement('nav');
 const surface=document.createElement('section');surface.className='mx-panel'+(hardware?'':' mx-upgrade');surface.id='mx-content';
 const panel=document.createElement('div');panel.className='mx-explore-body';panel.id='mx-explorer';
 let legacy;
 if(hardware){const stage=document.querySelector('.stage'),wrap=document.createElement('div');wrap.className='mx-layout';wrap.id='mx-hardware-layout';while(stage.firstChild)wrap.append(stage.firstChild);stage.append(surface);legacy=[wrap];}
 else{document.querySelector('header').after(surface);legacy=[...document.querySelectorAll('.steps,main.page')];}
 if(hardware){
- const heading=legacy[0].querySelector('.stage-top');
- heading.querySelector('.stage-title').append(bar);
- surface.append(heading,panel,...legacy);
-}else surface.append(bar,panel,...legacy);
-function sync(){const evidence=document.body.dataset.evidenceOpen==='true';surface.hidden=evidence;panel.hidden=evidence||mode!=='explore';legacy.forEach(el=>el.hidden=evidence||mode==='explore');if(hardware)document.querySelector('.stage').classList.toggle('mx-exploring',mode==='explore');bar.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mxMode===mode)));if(actionController&&mode==='explore'&&!evidence)actionController.refresh();}
-bar.addEventListener('click',e=>{const b=e.target.closest('[data-mx-mode]');if(!b)return;mode=b.dataset.mxMode;sync();window.dispatchEvent(new Event('resize'));});
+ surface.append(legacy[0].querySelector('.stage-top'),panel,...legacy);
+ capacityToggle.addEventListener('click',()=>setMode(mode==='explore'?'legacy':'explore'));
+ document.addEventListener('modeling:show-hardware-layout',()=>{if(mode==='explore')setMode('legacy');});
+}else{
+ bar.className='mx-switch';bar.setAttribute('aria-label','评估工作视图');
+ bar.innerHTML='<div class="page-tabs mx-view-tabs"><button data-mx-mode="explore" aria-pressed="true">优化行动验证</button><button data-mx-mode="legacy" aria-pressed="false">候选方案与验证</button></div>';
+ bar.addEventListener('click',e=>{const button=e.target.closest('[data-mx-mode]');if(button)setMode(button.dataset.mxMode);});
+ surface.append(bar,panel,...legacy);
+}
+function sync(){
+ const evidence=document.body.dataset.evidenceOpen==='true',exploring=mode==='explore';
+ surface.hidden=evidence;
+ panel.hidden=evidence||!exploring;
+ legacy.forEach(el=>el.hidden=evidence||exploring);
+ if(hardware){
+  document.querySelector('.stage').classList.toggle('mx-exploring',exploring);
+  capacityToggle.setAttribute('aria-pressed',String(exploring));
+ }else bar.querySelectorAll('button').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.mxMode===mode)));
+ if(actionController&&exploring&&!evidence)actionController.refresh();
+}
+function setMode(next){mode=next;sync();window.dispatchEvent(new Event('resize'));}
 new MutationObserver(sync).observe(document.body,{attributes:true,attributeFilter:['data-evidence-open']});
 document.querySelector('#user-evidence')?.addEventListener('click',e=>{const b=e.target.closest('[data-evidence-target]');if(b){mode=b.dataset.mxEvidence||'legacy';sync();const target=$(b.dataset.evidenceTarget);target?.scrollIntoView({block:'center'});target?.focus({preventScroll:true});window.dispatchEvent(new Event('resize'));}});
 function meter(value,max){
@@ -96,7 +130,7 @@ function range(id,label,min,max,step,value,unit,scale=1){return `<div class="mx-
 function outputChoices(){return `<div class="mx-control"><span id="mx-output-label">输出长度</span><div id="mx-output" class="mx-pills" role="group" aria-labelledby="mx-output-label">${[128,256,512,1024].map(v=>`<button type="button" data-mx-output="${v}" aria-pressed="${v===256}">${f(v)}</button>`).join('')}<span class="mx-output-unit">tokens</span></div></div>`}
 function updateOutputs(){panel.querySelectorAll('input[type=range]').forEach(el=>{el.style.setProperty('--mx-progress',100*(Number(el.value)-Number(el.min))/(Number(el.max)-Number(el.min))+'%');$(el.id+'-value').textContent=f(el.value/Number(el.dataset.scale),1)+' '+el.dataset.unit})}
 if(hardware){
- let activeLoad='full',outputLength=1024;
+ let activeLoad='full',outputLength=1024,scanMetric='ttft',currentLoad=null;
  panel.setAttribute('aria-label','承载边界测试');
  panel.innerHTML=`<div class="mx-presets" role="group" aria-label="业务示例"><button data-mx-load="full" aria-pressed="true" title="固定当前硬件与时延目标，联动并发和请求长度，持续贴近承载边界">满载</button>${Object.entries(capacityPresets).map(([key,p])=>`<button data-mx-load="${key}" aria-pressed="${key===activeLoad}">${p.name}</button>`).join('')}<button data-mx-load="custom" aria-pressed="false">自定义</button></div><div class="mx-controls">${control('mx-model','代表性模型', [['32','32B 稠密模型 · BF16（构造）']],'32')}${outputChoices()}${range('mx-concurrency','总并发请求数',1,1024,1,32,'请求')}${range('mx-input','输入长度',512,65536,512,65536,'tokens')}${range('mx-ttft','首 token 目标',100,60000,100,2000,'ms')}${range('mx-tpot','逐 token 目标',10,200,5,50,'ms/token')}</div><div id="mx-capacity-result" aria-live="polite"></div><details class="mx-method"><summary>构造示例 · 查看估算口径与假设</summary><p>“满载”按当前时延目标联动并发与请求长度：拖动并发时自动寻找可承载的最长输入；改动输入、输出或目标时重新求最大并发。输入以 512 tokens 为步长，并发按完整副本批量对齐。硬件或目标无可行解时保留满载模式并提示，不放宽时延目标。</p><p>本页为简化构造估算，未运行 msModeling 或真实设备任务。</p><p>固定 32B 稠密模型，BF16 权重取 64 GiB；KV 每请求每 token 取 256 KiB（构造常数）。TP 取设备数可整除的 8 / 4 / 2 / 1 中最大值，DP = 设备数 / TP；请求均匀分到各副本，采用最忙副本的向上取整批量。权重与 KV 在 TP 内均匀切分，各单元预留 15% 内存。</p><p>TTFT = 2 × 32×10⁹ × 输入 token × 副本批量 / TP 有效算力 + 20ms；TPOT =（权重字节 + 副本 KV 字节）/ TP 有效内存带宽 + 2 × 32×10⁹ × 副本批量 / TP 有效算力 + 3ms。有效能力为画像峰值 × 对应效率；端到端 = TTFT + 输出 token × TPOT。</p><p>内存边界按每单元容量计算，时延边界同时约束 TTFT 和 TPOT，搜索范围为 1–1,000,000 并发。忽略排队、通信拓扑差异、算子重叠及真实推理引擎调度，不代表实测容量或 P99 保证。用于比较操作趋势，实际结果需后端仿真与同负载测量。</p></details>`;
  function renderCapacity(pinned='input'){
@@ -115,12 +149,24 @@ if(hardware){
   updateOutputs();const r=capacityModel(state.profile,state.count,load);
   if(r.error||errors.length){target.innerHTML='<p class="mx-empty">当前画像参数待补全。请先修正左侧配置中的错误，再探索承载边界。</p>';return;}
   const c=r.current;
+  currentLoad=load;
   target.innerHTML=`<div class="mx-verdict" data-tone="${r.pass?'good':'bad'}"><strong>${activeLoad==='full'?'满载 · '+r.first+'边界':r.pass?'示例估算可承载':'示例估算不可承载'} · ${f(load.concurrency)} 并发${activeLoad!=='full'&&r.pass?' · 余量 '+f(r.cap-load.concurrency):''}</strong></div><div class="mx-metrics"><div class="mx-metric"><span>单元内存峰值 / 容量</span><strong>${metricValue(c.mem,r.unitMemory,1)} / ${f(r.unitMemory)} GiB</strong>${meter(c.mem,r.unitMemory)}<small>含权重、KV 与 15% 预留 · 内存边界 ${f(r.memoryCap)} 并发</small></div><div class="mx-metric"><span>首 token 时延 / 目标</span><strong>${metricValue(c.ttft,load.ttft)} / ${f(load.ttft)} ms</strong>${meter(c.ttft,load.ttft)}<small>TTFT 与 TPOT 共同决定时延边界</small></div><div class="mx-metric"><span>逐 token 时延 / 目标</span><strong>${metricValue(c.tpot,load.tpot,1)} / ${f(load.tpot)} ms</strong>${meter(c.tpot,load.tpot)}<small>时延边界 ${r.latencyCap===r.searchLimit?'≥ ':''}${f(r.latencyCap)} 并发 · 端到端 ${f(c.e2e,1)} s</small></div></div>`;
+  target.insertAdjacentHTML('beforeend',capacityScan(r,load,scanMetric)+window.demoCharts.memoryBar([
+   ['模型权重',r.weights/r.tp],['KV Cache',r.kv*Math.ceil(load.concurrency/r.dp)],['合计预留',r.reserve]
+  ],r.unitMemory));
  }
  function selectLoad(key){activeLoad=key;if(key!=='full'){$('mx-concurrency').min=1;$('mx-concurrency').step=1;}panel.querySelectorAll('[data-mx-load]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mxLoad===key)));}
  function customizeLoad(e){if(e.target.closest('.mx-controls')&&e.target.matches('input,select')){if(activeLoad!=='full')selectLoad('custom');renderCapacity(e.target.id==='mx-concurrency'?'concurrency':'input');}}
  panel.addEventListener('input',customizeLoad);panel.addEventListener('change',customizeLoad);
  panel.addEventListener('click',e=>{
+  const metric=e.target.closest('[data-cap-metric]'),point=e.target.closest('[data-cap-point]');
+  if(metric){scanMetric=metric.dataset.capMetric;renderCapacity();panel.querySelector('[data-cap-metric="'+scanMetric+'"]')?.focus();return;}
+  if(point){
+   const n=Number(point.dataset.capPoint);
+   selectLoad('custom');$('mx-concurrency').max=Math.max(n,Number($('mx-concurrency').max));$('mx-concurrency').value=n;
+   renderCapacity('concurrency');panel.querySelector('[data-cap-point="'+n+'"]')?.focus();return;
+  }
+  if(e.target.closest('[data-cap-handoff]')&&currentLoad){openAssessment(1,currentLoad);return;}
   const output=e.target.closest('[data-mx-output]');
   if(output){outputLength=+output.dataset.mxOutput;if(activeLoad!=='full')selectLoad('custom');renderCapacity();return;}
   const b=e.target.closest('[data-mx-load]');if(!b)return;
@@ -129,6 +175,11 @@ if(hardware){
   if(preset){outputLength=preset.output;for(const k of ['input','concurrency','ttft','tpot'])$('mx-'+k).value=preset[k];}
   if(key==='full'){outputLength=1024;$('mx-input').value=65536;}
   renderCapacity();
+ });
+ panel.addEventListener('keydown',e=>{
+  if(e.target.matches('[data-cap-point]')&&['Enter',' '].includes(e.key)){
+   e.preventDefault();e.target.dispatchEvent(new MouseEvent('click',{bubbles:true}));
+  }
  });
  document.addEventListener('modeling:hardware-change',renderCapacity);window.addEventListener('resize',renderCapacity);renderCapacity();
 }else{

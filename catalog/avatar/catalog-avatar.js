@@ -1,23 +1,8 @@
 (() => {
   'use strict';
 
-  // Closed Catmull-Rom contour: matching control points keep the petals soft.
-  function flowerPath({ petals, radius, depth }, phase = 0, offset = 0) {
-    const count = petals * 8;
-    const points = Array.from({ length: count }, (_, i) => {
-      const angle = i / count * Math.PI * 2;
-      const r = radius + depth * Math.cos(petals * angle) + offset * Math.sin(angle * 3 + phase);
-      return [160 + Math.cos(angle) * r, 145 + Math.sin(angle) * r];
-    });
-    const fmt = point => point.map(v => v.toFixed(2)).join(',');
-    let d = `M${fmt(points[0])}`;
-    for (let i = 0; i < count; i++) {
-      const a = points[(i - 1 + count) % count], b = points[i];
-      const c = points[(i + 1) % count], e = points[(i + 2) % count];
-      d += `C${fmt(b.map((v, j) => v + (c[j] - a[j]) / 6))} ${fmt(c.map((v, j) => v - (e[j] - b[j]) / 6))} ${fmt(c)}`;
-    }
-    return d + 'Z';
-  }
+  const { TimelineAvatarBody, mountBodyCanvas, setFacePlane, createAvatarFacePart } = window.TimelineAvatarBody;
+  const { sweepDuration } = window.RoundedBlock;
 
   // Integrate small substeps so the damped spring is stable at lower frame rates.
   function spring(state, target, response, damping, dt) {
@@ -37,13 +22,11 @@
     constructor(root, config) {
       this.root = root;
       this.config = structuredClone(config);
-      this.shape = root.querySelector('[data-avatar-shape]');
       this.body = root.querySelector('[data-avatar-body]');
       this.face = root.querySelector('[data-avatar-face]');
       this.eyes = root.querySelectorAll('[data-avatar-eye]');
       this.mouth = root.querySelector('[data-avatar-mouth]');
       this.shadow = root.querySelector('[data-avatar-shadow]');
-      this.light = root.querySelector('#avatar-material');
       this.pose = { ...config.states.idle };
       this.gaze = { x: 0, y: 0 };
       this.sceneGazeControlled = false;
@@ -52,6 +35,7 @@
       this.referenceParts = [];
       this.facePlane = { a: 1, b: 0, c: 0, d: 1, e: 0, f: 0 };
       const rig = this.config.rig;
+      this.timelineBody = new TimelineAvatarBody(this.config, mountBodyCanvas(this.body, rig, true));
       this.features = [...this.eyes, this.mouth].map((element, i) => {
         const x = i === 2 ? 0 : (i ? 1 : -1) * rig.eyeSpacing / 2;
         const y = i === 2 ? rig.mouthY : rig.eyeY;
@@ -87,13 +71,25 @@
       this.observer.observe(root);
 
       this.applyMaterial();
-      this.shape.setAttribute('d', flowerPath(config.shape));
-      // The SVG remains visible if the animation dependency is unavailable.
-      if (!window.gsap || !window.MorphSVGPlugin) {
-        return;
-      }
-      gsap.registerPlugin(MorphSVGPlugin);
-      gsap.set(this.body, { svgOrigin: '160 145' });
+      this.timelineBody.render();
+      this.updateFacePlane();
+      const stage = root.querySelector('.catalog-avatar-stage');
+      const updateResolution = () => {
+        const pixels = stage.clientWidth * devicePixelRatio;
+        if (pixels > 0) this.timelineBody.setPixelWidth(pixels);
+      };
+      const watchPixelRatio = () => {
+        matchMedia(`(resolution: ${devicePixelRatio}dppx)`).addEventListener('change', () => {
+          updateResolution();
+          watchPixelRatio();
+        }, { ...options, once: true });
+      };
+      this.resolutionObserver = new ResizeObserver(updateResolution);
+      this.resolutionObserver.observe(stage);
+      watchPixelRatio();
+      if (!window.gsap) return;
+
+      gsap.set(this.body, { svgOrigin: `${rig.centerX} ${rig.centerY}` });
       this.features.forEach((feature, i) => {
         const x = rig.centerX + feature.x, y = rig.centerY + feature.y;
         if (i !== 2) {
@@ -103,10 +99,6 @@
         gsap.set(feature.element, { svgOrigin: `${x} ${y}` });
       });
       gsap.set(this.shadow, { transformOrigin: '50% 50%' });
-      this.morph = gsap.timeline({ repeat: -1, paused: true, defaults: { duration: config.motion.floatCycle / 2, ease: 'sine.inOut' } })
-        .to(this.shape, { morphSVG: { shape: flowerPath(config.shape, 1.1, config.shape.contourOffset), shapeIndex: 0 } })
-        .to(this.shape, { morphSVG: { shape: flowerPath(config.shape, 3.9, config.shape.contourOffset), shapeIndex: 0 } })
-        .to(this.shape, { morphSVG: { shape: flowerPath(config.shape), shapeIndex: 0 } });
       this.blinkTimeline = gsap.timeline({ repeat: -1, repeatRefresh: true, paused: true })
         .to(this.blink, { value: 0.08, duration: 0.075, delay: () => 2.6 + Math.random() * 2.2 })
         .to(this.blink, { value: 1, duration: 0.14 });
@@ -114,12 +106,8 @@
     }
 
     applyMaterial() {
-      for (const [key, color] of Object.entries(this.config.material)) {
-        this.root.querySelectorAll(`[data-avatar-color="${key}"]`).forEach(element => {
-          element.setAttribute(element.tagName === 'stop' ? 'stop-color' : 'fill', color);
-          if (key === 'face') element.style.color = color;
-        });
-      }
+      this.face.setAttribute('fill', this.config.material.face);
+      this.face.style.color = this.config.material.face;
     }
 
     randomInterval() {
@@ -181,27 +169,9 @@
 
     getEyeBlink() { return this.blinkSuppressed ? 1 : this.blink.value; }
 
-    updateFacePlane(squash = 0) {
-      const { rig, depth } = this.config;
-      const { yaw, pitch, roll, float } = this.bodyPose;
-      const cy = Math.cos(yaw), sy = Math.sin(yaw);
-      const cp = Math.cos(pitch), sp = Math.sin(pitch);
-      const angle = roll * Math.PI / 180, cr = Math.cos(angle), sr = Math.sin(angle);
-      // A single invisible plane at a fixed distance in front of the body.
-      // Weak perspective uses one camera scale for the whole plane, so every
-      // feature shares its projected axes (including the yaw/pitch shear).
-      const z = rig.facePlaneDepth ?? rig.surfaceDepth;
-      const cameraScale = depth.perspective / (depth.perspective - (z * cy * cp - z));
-      const sx = (1 + squash) * cameraScale, syScale = (1 - squash * .7) * cameraScale;
-      const ax = cy * sx, ay = -sy * sp * syScale;
-      const by = cp * syScale;
-      const tx = z * sy * sx, ty = z * cy * sp * syScale;
-      const a = cr * ax - sr * ay, b = sr * ax + cr * ay;
-      const c = -sr * by, d = cr * by;
-      const e = rig.centerX + cr * tx - sr * ty - a * rig.centerX - c * rig.centerY;
-      const f = rig.centerY + float + sr * tx + cr * ty - b * rig.centerX - d * rig.centerY;
-      this.facePlane = { a, b, c, d, e, f };
-      this.face.setAttribute('transform', `matrix(${a} ${b} ${c} ${d} ${e} ${f})`);
+    updateFacePlane() {
+      this.facePlane = this.timelineBody.facePlane(this.bodyPose);
+      setFacePlane(this.face, this.facePlane);
     }
 
     getFacePoint(x, y) {
@@ -219,10 +189,8 @@
       if (this.referenceExpression === expression) return;
       this.referenceExpression = expression;
       this.referenceParts.forEach(part => part.element.remove());
-      this.referenceParts = (expression?.parts || []).filter(part => !part.prop).map(part => {
-        const element = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-        element.dataset.referencePart = part.key;
-        element.innerHTML = `<g class="avatar-reference-ink" transform="translate(${-part.x} ${-part.y})">${part.art}</g>`;
+      this.referenceParts = (expression?.parts || []).map(part => {
+        const element = createAvatarFacePart(part);
         this.face.append(element);
         return { ...part, element };
       });
@@ -242,62 +210,74 @@
     getFeaturePose(name = 'mouth') {
       const index = { leftEye: 0, rightEye: 1, mouth: 2 }[name] ?? 2;
       const feature = this.features[index];
-      return this.featurePoses[name] || {
-        x: this.config.rig.centerX + feature.x,
-        y: this.config.rig.centerY + feature.y,
-        rotation: 0, scaleX: 1, scaleY: 1
-      };
+      return this.featurePoses[name] ||
+        this.getFacePoint(this.config.rig.centerX + feature.x, this.config.rig.centerY + feature.y);
     }
 
-    // Fixed points in the silhouette's plane, transformed exactly like the body.
-    // No separate surface projection or moving inset can slide the shoulders.
     getBodyAttachment(side) {
-      const { rig } = this.config;
-      const pose = this.bodyPose;
-      const x = (side < 0 ? -1 : 1) * rig.shoulderX * pose.scaleX;
-      const y = rig.shoulderY * pose.scaleY;
-      const angle = pose.roll * Math.PI / 180;
-      return {
-        x: rig.centerX + x * Math.cos(angle) - y * Math.sin(angle),
-        y: rig.centerY + pose.float + x * Math.sin(angle) + y * Math.cos(angle)
-      };
+      return this.timelineBody.armAttachment(side, this.bodyPose);
+    }
+
+    getBodyTop(sceneRoll) {
+      const { roll, float, scaleX, scaleY } = this.bodyPose;
+      const { extentX, extentY } = this.timelineBody.projection;
+      const angle = sceneRoll + roll * Math.PI / 180;
+      return float * Math.cos(sceneRoll) - Math.abs(Math.sin(angle)) * extentX * scaleX
+        - Math.abs(Math.cos(angle)) * extentY * scaleY;
     }
 
     refresh() {
-      if (!this.morph || this.destroyed) return;
-      this.running = !this.media.matches && this.visible && !document.hidden && !this.scenePaused;
-      gsap.ticker.remove(this.tick);
+      if (!this.blinkTimeline || this.destroyed) return;
+      const visible = this.visible && !document.hidden;
+      const reduced = this.media.matches;
+      const running = visible && !reduced && !this.scenePaused;
+      if (this.running === running && this.reduced === reduced) return;
+
+      this.running = running;
+      this.reduced = reduced;
       if (this.running) {
         gsap.to(this.pose, { ...this.config.states.idle, ...this.config.states[this.state], duration: 0.4, overwrite: true });
-        this.morph.play();
         this.blinkTimeline.play();
-        gsap.ticker.add(this.tick);
+        this.lastFrame = performance.now();
+        this.frame = requestAnimationFrame(this.tick);
       } else {
-        this.morph.pause();
+        cancelAnimationFrame(this.frame);
         this.blinkTimeline.pause();
         gsap.killTweensOf(this.pose);
         // Never freeze in the middle of a blink.
-        gsap.set(this.eyes, { scaleY: 1 });
-        if (this.media.matches) {
+        gsap.set(this.eyes, { scaleX: 1, scaleY: 1 });
+        if (reduced) {
+          this.finishColorSweep();
           this.featurePoses = {};
           Object.assign(this.bodyPose, { yaw: 0, pitch: 0, roll: 0, float: 0, scaleX: 1, scaleY: 1 });
-          this.shape.setAttribute('d', flowerPath(this.config.shape));
+          this.timelineBody.render();
           gsap.set(this.body, { x: 0, y: 0, rotation: 0, scaleX: 1, scaleY: 1 });
           this.updateFacePlane();
           gsap.set([...this.eyes, this.mouth], { x: 0, y: 0, scaleX: 1, scaleY: 1 });
           for (const state of Object.values(this.bodyTurn)) { state.value = 0; state.velocity = 0; }
           this.renderReferenceFace();
-          this.light.setAttribute('cx', '32%');
-          this.light.setAttribute('cy', '22%');
           gsap.set(this.shadow, { scaleX: 1, opacity: 0.25 });
           this.renderMouth(this.config.states.idle.smile, this.config.states.idle.mouthWidth, 0);
         }
       }
     }
 
-    tick(_time, delta) {
+    startColorSweep() {
+      this.finishColorSweep();
+      this.colorSweepStartedAt = performance.now();
+    }
+
+    finishColorSweep() {
+      if (this.colorSweepStartedAt === undefined) return;
+      this.timelineBody.nextSegment();
+      this.colorSweepStartedAt = undefined;
+    }
+
+    tick(timestamp) {
+      const delta = Math.max(0, timestamp - this.lastFrame);
+      this.lastFrame = timestamp;
       const dt = Math.min(delta / 1000, 0.05);
-      this.time += dt;
+      this.time += delta / 1000;
       if (this.autonomous) {
         this.expressionElapsed += dt;
         if (this.expressionElapsed >= this.nextExpressionAt) this.randomExpression();
@@ -324,36 +304,53 @@
       const roll = lag * m.headRotation + this.pose.tilt;
       Object.assign(this.bodyPose, {
         yaw, pitch, roll, float,
-        scaleX: (1 + squash) * Math.cos(yaw * (d.bodyYawFollow ?? 0.55)),
-        scaleY: (1 - squash * 0.7) * Math.cos(pitch * (d.bodyPitchFollow ?? 0.45))
+        scaleX: (1 + squash) * Math.cos(yaw * d.bodyYawFollow),
+        scaleY: (1 - squash * 0.7) * Math.cos(pitch * d.bodyPitchFollow)
       });
       gsap.set(this.body, {
         y: float, rotation: roll,
         scaleX: this.bodyPose.scaleX,
         scaleY: this.bodyPose.scaleY
       });
-      // Move the complete face as one plane, using the body's exact pose.
-      this.updateFacePlane(squash);
+      if (this.colorSweepStartedAt !== undefined) {
+        const progress = (timestamp - this.colorSweepStartedAt) / sweepDuration;
+        if (progress >= 1) this.finishColorSweep();
+        else this.timelineBody.sweep.progress = Math.max(0, progress);
+      }
+      this.timelineBody.render(yaw, pitch);
+      this.updateFacePlane();
       const rig = this.config.rig;
       this.features.forEach((feature, i) => {
         const isMouth = i === 2;
         this.featurePoses[['leftEye', 'rightEye', 'mouth'][i]] =
           this.getFacePoint(rig.centerX + feature.x, rig.centerY + feature.y);
-        const blink = isMouth ? 1 : this.getEyeBlink() * this.pose.eyes * (i ? this.pose.rightEye : this.pose.leftEye);
-        // Expression changes stay in plane coordinates; no independent drift.
-        gsap.set(feature.element, { x: 0, y: 0, scaleX: 1, scaleY: blink });
+        if (isMouth) return;
+        const openness = this.pose.eyes * (i ? this.pose.rightEye : this.pose.leftEye);
+        // Wide eyes grow evenly; squinting and blinking only reduce height.
+        gsap.set(feature.element, { scaleX: Math.max(1, openness), scaleY: openness * this.getEyeBlink() });
       });
-      this.light.setAttribute('cx', `${32 - yaw * 16}%`);
-      this.light.setAttribute('cy', `${22 - pitch * 16}%`);
       gsap.set(this.shadow, { scaleX: 1 - wave * 0.08, opacity: 0.24 - wave * 0.05 });
       const smile = this.pose.smile + (this.state === 'speaking' ? Math.sin(this.time * 14) * 5 : 0);
       this.renderMouth(smile, this.pose.mouthWidth, this.pose.mouthOpen);
       this.renderReferenceFace();
+      this.frame = requestAnimationFrame(this.tick);
     }
 
     renderMouth(smile, width, open) {
       const x = this.config.rig.centerX, y = this.config.rig.centerY + this.config.rig.mouthY;
-      this.mouth.setAttribute('d', `M${x - width} ${y} Q${x} ${y + smile * 2 - open} ${x + width} ${y} Q${x} ${y + smile * 2 + open} ${x - width} ${y}Z`);
+      const arcTo = (depth, direction) => {
+        const end = `${x + direction * width} ${y}`;
+        const height = Math.abs(depth);
+        if (height < 0.01) return `L${end}`;
+        // The half-chord and its midpoint depth determine the circle.
+        const radius = (width ** 2 + height ** 2) / (2 * height);
+        const largeArc = height > width ? 1 : 0;
+        const sweep = depth * direction < 0 ? 1 : 0;
+        return `A${radius} ${radius} 0 ${largeArc} ${sweep} ${end}`;
+      };
+      let path = `M${x - width} ${y} ${arcTo(smile - open / 2, 1)}`;
+      if (open > 0) path += ` ${arcTo(smile + open / 2, -1)}Z`;
+      this.mouth.setAttribute('d', path);
       this.mouth.setAttribute('fill', this.config.material.face);
       this.mouth.setAttribute('fill-opacity', Math.min(1, open / 4));
     }
@@ -363,11 +360,11 @@
       this.running = false;
       this.events.abort();
       this.observer.disconnect();
+      this.resolutionObserver.disconnect();
+      cancelAnimationFrame(this.frame);
       if (window.gsap) {
-        gsap.ticker.remove(this.tick);
         gsap.killTweensOf(this.pose);
       }
-      this.morph?.kill();
       this.blinkTimeline?.kill();
     }
   }

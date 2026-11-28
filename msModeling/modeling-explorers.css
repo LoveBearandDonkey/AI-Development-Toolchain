@@ -7,7 +7,14 @@
 .mx-switch .mx-view-tabs button{display:block;border:0;padding:8px 10px;border-radius:6px;background:transparent;color:var(--muted);font-size:13px;font-weight:500;line-height:1.5;white-space:nowrap;box-shadow:none}
 .mx-switch .mx-view-tabs button:hover{background:#e5ebf3;color:var(--fg)}
 .mx-switch .mx-view-tabs button[aria-pressed=true]{background:#fff;color:var(--blue);font-weight:600;box-shadow:0 1px 4px #1e325414}
-.stage-title .mx-switch{padding:0;background:transparent;flex-wrap:wrap}
+.stage-actions{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:8px;margin-left:auto}
+.stage-actions>button{padding:6px 11px;font-size:12px;line-height:1.5;white-space:nowrap}
+#profile-more{anchor-name:--profile-more;display:grid;place-items:center;min-width:34px;padding-inline:6px}
+#profile-actions-menu{position:fixed;position-anchor:--profile-more;inset:auto;top:calc(anchor(bottom) + 6px);right:anchor(right);margin:0;min-width:120px;padding:4px;border:1px solid var(--line);border-radius:8px;background:#fff;box-shadow:0 8px 25px #18223222}
+#profile-actions-menu:popover-open{display:grid}
+#profile-actions-menu button{border:0;border-radius:5px;padding:7px 10px;font-size:12px;text-align:left;white-space:nowrap}
+#profile-actions-menu button:enabled:hover{background:#f0f4fa}
+#capacity-toggle[aria-pressed=true]{border-color:#9ab9ff;background:var(--tint);color:var(--blue)}
 .stage-top>div{min-width:0;width:100%}
 .stage .stage-top{padding-top:0;flex:none}
 .stage .stage-toolbar{justify-content:flex-end}
@@ -19,7 +26,7 @@
  .scene .paging{bottom:90px}
 }
 .mx-explore-body{min-height:0;overflow:auto;padding:20px 30px 36px}
-.mx-layout{display:flex;flex:1;flex-direction:column;min-height:0}
+.mx-layout{display:flex;flex:1;flex-direction:column;min-height:0;container-type:inline-size}
 .stage.mx-exploring{display:flex;overflow:hidden}
 .mx-controls{display:grid;grid-template-columns:1fr 1fr;gap:14px 24px;padding:18px 20px;background:#f6f8fc;border:0;border-radius:10px}
 .mx-control{display:grid;grid-template-columns:112px minmax(0,1fr);gap:12px;align-items:center;min-width:0}

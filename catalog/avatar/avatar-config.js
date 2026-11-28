@@ -1,24 +1,23 @@
 /* Shape, material and motion can be tuned without changing the controller. */
 window.CATALOG_AVATAR_CONFIG = {
-  shape: { petals: 8, radius: 91, depth: 10, contourOffset: 3 },
+  shape: {
+    height: 154, depth: 100, rounding: 0.40, minWidthRatio: 0.8, maxWidthRatio: 1.2,
+    restYaw: 0.18, restPitch: 0.28
+  },
   motion: { floatCycle: 3.6, floatDistance: 7, breathScale: 0.025, headRotation: 3 },
   rig: {
-    centerX: 160, centerY: 145, surfaceRadius: 82, surfaceDepth: 50,
-    facePlaneDepth: 64,
-    // Fixed shoulder offsets from the body center, in the body's own plane.
-    shoulderX: 62, shoulderY: 23,
+    centerX: 160, centerY: 145, shoulderY: 23, faceScale: 0.76, faceOffset: 30,
     eyeSpacing: 40, eyeY: -8, mouthY: 12
   },
   depth: {
     turnCycle: 6.8, idleYaw: 0.32, idlePitch: 0.18,
     gazeYaw: 0.36, gazePitch: 0.26, maxYaw: 0.62, maxPitch: 0.40,
-    bodyYawFollow: 0.80, bodyPitchFollow: 0.75,
-    perspective: 220
+    bodyYawFollow: 0.80, bodyPitchFollow: 0.75, perspective: 220
   },
-  material: { light: '#b5dcff', middle: '#78a7fa', dark: '#4d71e4', face: '#172b58' },
+  material: { face: '#172b58', softness: 0.50, rim: 0.56, rimDepth: 32 },
   behavior: { minInterval: 3.5, maxInterval: 6.5, expressions: ['idle', 'happy', 'curious', 'wink', 'surprised', 'sleepy'] },
   states: {
-    idle: { energy: 1, tilt: 0, smile: 11, eyes: 1, leftEye: 1, rightEye: 1, mouthWidth: 15, mouthOpen: 0, lookX: 0, lookY: 0 },
+    idle: { energy: 1, tilt: 0, smile: 9, eyes: 1, leftEye: 1, rightEye: 1, mouthWidth: 15, mouthOpen: 0, lookX: 0, lookY: 0 },
     listening: { energy: 0.65, tilt: -5, smile: 13, eyes: 1.12 },
     thinking: { energy: 0.55, tilt: 6, smile: 3, eyes: 0.86, lookX: -0.45, lookY: -0.3 },
     speaking: { energy: 1.35, tilt: 0, smile: 10, eyes: 1, mouthOpen: 5 },

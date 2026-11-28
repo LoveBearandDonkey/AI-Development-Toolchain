@@ -1,8 +1,12 @@
 .twin-panel{margin:16px 30px 0;padding:13px 16px;background:#f7f9fc;border:1px solid #e2e8f1;border-radius:10px}.twin-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}.twin-heading strong{font-size:14px;font-weight:600;color:#304b6e}.twin-heading button{font-size:12px;padding:5px 9px;background:#fff}.twin-hierarchy{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.twin-hierarchy button{display:flex;align-items:center;gap:7px;border:1px solid #dbe3ee;border-radius:6px;background:#fff;padding:6px 10px;font-size:12px;color:#5c718c}.twin-hierarchy button b{font:600 12px Consolas,monospace;color:#2b476b}.twin-hierarchy button[aria-pressed=true]{border-color:#8cafe0;background:#edf4ff;color:#24579b}.twin-panel p{font-size:11px;color:#75869a;margin:9px 0 0;line-height:1.6}.twin-model{animation:twin-appear .25s ease-out}.twin-rank:focus .shell,.twin-rank:hover polygon{stroke:#2563eb;stroke-width:1.1}.scene[data-twin=true]{background:radial-gradient(ellipse at 50% 70%,#f4f7fb 0,transparent 66%)}.scene[data-twin=true] .selected-info{max-width:270px;font-size:12px}.scene[data-twin=true] .paging{max-width:65%;font-size:11px}.twin-coordinate{display:block;margin-top:5px;font:11px/1.6 Consolas,monospace;color:#4b6e9c}@keyframes twin-appear{from{opacity:.6}to{opacity:1}}@media(prefers-reduced-motion:reduce){.twin-model{animation:none}}@media(max-width:760px){.twin-panel{margin:12px 14px 0;padding:11px}.twin-hierarchy{gap:5px}.twin-hierarchy button{padding:5px 7px;font-size:11px}.twin-heading strong{font-size:13px}.scene[data-twin=true] .selected-info{max-width:210px}.scene[data-twin=true] .paging{max-width:55%}}
 .scene-workspace{display:flex;flex:1;min-width:0;min-height:0;gap:16px;padding-right:30px;padding-top:16px}
 .scene-workspace>.scene{min-width:0}
-.scene-workspace .scene .stage-toolbar{position:absolute;top:16px;right:20px;z-index:3;max-width:calc(100% - 40px);padding:0;flex-wrap:wrap}
-.scene-workspace .scene .selected-info{top:calc(var(--scene-toolbar-height,38px) + 32px)}
+.scene-head{position:absolute;inset:16px 20px auto 28px;z-index:3;display:flex;align-items:flex-start;gap:12px;pointer-events:none}
+.scene-head .selected-info{position:static;min-width:0;overflow-wrap:anywhere}
+.scene-head .selected-info:empty{display:none}
+.scene-head .stage-toolbar{margin-left:auto;max-width:calc(100% - 124px);padding:0;flex-wrap:wrap;pointer-events:auto}
+.scene-head .selected-info:empty+.stage-toolbar,.scene-head .stage-toolbar .seg{max-width:100%}
+.scene-head .stage-toolbar .seg{flex-wrap:wrap}
 .scene-workspace>.twin-panel{flex:0 0 220px;min-width:0;min-height:0;margin:0;padding:14px;overflow:auto;scrollbar-width:thin}
 .scene-workspace .twin-heading{align-items:stretch;flex-direction:column;gap:10px}
 .scene-workspace .twin-hierarchy{flex-direction:column;flex-wrap:nowrap;gap:8px;margin-top:16px}
@@ -23,6 +27,7 @@
 .stage.is-maximized .mx-panel{height:100%}
 @media(max-width:1100px){
  .scene-workspace{padding-right:20px;gap:10px}
+ .scene-head{left:20px}
  .scene-workspace>.twin-panel{flex-basis:180px;padding:12px}
  .scene-workspace .scene .legend{bottom:70px}
  .scene-workspace .scene[data-twin=true] .paging{left:20px;right:20px;bottom:110px;max-width:none}
@@ -34,11 +39,16 @@
  .stage.is-maximized{padding:8px}
  .stage.is-maximized .scene-workspace{min-height:0}
  .scene-workspace>.scene{min-height:260px}
- .scene-workspace .scene .stage-toolbar{top:12px;right:12px;max-width:calc(100% - 24px);gap:6px}
+ .scene-head{inset:12px 12px auto;gap:8px}
  .scene-workspace .stage-toolbar .seg button{padding:6px 7px}
  .scene-workspace .scene .legend{left:12px;right:12px;bottom:70px;max-width:none;gap:6px 10px;justify-content:flex-start}
  .scene-workspace .legend span{white-space:nowrap}
  .scene-workspace .scene[data-twin=true] .paging{left:12px;right:12px;bottom:140px;max-width:none;font-size:11px}
- .scene-workspace .scene[data-twin=true] .selected-info{right:12px;left:12px;max-width:none}
  .stage-toolbar{gap:6px}
+}
+@container (max-width:560px){
+ .scene-workspace:has(>.twin-panel:not([hidden])){flex-direction:column;padding-right:0}
+ .scene-workspace>.twin-panel{flex:0 0 auto;max-height:145px;margin:0 12px}
+ .scene-workspace .twin-hierarchy{flex-direction:row;flex-wrap:wrap;margin-top:10px}
+ .scene-workspace .twin-hierarchy button{width:auto;flex:1 1 auto}
 }

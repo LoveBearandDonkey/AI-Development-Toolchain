@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>msModeling · Agent 场景演示</title>
+  <link rel="icon" href="assets/MindStudio.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="vendor/desktop.css">
+  <link rel="stylesheet" href="vendor/codicons/codicon.css">
+  <link rel="stylesheet" href="vendor/seti/upstream-tree.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="vendor/insight-surface.css">
+  <link rel="stylesheet" href="agent-client.css">
+  <link rel="stylesheet" href="agent-themes.css">
+  <link rel="stylesheet" href="vendor/insight-chat.css">
+  <link rel="stylesheet" href="agent-conversation.css">
+  <link rel="stylesheet" href="demo.css">
+  <script defer src="vendor/desktop.js"></script>
+  <script defer src="vendor/agent-window.js"></script>
+  <script defer src="vendor/insight-chat-dots.js"></script>
+  <script defer src="demo.js"></script>
+</head>
+<body class="chat-shell-page presenter-collapsed msm-demo">
+<div id="msiDesktop" class="msi-desktop is-light-wallpaper" aria-label="模拟 Windows 桌面">
+  <button id="msiDesktopShortcut" class="msi-desktop-shortcut" title="打开 Visual Studio Code"><img src="assets/code.svg" alt=""><span>Visual Studio<br>Code</span></button>
+  <button id="desktopAgent" class="msi-desktop-shortcut second-shortcut" title="打开 MindStudio Agent 独立客户端"><img src="assets/MindStudio.svg" alt=""><span>MindStudio<br>Agent</span></button>
+  <section class="pto-ide-frame ide monaco-workbench" aria-label="Visual Studio Code">
+    <header class="pto-ide-frame__topbar titlebar">
+      <img class="code-logo" src="assets/code.svg" alt="Visual Studio Code">
+      <nav class="menubar" aria-label="应用菜单"><button data-command="files">文件<span>(F)</span></button><button data-command="edit">编辑<span>(E)</span></button><button data-command="selection">选择<span>(S)</span></button><button data-command="view">查看<span>(V)</span></button><button data-command="go">转到<span>(G)</span></button><button data-command="run">运行<span>(R)</span></button><button data-command="terminal">终端<span>(T)</span></button><button data-command="help">帮助<span>(H)</span></button></nav>
+      <div class="command-center"><button id="navigateBack" class="icon-btn" title="后退" aria-label="后退"><span class="codicon codicon-arrow-left"></span></button><button id="navigateForward" class="icon-btn" title="前进" aria-label="前进"><span class="codicon codicon-arrow-right"></span></button><button id="commandOpen" class="command-search" title="搜索文件 Ctrl+P"><span class="codicon codicon-search"></span><span id="commandProject">serving-eval [SSH: a3-eval-01]</span></button></div>
+      <div class="title-actions"><button id="sidebarToggle" class="icon-btn" title="切换主侧栏 Ctrl+B" aria-label="切换主侧栏"><span class="codicon codicon-layout-sidebar-left"></span></button><button id="panelToggle" class="icon-btn" title="切换面板 Ctrl+J" aria-label="切换面板"><span class="codicon codicon-layout-panel"></span></button><button id="chatToggle" class="icon-btn" title="切换辅助侧栏" aria-label="切换辅助侧栏"><span class="codicon codicon-layout-sidebar-right"></span></button><button id="msiWindowMinimize" class="window-btn" title="最小化" aria-label="最小化"><span class="codicon codicon-chrome-minimize"></span></button><button id="msiWindowMaximize" class="window-btn" title="最大化" aria-label="最大化"><span class="codicon codicon-chrome-maximize maximize-icon"></span><span class="codicon codicon-chrome-restore restore-icon"></span></button><button id="msiWindowClose" class="window-btn close-btn" title="关闭" aria-label="关闭"><span class="codicon codicon-chrome-close"></span></button></div>
+    </header>
+    <div class="workbench">
+      <nav class="activitybar" aria-label="活动栏">
+        <button class="activity active" data-activity="explorer" title="资源管理器 (Ctrl+Shift+E)" aria-label="资源管理器"><span class="codicon codicon-files"></span></button><button class="activity" data-activity="search" title="搜索 (Ctrl+Shift+F)" aria-label="搜索"><span class="codicon codicon-search"></span></button><button class="activity" data-activity="diff" title="源代码管理 (Ctrl+Shift+G)" aria-label="源代码管理"><span class="codicon codicon-source-control"></span><span class="activity-badge" id="changesBadge" hidden>1</span></button><button class="activity" data-activity="run" title="运行和调试" aria-label="运行和调试"><span class="codicon codicon-debug-alt"></span></button><button class="activity" data-activity="extensions" title="扩展" aria-label="扩展"><span class="codicon codicon-extensions"></span></button><button class="activity" id="remoteExplorer" title="远程资源管理器" aria-label="远程资源管理器"><span class="codicon codicon-remote-explorer"></span></button><span class="activity-spacer"></span><button class="activity" id="accountButton" title="账户" aria-label="账户"><span class="codicon codicon-account"></span></button><button class="activity" data-activity="settings" title="管理" aria-label="管理"><span class="codicon codicon-settings-gear"></span></button>
+      </nav>
+      <aside class="explorer" id="explorer" aria-label="资源管理器">
+        <div class="pane-heading"><span>资源管理器</span><button id="explorerMore" class="icon-btn" title="更多操作" aria-label="资源管理器更多操作"><span class="codicon codicon-ellipsis"></span></button></div>
+        <div class="project-section"><button class="project-heading" id="projectHeading" aria-expanded="true"><span class="codicon codicon-chevron-down"></span><span id="projectLabel">SERVING-EVAL</span><span class="remote-tag">[SSH]</span></button><div class="explorer-actions"><button id="newFileButton" class="icon-btn" title="新建文件" aria-label="新建文件"><span class="codicon codicon-new-file"></span></button><button id="treeRefresh" class="icon-btn" title="刷新资源管理器" aria-label="刷新资源管理器"><span class="codicon codicon-refresh"></span></button><button id="treeCollapse" class="icon-btn" title="折叠所有文件夹" aria-label="折叠所有文件夹"><span class="codicon codicon-collapse-all"></span></button></div></div>
+        <div id="fileTree" class="file-tree monaco-tree" role="tree" aria-label="工程文件"></div><div class="explorer-bottom"><button id="outlineToggle"><span class="codicon codicon-chevron-right"></span>大纲</button><button id="timelineToggle"><span class="codicon codicon-chevron-right"></span>时间线</button></div>
+      </aside>
+      <div class="splitter" id="explorerResize" role="separator" aria-label="调整主侧栏宽度" aria-orientation="vertical" tabindex="0"></div>
+      <main class="editor-column">
+        <div class="editor-title"><div class="editor-tabs" id="editorTabs" role="tablist" aria-label="已打开的文件"></div><div class="editor-actions"><button id="splitEditor" class="icon-btn" title="向右拆分编辑器" aria-label="拆分编辑器"><span class="codicon codicon-split-horizontal"></span></button><button id="editorMore" class="icon-btn" title="更多操作" aria-label="编辑器更多操作"><span class="codicon codicon-ellipsis"></span></button></div></div>
+        <div id="breadcrumbs" class="breadcrumbs"></div><section id="editorContent" class="editor-content" aria-label="编辑器"></section>
+        <div class="panel-resize" id="terminalResize" role="separator" aria-label="调整面板高度" aria-orientation="horizontal" tabindex="0"></div>
+        <section class="terminal" id="terminal" aria-label="终端面板"><header><nav id="panelNav"><button data-panel="problems">问题 <span id="problemCount">0</span></button><button data-panel="output">输出</button><button data-panel="debug">调试控制台</button><button data-panel="terminal" class="selected">终端</button><button data-panel="ports">端口</button></nav><div class="terminal-actions"><span class="terminal-name"><span class="codicon codicon-terminal-bash"></span> bash</span><button id="terminalNew" class="icon-btn" title="新建终端" aria-label="新建终端"><span class="codicon codicon-add"></span></button><button id="terminalClear" class="icon-btn" title="清除终端" aria-label="清除终端"><span class="codicon codicon-clear-all"></span></button><button id="terminalExpand" class="icon-btn" title="最大化面板" aria-label="最大化面板"><span class="codicon codicon-chevron-up"></span></button><button id="terminalClose" class="icon-btn" title="隐藏面板" aria-label="隐藏面板"><span class="codicon codicon-close"></span></button></div></header><div id="terminalOutput" class="terminal-output" aria-live="polite"></div><form id="terminalForm"><label for="terminalInput"><span class="terminal-user">linlan@a3-eval-01</span>:<span class="terminal-path">~/serving-eval</span>$</label><input id="terminalInput" autocomplete="off" spellcheck="false" aria-label="终端命令"></form></section>
+      </main>
+      <div class="splitter" id="chatResize" role="separator" aria-label="调整辅助侧栏宽度" aria-orientation="vertical" tabindex="0"></div>
+      <aside class="chat-panel interactive-session" id="chatPanel" aria-label="聊天">
+        <header class="pane-heading chat-heading"><button id="chatViewMenu" class="chat-view-title"><span id="chatTitle">聊天</span><span class="codicon codicon-chevron-down"></span></button><div class="chat-heading-actions"><button id="newChat" class="icon-btn" title="新建聊天" aria-label="新建聊天"><span class="codicon codicon-add"></span></button><button id="chatHistory" class="icon-btn" title="显示聊天历史记录" aria-label="聊天历史记录"><span class="codicon codicon-history"></span></button><button id="chatMaximize" class="icon-btn" title="最大化聊天" aria-label="最大化聊天" aria-controls="chatPanel" aria-pressed="false"><span class="codicon codicon-screen-full"></span></button><button id="chatMore" class="icon-btn" title="更多操作" aria-label="聊天更多操作"><span class="codicon codicon-ellipsis"></span></button></div></header>
+        <div id="chatMessages" class="chat-messages" aria-live="polite"></div>
+        <div class="interactive-input-part"><div class="chat-compose chat-input-container"><div class="chat-context-row"><button id="attachContext" class="attach-context" title="添加上下文" aria-label="添加上下文"><span class="codicon codicon-add" aria-hidden="true"></span></button><div id="contextChip" class="context-chip"></div></div><form id="chatForm"><textarea id="chatInput" aria-label="聊天输入" placeholder="描述接下来要构建的内容" rows="3"></textarea><div class="compose-footer chat-input-toolbars"><div class="input-options"><button type="button" id="agentMode" title="选择聊天模式">Agent<span class="codicon codicon-chevron-down"></span></button><button type="button" id="modelMode" title="选择模型">Auto<span class="codicon codicon-chevron-down"></span></button></div><div class="chat-execute-toolbar"><button type="button" id="chatTools" class="icon-btn" title="配置工具" aria-label="配置工具"><span class="codicon codicon-tools"></span></button><button type="submit" id="chatSend" class="chat-submit-button" title="发送 (Enter)" aria-label="发送消息" disabled><span class="codicon codicon-arrow-up"></span></button><button type="button" id="chatStop" class="chat-submit-button" title="停止响应" aria-label="停止响应" hidden><span class="codicon codicon-debug-stop"></span></button></div></div></form></div></div>
+      </aside>
+    </div>
+    <footer class="statusbar"><button id="remoteStatus"><span class="codicon codicon-remote"></span>SSH: a3-eval-01</button><button id="branchStatus"><span class="codicon codicon-git-branch"></span>main*</button><button id="syncStatus" aria-label="同步更改" title="同步更改"><span class="codicon codicon-sync"></span></button><button id="problemsStatus"><span class="codicon codicon-error"></span>0<span class="codicon codicon-warning"></span><span id="statusWarnings">0</span></button><span class="status-spacer"></span><span id="cursorStatus">行 1，列 1</span><span>空格: 2</span><span>UTF-8</span><span>LF</span><span id="languageStatus">JSON</span><button id="copilotStatus" title="GitHub Copilot" aria-label="GitHub Copilot"><span class="codicon codicon-copilot"></span></button><button id="notifications" title="通知" aria-label="通知"><span class="codicon codicon-bell"></span></button></footer>
+  </section>
+  <footer class="msi-taskbar"><button id="msiTaskbarStart" class="msi-taskbar-start" title="切换壁纸" aria-label="切换壁纸"><svg viewBox="0 0 20 20"><path d="M1 2h8v7H1zm10 0h8v7h-8zM1 11h8v7H1zm10 0h8v7h-8z"/></svg></button><button class="msi-taskbar-search" id="taskbarSearch"><span class="codicon codicon-search"></span><span>在这里输入你要搜索的内容</span></button><button class="msi-taskbar-app is-active" id="msiTaskbarApp" title="Visual Studio Code" aria-label="打开或最小化 Visual Studio Code"><img src="assets/code.svg" alt=""></button><button class="msi-taskbar-app" id="taskbarAgent" title="MindStudio Agent" aria-label="打开或最小化 MindStudio Agent"><img src="assets/MindStudio.svg" alt=""></button><span class="msi-taskbar-spacer"></span><span class="tray-label">中<span class="codicon codicon-unmute"></span></span><time id="msiTaskbarClock" class="msi-taskbar-clock"></time><button id="showDesktop" class="msi-taskbar-show-desktop" title="显示桌面" aria-label="显示桌面"></button></footer>
+<section id="agentClient" class="agent-client has-preview" aria-label="MindStudio Agent 独立客户端" data-theme-id="calc" data-theme="light" data-brand="calc">
+    <header class="agent-titlebar" id="agentTitlebar">
+      <div class="agent-title-left"><div class="agent-brand-lockup"><img class="agent-brand-logo" src="assets/MindStudio.svg" width="24" height="24" alt="" draggable="false"><span class="agent-brand" title="MindStudio Agent">MS Agent</span></div><div class="agent-mode-switch" role="tablist" aria-label="客户端形态"><button id="agentGuiMode" role="tab" aria-selected="true" title="GUI · 图形界面" aria-label="GUI · 图形界面"><span class="agent-svg-icon agent-svg-icon-gui" aria-hidden="true"></span></button><button id="agentTuiMode" role="tab" aria-selected="false" title="TUI · 终端界面" aria-label="TUI · 终端界面"><span class="agent-svg-icon agent-svg-icon-terminal" aria-hidden="true"></span></button></div><span id="agentTuiContext" class="agent-tui-context" title="~/xinghe-moe-training · 32 卡怎么保持原训练目标？">32 卡怎么保持原训练目标？</span></div>
+      <div class="agent-title-right"><button id="agentThemeToggle" class="agent-theme-toggle" type="button" aria-label="切换客户端主题"><svg class="agent-theme-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"></path></svg></button><button id="agentPreviewToggle" class="agent-title-button" title="打开或收起预览" aria-label="切换预览" aria-expanded="true"><span class="codicon codicon-open-preview" aria-hidden="true"></span></button><button id="agentMinimize" class="agent-window-button" title="最小化" aria-label="最小化 msAgent"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10"></path></svg></button><button id="agentMaximize" aria-pressed="false" class="agent-window-button" title="最大化" aria-label="最大化 msAgent"><svg class="agent-window-max-icon" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="3" width="10" height="10" rx=".5"></rect></svg></button><button id="agentClose" class="agent-window-button agent-window-close" title="关闭" aria-label="关闭 msAgent"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 3.5 9 9m0-9-9 9"></path></svg></button></div>
+    </header>
+    <div id="agentGui" class="agent-gui">
+      <aside id="agentTopics" class="agent-topics"><div class="agent-topic-actions"><button id="agentNewTopic"><img class="agent-newchat-icon" src="assets/insight-chat/newchat.svg" alt="">新对话<span class="agent-shortcut" aria-label="Ctrl + N"><kbd>Ctrl</kbd><kbd>N</kbd></span></button><button id="agentSidebarToggle" class="wzh-chat-head-btn" type="button" title="收起主题列表" aria-label="收起主题列表" aria-expanded="true" aria-controls="agentTopics"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M15 4v16"></path><path class="msi-sidebar-direction" d="M10.75 8.75 7.25 12 10.75 15.25"></path></svg></button></div><div class="agent-topic-group">对话历史<button id="agentSearchToggle" title="搜索主题" aria-label="搜索主题"><span class="codicon codicon-search" aria-hidden="true"></span></button></div><input id="agentTopicSearch" class="agent-topic-search" aria-label="搜索主题" placeholder="搜索对话…" hidden=""><nav id="agentTopicList" aria-label="主题列表"></nav><div class="agent-topic-bottom"><button id="agentMcpStatus" class="agent-mcp-status" type="button" title="MindStudio MCP 服务已就绪，等待客户端接入（演示状态）"><i aria-hidden="true"></i><span>本地演示</span></button><button id="agentSettings" type="button"><span class="codicon codicon-settings-gear" aria-hidden="true"></span><span>设置</span></button><div id="agentWorkspace" class="agent-user-profile" aria-label="当前用户：LinLan_AscendLab"><span class="agent-user-avatar" aria-hidden="true">L</span><span class="agent-user-name">LinLan_AscendLab</span></div></div></aside>
+      
+    <main class="agent-conversation wzh-chat-panel is-open" aria-label="msAgent 对话">
+      <header class="wzh-chat-head">
+        <div class="wzh-chat-head-brand agent-chat-heading">
+          
+          <div class="agent-topic-title-editor"><button id="agentTopicTitleButton" class="wzh-chat-session-btn" type="button" title="32 卡怎么保持原训练目标？（点击重命名）"><span id="agentTopicTitle" class="wzh-chat-session-text">Qwen3-32B · A3 方案对比</span><img src="assets/insight-chat/edit.svg" class="wzh-chat-session-pen" alt=""></button><input id="agentTopicTitleInput" class="wzh-chat-session-input" type="text" maxlength="40" aria-label="会话主题" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" hidden=""></div>
+          <small id="agentTaskLabel" title="msAgent · 当前主题"></small>
+        </div>
+        <div class="wzh-chat-head-actions">
+          <button id="agentConversationNew" class="wzh-chat-head-btn" type="button" title="新建对话" aria-label="新建对话"><img src="assets/insight-chat/newchat.svg" alt=""></button>
+          <button id="agentTopicMenu" class="wzh-chat-head-btn" type="button" title="主题与任务信息" aria-label="主题与任务信息"><img src="assets/insight-chat/history.svg" alt=""></button>
+        </div>
+      </header>
+      <div class="wzh-chat-body">
+        <div id="agentMessages" class="wzh-chat-messages is-fade-bottom" role="log" aria-live="polite" aria-label="对话记录" data-view="messages:topic-S1"></div>
+        <div class="wzh-chat-jump-wrap">
+          <button id="agentChatJump" class="wzh-chat-jump-btn is-visible" type="button" title="回到底部" aria-label="回到底部" hidden="">
+            <svg class="wzh-chat-jump-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M19 12l-7 7-7-7"></path></svg>
+            <span class="wzh-chat-jump-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          </button>
+        </div>
+        <form id="agentChatForm" class="wzh-chat-input-bar">
+          <svg class="wzh-chat-input-glow" aria-hidden="true" focusable="false">
+            <rect class="wzh-chat-input-glow-halo" width="100%" height="100%" rx="23.5" pathLength="100"></rect>
+            <rect class="wzh-chat-input-glow-core" width="100%" height="100%" rx="23.5" pathLength="100"></rect>
+          </svg>
+          <div id="agentContext" class="wzh-chat-context-chips"></div>
+          <div class="wzh-chat-input-wrap">
+            <textarea id="agentChatInput" class="wzh-chat-input" rows="2" autocomplete="off" aria-label="向 msAgent 发送消息" placeholder="描述任务，或引用工作区中的文件…" style="height: 44px;"></textarea>
+            <div id="agentChatInputHighlight" class="wzh-chat-input-hl" aria-hidden="true"></div>
+          </div>
+          <div class="wzh-chat-composer-toolbar">
+            <div class="wzh-chat-model-wrap"><span class="wzh-chat-tool" title="当前使用 Agent 模式"><img src="assets/insight-chat/Agent.svg" alt=""><span>Agent</span></span></div>
+            <div class="wzh-chat-model-wrap"><span class="wzh-chat-tool" title="模型自动选择（演示）"><img src="assets/insight-chat/model.svg" alt=""><span>自动选择</span></span></div>
+            <div class="wzh-chat-composer-actions">
+              <button id="agentChatClean" class="wzh-chat-clean-btn" type="button" title="清空输入" aria-label="清空输入" hidden=""><span class="wzh-chat-clean-icon" aria-hidden="true"></span></button>
+              <span id="agentChatCleanDivider" class="wzh-chat-clean-divider" aria-hidden="true" hidden=""></span>
+              <button class="wzh-chat-mic-btn" type="button" title="语音输入（暂未启用）" aria-label="语音输入（暂未启用）" disabled=""><img src="assets/insight-chat/voice.svg" alt=""></button>
+              <button id="agentStop" class="wzh-chat-send-btn is-stop" type="button" title="停止响应" aria-label="停止 msAgent 响应" hidden=""><img src="assets/insight-chat/stop.svg" alt=""></button>
+              <button id="agentSend" class="wzh-chat-send-btn" type="submit" title="发送消息" aria-label="发送给 msAgent" disabled=""><img src="assets/insight-chat/sent.svg" alt=""></button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </main>
+      <div id="agentPreviewResize" class="agent-preview-resize" role="separator" aria-label="调整对话与预览宽度" aria-orientation="vertical" tabindex="0" hidden=""></div><section id="agentPreview" class="agent-preview" aria-label="预览区"><header><div id="agentPreviewTabs" role="tablist" aria-label="预览标签"></div><button id="agentPreviewClose" title="关闭全部预览" aria-label="关闭全部预览"><span class="codicon codicon-close" aria-hidden="true"></span></button></header><div id="agentPreviewContent" class="agent-preview-content"></div></section>
+    </div>
+    
+    </section>
+</div>
+
+<dialog class="msm-dialog" id="task-dialog" aria-labelledby="task-dialog-title">
+    <form id="task-form">
+      <header class="dialog-heading"><div><h2 id="task-dialog-title">确认仿真任务</h2><p>核对工作区解析结果与本次性能目标。</p></div><button type="button" class="icon-button" data-close-dialog="task-dialog" aria-label="关闭"><span class="codicon codicon-close"></span></button></header>
+      <div id="task-dialog-context" class="dialog-context"></div>
+      <div class="form-grid">
+        <label>TTFT 上限（ms）<input id="task-ttft" name="ttft" type="number" min="1" max="60000" required></label>
+        <label>TPOT 上限（ms/token）<input id="task-tpot" name="tpot" type="number" min="1" max="10000" required></label>
+      </div>
+      <p class="scope-note"><span class="codicon codicon-shield" aria-hidden="true"></span>本次确认范围为仿真。上机寻优和复测需另行确认。</p>
+      <footer class="dialog-actions"><button type="button" class="secondary" data-close-dialog="task-dialog">返回查看</button><button class="primary" type="submit">确认并开始仿真</button></footer>
+    </form>
+  </dialog>
+
+  <dialog class="msm-dialog" id="device-dialog" aria-labelledby="device-dialog-title">
+    <form id="device-form">
+      <header class="dialog-heading"><div><h2 id="device-dialog-title">确认上机范围</h2><p>审批后进入示例实测流程。</p></div><button type="button" class="icon-button" data-close-dialog="device-dialog" aria-label="关闭"><span class="codicon codicon-close"></span></button></header>
+      <div id="device-dialog-context" class="dialog-context"></div>
+      <div class="form-grid">
+        <label>最多运行次数<input id="device-trials" type="number" min="3" max="12" required value="3"></label>
+        <label>时间预算（分钟）<input id="device-minutes" type="number" min="5" max="180" required value="30"></label>
+      </div>
+      <p class="scope-note"><span class="codicon codicon-beaker" aria-hidden="true"></span>包含基线、一次参数试验和独立复测。演示用构造数据表现每个阶段。</p>
+      <footer class="dialog-actions"><button type="button" class="secondary" data-close-dialog="device-dialog">只查看仿真</button><button class="primary" type="submit">确认并查看实测流程</button></footer>
+    </form>
+  </dialog>
+
+  <dialog class="msm-dialog" id="file-dialog" aria-labelledby="file-title">
+    <div class="dialog-heading"><div><h2 id="file-title"></h2><p>场景工作区里的示例文件</p></div><button type="button" class="icon-button" data-close-dialog="file-dialog" aria-label="关闭"><span class="codicon codicon-close"></span></button></div>
+    <pre id="file-content"></pre>
+  </dialog>
+
+</body>
+</html>

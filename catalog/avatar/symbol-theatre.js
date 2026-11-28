@@ -4,6 +4,7 @@
   const avatar = window.catalogAvatar;
   const list = document.getElementById('categoryList');
   if (!avatar || !list || !window.gsap || !window.CATALOG_MATH_EXPRESSIONS || !window.CATALOG_TRANSITION_LINES?.length) return;
+  const { mountAvatarArms } = window.TimelineAvatarBody;
 
   const NS = 'http://www.w3.org/2000/svg';
   const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
@@ -39,7 +40,7 @@
       this.originalParent = avatar.root.parentElement;
       this.originalNext = avatar.root.nextSibling;
       this.originalLabel = avatar.root.getAttribute('aria-label');
-      avatar.root.setAttribute('aria-label', '在分类间翻找数学符号、变换表情的蓝色花瓣吉祥物');
+      avatar.root.setAttribute('aria-label', '在分类间翻找数学符号、变换表情的时间线方块吉祥物');
       this.avatarLink = document.createElement('a');
       this.avatarLink.className = 'theatre-avatar-link';
       this.avatarLink.href = 'math-symbols.html';
@@ -61,13 +62,10 @@
         this.root.append(layer);
         this.layers[depth] = layer;
       }
-      const armLayer = svg('svg', { class: 'theatre-arms', 'aria-hidden': 'true' });
-      this.root.append(armLayer);
-      this.arms = ['left', 'right'].map(() => {
-        const arm = svg('path', { class: 'theatre-arm' });
-        armLayer.append(arm);
-        return { arm };
-      });
+      const backArms = svg('svg', { class: 'theatre-arms theatre-arms--back', 'aria-hidden': 'true' });
+      const frontArms = svg('svg', { class: 'theatre-arms theatre-arms--front', 'aria-hidden': 'true' });
+      this.root.append(backArms, frontArms);
+      this.paintArm = mountAvatarArms(backArms, frontArms);
       const definitions = [
         ['nabla', '#d9c5f6', -25, 36, -18],
         ['sigma', '#bcebd5', 20, -42, 16],
@@ -170,8 +168,8 @@
       });
       this.home = point(this.width * .54, 98);
       this.actor = { ...this.home, rotation: 0, gazeX: 0, gazeY: .3, headYaw: 0, headPitch: 0, turnWeight: 0 };
-      this.left = { x: this.home.x - 85, y: 160 };
-      this.right = { x: this.home.x + 85, y: 160 };
+      this.left = { x: this.home.x - 85, y: 160, front: 0 };
+      this.right = { x: this.home.x + 85, y: 160, front: 0 };
       this.hand = this.right;
       this.path = { progress: 0 };
       this.flight = { progress: 0 };
@@ -250,7 +248,7 @@
     }
 
     startReach() {
-      this.episode.props.forEach(g => { g.reachFrom = point(g.hand.x, g.hand.y); });
+      this.episode.props.forEach(g => { g.reachFrom = { ...g.hand }; });
       this.path.progress = 0;
       this.handMode = 'face';
     }
@@ -258,7 +256,7 @@
     releaseFace() {
       this.episode.props.forEach(g => {
         const socket = this.socket(g);
-        Object.assign(g.hand, point(socket.x, socket.y));
+        Object.assign(g.hand, { x: socket.x, y: socket.y, front: 1 });
       });
       this.handMode = 'free';
     }
@@ -324,9 +322,10 @@
           this.releaseFace();
           props.forEach(prop => { prop.owner='face'; prop.mix=1; this.setDepth(prop,false); });
           this.phase('wear'); avatar.setState('idle');
+          avatar.startColorSweep();
         },[],s+3.3);
-        tl.to(this.left,{x:this.home.x-100,y:144,duration:.55},s+3.4);
-        tl.to(this.right,{x:this.home.x+100,y:144,duration:.55},s+3.4);
+        tl.to(this.left,{x:this.home.x-100,y:144,front:0,duration:.55},s+3.4);
+        tl.to(this.right,{x:this.home.x+100,y:144,front:0,duration:.55},s+3.4);
         tl.addLabel(episode.symbol + ':pose',s+3.9);
         tl.call(() => this.phase('pose'),[],s+3.95);
         tl.to(this.actor,{rotation:episode.tilt,y:this.home.y-13,gazeX:-.15,duration:.6,ease:'back.out(1.5)'},s+3.9);
@@ -346,7 +345,7 @@
           avatar.setState('idle');
         },[],s+6.8);
         props.forEach(prop => {
-          tl.to(prop.hand,{x:this.home.x+prop.side*105,y:this.home.y+32,duration:.55},s+6.8);
+          tl.to(prop.hand,{x:this.home.x+prop.side*105,y:this.home.y+32,front:0,duration:.55},s+6.8);
           tl.to(prop,{mix:0,duration:.45},s+6.85);
           tl.to(prop.hand,{x:this.home.x+prop.side*130,y:this.home.y-24,duration:.26,ease:'power2.in'},s+7.4);
         });
@@ -401,17 +400,13 @@
       this.render();
     }
 
-    drawArm(side, hand, index) {
-      const u = this.unit, turn = radians(this.actor.rotation);
+    drawArm(side, hand) {
+      const turn = radians(this.actor.rotation);
       const mount = avatar.getBodyAttachment(side);
       const sx = (mount.x - 160) * this.scale, sy = (mount.y - 145) * this.scale;
       const shoulder = point(this.actor.x + sx * Math.cos(turn) - sy * Math.sin(turn),
         this.actor.y + sx * Math.sin(turn) + sy * Math.cos(turn));
-      const dx = hand.x - shoulder.x, dy = hand.y - shoulder.y;
-      const elbow = point(shoulder.x + dx * .44 + side * 25 * u,
-        shoulder.y + dy * .48 + 32 * u);
-      const wrist = point(hand.x + side * 10 * u, hand.y + 2 * u);
-      this.arms[index].arm.setAttribute('d', `M${shoulder.x} ${shoulder.y}Q${elbow.x} ${elbow.y} ${wrist.x} ${wrist.y}`);
+      this.paintArm(side, { ...mount, ...shoulder }, hand, this.unit);
     }
 
     render() {
@@ -423,10 +418,7 @@
       avatar.setReferenceFace(worn ? this.episode : null);
       this.updateSpeech();
       this.avatarLink.style.transform = `translate(${a.x - 160 * this.scale}px, ${a.y - 145 * this.scale}px) rotate(${a.rotation}deg)`;
-      // Reserve the area above the body's bounding circle, including its float.
-      const body = avatar.bodyPose, angle = radians(a.rotation);
-      const bodyTop = a.y + body.float * Math.cos(angle) * this.scale -
-        (avatar.config.shape.radius + avatar.config.shape.depth + avatar.config.shape.contourOffset + 3) * this.scale * Math.max(body.scaleX,body.scaleY);
+      const bodyTop = a.y + avatar.getBodyTop(radians(a.rotation)) * this.scale;
       this.speech.style.transform = `translate(${clamp(a.x - this.speechSize.width / 2 + 36,0,this.width-this.speechSize.width)}px, ${bodyTop-this.speechSize.height-28}px)`;
       if (this.scan.active) {
         this.look.x = -Math.cos(this.scan.progress * Math.PI) * .95;
@@ -441,6 +433,7 @@
           const socket = this.socket(g);
           g.hand.x = mix(g.reachFrom.x,socket.x,p) + g.side * 22 * arc;
           g.hand.y = mix(g.reachFrom.y,socket.y,p) - 30 * arc;
+          g.hand.front = mix(g.reachFrom.front,1,p);
         });
       }
       this.buttons.forEach(({ element, spring: s }) => {
@@ -449,6 +442,10 @@
         element.style.setProperty('--nudge-r', `${s.r.toFixed(2)}deg`);
       });
       this.glyphs.forEach(g => {
+        // Worn symbols are rendered inside the avatar SVG with the other facial features.
+        g.element.dataset.owner = g.owner;
+        g.element.hidden = g.owner === 'face';
+        if (g.element.hidden) return;
         const socket = this.socket(g);
         let x = g.home.x + g.nudge.x, y = g.home.y + g.nudge.y;
         let rx = g.rx, ry = g.ry, rz = g.rz + g.nudge.r, skewX = 0;
@@ -462,10 +459,6 @@
           rx *= 1 - p; ry *= 1 - p; rz = mix(g.rz, socket.rotation, p);
           skewX = socket.skewX * p;
           shade = p;
-        } else if (g.owner === 'face') {
-          x = socket.x; y = socket.y; rz = socket.rotation;
-          rx = 0; ry = 0; sx = socket.scaleX; sy = socket.scaleY; shade = 1;
-          skewX = socket.skewX;
         } else if (g.owner === 'flight') {
           const p = this.flight.progress, q = 1 - p;
           const control = point((g.flightFrom.x + g.home.x) / 2 + g.side * 28, -24);
@@ -483,15 +476,13 @@
         g.element.style.color = `rgb(${color.join(',')})`;
         g.element.style.transform = `translate(${x - 28}px, ${y - 28}px) perspective(650px) rotateZ(${rz}deg) skewX(${skewX}deg) rotateY(${ry}deg) rotateX(${rx}deg) scale(${sx}, ${sy})`;
         g.element.style.opacity = g.owner === 'pile' ? '.84' : '1';
-        const blinkingEye = g.owner === 'face' && ['leftEye','rightEye'].includes(g.part.key) && this.episode.blinkEyes !== false;
         const artRotation = (g.part.pileRotation || 0) * (1 - shade);
-        g.ink.setAttribute('transform', `rotate(${artRotation}) scale(1 ${blinkingEye ? avatar.getEyeBlink() : 1})`);
+        g.ink.setAttribute('transform', `rotate(${artRotation})`);
         g.element.querySelector('.theatre-glyph-edge').style.opacity = (1 - shade) * .8;
         g.position = { x, y, rx, ry, rz, skewX, sx, sy };
-        g.element.dataset.owner = g.owner;
       });
-      this.drawArm(-1, this.left, 0);
-      this.drawArm(1, this.right, 1);
+      this.drawArm(-1, this.left);
+      this.drawArm(1, this.right);
     }
 
     destroy() {

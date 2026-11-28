@@ -1,0 +1,103 @@
+/* Feature styling stays in the msModeling Webview, dialogs and scenario controls. */
+.msm-webview{
+  --ink:#243449;--muted:#526781;--line:#dce5ef;--ok:#206d58;--warn:#994b2b;
+  display:flex;flex-direction:column;width:100%;height:100%;min-width:0;min-height:0;
+  color:var(--ink);background:#f6f8fc;font:14px/1.55 "Segoe UI","Microsoft YaHei",sans-serif
+}
+.msm-webview .msm-view-tabs{display:flex;align-items:center;gap:4px;overflow:auto;padding:6px 9px;background:#fff;border-bottom:1px solid var(--line);flex:none}
+.msm-webview .msm-view-tabs button{border:0;white-space:nowrap;padding:5px 8px;background:none;border-radius:5px;color:#49627f;font:inherit;font-size:12px}
+.msm-webview .msm-view-tabs button[aria-current=page]{background:#e7f0ff;color:#20539a;font-weight:650}
+.msm-webview .msm-view-tabs button:disabled{opacity:.48}
+.msm-webview .msm-view-content{min-height:0;flex:1;padding:15px 16px;overflow:auto}
+#agentPreviewContent:has(.msm-webview){padding:0;overflow:hidden}
+#editorContent:has(.msm-webview){overflow:hidden}
+.msm-webview h1,.msm-webview h2,.msm-webview h3,.msm-webview p,.msm-dialog h2,.msm-dialog p{margin:0}
+.msm-webview .status-pill,.msm-webview .card h2{font-weight:650}
+.msm-webview .card-grid+.card{margin-top:12px}
+.msm-webview .chart-line label{margin:0}
+.msm-webview .webview-note{margin:0 0 11px;color:#597497;font-size:12px}
+.msm-dialog{--ink:#1b2b40;--muted:#526781;--line:#dce5ef;--ok:#206d58;--warn:#994b2b}
+.msm-dialog input:focus-visible,.msm-webview button:focus-visible,.msm-dialog button:focus-visible{outline:2px solid #548cef;outline-offset:2px}
+.msm-ide-message .msm-transcript-action{padding:5px 8px;margin:5px 5px 0 0;border:1px solid #456d9a;border-radius:4px;color:#b9d9ff;font-size:12px;text-align:left}
+.msm-agent-message .wzh-chat-viz-card{margin-bottom:6px}
+.msm-agent-message .msm-note,.msm-ide-message .msm-note{font-size:12px}
+.msm-demo a:focus-visible,.msm-demo button:focus-visible{outline:2px solid #4696e9}
+.msm-demo [hidden]{display:none!important}
+#agentPreviewTabs .agent-preview-tab>button:first-child{max-width:190px;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:740px){
+  .msm-webview .msm-view-content{padding:10px}
+  .msm-webview .card-grid{grid-template-columns:1fr}
+  .msm-webview .view-head{flex-wrap:wrap}
+  .msm-webview .view-head h1{font-size:18px}
+}
+@scope (.msm-webview) {
+.view-head{display:flex;align-items:start;justify-content:space-between;gap:10px;margin-bottom:15px}
+.view-head h1{font-size:22px;line-height:1.3}.view-head p{margin-top:5px;color:var(--muted)}
+.status-pill{flex:none;border-radius:5px;padding:3px 8px;background:#e2eaf7;color:#375c92;font-size:12px;font-weight:650;white-space:nowrap}
+.status-pill.good{background:#def2e9;color:#20674f}.status-pill.warning{background:#faeadf;color:#924727}
+.card{margin-bottom:13px;padding:14px;background:#fff;border:1px solid var(--line);border-radius:9px}
+.card h2{font-size:16px;margin-bottom:5px;color:#243e62}
+.card h3{font-size:14px;color:#344e71;margin-bottom:4px}
+.card p{color:var(--muted);margin:0 0 8px}
+.card > :last-child{margin-bottom:0}
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:13px}.card-grid .card{margin:0}
+.card-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0 2px}
+.kv{display:grid;grid-template-columns:minmax(85px,.58fr) minmax(0,1.42fr);gap:8px 11px;padding:0;margin:11px 0}
+.kv dt{color:#5c708b}.kv dd{margin:0;color:#274565;overflow-wrap:anywhere}
+.kv small{display:block;color:#5a759b;font-size:12px}
+.section-note,.card .section-note{font-size:12px;color:#577191}
+.range-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:9px}
+.range-tile{padding:9px;background:#f0f5fc;border-radius:6px}
+.range-tile span{display:block;font-size:12px;color:#5a7091}
+.range-tile strong{font-size:16px;color:#234970}
+.chart-grid{display:grid;gap:12px;margin-top:12px}
+.chart-line label{display:flex;justify-content:space-between;gap:6px;color:#3e5775;font-size:12px}
+.track{height:8px;border-radius:9px;background:#e6edf7;margin-top:5px;position:relative;overflow:visible}
+.track span{display:block;height:100%;border-radius:9px;background:#5b82c7}
+.track span.alt{background:#8ba7d1}.track span.good{background:#418d78}.track span.warn{background:#bd7454}
+.track i{position:absolute;top:-3px;height:14px;width:1px;background:#253953}
+.chart-legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:7px;color:#637892;font-size:12px}
+.legend-dot{display:inline-block;width:8px;height:8px;border-radius:2px;background:#5b82c7;margin-right:4px}
+.legend-dot.alt{background:#8ba7d1}.legend-dot.good{background:#418d78}
+.table-wrap{overflow:auto}
+.data-table{width:100%;min-width:430px;border-collapse:collapse;text-align:left;font-size:13px}
+.data-table th,.data-table td{padding:7px 8px;border-bottom:1px solid #e4ebf5;white-space:nowrap}
+.data-table th{color:#557195;font-weight:600}.data-table tr:last-child td{border-bottom:0}
+.data-table tr.selected td{background:#edf5ff}.data-table input{accent-color:#285baf}
+.pass{color:var(--ok);font-weight:650}.fail{color:var(--warn);font-weight:650}
+.timeline{list-style:none;padding:0;margin:0}.timeline li{display:grid;grid-template-columns:16px 1fr auto;align-items:start;gap:9px;border-bottom:1px solid #e5edf5;padding:10px 0}
+.timeline li:last-child{border-bottom:0}
+.timeline-dot{width:9px;height:9px;border-radius:50%;background:#cad4e1;margin-top:6px}
+.timeline li.complete .timeline-dot{background:#418d78}.timeline li.active .timeline-dot{background:#4070bd}
+.timeline li span:last-child{color:#526e8c;font-size:12px}
+.timeline small{display:block;color:#5c738e;margin-top:2px}
+pre{padding:11px;background:#eef4fb;border-radius:6px;color:#244366;white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.55 Consolas,monospace}
+details{margin:9px 0;color:#284e83}details summary{cursor:pointer}
+.primary,.secondary{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid #b6c9e5;padding:7px 12px;border-radius:6px;color:#26518f;background:#f5f9ff;font-weight:600;line-height:1.4}
+.primary{background:#285baf;color:white;border-color:#285baf}
+.primary:not(:disabled):hover{background:#1a4b98}.secondary:not(:disabled):hover{background:#eaf2ff}
+}
+@scope (.msm-dialog) {
+.primary,.secondary{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid #b6c9e5;padding:7px 12px;border-radius:6px;color:#26518f;background:#f5f9ff;font-weight:600;line-height:1.4}
+.primary{background:#285baf;color:white;border-color:#285baf}
+.primary:not(:disabled):hover{background:#1a4b98}.secondary:not(:disabled):hover{background:#eaf2ff}
+}
+.msm-dialog{border:1px solid #c2d1e4;border-radius:12px;max-width:min(92vw,530px);width:100%;padding:20px;background:#fff;color:var(--ink);box-shadow:0 18px 65px #1b2e5450}
+.msm-dialog::backdrop{background:#172b4860}
+.msm-dialog .dialog-heading{display:flex;justify-content:space-between;align-items:start;gap:8px}
+.msm-dialog .dialog-heading h2{font-size:19px}.dialog-heading p{color:var(--muted)}
+.msm-dialog .icon-button{display:grid;place-items:center;width:32px;height:32px;border:1px solid var(--line);border-radius:6px;background:#f6f9ff;color:#506984}
+.msm-dialog .dialog-context{padding:4px 11px;background:#f3f7fc;border-radius:7px;margin:11px 0}
+.msm-dialog .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.msm-dialog .form-grid label{font-weight:600;color:#354f72;font-size:13px}
+.msm-dialog .form-grid input{display:block;width:100%;border:1px solid #bccce1;border-radius:5px;padding:7px 8px;margin-top:3px;color:#253f64;background:#fff}
+.msm-dialog .scope-note{color:#526b8a;padding:9px;background:#edf4fe;border-radius:6px;margin-top:12px}
+.msm-dialog .dialog-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:15px}
+
+
+/* Stack the copied panes on narrow screens while preserving their original surfaces. */
+@media(max-width:740px){
+  #agentClient .agent-gui{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(125px,.8fr) minmax(210px,1.2fr);padding:0 8px 8px;gap:6px}
+  #agentClient:not(.has-preview) .agent-gui{grid-template-rows:minmax(0,1fr)}
+  #agentClient .agent-topics,#agentClient .agent-preview-resize{display:none}
+}
